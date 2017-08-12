@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from . import moduloInformacionExterna
 
 class Finca(models.Model):
     OIDFinca=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
@@ -9,6 +10,8 @@ class Finca(models.Model):
     nombre=models.CharField(max_length=50)
     tamanio=models.FloatField()
     ubicacion=models.CharField(max_length=50)
+
+    proveedor_informacion_climatica_finca=models.ForeignKey(ProveedorInformacionClimaticaFinca,db_column="OIDProveedorInformacionClimaticaFinca",related_name="finca")
 
 class HistoricoEstadoFinca(models.Model):
     OIDHistoricoEstadoFinca = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
@@ -45,5 +48,3 @@ class ProveedorInformacionClimaticaFinca(models.Model):
     fechaAltaProveedorInfoClimaticaFinca=models.DateField()
     fechaBajaProveedorInfoClimaticaFinca=models.DateField()
     frecuencia=models.IntegerField()
-
-    finca=models.ForeignKey(Finca,db_column="OIDFinca")
