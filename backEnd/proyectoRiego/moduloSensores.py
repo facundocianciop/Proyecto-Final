@@ -43,14 +43,14 @@ class HistoricoComponenteSensorSector(models.Model):
 
 class EstadoComponenteSensorSector(models.Model):
     models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    nombreEstadoSensorSector=models.CharField()
-    descripcionEstadoSensorSector=models.CharField()
+    nombreEstadoSensorSector=models.CharField(max_length=20)
+    descripcionEstadoSensorSector=models.CharField(max_length=100)
 
 class TipoMedicion(models.Model):
     OIDTipoMedicion=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     idTipoMedicion=models.IntegerField()
-    nombreTipoMedicion=models.CharField()
-    unidadMedicion=models.CharField()
+    nombreTipoMedicion=models.CharField(max_length=20)
+    unidadMedicion=models.CharField(max_length=20)
     fechaAltaTipoMedicion=models.DateField()
     fechaBajaTipoMedicion=models.DateField()
 
@@ -64,6 +64,3 @@ class MedicionDetalle(models.Model):
     nroRenglon=models.IntegerField()
     valor=models.FloatField()
     medicionCabecera=models.ForeignKey(MedicionCabecera,db_column="OIDMedicionCabecera",related_name="medicion_detalle")
-
-class MedicionFuenteInterna(models.Model):
-    #falta la herencia
