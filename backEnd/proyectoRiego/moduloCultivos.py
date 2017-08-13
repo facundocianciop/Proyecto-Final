@@ -10,6 +10,7 @@ class Cultivo(models.Model):
     habilitado=models.BooleanField()
 
     subtipo_cultivo=models.ForeignKey(SubtipoCultivo,db_column="OIDSubtipoCultivo")
+sector_=models.ForeignKey(moduloSectores.Sector,db_column="OIDSector")
 
 class SubtipoCultivo(models.Model):
     OIDSubtipoCultivo=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)

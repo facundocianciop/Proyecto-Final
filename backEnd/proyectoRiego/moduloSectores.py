@@ -3,14 +3,14 @@ from django.db import models
 class Sector(models.Model):
     OIDSector=models.UUIDField( primary_key=True, editable=False)
     numeroSector=models.IntegerField()
-    nombreSector=models.CharField
-    descripcionSector=models.CharField()
+    nombreSector=models.CharField(max_length=20)
+    descripcionSector=models.CharField(max_length=100)
     superficie=models.FloatField()
 
 class EstadoSector(models.Model):
     OIDEstadoSector=models.UUIDField( primary_key=True, editable=False)
-    descripcionEstadoSector=models.CharField()
-    nombreEstadoSector=models.CharField()
+    descripcionEstadoSector=models.CharField(max_length=100)
+    nombreEstadoSector=models.CharField(max_length=20)
 
 class HistoricoEstadoSector(models.Model):
     OIDHistoricoEstadoSector=models.UUIDField( primary_key=True, editable=False)
@@ -36,5 +36,5 @@ class HistoricoMecanismoRiegoFincaSector(models.Model):
 
 class EstadoMecanismoRiegoFincaSector(models.Model):
     OIDEstadoMecanismoRiegoFincaSector=models.UUIDField( primary_key=True, editable=False)
-    descripcionEstadoMecanismoRiegoFincaSector=models.CharField()
-    nombreEstadoMecanismoRiegoFincaSector=models.CharField()
+    descripcionEstadoMecanismoRiegoFincaSector=models.CharField(max_length=100)
+    nombreEstadoMecanismoRiegoFincaSector=models.CharField(max_length=29)
