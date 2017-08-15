@@ -1,0 +1,121 @@
+<html>
+
+	<head>
+	
+		<title>Proyecto</title>
+
+
+		<style>
+			
+			h1{
+				text-align: center;
+				color: black;
+			}
+
+			form{
+				display: flex;
+				justify-content: center;
+			}
+			div{
+				border: 1px solid;
+				border-radius: 5px;
+				width: 22%;
+				padding: 16px;
+				margin-right: 10px;
+				margin-left: 10px;
+
+			}
+
+			label{
+				color: black;
+				font-weight: bold;
+				font-size: 16px;
+
+			}
+
+			input[type=text]{
+				margin-top:10px;
+				margin-bottom: 10px;
+				padding: 12px 20px; 
+				width: 100%;
+				border-radius: 5px;
+				border: 1px solid;
+				border-color: #D8D1D0;
+			}
+
+			input[type=checkbox]{
+				margin-top: 10px;
+				margin-bottom: 10px; 
+			}
+
+			button{
+				color: black;
+				font-weight: bold;
+				border: 1px solid;
+				border-radius: 3px;
+				width:40%;
+				padding: 12px 20px;
+				cursor:pointer;
+
+			}
+
+			.guardar{
+				margin-top: 10px;
+				margin-right: 25px;
+				margin-left: 20px;
+				background-color: #14FA05;
+				border-color: #14FA05;
+
+			}
+
+			.guardar:hover{
+				border-color: #13DA06;
+				background-color: #13DA06; 
+			}
+
+			.cancelar{
+				margin-top: 10px;
+				border-color: #FA2A05;
+				background-color: #FA2A05;
+			}
+
+			.cancelar:hover{
+				border-color: #D62708;
+				background-color: #D62708;
+			}
+
+
+		</style>
+	
+	</head>
+
+	<body>
+		
+			<h1>Agregar Rol</h1>
+			
+			<form>
+
+				<div>
+
+					<label>Rol</label><br>
+					<input type="text" name="rol" maxlength="25" placeholder="Ingrese Rol" required="Debe ingresar un rol"><br>
+
+					<input type="checkbox">Permiso 1<br>	
+					<input type="checkbox">Permiso 2<br>	
+					<input type="checkbox">Permiso 3<br>	
+					<input type="checkbox">Permiso 4<br>	
+
+					<button class="guardar" type="submit">Guardar</button>
+					<button class="cancelar">Cancelar</button>
+
+				</div>
+
+			</form>
+			
+
+
+
+	</body>
+
+
+</html>
