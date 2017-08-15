@@ -1,0 +1,201 @@
+<html>
+
+	<head>
+	
+		<title>Proyecto</title>
+
+
+		<style>
+			
+			ul {
+			    list-style-type: none;
+			    margin: 0px;
+			    padding: 0px;
+			    overflow: hidden;
+			    background-color: #DFDCDC;
+			}
+
+			li {
+			    float: left;
+			    margin: 0px;
+			}
+
+			li a {
+			    display: block;
+			    color: black;
+			    text-align: center;
+			    padding: 16px;
+			    text-decoration: none;
+			}
+
+			li a:hover {
+			    background-color: #CBC9C9;
+			}
+
+			.menuDerecho{
+				float: right;
+			}
+
+			h3{
+				text-align: center;
+				margin-top: 0px;
+
+			}
+
+			div{
+				border-radius: 2px;
+				border:1px solid;
+				width: 50%;
+				padding: 16px;
+				margin-top: 40px;
+				margin-right: 10px;
+				margin-left: 10px;
+
+			}
+			table{
+				border-collapse: collapse;
+				width: 100%;
+			}
+			td,th{
+				text-align: left;
+				padding: 10px;
+				cursor: pointer;
+			}
+			th{
+				background-color:#4CAF50; 
+			}
+
+			tr:nth-child(even){
+				background-color: #f2f2f2;
+			}
+
+			label{
+				color: black;
+				font-weight: bold;
+				font-size: 16px;
+
+			}
+			select{
+				padding: 5px;
+				margin-bottom: 20px;
+				width: 30%;
+				border-radius: 5px;
+				border: 1px solid;
+				border-color: #D8D1D0;
+			}
+			button{
+				color: black;
+				font-weight: bold;
+				border: 1px solid;
+				border-radius: 3px;
+				width:20%;
+				padding: 12px 20px;
+				cursor:pointer;
+				float: right;
+
+			}
+			.crear{
+				margin-top: 10px;
+				margin-right: 10%;
+				background-color: #4CAF50;
+				border-color: #4CAF50;
+
+			}
+
+			.crear:hover{
+				border-color: #39D33F;
+				background-color: #39D33F; 
+			}
+
+		</style>
+	
+	</head>
+
+	<body>
+		
+			<ul>
+			  <li><a href="#inicio">Logo</a></li>
+			   <li class="menuDerecho"> <a href="#ingresar">Salir</a></li>
+  			  <li class="menuDerecho"> <a href="#perfil">Perfil</a></li>
+
+			</ul>
+			
+			<div>
+				<h3>Finca con Rol Encargado</h3>
+				<table>
+					<tr>
+						<th>Nombre</th>
+						<th>Tama&ntilde;o</th>
+						<th>Ubicaci&oacute;n</th>
+					</tr>
+					<tr>
+						<td>Finca 1</td>
+						<td>10000 metros cuadrados</td>
+						<td>Paso de Los Andes 1000</td>
+					</tr>
+					<tr>
+						<td>Finca 2</td>
+						<td>5000 metros cuadrados</td>
+						<td>Liniers 520</td>
+					</tr>
+					<tr>
+						<td>Finca 3</td>
+						<td>1000 metros cuadrados</td>
+						<td>Reconquista 250</td>
+					</tr>
+					<tr>
+						<td>Finca 4</td>
+						<td>200 metros cuadrados</td>
+						<td>Paso de Los Andes 120</td>
+					</tr>
+				</table>
+			</div>
+
+			<button class=crear>Crear Finca</button>
+			
+			<div>
+				<h3>Finca con otro Rol</h3>
+				<label>Rol: </label>
+				<select>
+					<option>StakeHolder</option>
+					<option>Rol 1</option>
+					<option>Rol 2</option>	
+				</select>
+				
+				<table>
+					<tr>
+						<th>Nombre</th>
+						<th>Tama&ntilde;o</th>
+						<th>Ubicaci&oacute;n</th>
+					</tr>
+					<tr>
+						<td>Finca 1</td>
+						<td>10000 metros cuadrados</td>
+						<td>Paso de Los Andes 1000</td>
+					</tr>
+					<tr>
+						<td>Finca 2</td>
+						<td>5000 metros cuadrados</td>
+						<td>Liniers 520</td>
+					</tr>
+					<tr>
+						<td>Finca 3</td>
+						<td>1000 metros cuadrados</td>
+						<td>Reconquista 250</td>
+					</tr>
+					<tr>
+						<td>Finca 4</td>
+						<td>200 metros cuadrados</td>
+						<td>Paso de Los Andes 120</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+	</body>
+
+
+</html>
+
+
