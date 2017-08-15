@@ -1,0 +1,91 @@
+<html>
+
+	<head>
+	
+		<title>Proyecto</title>
+
+
+		<style>
+			
+			h1{
+				text-align: center;
+				color: black;
+			}
+			form{
+				display: flex;
+				justify-content: center;
+			}
+			.container{
+				border-radius: 10px;
+				border: 1px solid;
+				border-style:  solid ;
+				border-color: gray;
+				width: 25%;
+				height: 38%;
+				padding: 16px;
+				margin-bottom: 16px; 
+			}
+
+			label{
+				font-weight: bold;
+			}
+
+			a{
+				text-decoration: none;
+			}
+			input[type=text],[type=password]{
+				width: 100%;
+				border: 1px solid;
+				border-radius: 5px;
+				border-color: gray;
+				margin-top: 10px;
+				padding: 12px 20px;
+			}	
+
+			button{
+				font-weight: bold;
+				text-orientation: center;
+				background-color: #14EF14;
+				margin-top: 10px;
+				margin-bottom: 10px;
+				width: 100%;
+				padding: 12px 20px;
+				border: 1px solid;
+				border-style: none;
+				border-radius: 5px;
+			}
+
+			.olvida{
+				color: blue;
+				font-size: 14px;
+				font-weight: bold;
+			}
+
+
+		</style>
+	
+	</head>
+
+	<body>
+		
+		<h1>Ingresar a Sistema de Riego (poner logo tambien)</h2>
+		
+		<form>
+			<div class="container">
+
+				<label>Usuario</label><br>
+				<input type="text" name="usuario" placeholder="Ingrese usuario" required></br></br>
+				<label>Contrase&ntilde;a</label></br>
+				<input type="password" name="password" placeholder="Ingrese contrase&ntilde;a" required></br>
+				<button type="submit">Ingresar</button></br>
+				<label class="olvida"><a href="#recuperarCuenta">¿Has olvidado la contrase&ntilde;a?</a></label>
+			</div>
+
+		</form>
+
+	</body>
+
+
+</html>
+
+
