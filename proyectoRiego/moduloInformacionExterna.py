@@ -1,8 +1,11 @@
 import uuid
-from django.db import models
-from . import moduloFinca,moduloEventos
 
-class MedicionEstadoExterno(models.Model,moduloEventos.MedicionEvento):
+from django.db import models
+
+from . import moduloFinca, moduloEventos
+
+
+class MedicionEstadoExterno(models.Model, moduloEventos.MedicionEvento):
    #HERENCIA
     tipo_medicion_climatica=models.ForeignKey(TipoMedicionClimatica,db_column="OIDTipoMedicionClimatica")
 
@@ -46,7 +49,7 @@ class MediciónInformaciónClimáticaCabecera(models.Model):
     nroMedicion=models.IntegerField(unique=True)
     fechaHora=models.DateField()
 
-    proveedor_informacion_climatica_externa=models.ForeignKey(moduloFinca.ProveedorInformacionClimaticaFinca,db_column="OIDProveedorInformacionClimaticaFinca",related_name="medicion_informacion_climatica_cabecera_list")
+    proveedor_informacion_climatica_externa=models.ForeignKey(moduloFinca.ProveedorInformacionClimaticaFinca, db_column="OIDProveedorInformacionClimaticaFinca", related_name="medicion_informacion_climatica_cabecera_list")
 
 class MediciónInformaciónClimáticaDetalle(models.Model):
     OIDMedicionInformacionClimaticaCabecera=models.UUIDField(default=uuid.uuid4,primary_key=True)
