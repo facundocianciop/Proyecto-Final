@@ -1,6 +1,9 @@
 import uuid
+
 from django.db import models
-from . import moduloSensores,moduloSeguridad
+
+from . import moduloSensores, moduloSeguridad
+
 
 class MedicionEvento(models.Model):
     OIDMedicionEvento=models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
@@ -11,7 +14,7 @@ class MedicionEvento(models.Model):
         abstract=True
 
 class MediciónFuenteInterna(models.Model,MedicionEvento):
-    tipo_medicion=models.ForeignKey(moduloSensores.TipoMedicion,db_column="OIDTipoMedicion")
+    tipo_medicion=models.ForeignKey(moduloSensores.TipoMedicion, db_column="OIDTipoMedicion")
     #RECIBE COMO PARAMETRO A LA CLASE MEDICION EVENTO PORQUE HEREDA DE ELLA
 class ConfiguracionEventoPersonalizado(models.Model):
     OIDConfiguracionEventoPersonalizado=models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
@@ -23,7 +26,7 @@ class ConfiguracionEventoPersonalizado(models.Model):
     fechaBajaConfiguracionEventoPersonalizado=models.DateField()
     fechaHoraCreacion=models.DateField()
 
-    usuario_finca=models.ForeignKey(moduloSeguridad.UsuarioFinca,db_column="OIDUsuarioFinca",related_name="usuario_finca")
+    usuario_finca=models.ForeignKey(moduloSeguridad.UsuarioFinca, db_column="OIDUsuarioFinca", related_name="usuario_finca")
 
 class EventoPersonalizadoo(models.Model):
     OIDEventoPersonalizado=models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)

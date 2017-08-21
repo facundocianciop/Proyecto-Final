@@ -1,6 +1,10 @@
 import uuid
-from . import moduloSectores
+
 from django.db import models
+
+from . import moduloSectores
+
+
 class ConfiguracionRiego(models.Model):
     OIDConfiguracionRiego=models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
     nombre=models.CharField(max_length=20)
@@ -42,7 +46,7 @@ class EjecucionRiego(models.Model):
 
     configuracion_riego=models.ForeignKey(ConfiguracionRiego,db_column="OIDConfiguracionRiego")
     estado_ejecucion_riego=models.ForeignKey(EstadoEjecucionRiego,db_column="OIDEstadoEjecucionRiego")
-    mecanismo_riego_finca_sector=models.ForeignKey(moduloSectores.MecanismoRiegoFincaSector,db_column="OIDMecanismoRiegoFincaSector",related_name="ejecucion_riego_list")
+    mecanismo_riego_finca_sector=models.ForeignKey(moduloSectores.MecanismoRiegoFincaSector, db_column="OIDMecanismoRiegoFincaSector", related_name="ejecucion_riego_list")
 
 class EstadoEjecucionRiego(models.Model):
     OIDEstadoEjecucionRiego=models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)

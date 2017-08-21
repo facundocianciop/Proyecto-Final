@@ -1,6 +1,10 @@
 import uuid
+
 from django.db import models
+
 from . import moduloFinca
+
+
 class Usuario(models.Model):
     OIDUsuario = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     usuario=models.CharField(max_length=30)
@@ -61,7 +65,7 @@ class UsuarioFinca(models.Model):
     fechaAltaUsuarioFinca=models.DateField()
     fechaBajaUsuarioFinca=models.DateField()
 
-    finca=models.ForeignKey(moduloFinca.Finca,db_column="OIDFinca")
+    finca=models.ForeignKey(moduloFinca.Finca, db_column="OIDFinca")
     usuario=models.ForeignKey(Usuario,db_column="OIDUsuario")
 
 class RolUsuarioFinca:

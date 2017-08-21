@@ -1,6 +1,10 @@
 import uuid
+
 from django.db import models
+
 from . import moduloSectores
+
+
 class Cultivo(models.Model):
     OIDCultivo=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     descripcion=models.CharField(max_length=100)
@@ -10,7 +14,7 @@ class Cultivo(models.Model):
     habilitado=models.BooleanField()
 
     subtipo_cultivo=models.ForeignKey(SubtipoCultivo,db_column="OIDSubtipoCultivo")
-sector_=models.ForeignKey(moduloSectores.Sector,db_column="OIDSector")
+sector_=models.ForeignKey(moduloSectores.Sector, db_column="OIDSector")
 
 class SubtipoCultivo(models.Model):
     OIDSubtipoCultivo=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)

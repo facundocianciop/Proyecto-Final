@@ -1,6 +1,9 @@
 import uuid
+
 from django.db import models
-from . import moduloFinca,moduloSectores
+
+from . import moduloFinca, moduloSectores
+
 
 class Sensor(models.Model):
     OIDSensor=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
@@ -12,7 +15,7 @@ class Sensor(models.Model):
 
     componente_sensor=models.ForeignKey(ComponenteSensor,db_column="OIDComponenteSensor",related_name="sensor")
     sensor_tipo_Interna=models.ForeignKey(TipoMedicion,db_column="OIDTipoMedicion")
-    finca=models.ForeignKey(moduloFinca.Finca,db_column="OIDFinca")
+    finca=models.ForeignKey(moduloFinca.Finca, db_column="OIDFinca")
 
 class TipoMedicion(models.Model):
     OIDTipoMedicion=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
@@ -34,7 +37,7 @@ class ComponenteSensorSector(models.Model):
     OIDComponenteSensorSector=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     idComponenteSensores=models.IntegerField()
 
-    componente_sensor=models.ForeignKey(moduloSectores.Sector,db_column="OIDSector")
+    componente_sensor=models.ForeignKey(moduloSectores.Sector, db_column="OIDSector")
 class HistoricoComponenteSensorSector(models.Model):
     OIDHistoricoComponenteSensorSector=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     fechaAltaComponenteSensorSector=models.DateField()
