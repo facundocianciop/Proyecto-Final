@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="Django default">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.4">
+    <root id="1"/>
+    <schema id="2" parent="1" name="proyecto">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="3" parent="1" name="alumnos"/>
+    <schema id="4" parent="1" name="bonobo"/>
+    <schema id="5" parent="1" name="bugtracker"/>
+    <schema id="6" parent="1" name="canastafamiliar"/>
+    <schema id="7" parent="1" name="capacitaciones"/>
+    <schema id="8" parent="1" name="cdcol"/>
+    <schema id="9" parent="1" name="datawarehouse"/>
+    <schema id="10" parent="1" name="diseño"/>
+    <schema id="11" parent="1" name="dw_caso"/>
+    <schema id="12" parent="1" name="empleados"/>
+    <schema id="13" parent="1" name="equipo"/>
+    <schema id="14" parent="1" name="escuela"/>
+    <schema id="15" parent="1" name="explorecalifornia"/>
+    <schema id="16" parent="1" name="feedback"/>
+    <schema id="17" parent="1" name="ferreteria"/>
+    <schema id="18" parent="1" name="gabinetegestiondatos"/>
+    <schema id="19" parent="1" name="gd_trabajo_final"/>
+    <schema id="20" parent="1" name="information_schema"/>
+    <schema id="21" parent="1" name="intermedio"/>
+    <schema id="22" parent="1" name="libros"/>
+    <schema id="23" parent="1" name="mysql"/>
+    <schema id="24" parent="1" name="pasajeintermediocaso"/>
+    <schema id="25" parent="1" name="pedidos"/>
+    <schema id="26" parent="1" name="performance_schema"/>
+    <schema id="27" parent="1" name="phpmyadmin"/>
+    <schema id="28" parent="1" name="practico"/>
+    <schema id="29" parent="1" name="privacidad"/>
+    <schema id="30" parent="1" name="programaempleados"/>
+    <schema id="31" parent="1" name="prueba"/>
+    <schema id="32" parent="1" name="sistgestion1"/>
+    <schema id="33" parent="1" name="supercasa"/>
+    <schema id="34" parent="1" name="test"/>
+    <schema id="35" parent="1" name="testlink"/>
+    <schema id="36" parent="1" name="tutorial"/>
+    <schema id="37" parent="1" name="universidad"/>
+    <schema id="38" parent="1" name="usobackend"/>
+    <schema id="39" parent="1" name="ventas"/>
+    <schema id="40" parent="1" name="webauth"/>
+  </database-model>
+</dataSource>
