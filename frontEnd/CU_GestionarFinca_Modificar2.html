@@ -1,0 +1,132 @@
+<html>
+
+	<head>
+	
+		<title>Proyecto</title>
+
+
+		<style>
+			
+			h1{
+				text-align: center;
+				color: black;
+			}
+
+			form{
+				display: flex;
+				justify-content: center;
+			}
+			div{
+				border: 1px solid;
+				border-radius: 5px;
+				width: 30%;
+				padding: 16px;
+				margin-right: 10px;
+				margin-left: 10px;
+
+			}
+
+			label{
+				color: black;
+				font-weight: bold;
+				font-size: 16px;
+
+			}
+
+			input[type=text]{
+				margin-top:10px;
+				margin-bottom: 10px;
+				padding: 12px 20px; 
+				width: 100%;
+				border-radius: 5px;
+				border: 1px solid;
+				border-color: #D8D1D0;
+			}
+
+			button{
+				color: black;
+				font-weight: bold;
+				border: 1px solid;
+				border-radius: 3px;
+				width:40%;
+				padding: 12px 20px;
+				cursor:pointer;
+
+			}
+			select{
+				padding: 5px;
+				margin-bottom: 20px;
+				width: 45%;
+				border-radius: 5px;
+				border: 1px solid;
+				border-color: #D8D1D0;
+			}
+
+			.guardar{
+				margin-top: 10px;
+				margin-right: 25px;
+				margin-left: 20px;
+				background-color: #14FA05;
+				border-color: #14FA05;
+
+			}
+
+			.guardar:hover{
+				border-color: #13DA06;
+				background-color: #13DA06; 
+			}
+
+			.cancelar{
+				margin-top: 10px;
+				border-color: #FA2A05;
+				background-color: #FA2A05;
+			}
+
+			.cancelar:hover{
+				border-color: #D62708;
+				background-color: #D62708;
+			}
+
+
+		</style>
+	
+	</head>
+
+	<body>
+		
+			<h1>Modificar Finca</h1>
+			
+			<form>
+
+				<div>
+
+					<label>Nombre</label><br>
+					<input type="text" name="nombre" maxlength="40" placeholder="Ingrese Nombre" required="Debe ingresar un nombre"><br>
+
+					<label>Tama&ntilde;o</label><br>
+					<input type="text" name="tamanio"required pattern="[0-9]{0,9}" title="S&oacute;lo debe ingresar n&uacute;meros" maxlength="8" placeholder="Ingrese DNI" required="Debe ingresar el tama&nacute;o de la finca" placeholder="Ingrese Tama&nacute;o"><br>
+
+					<label>Ubicaci&oacute;n</label><br>
+					<input type="text" name="ubicacion"  maxlength="50" placeholder="Ingrese Direcci&oacute;n" required="Debe ingresar una direcci&oacute;n"><br>
+
+					<label>Direcci&oacute;n Legal</label><br>
+					<input type="text" name="direccionLegal" maxlength="50" placeholder="Ingrese Direcci&oacute;n Legal" required="Debe ingresar una direcci&otilde;n Legal"><br><br>
+
+					<label>Proveedor de Informaci&oacute;n:</label>
+					<select>
+						<option value=proveedor1>Proveedor 1</option>
+						<option value=proveedor2>Proveedor 2</option>
+						<option value=proveedor3>Proveedor 3</option>
+					</select>
+
+					<button class="guardar" type="submit">Guardar</button>
+					<button class="cancelar">Cancelar</button>
+
+				</div>
+
+			</form>
+			
+	</body>
+
+
+</html>
