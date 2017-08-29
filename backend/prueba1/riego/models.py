@@ -16,6 +16,13 @@ class Finca(models.Model):
     tamanio=models.FloatField()
     ubicacion=models.CharField(max_length=50)
 
+    def as_json(self):
+        return dict(
+            direccionLegal=self.direccionLegal,
+            idFinca=self.idFinca,
+            nombre=self.nombre,tamanio=self.tamanio,
+            ubicacion=self.ubicacion)
+
 
 class EstadoFinca(models.Model):
     OIDFinca = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
