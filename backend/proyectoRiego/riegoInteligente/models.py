@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 import uuid
 #MODULO FINCA
 class ProveedorInformacionClimaticaFinca(models.Model):
@@ -6,16 +9,24 @@ class ProveedorInformacionClimaticaFinca(models.Model):
     fechaAltaProveedorInfoClimaticaFinca=models.DateField()
     fechaBajaProveedorInfoClimaticaFinca=models.DateField()
     frecuencia=models.IntegerField()
+    finca=models.ForeignKey("Finca",db_column="OIDFinca",null=True)
 class Finca(models.Model):
     OIDFinca=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     direccionLegal=models.CharField(max_length=50)
     idFinca=models.IntegerField()
-    logoFinca=models.ImageField()
+    logoFinca=models.ImageField(null=True)
     nombre=models.CharField(max_length=50)
     tamanio=models.FloatField()
     ubicacion=models.CharField(max_length=50)
 
-    proveedor_informacion_climatica_finca=models.ForeignKey(ProveedorInformacionClimaticaFinca, db_column="OIDProveedorInformacionClimaticaFinca", related_name="finca")
+    def as_json(self):
+        return dict(
+            direccionLegal=self.direccionLegal,
+            idFinca=self.idFinca,
+            nombre=self.nombre,tamanio=self.tamanio,
+            ubicacion=self.ubicacion)
+
+
 class EstadoFinca(models.Model):
     OIDFinca = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     descripcionEstadoFinca=models.CharField(max_length=100)
@@ -58,18 +69,26 @@ class EstadoUsuario(models.Model):
     nombreEstadoUsuario=models.CharField(max_length=100)
 
 class Usuario(models.Model):
-    OIDUsuario = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    usuario=models.CharField(max_length=30)
-    nombre=models.CharField(max_length=30)
-    apellido=models.CharField(max_length=30)
-    cuit=models.CharField(max_length=15)
-    dni=models.IntegerField()
-    domicilio=models.CharField(max_length=50)
-    email=models.CharField(max_length=30)
-    fechaNacimiento=models.DateField()
-    imagenUsuario=models.ImageField()
+    user=models.OneToOneField(User, on_delete=models.CASCADE,null=True)
+    OIDUsuario = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    nombre=models.CharField(max_length=30,null=True)
+
+    apellido=models.CharField(max_length=30,null=True)
+    cuit=models.CharField(max_length=15,null=True)
+    dni=models.IntegerField(null=True)
+    domicilio=models.CharField(max_length=50,null=True)
+    email=models.CharField(max_length=30,null=True)
+    fechaNacimiento=models.DateField(null=True)
+    imagenUsuario=models.ImageField(null=True)
     #LAS RELACIONES CON OTRAS CLASES LAS SEPARE UN RENGLON
-    OIDEstadoUsuario=models.ForeignKey(EstadoUsuario)
+    OIDEstadoUsuario=models.ForeignKey(EstadoUsuario,null=True)
+    @receiver(post_save,sender=User)
+    def crearUsuario(sender,instance,created,**kwargs):
+        if created:
+            Usuario.objects.create(user=instance)
+    @receiver(post_save,sender=User)
+    def guardarUsuario(sender,instance,**kwargs):
+        instance.usuario.save()
 
 class Contrasenia(models.Model):
     OIDContrasenia = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
@@ -293,9 +312,9 @@ class CriterioRiego(models.Model):
     #Y Q LA OTRA TENGA DOS ATRIBUTOS Q PARA LOS CRITERIOS INICIALES Y PARA LOS FINALES(LOS Q ESTAN EN EL related_name)
     # configuracionRiegoInicial = models.ForeignKey(ConfiguracionRiego, db_column="OIDConfiguracionRiegoInicial",
     #                                               related_name="criterioRiegoInicioList")
-    configuracionRiegoInicial = models.OneToOneField(ConfiguracionRiego,on_delete=models.CASCADE,db_column="OIDconfiguracionRiegoInicial")
+    configuracionRiegoInicial = models.OneToOneField(ConfiguracionRiego,on_delete=models.CASCADE,db_column="OIDConfiguracionRiegoInicial",related_name="criterioRiegoInicial",null=True)
     configuracionRiegoFinal = models.ForeignKey(ConfiguracionRiego, db_column="OIDConfiguracionRiegoFinal",
-                                                related_name="criterioRiegoFinal")
+                                                related_name="criterioRiegoFinal",null=True)
 
 class CriterioRiegoPorMedicion(CriterioRiego):
     valor=models.FloatField()
@@ -339,12 +358,17 @@ class Cultivo(models.Model):
 
     subtipo_cultivo = models.ForeignKey(SubtipoCultivo, db_column="OIDSubtipoCultivo")
     sector= models.ForeignKey(Sector, db_column="OIDSector")
+    def __str__(self):
+        return ("Este es el cultivo %s")%self.nombre
 
 
 class EstadoSector(models.Model):
     OIDEstadoSector=models.UUIDField( primary_key=True, default=uuid.uuid4, editable=False)
     descripcionEstadoSector=models.CharField(max_length=100)
     nombreEstadoSector=models.CharField(max_length=20)
+
+    def __str__(self):
+        return ("Este es el estado %s") % self.nombreEstadoSector
 
 class HistoricoEstadoSector(models.Model):
     OIDHistoricoEstadoSector=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
@@ -355,10 +379,12 @@ class HistoricoEstadoSector(models.Model):
     sector=models.ForeignKey(Sector,db_column="OIDSector",related_name="historicoEstadoSector")
 
 
+
+
 class EstadoMecanismoRiegoFincaSector(models.Model):
     OIDEstadoMecanismoRiegoFincaSector=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     descripcionEstadoMecanismoRiegoFincaSector=models.CharField(max_length=100)
-    nombreEstadoMecanismoRiegoFincaSector=models.CharField(max_length=29)
+    nombreEstadoMecanismoRiegoFincaSector=models.CharField(max_length=20)
 
 class HistoricoMecanismoRiegoFincaSector(models.Model):
     OIDHistoricoMecanismoRiegoFincaSector=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
@@ -393,7 +419,7 @@ class Sensor(models.Model):
     modelo=models.CharField(max_length=20)
 
     componente_sensor=models.ForeignKey(ComponenteSensor,db_column="OIDComponenteSensor",related_name="sensor")
-    sensorTipoInterna=models.ForeignKey('riegoInteligente.TipoMedicion',db_column="OIDTipoMedicion")
+    sensorTipoInterna=models.ForeignKey('TipoMedicion',db_column="OIDTipoMedicion")
     finca=models.ForeignKey(Finca,db_column="OIDFinca")
 
 
