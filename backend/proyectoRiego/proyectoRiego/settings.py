@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '$ce_sdg9a+29(oi^myl^w_i!4_)*h+x3m@7r1&*%oa2444o7)q'
+SECRET_KEY = '+jzz1ot-b7#a*_7#b&ccgljex$7+tt8r2!b1x3hlmuhztz310y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -31,13 +32,13 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'riegoInteligente.apps.RiegointeligenteConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'riegoInteligente.apps.RiegointeligenteConfig',
 ]
 
 MIDDLEWARE = [
@@ -75,13 +76,18 @@ WSGI_APPLICATION = 'proyectoRiego.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'proyecto',
-        'USER': 'root',
-        'PASSWORD': '',
+        'NAME': 'riegoInteligente',
+        'USER':'root',
+        'PASSWORD':'',
         'HOST': 'localhost',
         'PORT': '3306',
+
     }
 }
 
@@ -123,3 +129,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
+#SILENCED_SYSTEM_CHECKS = ['fields.E300', 'fields.E307']
