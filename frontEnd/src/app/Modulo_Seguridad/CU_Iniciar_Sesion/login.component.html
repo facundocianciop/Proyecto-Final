@@ -1,0 +1,16 @@
+
+    <h1>Ingresar a Sistema de Riego (poner logo tambien)</h1>
+    <form>
+        <div class="container">
+
+            <label>Usuario</label>
+            <input type="text" name="usuario" #usuario placeholder="Ingrese usuario" required>
+            <label>Contrase&ntilde;a</label>
+            <input type="password" name="password" #pass placeholder="Ingrese contrase&ntilde;a" required>
+            <button type = "submit" (click)="apretarIngresar(usuario.value,pass.value)">Ingresar</button>
+            <label class="olvida" (click)="apretarRecuperar()"><a>¿Has olvidado la contrase&ntilde;a?</a></label>
+        </div>
+    </form>
+    <router-outlet></router-outlet>
+    
+

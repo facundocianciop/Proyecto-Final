@@ -1,0 +1,56 @@
+h1{
+    text-align: center;
+    color: black;
+}
+form{
+    display: flex;
+    justify-content: center;
+}
+.container{
+    border-radius: 10px;
+    border: 1px solid;
+    border-style:  solid ;
+    border-color: gray;
+    width: 25%;
+    height: 38%;
+    padding: 16px;
+    margin-bottom: 16px; 
+}
+
+label{
+    font-weight: bold;
+}
+
+a{
+    text-decoration: none;
+    cursor: pointer;
+}
+input[type=text],[type=password]{
+    width: 87%;
+    border: 1px solid;
+    border-radius: 5px;
+    border-color: gray;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 12px 20px;
+}	
+
+button{
+    font-weight: bold;
+    text-orientation: center;
+    background-color: #14EF14;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 12px 20px;
+    border: 1px solid;
+    border-style: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.olvida{
+    color: blue;
+    font-size: 14px;
+    font-weight: bold;
+}

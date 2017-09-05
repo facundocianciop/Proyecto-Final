@@ -1,0 +1,16 @@
+<html>
+
+  <body>
+    <ul>
+      <li><a [routerLink]="['/inicio']" routerLinkActive="active">Inicio</a></li>
+      <li><a [routerLink]="['/nosotros']">Nosotros</a></li>
+      <li><a [routerLink]="['/servicios']">Servicios</a></li>
+      <li><a [routerLink]="['/contacto']">Contacto</a></li>
+      <li class=menuDerecho><a [routerLink]="['/login']" routerLinkActive="active">Ingresar</a></li>
+      <li class=menuDerecho><a [routerLink]="['/registrar']" routerLinkActive="active">Registrar</a></li>      
+    </ul>
+    <router-outlet></router-outlet>
+
+  </body>
+
+</html>
