@@ -135,18 +135,13 @@ def autenticarse(request):
 def finalizarSesion(request):
     if request.method=='POST':
         try:
-            #datos=armarJson(request)
-            print "principio"
-            # EL PROBLEMA ES Q NO SE COMO MANDAR LAS COOKIES
-            print request.COOKIES.get('idSesion','2238e1709e004a71b815c73af9e5001c')
-            #sesion = Sesion.objects.get(idSesion=datos['idsesion'] )
-            sesion = Sesion.objects.get(idSesion='2238e1709e004a71b815c73af9e5001c')
-            #sesion = Sesion.objects.get(idSesion=request.COOKIES.get('idSesion') )
+
+            sesion = Sesion.objects.get(idSesion=request.COOKIES.get('idSesion'))
+            #BUSCO LA SESION CON ESE ID EN LA BASE DE DATOS
             # Si se encontro la sesion se finaliza y se devuelve que la sesion
             # finalizo correctamente
 >>>>>>> 723b42f60b654b83ab1b086bf9add5ad42d42972
 
-            print "Hola"
             sesion.fechaYHoraFin = datetime.now()
             sesion.save()
             return HttpResponse(True)
