@@ -1,0 +1,33 @@
+<h1>Registrar Usuario</h1>
+
+<form>
+
+    <div>
+
+        <label>Nombre</label><br>
+        <input type="text" name="nombre" maxlength="20" placeholder="Ingrese Nombre" required="Debe ingresar un nombre"><br>
+
+        <label>Apellido</label><br>
+        <input type="text" name="apellido" maxlength="20" placeholder="Ingrese Apellido" required="Debe ingresar un apellido"><br>
+
+        <label>DNI</label><br>
+        <input type="text" name="dni"  required pattern="[0-9]" title="S&oacute;lo debe ingresar n&uacute;meros" maxlength="8" placeholder="Ingrese DNI" required="Debe ingresar un dni"><br>
+
+        <label>Direcci&oacute;n</label><br>
+        <input type="text" name="direccion" maxlength="50" placeholder="Ingrese Direcci&oacute;n" required="Debe ingresar una direcci&otilde;n"><br>
+
+        <label>Usuario</label><br>
+        <input type="text" name="usuario" #usuario maxlength="20" placeholder="Ingrese Usuario" required="Debe ingresar un nombre de usuario"><br>
+
+        <label>Contrase&ntilde;a</label><br>
+        <input type="password" name="password" #contrasenia  maxlength="20" placeholder="***********" required="Debe ingresar una contrase&ntilde;a"><br>
+
+        <label>Repetir Contrase&ntilde;a</label><br>
+        <input type="password" name="repepassword"   maxlength="20" placeholder="***********" required="Debe ingresar una contrase&ntilde;a"><br>
+
+        <button class="registrar" (click)="apretarRegistrar(usuario.value,contrasenia.value)">Registrar</button>
+        <button class="cancelar" (click)="apretarCancelar()">Cancelar</button>
+
+    </div>
+
+</form>

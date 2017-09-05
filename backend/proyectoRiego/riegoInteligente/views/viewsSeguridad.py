@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 import django
-from django.http import HttpResponse,JsonResponse
+from django.http import HttpResponse, JsonResponse, response
 from django.template import loader
 from django.shortcuts import render
 from ..models import Sector,Finca,TipoSesion,Sesion,EstadoUsuario,HistoricoEstadoUsuario
@@ -83,7 +83,6 @@ def iniciarSesion(request):
         contrasenia = datos["contrasenia"]
 
         print (usuario,contrasenia)
-<<<<<<< HEAD
         print django.middleware.csrf.get_token(request)
         # u=User.objects.get(username=usuario,password=contrasenia)
         # print (u.username)
@@ -103,7 +102,6 @@ def iniciarSesion(request):
 def autenticarse(request):
     #CREO QUE ESTE METODO DEBERIA LLAMARSE CADA VEZ QUE SE EJECUTA ALGUN OTRO AL PRINCIPIO, PARA VER SI EL USUARIO SIGUE CON SESION INICIADA
      # PIENSO Q EL AUTENTICARSE DEBERIA BUSCAR LA ULTIMA SESION ACTIVA(O SEA CON FECHA FIN NULA) Y QUE EL ID DE LA COOKIE Q VIENE EN EL REQUEST SEA IGUAL AL ID DE LA SESION
-=======
         try:
             user=authenticate(username=usuario,password=contrasenia)
             if user is not None:
@@ -129,8 +127,8 @@ def autenticarse(request):
             print e.message
             response.status_code = 404
             return response
-    else:
-        return response
+        else:
+            return response
 @csrf_exempt
 def finalizarSesion(request):
     if request.method=='POST':
@@ -140,7 +138,6 @@ def finalizarSesion(request):
             #BUSCO LA SESION CON ESE ID EN LA BASE DE DATOS
             # Si se encontro la sesion se finaliza y se devuelve que la sesion
             # finalizo correctamente
->>>>>>> 723b42f60b654b83ab1b086bf9add5ad42d42972
 
             sesion.fechaYHoraFin = datetime.now()
             sesion.save()
