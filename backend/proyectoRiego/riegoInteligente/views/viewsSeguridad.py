@@ -116,10 +116,9 @@ def finalizarSesion(request):
         try:
 
             sesion = Sesion.objects.get(idSesion=request.COOKIES.get('idSesion'))
-            #sesion = Sesion.objects.get(idSesion=request.COOKIES.get('idSesion') )
+            #BUSCO LA SESION CON ESE ID EN LA BASE DE DATOS
             # Si se encontro la sesion se finaliza y se devuelve que la sesion
             # finalizo correctamente
-
 
             sesion.fechaYHoraFin = datetime.now()
             sesion.save()
