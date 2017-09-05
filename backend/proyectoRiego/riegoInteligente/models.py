@@ -7,8 +7,8 @@ import uuid
 class ProveedorInformacionClimaticaFinca(models.Model):
     OIDProveedorInformacionClimaticaFinca = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     fechaAltaProveedorInfoClimaticaFinca=models.DateField()
-    fechaBajaProveedorInfoClimaticaFinca=models.DateField()
-    frecuencia=models.IntegerField()
+    fechaBajaProveedorInfoClimaticaFinca=models.DateField(null=True)
+    frecuencia=models.IntegerField(null=True)
 
     finca=models.ForeignKey("Finca",db_column="OIDFinca",null=True)
     proveedorInformacionClimatica=models.ForeignKey("ProveedorInformacionClimatica",db_column="OIDProveedorInformacionClimatica",null=True)
@@ -32,15 +32,15 @@ class Finca(models.Model):
 class EstadoFinca(models.Model):
     OIDFinca = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     descripcionEstadoFinca=models.CharField(max_length=100)
-    nombreEstadoFinca=models.CharField(max_length=15)
+    nombreEstadoFinca=models.CharField(max_length=50)
 
 class HistoricoEstadoFinca(models.Model):
     OIDHistoricoEstadoFinca = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    fechaFinEstadoFinca=models.DateField()
+    fechaFinEstadoFinca=models.DateField(null=True)
     fechaInicioEstadoFinca=models.DateField()
 
     finca=models.ForeignKey(Finca,db_column="OIDFinca",related_name="historicoEstadoFincaList")
-    estado_finca=models.ForeignKey(EstadoFinca,db_column="OIDEstadoFinca")
+    estadoFinca=models.ForeignKey(EstadoFinca,db_column="OIDEstadoFinca")
 
 
 class MecanismoRiegoFinca(models.Model):
@@ -130,12 +130,12 @@ class Rol(models.Model):
     OIDRol = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     nombreRol=models.CharField(max_length=10)
     fechaAltaRol=models.DateField()
-    fechaBajaRol=models.DateField()
+    fechaBajaRol=models.DateField(null=True)
 
 class UsuarioFinca(models.Model):
     OIDUsuarioFinca=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     fechaAltaUsuarioFinca=models.DateField()
-    fechaBajaUsuarioFinca=models.DateField()
+    fechaBajaUsuarioFinca=models.DateField(null=True)
 
     finca=models.ForeignKey(Finca,db_column="OIDFinca")
     usuario=models.ForeignKey(Usuario,db_column="OIDUsuario")
@@ -143,10 +143,10 @@ class UsuarioFinca(models.Model):
 class RolUsuarioFinca:
     OIDRolUsuarioFinca=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     fechaAltaUsuarioFinca=models.DateField()
-    fechaBajaUsuarioFinca=models.DateField()
+    fechaBajaUsuarioFinca=models.DateField(null=True)
 
     rol=models.ForeignKey(Rol,db_column="OIDRol")
-    usuarioFinca=models.ForeignKey(UsuarioFinca,db_column="OIDUsuarioFinca",related_name="rol_usuario_finca")
+    usuarioFinca=models.ForeignKey(UsuarioFinca,db_column="OIDUsuarioFinca",related_name="rolUsuarioFincaList")
 
 class ConjuntoPermisos:
     OIDConjuntoPermisos=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
