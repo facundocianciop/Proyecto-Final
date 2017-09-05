@@ -112,13 +112,15 @@ def iniciarSesion(request):
         return response
 @csrf_exempt
 def finalizarSesion(request):
-    if request.method=='GET':
+    if request.method=='POST':
         try:
             #datos=armarJson(request)
             print "principio"
-            print request.COOKIES.get('idSesion')
+            # EL PROBLEMA ES Q NO SE COMO MANDAR LAS COOKIES
+            print request.COOKIES.get('idSesion','2238e1709e004a71b815c73af9e5001c')
             #sesion = Sesion.objects.get(idSesion=datos['idsesion'] )
-            sesion = Sesion.objects.get(idSesion=request.COOKIES.get('idSesion') )
+            sesion = Sesion.objects.get(idSesion='2238e1709e004a71b815c73af9e5001c')
+            #sesion = Sesion.objects.get(idSesion=request.COOKIES.get('idSesion') )
             # Si se encontro la sesion se finaliza y se devuelve que la sesion
             # finalizo correctamente
 
@@ -132,3 +134,6 @@ def finalizarSesion(request):
             # incorrecta o ya finalizo
             print('No se encontro la sesion')
             return HttpResponse(False)
+    else:
+        print "No entró ni al post"
+        return HttpResponse(False)

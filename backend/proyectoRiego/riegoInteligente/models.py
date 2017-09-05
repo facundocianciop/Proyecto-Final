@@ -9,7 +9,9 @@ class ProveedorInformacionClimaticaFinca(models.Model):
     fechaAltaProveedorInfoClimaticaFinca=models.DateField()
     fechaBajaProveedorInfoClimaticaFinca=models.DateField()
     frecuencia=models.IntegerField()
+
     finca=models.ForeignKey("Finca",db_column="OIDFinca",null=True)
+    proveedorInformacionClimatica=models.ForeignKey("ProveedorInformacionClimatica",db_column="OIDProveedorInformacionClimatica",null=True)
 class Finca(models.Model):
     OIDFinca=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     direccionLegal=models.CharField(max_length=50)
@@ -37,7 +39,7 @@ class HistoricoEstadoFinca(models.Model):
     fechaFinEstadoFinca=models.DateField()
     fechaInicioEstadoFinca=models.DateField()
 
-    finca=models.ForeignKey(Finca,db_column="OIDFinca",related_name="historicoEstadoFinca")
+    finca=models.ForeignKey(Finca,db_column="OIDFinca",related_name="historicoEstadoFincaList")
     estado_finca=models.ForeignKey(EstadoFinca,db_column="OIDEstadoFinca")
 
 

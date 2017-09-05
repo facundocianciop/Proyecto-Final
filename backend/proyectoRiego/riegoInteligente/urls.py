@@ -6,6 +6,7 @@ urlpatterns = [
     url(r'^index/$', viewsFinca.index, name='index'),
     url(r'^sector/$', viewsFinca.sector, name='sector'),
     url(r'^crearFinca/$', viewsFinca.crearFinca, name='crearFinca'),
+    url(r'^elegirProveedorInformacion/$', viewsFinca.elegirProveedorInformacion, name='ElegirProveedorInformacion'),
     url(r'^registrarse/$', viewsSeguridad.registrarse, name='registrarse'),
     url(r'^iniciarSesion/$', viewsSeguridad.iniciarSesion, name='iniciarSesion'),
     url(r'^cambioContrasenia/$',viewsSeguridad.cambioContrasenia,name='cambioContrasenia'),
