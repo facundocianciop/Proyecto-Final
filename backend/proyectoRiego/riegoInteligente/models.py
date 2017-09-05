@@ -9,11 +9,13 @@ class ProveedorInformacionClimaticaFinca(models.Model):
     fechaAltaProveedorInfoClimaticaFinca=models.DateField()
     fechaBajaProveedorInfoClimaticaFinca=models.DateField()
     frecuencia=models.IntegerField()
+
     finca=models.ForeignKey("Finca",db_column="OIDFinca",null=True)
+    proveedorInformacionClimatica=models.ForeignKey("ProveedorInformacionClimatica",db_column="OIDProveedorInformacionClimatica",null=True)
 class Finca(models.Model):
     OIDFinca=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     direccionLegal=models.CharField(max_length=50)
-    idFinca=models.IntegerField()
+    #idFinca=models.AutoField(unique=True)
     logoFinca=models.ImageField(null=True)
     nombre=models.CharField(max_length=50)
     tamanio=models.FloatField()
@@ -22,7 +24,7 @@ class Finca(models.Model):
     def as_json(self):
         return dict(
             direccionLegal=self.direccionLegal,
-            idFinca=self.idFinca,
+            #idFinca=self.idFinca,
             nombre=self.nombre,tamanio=self.tamanio,
             ubicacion=self.ubicacion)
 
@@ -37,7 +39,7 @@ class HistoricoEstadoFinca(models.Model):
     fechaFinEstadoFinca=models.DateField()
     fechaInicioEstadoFinca=models.DateField()
 
-    finca=models.ForeignKey(Finca,db_column="OIDFinca",related_name="historicoEstadoFinca")
+    finca=models.ForeignKey(Finca,db_column="OIDFinca",related_name="historicoEstadoFincaList")
     estado_finca=models.ForeignKey(EstadoFinca,db_column="OIDEstadoFinca")
 
 
@@ -81,7 +83,7 @@ class Usuario(models.Model):
     fechaNacimiento=models.DateField(null=True)
     imagenUsuario=models.ImageField(null=True)
     #LAS RELACIONES CON OTRAS CLASES LAS SEPARE UN RENGLON
-    OIDEstadoUsuario=models.ForeignKey(EstadoUsuario,null=True)
+    #OIDEstadoUsuario=models.ForeignKey(EstadoUsuario,null=True)
     @receiver(post_save,sender=User)
     def crearUsuario(sender,instance,created,**kwargs):
         if created:
@@ -102,10 +104,10 @@ class Contrasenia(models.Model):
 
 class HistoricoEstadoUsuario(models.Model):
     OIDHistoricoEstadoUsuario =models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    fechaFinEstadoUsuario=models.DateField()
+    fechaFinEstadoUsuario=models.DateField(null=True)
     fechaInicioEstadoUsuario=models.DateField()
 
-    usuario=models.ForeignKey(Usuario,db_column="OIDUsuario",related_name="historicoEstadoUsuario")
+    usuario=models.ForeignKey(Usuario,db_column="OIDUsuario",related_name="historicoEstadoUsuarioList",null=True)
     estadoUsuario=models.ForeignKey(EstadoUsuario,db_column="OIDEstadoUsuario")
 class TipoSesion(models.Model):
     OIDTipoSesion = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
@@ -114,11 +116,12 @@ class TipoSesion(models.Model):
 
 class Sesion(models.Model):
     OIDSesion = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    fechaYHoraFin=models.DateField()
+    fechaYHoraFin=models.DateField(null=True)
+    horaUltimoAcceso=models.DateField(null=True)
     fechaYHoraInicio=models.DateField()
-    idSesion=models.CharField(max_length=30)
+    idSesion=models.UUIDField(default=uuid.uuid4, editable=False)
 
-    usuario=models.ForeignKey(Usuario,db_column="OIDUsuario",related_name="sesion")
+    usuario=models.ForeignKey(Usuario,db_column="OIDUsuario",related_name="sesionList",null=True)
     tipoSesion=models.ForeignKey(TipoSesion,db_column="OIDTipoSesion")
 
 
@@ -478,13 +481,19 @@ class ProveedorInformacionClimatica(models.Model):
     OIDProveedorInformacionClimatica=models.UUIDField(default=uuid.uuid4,primary_key=True)
     nombreProveedor=models.CharField(max_length=20,unique=True)
     habilitado=models.BooleanField()
-    urlAPI=models.CharField(max_length=100)
-    frecuenciaMaxPosible=models.IntegerField()
+    urlAPI=models.CharField(max_length=100,null=True)
+    frecuenciaMaxPosible=models.IntegerField(null=True)
     fechaAltaProveedorInfoClimatica=models.DateField()
-    fechaBajaProveedorInfoClimatica=models.DateField()
+    fechaBajaProveedorInfoClimatica=models.DateField(null=True)
 
     tipo_medicion_climatica=models.ManyToManyField(TipoMedicionClimatica)
 
+    def as_json(self):
+        return dict(
+            nombreProveedor=self.nombreProveedor,
+            habilitado=self.habilitado,
+            frecuenciaMaxPosible=self.frecuenciaMaxPosible,
+            urlAPI=self.urlAPI)
 
 class MedicionEstadoExterno(MedicionEvento):
     #HERENCIA
