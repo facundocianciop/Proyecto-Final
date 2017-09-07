@@ -89,29 +89,107 @@ def elegirProveedorInformacion(request):
                 historicoCreado=HistoricoEstadoFinca(fechaInicioEstadoFinca=datetime.now(),estadoFinca=estadoFinca)
                 historicoCreado.finca=fincaCreada
                 historicoCreado.save()
-                #fincaCreada.historicoEstadoFincaList.add(historicoCreado)
+                print historicoCreado.fechaInicioEstadoFinca
+                fincaCreada.historicoEstadoFincaList.add(historicoCreado)
 
-                print "TODO BIEN"
+                print fincaCreada.historicoEstadoFincaList
 
                 usuarioActual=Usuario.objects.get(OIDUsuario=datos['OIDUsuario'])
                 print "Encontre al usuario" #DEBERIA BUSCAR EL USUARIO PERTENECIENTE A LA COOKIE QUE TIENE LA SESION
                 usuarioFinca=UsuarioFinca(usuario=usuarioActual,finca=fincaCreada)
-                print "joya"
-                usuarioFinca.fechaAltaUsuarioFinca=datetime.now()
-                fincaCreada.save()
-                "Se guardo bien la finca"
-                proveedorInformacionClimaticaFinca.save()
-                "Se guardo el proveedor bien"
-                rolEncargado=Rol.objects.get(nombreRol="Encargado")
-                rolUsuarioFinca=RolUsuarioFinca(fechaAltaRolUsuarioFinca=datetime.now(),rol=rolEncargado)
-                rolUsuarioFinca.save()
-                usuarioFinca.rolUsuarioFincaList.add(rolUsuarioFinca)
+                usuarioFinca.fechaAltaUsuarioFinca = datetime.now()
                 usuarioFinca.save()
+                print "joya"
+
+                print "por guardar finca"
+                fincaCreada.save()
+                # print "Se guardo bien la finca"
+                #
+                # rolEncargado=Rol.objects.get(nombreRol="Encargado")
+                # rol_usuario_finca=RolUsuarioFinca()
+                # rol_usuario_finca.fechaAltaUsuarioFinca=datetime.now()
+                # rol_usuario_finca.rol=rolEncargado
+                # rol_usuario_finca.save()
+                # usuarioFinca.rolUsuarioFincaList.add( rol_usuario_finca)
+                #
+                # usuarioFinca.save()
                 response.status_code=200
                 return response
             except IntegrityError as e:
-                response.status_code=404
+                response.status_code=401
                 print "error de integridad"
                 return response
+@csrf_exempt
+@transaction.atomic()
+def obtenerFincasEstadoPendiente(request):
+    response=HttpResponse()
+    if request.method=="GET":
+        estado_pendiente=EstadoFinca.objects.get(nombreEstadoFinca="Pendiente de aprobacion")
+        historicos_pendientes=HistoricoEstadoFinca.objects.filter(estadoFinca=estado_pendiente)
+        fincas_pendientes=[]
+        for historico in historicos_pendientes:
+            fincas_pendientes.append(historico.finca)
+        fincas_json=[finca.as_json() for finca in fincas_pendientes]
+        response = HttpResponse(dumps(fincas_json), content_type="application/json")
+        response.status_code = 200
+        return response
+    else:
+        return HttpResponse(False)
+
+@csrf_exempt
+@transaction.atomic()
+def aprobarFinca(request):
+    response=HttpResponse()
+    datos = armarJson(request)
+    if request.method=="POST":
+        if Finca.objects.filter(OIDFinca=datos['OIDFinca']).__len__() == 1:
+            try:
+                finca_por_aprobar=Finca.objects.get(OIDFinca=datos['OIDFinca'])
+                estado_habilitado=EstadoFinca.objects.get(nombreEstadoFinca="Habilitada")
+                historico_nuevo=HistoricoEstadoFinca(estadoFinca=estado_habilitado,finca=finca_por_aprobar,fechaInicioEstadoFinca=datetime.now())
+                finca_por_aprobar.historicoEstadoFincaList.add(historico_nuevo,bulk=False)
+                finca_por_aprobar.save()
+                usuario_finca=UsuarioFinca.objects.get(finca=finca_por_aprobar)
+                rolEncargado = Rol.objects.get(nombreRol="Encargado")
+                rol_usuario_finca = RolUsuarioFinca()
+                rol_usuario_finca.fechaAltaUsuarioFinca = datetime.now()
+                rol_usuario_finca.rol = rolEncargado
+                rol_usuario_finca.save()
+                usuario_finca.rolUsuarioFincaList.add(rol_usuario_finca)
+
+                usuario_finca.save()
+                #FALTA MANDAR EL MAIL
+                response.status_code=200
+                return response
+            except IntegrityError as e:
+                response.status_code = 401
+                print "error de integridad"
+                return response
+
+
+@csrf_exempt
+@transaction.atomic()
+def noAprobarFinca(request):
+    response=HttpResponse()
+    datos = armarJson(request)
+    if request.method=="POST":
+        if Finca.objects.filter(OIDFinca=datos['OIDFinca']).__len__() == 1:
+            try:
+                finca_por_aprobar=Finca.objects.get(OIDFinca=datos['OIDFinca'])
+                estado_habilitado=EstadoFinca.objects.get(nombreEstadoFinca="No aprobada")
+                historico_nuevo=HistoricoEstadoFinca(estadoFinca=estado_habilitado,finca=finca_por_aprobar,fechaInicioEstadoFinca=datetime.now())
+                finca_por_aprobar.historicoEstadoFincaList.add(historico_nuevo)
+                finca_por_aprobar.save()
+                usuario_finca=UsuarioFinca.objects.get(finca=finca_por_aprobar)
+
+                #FALTA MANDAR EL MAIL
+                response.status_code=200
+                return response(True)
+            except IntegrityError as e:
+                response.status_code = 401
+                print "error de integridad"
+                return response
+
+
 
 
