@@ -1,26 +1,18 @@
 # -*- coding: UTF-8 -*-
 import django
 from django.http import HttpResponse, JsonResponse, response
-from django.template import loader
-from django.shortcuts import render
-from ..models import Sector,Finca,TipoSesion,Sesion,EstadoUsuario,HistoricoEstadoUsuario
-from django.core.serializers import serialize
-from django.core.serializers.json import DjangoJSONEncoder
+from ..models import TipoSesion,Sesion,EstadoUsuario,HistoricoEstadoUsuario
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login
 from django.views.decorators.csrf import csrf_exempt
 from django.middleware.csrf import get_token
 from django.db import IntegrityError
 from datetime import datetime
-from json import loads,dumps
-from ast import literal_eval
-from datetime import datetime
 from django.db import transaction
-def armarJson(request):
-    received_json_data = str(request.body)
-    datos = loads(received_json_data)
-    return datos
+from supportClases.utilFunctions import *
+from supportClases.authentication import autorizar
 
+@autorizar
 @csrf_exempt
 @transaction.atomic()
 def registrarse(request):
@@ -49,6 +41,7 @@ def registrarse(request):
         #     user.save()#CUANDO LO MODIFICO SI NECESITO EL SAVE
         # return HttpResponse(user.password)
 
+
 @csrf_exempt
 def cambioContrasenia(request):
     # if autenticarse(request):
@@ -73,6 +66,8 @@ def cambioContrasenia(request):
     #     u.save()
     #     u = User.objects.get(username='Facundo')  # BUSCO AL USUARIO CON ESE NOMBRE DE USUARIO
     # return HttpResponse(u.check_password('1234'))
+
+
 @csrf_exempt
 @transaction.atomic()
 def iniciarSesion(request):
@@ -99,11 +94,13 @@ def iniciarSesion(request):
         return HttpResponse(autenticado)
     else:
         return HttpResponse(False)
+
+"""
 def autenticarse(request):
     #CREO QUE ESTE METODO DEBERIA LLAMARSE CADA VEZ QUE SE EJECUTA ALGUN OTRO AL PRINCIPIO, PARA VER SI EL USUARIO SIGUE CON SESION INICIADA
      # PIENSO Q EL AUTENTICARSE DEBERIA BUSCAR LA ULTIMA SESION ACTIVA(O SEA CON FECHA FIN NULA) Y QUE EL ID DE LA COOKIE Q VIENE EN EL REQUEST SEA IGUAL AL ID DE LA SESION
         try:
-            user=authenticate(username=usuario,password=contrasenia)
+            user=authenticate(username='prueba',password="1234")
             if user is not None:
                 login(request,user)
                 print user.username
@@ -129,6 +126,8 @@ def autenticarse(request):
             return response
         else:
             return response
+"""
+
 @csrf_exempt
 def finalizarSesion(request):
     if request.method=='POST':
