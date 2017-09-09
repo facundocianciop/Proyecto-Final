@@ -13,6 +13,8 @@ urlpatterns = [
     url(r'^noAprobarFinca/$', viewsFinca.noAprobarFinca,name='noAprobarFinca'),
     url(r'^registrarse/$', viewsSeguridad.registrarse, name='registrarse'),
     url(r'^iniciarSesion/$', viewsSeguridad.iniciarSesion, name='iniciarSesion'),
-    url(r'^cambioContrasenia/$',viewsSeguridad.cambioContrasenia,name='cambioContrasenia'),
+    url(r'^cambiarContrasenia/$',viewsSeguridad.cambiarContrasenia,name='cambiarContrasenia'),
     url(r'^finalizarSesion/$', viewsSeguridad.finalizarSesion, name='finalizarSesion'),
+    url(r'^eliminarUsuario/$',viewsSeguridad.eliminarUsuario,name='eliminarUsuario'),
+    url(r'^modificarUsuario/$',viewsSeguridad.modificarUsuario,name='modificarUsuario')
 ]
