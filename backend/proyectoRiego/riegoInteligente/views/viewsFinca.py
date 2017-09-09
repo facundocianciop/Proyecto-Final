@@ -20,6 +20,18 @@ def armarJson(request):
     datos = loads(received_json_data)
     return datos
 
+class DTOFincaRol():
+    def __init__(self,nombreFinca,nombreRol):
+        self.nombreFinca=nombreFinca
+        self.nombreRol=nombreRol
+    def as_json(self):
+        return dict(
+            nombreFinca=self.nombreFinca,
+            # idFinca=self.idFinca,
+            nombreRol=self.nombreRol)
+
+
+
 def index(request):
     fincas=Finca.objects.all()
     cantidadFincas=fincas.count()
@@ -36,6 +48,32 @@ def sector(request):
     #json= serialize('json', Sector.objects.all(), cls=DjangoJSONEncoder) CON ESTO RETORNA TODOS LOS OBJETOS SECTOR
     json=serialize('json',[s])#ASI ES PARA UN SOLO OBJETO
     return JsonResponse(json,safe=False)
+
+@csrf_exempt
+@transaction.atomic()
+def obtenerFincasPorUsuario(request):
+    response=HttpResponse()
+    if request.method=="POST":
+        datos=armarJson(request)
+        usuario=Usuario.objects.get(OIDUsuario=datos['OIDUsuario'])
+        print "HOLA"
+        lista_DTOFincaRol=[]
+        for usuarioFinca in usuario.usuarioFincaList.all():
+            finca=usuarioFinca.finca
+            ultimo_historico=HistoricoEstadoFinca.objects.get(finca=finca,fechaFinEstadoFinca__isnull=True)
+            if ultimo_historico.estadoFinca.nombreEstadoFinca=="Habilitada":
+                rol_usuario_finca=RolUsuarioFinca.objects.get(usuarioFinca=usuarioFinca,fechaBajaUsuarioFinca__isnull=True)
+                nombre_rol=rol_usuario_finca.rol.nombreRol
+                lista_DTOFincaRol.append(DTOFincaRol(nombreFinca=usuarioFinca.finca.nombre,nombreRol=nombre_rol))
+        lista_DTOFincaRol_json= [DTO_finca_rol.as_json() for DTO_finca_rol in lista_DTOFincaRol]
+        response.status_code=200
+        response.content=dumps(lista_DTOFincaRol_json)
+        response.content_type="application/json"
+        return response
+    else:
+        return HttpResponse(False)
+
+
 @csrf_exempt
 @transaction.atomic()
 def crearFinca(request):
@@ -147,7 +185,11 @@ def aprobarFinca(request):
         if Finca.objects.filter(OIDFinca=datos['OIDFinca']).__len__() == 1:
             try:
                 finca_por_aprobar=Finca.objects.get(OIDFinca=datos['OIDFinca'])
+
                 estado_habilitado=EstadoFinca.objects.get(nombreEstadoFinca="Habilitada")
+                historico_viejo=HistoricoEstadoFinca.objects.get(estadoFinca="Pendiente de Aprobacion",finca=finca_por_aprobar)
+                historico_viejo.fechaFinEstadoFinca=datetime.now()
+                historico_viejo.save()
                 historico_nuevo=HistoricoEstadoFinca(estadoFinca=estado_habilitado,finca=finca_por_aprobar,fechaInicioEstadoFinca=datetime.now())
                 finca_por_aprobar.historicoEstadoFincaList.add(historico_nuevo,bulk=False)
                 finca_por_aprobar.save()
@@ -159,10 +201,10 @@ def aprobarFinca(request):
                 rol_usuario_finca.save()
                 usuario_finca.rolUsuarioFincaList.add(rol_usuario_finca)
 
-                usuario_finca.save()
-                with mail.get_connection() as connection:
-                    mail.EmailMessage('SmartFarming: Estado de Aprobación de su finca','Su finca ha sido aprobada, y usted ya dispone del rol de Encargado',from1='facundocianciop',
-                                      to1='facundocianciop',connection=connection).send()
+                # usuario_finca.save()
+                # with mail.get_connection() as connection:
+                #     mail.EmailMessage('SmartFarming: Estado de Aprobación de su finca','Su finca ha sido aprobada, y usted ya dispone del rol de Encargado',from1='facundocianciop',
+                #                       to1='facundocianciop',connection=connection).send()
                     #FALTA MANDAR EL MAIL, CONFIGURAR LA CONTRASEÑA Y EL PUERTO
                 response.status_code=200
                 return response
@@ -186,9 +228,9 @@ def noAprobarFinca(request):
                 finca_por_aprobar.historicoEstadoFincaList.add(historico_nuevo)
                 finca_por_aprobar.save()
                 usuario_finca=UsuarioFinca.objects.get(finca=finca_por_aprobar)
-                with mail.get_connection() as connection:
-                    mail.EmailMessage('SmartFarming: Estado de Aprobación de su finca',body=datos['mail'],from1='facundocianciop',
-                                      to1='facundocianciop',connection=connection).send()
+                # with mail.get_connection() as connection:
+                #     mail.EmailMessage('SmartFarming: Estado de Aprobación de su finca',body=datos['mail'],from1='facundocianciop',
+                #                       to1='facundocianciop',connection=connection).send()
                     #FALTA MANDAR EL MAIL, CONFIGURAR LA CONTRASEÑA Y EL PUERTO
                     #ACA PENSE QUE EN CASO DE RECHAZAR LA FINCA QUE EL ADMINISTRADOR ESCRIBIERA UN MENSAJE DICIENDO POR QUÉ LA RECHAZÓ
 

@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^obtenerFincasEstadoPendiente/$', viewsFinca.obtenerFincasEstadoPendiente, name='obtenerFincasEstadoPendiente'),
     url(r'^elegirProveedorInformacion/$', viewsFinca.elegirProveedorInformacion, name='elegirProveedorInformacion'),
     url(r'^buscarProveedoresInformacion/$', viewsFinca.buscarProveedoresInformacion, name='buscarProveedoresInformacion'),
+    url(r'^obtenerFincasPorUsuario/$',viewsFinca.obtenerFincasPorUsuario,name='obtenerFincasPorUsuario'),
     url(r'^aprobarFinca/$', viewsFinca.aprobarFinca,name='aprobarFinca'),
     url(r'^noAprobarFinca/$', viewsFinca.noAprobarFinca,name='noAprobarFinca'),
     url(r'^registrarse/$', viewsSeguridad.registrarse, name='registrarse'),
@@ -16,5 +17,7 @@ urlpatterns = [
     url(r'^cambiarContrasenia/$',viewsSeguridad.cambiarContrasenia,name='cambiarContrasenia'),
     url(r'^finalizarSesion/$', viewsSeguridad.finalizarSesion, name='finalizarSesion'),
     url(r'^eliminarUsuario/$',viewsSeguridad.eliminarUsuario,name='eliminarUsuario'),
-    url(r'^modificarUsuario/$',viewsSeguridad.modificarUsuario,name='modificarUsuario')
+    url(r'^modificarUsuario/$',viewsSeguridad.modificarUsuario,name='modificarUsuario'),
+    url(r'^recuperarCuenta/$', viewsSeguridad.recuperarCuenta, name='recuperarCuenta')
+
 ]
