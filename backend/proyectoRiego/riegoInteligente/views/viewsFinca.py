@@ -12,6 +12,8 @@ from django.middleware.csrf import get_token
 from django.db import IntegrityError,transaction
 from datetime import datetime
 from json import loads,dumps
+from django.core.mail import send_mail
+from django.core import mail
 
 def armarJson(request):
     received_json_data = str(request.body)
@@ -158,7 +160,10 @@ def aprobarFinca(request):
                 usuario_finca.rolUsuarioFincaList.add(rol_usuario_finca)
 
                 usuario_finca.save()
-                #FALTA MANDAR EL MAIL
+                with mail.get_connection() as connection:
+                    mail.EmailMessage('SmartFarming: Estado de Aprobación de su finca','Su finca ha sido aprobada, y usted ya dispone del rol de Encargado',from1='facundocianciop',
+                                      to1='facundocianciop',connection=connection).send()
+                    #FALTA MANDAR EL MAIL, CONFIGURAR LA CONTRASEÑA Y EL PUERTO
                 response.status_code=200
                 return response
             except IntegrityError as e:
@@ -181,8 +186,12 @@ def noAprobarFinca(request):
                 finca_por_aprobar.historicoEstadoFincaList.add(historico_nuevo)
                 finca_por_aprobar.save()
                 usuario_finca=UsuarioFinca.objects.get(finca=finca_por_aprobar)
+                with mail.get_connection() as connection:
+                    mail.EmailMessage('SmartFarming: Estado de Aprobación de su finca',body=datos['mail'],from1='facundocianciop',
+                                      to1='facundocianciop',connection=connection).send()
+                    #FALTA MANDAR EL MAIL, CONFIGURAR LA CONTRASEÑA Y EL PUERTO
+                    #ACA PENSE QUE EN CASO DE RECHAZAR LA FINCA QUE EL ADMINISTRADOR ESCRIBIERA UN MENSAJE DICIENDO POR QUÉ LA RECHAZÓ
 
-                #FALTA MANDAR EL MAIL
                 response.status_code=200
                 return response(True)
             except IntegrityError as e:

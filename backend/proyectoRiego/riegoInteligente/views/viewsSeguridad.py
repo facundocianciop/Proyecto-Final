@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 import django
 from django.http import HttpResponse, JsonResponse, response
-from ..models import TipoSesion,Sesion,EstadoUsuario,HistoricoEstadoUsuario
+from ..models import TipoSesion,Sesion,EstadoUsuario,HistoricoEstadoUsuario,Usuario
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login
 from django.views.decorators.csrf import csrf_exempt
@@ -19,6 +19,7 @@ def registrarse(request):
     # usuario = request.POST.get("user")
     # contrasenia = request.POST.get("password")
     datos=armarJson(request)
+    response=HttpResponse()
 
     try:
         print(datos['usuario'],datos['contrasenia'],datos['email'])
@@ -32,40 +33,16 @@ def registrarse(request):
         historico.save()
         user.usuario.historicoEstadoUsuarioList.add(historico)
         user.save()#CUANDO LO MODIFICO SI NECESITO EL SAVEs
-        return HttpResponse(request)
+        response.status_code=200
+        return response
     except IntegrityError as e:
-        return HttpResponse(False)
+        response.status_code=401
+        return response
         #   print(received_json_data)
         #   try:
         # user = User.objects.create_user(username=usuario,password=contrasenia)  # Luego de esto ya está guardado aunque no le haga save
         #     user.save()#CUANDO LO MODIFICO SI NECESITO EL SAVE
         # return HttpResponse(user.password)
-
-
-@csrf_exempt
-def cambioContrasenia(request):
-    # if autenticarse(request):
-    #     u=User.objects.get(username='Facundo')#BUSCO AL USUARIO CON ESE NOMBRE DE USUARIO
-    received_json_data = str(request.body)
-    datos=loads(received_json_data)
-    usuario=datos["usuario"]
-    contraseniaVieja=datos["contraseniaVieja"]
-    contraseniaNueva=datos["contraseniaNueva"]
-    user=authenticate(username=usuario,password=contraseniaVieja)
-
-
-    if user is not None:
-        user.set_password(contraseniaNueva)
-        user.save()
-        return HttpResponse(True)
-    else:
-        return HttpResponse(False)
-
-    # if (u.check_password('123')):
-    #     u.set_password('1234')
-    #     u.save()
-    #     u = User.objects.get(username='Facundo')  # BUSCO AL USUARIO CON ESE NOMBRE DE USUARIO
-    # return HttpResponse(u.check_password('1234'))
 
 
 @csrf_exempt
@@ -94,6 +71,106 @@ def iniciarSesion(request):
         return HttpResponse(autenticado)
     else:
         return HttpResponse(False)
+
+@transaction.atomic()
+@csrf_exempt
+def cambiarContrasenia(request):
+    response=HttpResponse()
+    if request.method=='POST':
+        # if autenticarse(request):
+        #     u=User.objects.get(username='Facundo')#BUSCO AL USUARIO CON ESE NOMBRE DE USUARIO
+        datos = armarJson(request)
+        usuario_a_modificar = Usuario.objects.get(OIDUsuario=datos['OIDUsuario'])
+        print "JOYA"
+        username=usuario_a_modificar.user.get_username()
+        contrasenia_vieja=datos["contraseniaVieja"]
+        contrasenia_nueva=datos["contraseniaNueva"]
+        user=authenticate(username=username,password=contrasenia_vieja)
+
+        if user is not None:
+            user.set_password(contrasenia_nueva)
+            user.save()
+            response.status_code=200
+        else:
+            response.status_code=401
+        return response
+
+        # if (u.check_password('123')):
+        #     u.set_password('1234')
+        #     u.save()
+        #     u = User.objects.get(username='Facundo')  # BUSCO AL USUARIO CON ESE NOMBRE DE USUARIO
+        # return HttpResponse(u.check_password('1234'))
+
+
+
+
+@csrf_exempt
+@transaction.atomic()
+def modificarUsuario(request):
+    response=HttpResponse()
+    if request.method=='POST':
+        try:
+            datos=armarJson(request)
+            usuario_a_modificar=Usuario.objects.get(OIDUsuario=datos['OIDUsuario'])
+            usuario_a_modificar.user.username=datos['username']
+            usuario_a_modificar.user.email = datos['mail']
+            usuario_a_modificar.email=datos['mail']
+
+            usuario_a_modificar.nombre = datos['nombre']
+            usuario_a_modificar.apellido = datos['apellido']
+            if datos['dni']!="":
+                usuario_a_modificar.dni=int(datos['dni'])
+            if datos['cuit'] != "":
+                usuario_a_modificar.cuit=int(datos['cuit'])
+            if datos['fechaNacimiento'] != "":
+                usuario_a_modificar.fechaNacimiento=datos['fechaNacimiento']
+            if datos['imagenUsuario'] != "":
+                usuario_a_modificar.imagenUsuario=datos['imagenUsuario']
+            if datos['contraseniaNueva']!='':
+                if (cambiarContrasenia(request)).status_code == 200:
+                    usuario_a_modificar.save()
+                    response.status_code=200
+                    return response
+                else:
+                    descripcion_error="Contrasenia Ingresada Incorrecta"
+                    response.status_code=401
+                    response.content=descripcion_error
+                    return response
+            usuario_a_modificar.user.save()
+            usuario_a_modificar.save()
+            response.status_code = 200
+            return response
+
+        except IntegrityError as e:
+            descripcion_error="Error al modificar"
+            response.status_code=401
+            response.content = descripcion_error
+            return response
+
+@csrf_exempt
+@transaction.atomic()
+def eliminarUsuario(request):
+    response=HttpResponse()
+    if request.method=='DELETE':
+        try:
+            datos=armarJson(request)
+            usuario_a_desactivar=Usuario.objects.get(OIDUsuario=datos['OIDUsuario'])
+            ultimo_historico=HistoricoEstadoUsuario.objects.get(usuario=usuario_a_desactivar,fechaFinEstadoUsuario__isnull=True)
+            ultimo_historico.fechaFinEstadoUsuario=datetime.now()
+            ultimo_historico.save()
+            estado_desactivado=EstadoUsuario.objects.get(nombreEstadoUsuario="Desactivado")
+            nuevo_historico=HistoricoEstadoUsuario(estadoUsuario=estado_desactivado,fechaInicioEstadoUsuario=datetime.now(),usuario=usuario_a_desactivar)
+            nuevo_historico.save()
+            usuario_a_desactivar.historicoEstadoUsuarioList.add(nuevo_historico)
+            print usuario_a_desactivar.historicoEstadoUsuarioList
+            usuario_a_desactivar.save()
+            response.status_code=200
+            return response
+        except IntegrityError as e:
+            descripcion_error="Error al tratar de eliminar"
+            response.status_code=401
+            response.content = descripcion_error
+            return response
 
 """
 def autenticarse(request):
