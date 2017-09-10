@@ -11,8 +11,10 @@ from datetime import datetime
 from django.db import transaction
 from supportClases.utilFunctions import *
 from supportClases.authentication import autorizar
+from json import loads,dumps
+import uuid
 
-@autorizar
+
 @csrf_exempt
 @transaction.atomic()
 def registrarse(request):
@@ -20,57 +22,97 @@ def registrarse(request):
     # contrasenia = request.POST.get("password")
     datos=armarJson(request)
     response=HttpResponse()
-
-    try:
-        print(datos['usuario'],datos['contrasenia'],datos['email'])
-        user = User.objects.create_user(username=datos['usuario'],password=datos['contrasenia'])
-        #Luego de esto ya está guardado aunque no le haga save
-        user.usuario.email=datos['email']
-        estado=EstadoUsuario.objects.get(nombreEstadoUsuario="Activado")#
-        historico=HistoricoEstadoUsuario(fechaInicioEstadoUsuario=datetime.now(),estadoUsuario=estado)
-        print(historico.fechaInicioEstadoUsuario)
-        print estado.nombreEstadoUsuario
-        historico.save()
-        user.usuario.historicoEstadoUsuarioList.add(historico)
-        user.save()#CUANDO LO MODIFICO SI NECESITO EL SAVEs
+    if request.method == 'PUT':
+        try:
+            print(datos['usuario'],datos['contrasenia'],datos['email'])
+            if User.objects.filter(username=datos['usuario']).__len__()==1:
+                raise ValueError ("Ya existe un usuario con ese nombre, por favor ingrese otro")
+            user = User.objects.create_user(username=datos['usuario'],password=datos['contrasenia'])
+            #Luego de esto ya está guardado aunque no le haga save
+            user.usuario.email=datos['email']
+            estado=EstadoUsuario.objects.get(nombreEstadoUsuario="Activado")
+            historico=HistoricoEstadoUsuario(fechaInicioEstadoUsuario=datetime.now(),estadoUsuario=estado)
+            print(historico.fechaInicioEstadoUsuario)
+            print estado.nombreEstadoUsuario
+            historico.save()
+            user.usuario.historicoEstadoUsuarioList.add(historico)
+            user.save()#CUANDO LO MODIFICO SI NECESITO EL SAVEs
+            usuario_json = user.usuario.as_json()
+            response.content = dumps(usuario_json)
+            response.status_code=200
+            return response
+        except (IntegrityError,ValueError) as err:
+            print err.args
+            response.content=err.args
+            response.status_code=401
+            return response
+            #   print(received_json_data)
+            #   try:
+            # user = User.objects.create_user(username=usuario,password=contrasenia)  # Luego de esto ya está guardado aunque no le haga save
+            #     user.save()#CUANDO LO MODIFICO SI NECESITO EL SAVE
+            # return HttpResponse(user.password)
+@csrf_exempt
+@transaction.atomic()
+def mostrarUsuario(request):
+    response=HttpResponse()
+    if request.method == 'GET':
+        usuario_actual=obtenerUsuarioActual(request)
+        response.content=dumps(usuario_actual.as_json())
         response.status_code=200
         return response
-    except IntegrityError as e:
-        response.status_code=401
-        return response
-        #   print(received_json_data)
-        #   try:
-        # user = User.objects.create_user(username=usuario,password=contrasenia)  # Luego de esto ya está guardado aunque no le haga save
-        #     user.save()#CUANDO LO MODIFICO SI NECESITO EL SAVE
-        # return HttpResponse(user.password)
+
+@csrf_exempt
+def obtenerUsuarioActual(request):
+    try:
+        if Sesion.objects.filter(idSesion=request.COOKIES['idsesion']).__len__==0:
+            raise ValueError("No hay sesion actual")
+        sesion_actual=Sesion.objects.get(idSesion=request.COOKIES['idsesion'])
+        usuario_actual=sesion_actual.usuario
+        return usuario_actual
+    except ValueError as err:
+        print err.args
 
 
 @csrf_exempt
 @transaction.atomic()
 def iniciarSesion(request):
     response=HttpResponse()
+    datos = armarJson(request)
     if request.method=='POST':
-        datos=armarJson(request)
-        usuario = datos["usuario"]
-        contrasenia = datos["contrasenia"]
+        try:
 
-        print (usuario,contrasenia)
-        print django.middleware.csrf.get_token(request)
-        # u=User.objects.get(username=usuario,password=contrasenia)
-        # print (u.username)
-        user=authenticate(username=usuario,password=contrasenia)
-        if user is not None:
-            autenticado=True
-        else:
-            autenticado=False
-        context={'autenticado':autenticado}
-        #response=render (request, 'riego/autenticarse.html', context)
-        #response.set_cookie(key="csrf_token",value=get_token(request)) #PODEMOS GENERAR NUESTRAS PROPIAAS COOKIES
-        #ACA MISMO PODEMOS SETEAR UNA COOKIE CON EL ID DE LA SESION Q GENERAMOS
-        print(request.session.session_key)# ESTO ES IMPORTANTE DJANGO CREA SESIONES ESTA CLAVE DEBERIAMOS USARLA PARA CREAR NUESTRA PROPIA CLASES SESION
-        return HttpResponse(autenticado)
-    else:
-        return HttpResponse(False)
+            usuario = datos["usuario"]
+            contrasenia = datos["contrasenia"]
+
+            print (usuario,contrasenia)
+            usuario_inicial= authenticate(username=usuario,password=contrasenia)
+            print usuario_inicial.username
+            if usuario_inicial is not None:
+                if Sesion.objects.filter(usuario=usuario_inicial.usuario,fechaYHoraFin__isnull=True):
+                    raise ValueError("Ya tiene una sesión iniciada")
+                login(request, usuario_inicial)
+                sesion = Sesion(fechaYHoraInicio=datetime.now(), horaUltimoAcceso=datetime.now())
+                tipoSesion = TipoSesion.objects.get(nombre=datos["tipoDispositivo"])
+                sesion.tipoSesion = tipoSesion
+                sesion.idSesion=uuid.uuid4()
+                sesion.save()
+                usuario_inicial.usuario.sesionList.add(sesion)
+                usuario_inicial.save()
+                response.set_cookie("idsesion", sesion.idSesion, max_age=3600)
+                response.set_cookie(key="idsesion",value=sesion.idSesion)  # PODEMOS GENERAR NUESTRAS PROPIAAS COOKIES
+                usuario_json=usuario_inicial.usuario.as_json()
+                response.content=dumps(usuario_json)
+                response.status_code = 200
+                return response
+            else:
+                raise ValueError("El usuario o contraseña ingresado son incorrectos")
+        except ValueError as err:
+            print err.args
+            response.content=err.args
+            response.status_code=401
+            return response
+
+
 
 @csrf_exempt
 @transaction.atomic()
@@ -115,11 +157,12 @@ def recuperarCuenta(request):
 @csrf_exempt
 def cambiarContrasenia(request):
     response=HttpResponse()
+    datos = armarJson(request)
     if request.method=='POST':
         # if autenticarse(request):
         #     u=User.objects.get(username='Facundo')#BUSCO AL USUARIO CON ESE NOMBRE DE USUARIO
-        datos = armarJson(request)
-        usuario_a_modificar = Usuario.objects.get(OIDUsuario=datos['OIDUsuario'])
+
+        usuario_a_modificar = obtenerUsuarioActual(request)
         print "JOYA"
         username=usuario_a_modificar.user.get_username()
         contrasenia_vieja=datos["contraseniaVieja"]
@@ -150,8 +193,8 @@ def modificarUsuario(request):
     if request.method=='POST':
         try:
             datos=armarJson(request)
-            usuario_a_modificar=Usuario.objects.get(OIDUsuario=datos['OIDUsuario'])
-            usuario_a_modificar.user.username=datos['username']
+            usuario_a_modificar=obtenerUsuarioActual(request)
+            usuario_a_modificar.user.username=datos['usuario']
             usuario_a_modificar.user.email = datos['mail']
             usuario_a_modificar.email=datos['mail']
 
@@ -171,19 +214,18 @@ def modificarUsuario(request):
                     response.status_code=200
                     return response
                 else:
-                    descripcion_error="Contrasenia Ingresada Incorrecta"
-                    response.status_code=401
-                    response.content=descripcion_error
-                    return response
+                    raise ValueError("Contrasenia Ingresada Incorrecta")
+
             usuario_a_modificar.user.save()
             usuario_a_modificar.save()
+            response.content=dumps(usuario_a_modificar.as_json())
             response.status_code = 200
             return response
 
-        except IntegrityError as e:
-            descripcion_error="Error al modificar"
+        except (IntegrityError,ValueError) as err:
+            print err.args
             response.status_code=401
-            response.content = descripcion_error
+            response.content = err.args
             return response
 
 @csrf_exempt
@@ -193,7 +235,7 @@ def eliminarUsuario(request):
     if request.method=='DELETE':
         try:
             datos=armarJson(request)
-            usuario_a_desactivar=Usuario.objects.get(OIDUsuario=datos['OIDUsuario'])
+            usuario_a_desactivar=obtenerUsuarioActual(request)
             ultimo_historico=HistoricoEstadoUsuario.objects.get(usuario=usuario_a_desactivar,fechaFinEstadoUsuario__isnull=True)
             ultimo_historico.fechaFinEstadoUsuario=datetime.now()
             ultimo_historico.save()
@@ -202,7 +244,11 @@ def eliminarUsuario(request):
             nuevo_historico.save()
             usuario_a_desactivar.historicoEstadoUsuarioList.add(nuevo_historico)
             print usuario_a_desactivar.historicoEstadoUsuarioList
+            sesion_actual=Sesion.objects.get(usuario=usuario_a_desactivar,fechaYHoraFin__isnull=True,idSesion=request.COOKIES['idsesion'])
+            sesion_actual.fechaYHoraFin=datetime.now()
+            sesion_actual.save()
             usuario_a_desactivar.save()
+            response.content=dumps(usuario_a_desactivar.as_json())
             response.status_code=200
             return response
         except IntegrityError as e:

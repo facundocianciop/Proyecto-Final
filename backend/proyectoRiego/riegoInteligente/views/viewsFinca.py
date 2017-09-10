@@ -67,25 +67,32 @@ def sector(request):
 @transaction.atomic()
 def obtenerFincasPorUsuario(request):
     response=HttpResponse()
+    datos = armarJson(request)
     if request.method=="POST":
-        datos=armarJson(request)
-        usuario=Usuario.objects.get(OIDUsuario=datos['OIDUsuario'])
-        print "HOLA"
-        lista_DTOFincaRol=[]
-        for usuarioFinca in usuario.usuarioFincaList.all():
-            finca=usuarioFinca.finca
-            ultimo_historico=HistoricoEstadoFinca.objects.get(finca=finca,fechaFinEstadoFinca__isnull=True)
-            if ultimo_historico.estadoFinca.nombreEstadoFinca=="Habilitada":
-                rol_usuario_finca=RolUsuarioFinca.objects.get(usuarioFinca=usuarioFinca,fechaBajaUsuarioFinca__isnull=True)
-                nombre_rol=rol_usuario_finca.rol.nombreRol
-                lista_DTOFincaRol.append(DTOFincaRol(nombreFinca=usuarioFinca.finca.nombre,nombreRol=nombre_rol))
-        lista_DTOFincaRol_json= [DTO_finca_rol.as_json() for DTO_finca_rol in lista_DTOFincaRol]
-        response.status_code=200
-        response.content=dumps(lista_DTOFincaRol_json)
-        response.content_type="application/json"
-        return response
-    else:
-        return HttpResponse(False)
+        try:
+            if Usuario.objects.filter(OIDUsuario=datos['OIDUsuario']).__len__()==0:
+                raise ValueError("Usuario no encontrado")
+            usuario=Usuario.objects.get(OIDUsuario=datos['OIDUsuario'])
+            print "HOLA"
+            lista_DTOFincaRol=[]
+            for usuarioFinca in usuario.usuarioFincaList.all():
+                finca=usuarioFinca.finca
+                ultimo_historico=HistoricoEstadoFinca.objects.get(finca=finca,fechaFinEstadoFinca__isnull=True)
+                if ultimo_historico.estadoFinca.nombreEstadoFinca=="Habilitada":
+                    rol_usuario_finca=RolUsuarioFinca.objects.get(usuarioFinca=usuarioFinca,fechaBajaUsuarioFinca__isnull=True)
+                    nombre_rol=rol_usuario_finca.rol.nombreRol
+                    lista_DTOFincaRol.append(DTOFincaRol(nombreFinca=usuarioFinca.finca.nombre,nombreRol=nombre_rol))
+            lista_DTOFincaRol_json= [DTO_finca_rol.as_json() for DTO_finca_rol in lista_DTOFincaRol]
+            response.status_code=200
+            response.content=dumps(lista_DTOFincaRol_json)
+            response.content_type="application/json"
+            return response
+        except ValueError as err:
+            print err.args
+            response.content=err.args
+            response.status_code=401
+            return response
+
 
 
 @csrf_exempt
