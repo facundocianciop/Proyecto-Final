@@ -26,6 +26,23 @@ class DTOFincaRol():
             nombreFinca=self.nombreFinca,
             # idFinca=self.idFinca,
             nombreRol=self.nombreRol)
+class DTOUsuarioFinca:
+    def __init__(self,OIDUsuarioFinca,usuario,nombreUsuario,apellidoUsuario,email,imagenUsuario,rol):
+        self.OID_usuario_finca=OIDUsuarioFinca
+        self.usuario=usuario
+        self.nombre_usuario=nombreUsuario
+        self.apellido_usuario=apellidoUsuario
+        self.email=email
+        self.imagen_usuario=imagenUsuario
+        self.rol=rol
+    def as_json(self):
+        return dict(
+            nombreUsuario=self.nombre_usuario,
+            apellidoUsuario=self.apellido_usuario,
+            email=self.email,
+            imagenUsuario=self.imagen_usuario,
+            rol=self.rol
+        )
 
 
 
@@ -193,7 +210,7 @@ def aprobarFinca(request):
                 usuario_finca=UsuarioFinca.objects.get(finca=finca_por_aprobar)
                 rolEncargado = Rol.objects.get(nombreRol="Encargado")
                 rol_usuario_finca = RolUsuarioFinca()
-                rol_usuario_finca.fechaAltaUsuarioFinca = datetime.now()
+                rol_usuario_finca.fechaAltaRolUsuarioFinca = datetime.now()
                 rol_usuario_finca.rol = rolEncargado
                 rol_usuario_finca.save()
                 usuario_finca.rolUsuarioFincaList.add(rol_usuario_finca)
@@ -281,7 +298,7 @@ def modificarFinca(request):
 
 @csrf_exempt
 @transaction.atomic()
-def mostrarFincas(request):
+def mostrarFincasEncargado(request):
     response=HttpResponse()
     datos = armarJson(request)
     if request.method=="POST":
@@ -292,7 +309,7 @@ def mostrarFincas(request):
                 usuario_finca_lista=usuario.usuarioFincaList.all()
                 fincas_encargado=[]
                 for usuario_finca in usuario_finca_lista:
-                    rol=RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,fechaBajaUsuarioFinca__isnull=True).rol
+                    rol=RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,fechaBajaRolUsuarioFinca__isnull=True).rol
                     if rol.nombreRol=="Encargado":
                         fincas_encargado.append(usuario_finca.finca)
                 fincas_json=[finca.as_json() for finca in fincas_encargado]
@@ -306,6 +323,108 @@ def mostrarFincas(request):
                 print (err.args)
                 response.content=err.args
                 return response
+
+@csrf_exempt
+@transaction.atomic()
+def buscarStakeholdersFinca(request):
+    response=HttpResponse()
+    datos=armarJson(request)
+    if request.method=="POST":
+        try:
+            finca=Finca.objects.get(OIDFinca=datos['OIDFinca'])
+            usuarios_finca=UsuarioFinca.objects.filter(finca=finca)
+            rol_stakeholder=Rol.objects.get(nombreRol="Stakeholder")
+            DTO_usuario_finca_list=[]
+            for usuario_finca in usuarios_finca:
+                if RolUsuarioFinca.objects.filter(usuarioFinca=usuario_finca,rol=rol_stakeholder,fechaBajaRolUsuarioFinca__isnull=True).__len__()==1:
+                    DTO_usuario_finca_list.append(DTOUsuarioFinca(OIDUsuarioFinca=usuario_finca.OIDUsuarioFinca,usuario=usuario_finca.usuario.user.username,nombreUsuario=usuario_finca.usuario.user.first_name,
+                                                                  apellidoUsuario=usuario_finca.usuario.user.last_name,email=usuario_finca.usuario.user.email,
+                                                                  imagenUsuario=usuario_finca.usuario.imagenUsuario))
+
+                    #SI EXISTE SIGNIFICA QUE ES UN USUARIO DE ESA FINCA CON EL ROL STAKEHOLDER Y LO AGREGO A LA LISTA
+            DTO_usuario_finca_list_json=[DTO_usuario_finca.as_json() for DTO_usuario_finca in DTO_usuario_finca_list]
+            response.content=dumps(DTO_usuario_finca_list_json)
+            response.content_type="application/json"
+            response.status_code=200
+            return response
+        except (ValueError,IntegrityError) as err:
+            print err.args
+            response.content=err.args
+            response.status_code=401
+            return response
+
+@csrf_exempt
+@transaction.atomic()
+def eliminarStakeholderFinca(request):
+    response=HttpResponse()
+    datos=armarJson(request)
+    if request.method=="DELETE":
+        try:
+            usuarios_finca=UsuarioFinca.objects.get(OIDUsuarioFinca=datos['OIDUsuarioFinca'])
+            usuarios_finca.fechaBajaUsuarioFinca=datetime.now()
+            usuarios_finca.save()
+            response.status_code=200
+            return response
+        except IntegrityError as e:
+            print e.args
+            response.status_code=401
+            return response
+
+@csrf_exempt
+@transaction.atomic()
+def buscarUsuarios(request):
+    response=HttpResponse()
+    if request.method=="GET":
+        try:
+            usuarios_todos=Usuario.objects.all()
+            # usuario_logueado=Sesion.objects.get(idSesion=request.COOKIES['idsesion']).usuario ESTO ES PARA QUE CUANDO MUESTRE TODOS LOS USUARIOS NO TE MOSTRES A VOS MISMO
+            usuario_logueado=Usuario.objects.get(OIDUsuario="264d9c44b0d24829a8df0760bcfd8f82")
+
+            usuarios=[]
+            for usuario in usuarios_todos:
+                print usuario.OIDUsuario
+                print usuario_logueado.OIDUsuario
+                print (usuario == usuario_logueado)
+                if (usuario == usuario_logueado)==False:
+                    usuarios.append(usuario)
+
+            usuarios_json=[usuario.as_json() for usuario in usuarios]
+            response.content=dumps(usuarios_json)
+            response.content_type="application/json"
+            response.status_code=200
+            return response
+        except IntegrityError as err:
+            print err.args
+            response.status_code=401
+            return response
+
+@csrf_exempt
+@transaction.atomic()
+def agregarUsuario(request):
+    response=HttpResponse()
+    datos=armarJson(request)
+    if request.method=="PUT":
+        try:
+            usuario_ingresado=Usuario.objects.get(OIDUsuario=datos['OIDUsuario'])
+            finca=Finca.objects.get(OIDFinca=datos['OIDFinca'])
+            rol_ingresado=Rol.objects.get(nombreRol=datos['nombreRol'])
+            rol_usuario_finca=RolUsuarioFinca(rol=rol_ingresado,fechaAltaRolUsuarioFinca=datetime.now())
+
+            print "hasta aca bien"
+            usuario_finca_nuevo=UsuarioFinca(usuario=usuario_ingresado,finca=finca,fechaAltaUsuarioFinca=datetime.now())
+            usuario_finca_nuevo.save()
+            rol_usuario_finca.usuarioFinca = usuario_finca_nuevo
+            usuario_finca_nuevo.rolUsuarioFincaList.add(rol_usuario_finca,bulk=False)
+
+
+            response.content_type="application/json"
+            response.status_code=200
+            return response
+        except IntegrityError as err:
+            print err.args
+            response.status_code=401
+            return response
+
 
 
 

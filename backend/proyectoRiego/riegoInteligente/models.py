@@ -26,7 +26,7 @@ class Usuario(models.Model):
     fechaNacimiento=models.DateTimeField(null=True)
     imagenUsuario=models.ImageField(null=True)
     #LAS RELACIONES CON OTRAS CLASES LAS SEPARE UN RENGLON
-    #OIDEstadoUsuario=models.ForeignKey(EstadoUsuario,null=True)
+
 
     @receiver(post_save,sender=User)
     def crearUsuario(sender,instance,created,**kwargs):
@@ -36,6 +36,17 @@ class Usuario(models.Model):
     @receiver(post_save,sender=User)
     def guardarUsuario(sender,instance,**kwargs):
         instance.usuario.save()
+
+    def as_json(self):
+        return dict(OIDUsuario=str(self.OIDUsuario),
+                    nombre=self.user.first_name,
+                    apellido=self.user.last_name,
+                    cuit=self.cuit,
+                    dni=self.dni,
+                    domicilio=self.domicilio,
+                    email=self.user.email,
+                    fechaNacimiento=self.fechaNacimiento)
+                    #imagenUsuario=self.imagenUsuario)
 
 
 class Contrasenia(models.Model):
@@ -75,7 +86,7 @@ class Sesion(models.Model):
 
 class Rol(models.Model):
     OIDRol = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    nombreRol=models.CharField(max_length=10)
+    nombreRol=models.CharField(max_length=30)
     fechaAltaRol=models.DateTimeField()
     fechaBajaRol=models.DateTimeField(null=True)
 
@@ -91,8 +102,8 @@ class UsuarioFinca(models.Model):
 
 class RolUsuarioFinca(models.Model):
     OIDRolUsuarioFinca=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    fechaAltaUsuarioFinca=models.DateTimeField()
-    fechaBajaUsuarioFinca=models.DateTimeField(null=True)
+    fechaAltaRolUsuarioFinca=models.DateTimeField()
+    fechaBajaRolUsuarioFinca=models.DateTimeField(null=True)
 
     rol=models.ForeignKey(Rol,db_column="OIDRol")
     usuarioFinca=models.ForeignKey(UsuarioFinca,db_column="OIDUsuarioFinca",related_name="rolUsuarioFincaList",null=True)
