@@ -39,6 +39,7 @@ class Usuario(models.Model):
 
     def as_json(self):
         return dict(OIDUsuario=str(self.OIDUsuario),
+                    usuario=self.user.username,
                     nombre=self.user.first_name,
                     apellido=self.user.last_name,
                     cuit=self.cuit,

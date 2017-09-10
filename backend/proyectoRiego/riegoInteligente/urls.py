@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^modificarFinca/$', viewsFinca.modificarFinca, name='modificarFinca'),
     url(r'^registrarse/$', viewsSeguridad.registrarse, name='registrarse'),
     url(r'^iniciarSesion/$', viewsSeguridad.iniciarSesion, name='iniciarSesion'),
+    url(r'^mostrarUsuario/$', viewsSeguridad.mostrarUsuario, name='mostrarUsuario'),
     url(r'^cambiarContrasenia/$',viewsSeguridad.cambiarContrasenia,name='cambiarContrasenia'),
     url(r'^finalizarSesion/$', viewsSeguridad.finalizarSesion, name='finalizarSesion'),
     url(r'^eliminarUsuario/$',viewsSeguridad.eliminarUsuario,name='eliminarUsuario'),
