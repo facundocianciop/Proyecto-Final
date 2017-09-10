@@ -86,7 +86,7 @@ class UsuarioFinca(models.Model):
     fechaBajaUsuarioFinca=models.DateTimeField(null=True)
 
     finca=models.ForeignKey('Finca',db_column="OIDFinca")
-    usuario=models.ForeignKey(Usuario,db_column="OIDUsuario")
+    usuario=models.ForeignKey(Usuario,db_column="OIDUsuario",related_name='usuarioFincaList')
 
 
 class RolUsuarioFinca(models.Model):
