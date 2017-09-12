@@ -432,6 +432,35 @@ def agregarUsuario(request):
             response.status_code=401
             return response
 
+@csrf_exempt
+@transaction.atomic()
+def modificarRolUsuario(request):
+    response=HttpResponse()
+    datos=armarJson(request)
+    if request.method=="POST":
+        try:
+            usuario_ingresado = Usuario.objects.get(OIDUsuario=datos['OIDUsuario'])
+            finca = Finca.objects.get(OIDFinca=datos['OIDFinca'])
+            rol_ingresado = Rol.objects.get(nombreRol=datos['nombreRol'])
+
+            usuario_finca=UsuarioFinca.objects.get(usuario=usuario_ingresado,finca=finca)
+
+            rol_usuario_finca_viejo=RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,fechaBajaRolUsuarioFinca__isnull=True)
+            if rol_ingresado == rol_usuario_finca_viejo.rol:
+                raise ValueError("El usuario ya dispone de ese rol , por favor intente con otro rol")
+            rol_usuario_finca_viejo.fechaBajaRolUsuarioFinca=datetime.now()
+            rol_usuario_finca_viejo.save()
+            rol_usuario_finca_nuevo=RolUsuarioFinca(usuarioFinca=usuario_finca,fechaAltaRolUsuarioFinca=datetime.now(),rol=rol_ingresado)
+            usuario_finca.rolUsuarioFincaList.add(rol_usuario_finca_nuevo,bulk=False)
+            usuario_finca.save()
+        except (ValueError,IntegrityError) as err:
+            print err.args
+            response.content=err.args
+            response.status_code=401
+
+
+
+
 
 
 
