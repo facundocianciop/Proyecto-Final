@@ -15,6 +15,7 @@ from json import loads,dumps
 from django.core.mail import send_mail
 from django.core import mail
 from supportClases.utilFunctions import *
+from .viewsSeguridad import obtenerUsuarioActual
 
 
 class DTOFincaRol():
@@ -37,6 +38,7 @@ class DTOUsuarioFinca:
         self.rol=rol
     def as_json(self):
         return dict(
+            OIDUsuarioFinca=self.OID_usuario_finca,
             nombreUsuario=self.nombre_usuario,
             apellidoUsuario=self.apellido_usuario,
             email=self.email,
@@ -101,16 +103,20 @@ def crearFinca(request):
     response = HttpResponse()
     if request.method == "POST":
         datos = armarJson(request)
-        if Finca.objects.filter(nombre=datos['nombre'], direccionLegal=datos['direccionLegal']).__len__() == 0:
-            finca = Finca(nombre=datos['nombre'], direccionLegal=datos['direccionLegal'], ubicacion=datos['ubicacion'],
-                          tamanio=datos['tamanio'])
-            finca.save()
-            response=HttpResponse(dumps(finca.as_json()),content_type="application/json")
-            response.status_code=200
-            return response
-        else:
-            response.status_code=400
-            return response
+        try:
+            if Finca.objects.filter(nombre=datos['nombre'], direccionLegal=datos['direccionLegal']).__len__() == 0:
+                finca = Finca(nombre=datos['nombre'], direccionLegal=datos['direccionLegal'], ubicacion=datos['ubicacion'],
+                              tamanio=datos['tamanio'])
+                finca.save()
+                response=HttpResponse(dumps(finca.as_json()),content_type="application/json")
+                response.status_code=200
+                return response
+            else:
+                raise ValueError("Ya existe una finca con ese nombre")
+        except (ValueError,IntegrityError) as err:
+            print err.args
+            response.content=err.args
+
     else:
         return HttpResponse(False)
 
@@ -266,6 +272,35 @@ def noAprobarFinca(request):
                 print "error de integridad"
                 return response
 
+
+
+@csrf_exempt
+@transaction.atomic()
+def mostrarFincasEncargado(request):
+    response=HttpResponse()
+    datos = armarJson(request)
+    if request.method=="GET":
+
+
+            try:
+                usuario=obtenerUsuarioActual(request)
+                usuario_finca_lista=usuario.usuarioFincaList.all()
+                fincas_encargado=[]
+                for usuario_finca in usuario_finca_lista:
+                    rol=RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,fechaBajaRolUsuarioFinca__isnull=True).rol
+                    if rol.nombreRol=="Encargado":
+                        fincas_encargado.append(usuario_finca.finca)
+                fincas_json=[finca.as_json() for finca in fincas_encargado]
+                response.content=dumps(fincas_json,content_type="application/json")
+                response.status_code=200
+                return response
+
+            except (IntegrityError,ValueError) as err:
+                response.status_code = 401
+                print (err.args)
+                response.content=err.args
+                return response
+
 @csrf_exempt
 @transaction.atomic()
 def modificarFinca(request):
@@ -295,36 +330,9 @@ def modificarFinca(request):
                     historico_nuevo=HistoricoEstadoFinca(fechaInicioEstadoFinca=datetime.now(),finca=finca_a_modificar,estadoFinca=estado__nuevo)
                     historico_nuevo.save()
                 finca_a_modificar.save()
+                response=dumps(finca_a_modificar.as_json(),content_type="application/json")
                 response.status_code=200
                 return response
-            except (IntegrityError,ValueError) as err:
-                response.status_code = 401
-                print (err.args)
-                response.content=err.args
-                return response
-
-@csrf_exempt
-@transaction.atomic()
-def mostrarFincasEncargado(request):
-    response=HttpResponse()
-    datos = armarJson(request)
-    if request.method=="POST":
-
-
-            try:
-                usuario = Usuario.objects.get(OIDUsuario=datos['OIDUsuario'])
-                usuario_finca_lista=usuario.usuarioFincaList.all()
-                fincas_encargado=[]
-                for usuario_finca in usuario_finca_lista:
-                    rol=RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,fechaBajaRolUsuarioFinca__isnull=True).rol
-                    if rol.nombreRol=="Encargado":
-                        fincas_encargado.append(usuario_finca.finca)
-                fincas_json=[finca.as_json() for finca in fincas_encargado]
-                response.content=dumps(fincas_json)
-                response.content_type="application/json"
-                response.status_code=200
-                return response
-
             except (IntegrityError,ValueError) as err:
                 response.status_code = 401
                 print (err.args)
@@ -350,8 +358,7 @@ def buscarStakeholdersFinca(request):
 
                     #SI EXISTE SIGNIFICA QUE ES UN USUARIO DE ESA FINCA CON EL ROL STAKEHOLDER Y LO AGREGO A LA LISTA
             DTO_usuario_finca_list_json=[DTO_usuario_finca.as_json() for DTO_usuario_finca in DTO_usuario_finca_list]
-            response.content=dumps(DTO_usuario_finca_list_json)
-            response.content_type="application/json"
+            response.content=dumps(DTO_usuario_finca_list_json,content_type="application/json")
             response.status_code=200
             return response
         except (ValueError,IntegrityError) as err:
@@ -385,7 +392,7 @@ def buscarUsuarios(request):
         try:
             usuarios_todos=Usuario.objects.all()
             # usuario_logueado=Sesion.objects.get(idSesion=request.COOKIES['idsesion']).usuario ESTO ES PARA QUE CUANDO MUESTRE TODOS LOS USUARIOS NO TE MOSTRES A VOS MISMO
-            usuario_logueado=Usuario.objects.get(OIDUsuario="264d9c44b0d24829a8df0760bcfd8f82")
+            usuario_logueado=obtenerUsuarioActual(request)
 
             usuarios=[]
             for usuario in usuarios_todos:
@@ -396,8 +403,7 @@ def buscarUsuarios(request):
                     usuarios.append(usuario)
 
             usuarios_json=[usuario.as_json() for usuario in usuarios]
-            response.content=dumps(usuarios_json)
-            response.content_type="application/json"
+            response.content=dumps(usuarios_json,content_type="application/json")
             response.status_code=200
             return response
         except IntegrityError as err:
@@ -407,7 +413,7 @@ def buscarUsuarios(request):
 
 @csrf_exempt
 @transaction.atomic()
-def agregarUsuario(request):
+def agregarUsuarioFinca(request):
     response=HttpResponse()
     datos=armarJson(request)
     if request.method=="PUT":
