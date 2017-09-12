@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^eliminarStakeholderFinca/$', viewsFinca.eliminarStakeholderFinca,name='eliminarStakeholderFinca'),
     url(r'^buscarUsuarios/$', viewsFinca.buscarUsuarios,name='buscarUsuarios'),
     url(r'^agregarUsuario/$', viewsFinca.agregarUsuario,name='agregarUsuario'),
+    url(r'^modificarRolUsuario/$', viewsFinca.modificarRolUsuario, name='modificarRolUsuario'),
     url(r'^modificarFinca/$', viewsFinca.modificarFinca, name='modificarFinca'),
     url(r'^registrarse/$', viewsSeguridad.registrarse, name='registrarse'),
     url(r'^iniciarSesion/$', viewsSeguridad.iniciarSesion, name='iniciarSesion'),

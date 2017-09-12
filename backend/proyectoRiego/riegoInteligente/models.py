@@ -195,12 +195,14 @@ class MecanismoRiegoFinca(models.Model):
 
 class EstadoMecanismoRiegoFinca(models.Model):
     OIDEstadoMecanismoRiegoFinca = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    nombreEstadoMecanismoRiegoFincaSector=models.CharField(max_length=20)
-    descripcionEstadoMecanismoRiegoFincaSector=models.CharField(max_length=100)
+    nombreEstadoMecanismoRiegoFinca=models.CharField(max_length=20)
+    descripcionEstadoMecanismoRiegoFinca=models.CharField(max_length=100)
 
 
 class HistoricoMecanismoRiegoFinca(models.Model):
     OIDHistoricoMecanismoRiegoFinca =models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
+    fechaInicioEstadoMecanismoRiegoFinca=models.DateTimeField(null=True)
+    fechaFinEstadoMecanismoRiegoFinca = models.DateTimeField(null=True)
     mecanismo_riego_finca=models.ForeignKey(MecanismoRiegoFinca,db_column="OIDMecanismoRiegoFinca",related_name="historicoMecanismoRiegoFinca")
     estado_mecanismo_riego_finca=models.ForeignKey(EstadoMecanismoRiegoFinca,db_column="OIDEstadoMecanismoRiegoFinca")
 
