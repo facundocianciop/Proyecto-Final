@@ -30,6 +30,17 @@ def mostrarMecanismosRiegoFinca(request):
                if (HistoricoMecanismoRiegoFinca.objects.filter(mecanismo_riego_finca=mecanismo,fechaFinEstadoMecanismoRiegoFinca__isnull=True,
                                                             estado_mecanismo_riego_finca=estado_mecanismo_habilitado)).__len__()==1:
                    mecanismos_habilitados_list.append(mecanismo)
+            mecanismos_habilitados_list_json=[mecanismo_habilitado.as_json() for mecanismo_habilitado in mecanismos_habilitados_list]
+            response.content=dumps(mecanismos_habilitados_list_json)
+            response.status_code=200
+            return response
+        except (IntegrityError,ValueError) as err:
+            print err.args
+            response.content=err.args
+            response.status_code=401
+            return response
+
+
 
 
 
