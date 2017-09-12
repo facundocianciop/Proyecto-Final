@@ -331,6 +331,16 @@ class TipoMecanismoRiego(models.Model):
     fechaAltaTipoMecanismoRiego=models.DateTimeField()
     fechaBajaTipoMecanismoRiego=models.DateTimeField(null=True)
     habilitado=models.BooleanField(default=True)
+    def as_json(self):
+        return dict(
+            OIDTipoMecanismoRiego=self.OIDTipoMecanismoRiego,
+            nombreMecanismo=self.nombreMecanismo,
+            descripcion=self.descripcion,
+            presionEstandar=self.presionEstandar,
+            eficiencia=self.eficiencia,
+            fechaAltaTipoMecanismoRiego=self.fechaAltaTipoMecanismoRiego,
+            habilitado=self.habilitado
+        )
 
 
 class TipoConfiguracionRiego(models.Model):
