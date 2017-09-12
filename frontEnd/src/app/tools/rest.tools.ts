@@ -24,8 +24,9 @@ export class RestBaseService {
   }
 
   protected getRestHeader(): RequestOptions {
-    const headers = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({ headers: headers, withCredentials: true });
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    //headers.append( 'Access-Control-Allow-Origin', '*' );        
+    const options = new RequestOptions({ headers: headers });
     return options;
   }
 }

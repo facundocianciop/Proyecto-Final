@@ -79,7 +79,6 @@ def iniciarSesion(request):
     response=HttpResponse()
     datos = armarJson(request)
     if request.method=='POST':
-<<<<<<< HEAD
         datos=armarJson(request)
         usuario = datos["usuario"]
         contrasenia = datos["contrasenia"]
@@ -101,7 +100,6 @@ def iniciarSesion(request):
         return HttpResponse('{"usuario":"'+str(user)+'"}')
     else:
         return HttpResponse(False)
-=======
         try:
 
             usuario = datos["usuario"]
@@ -136,7 +134,6 @@ def iniciarSesion(request):
             return response
 
 
->>>>>>> f7005a8d28ecae1f2c004263b6049eb90d51fad8
 
 @csrf_exempt
 @transaction.atomic()

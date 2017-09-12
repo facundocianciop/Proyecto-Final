@@ -4,21 +4,22 @@ import { RestBaseService } from '../../tools/rest.tools';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
-export class LoginService extends RestBaseService{
-  private loginUrl = '/iniciarSesion/';
+export class RegistrarUsuarioService extends RestBaseService{
+  private loginUrl = '/registrarse/';
 
   
 
 
   constructor(private http: Http) {super();}
 
-  login(username: string, password: string): Promise<Usuario> {
+  login(username: string, password: string,email:string): Promise<Usuario> {
     const data = {
       'usuario': username,
-      'contrasenia': password
+      'contrasenia': password,
+      'email':email
     };
 
-    return this.http.post(LoginService.serverUrl +this.loginUrl, JSON.stringify(data), this.getRestHeader())
+    return this.http.put(RegistrarUsuarioService.serverUrl +this.loginUrl, JSON.stringify(data), this.getRestHeader())
       .toPromise()
       .then(response => {
         return response.json() as Usuario;
@@ -30,6 +31,8 @@ export class LoginService extends RestBaseService{
 
 export interface Usuario {
   usuario: string;
+  contrasenia: string;
+  email:string;
 }
 
 

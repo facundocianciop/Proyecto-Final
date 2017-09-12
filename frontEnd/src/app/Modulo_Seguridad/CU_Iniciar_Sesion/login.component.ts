@@ -11,7 +11,7 @@ import { AppComponent } from '../../app.component';
 })
 
 export class LoginComponent implements OnInit{
-    usuario: Usuario;
+    usuarioLogeado: Usuario;
     constructor(private router:Router,
                 private loginService:LoginService){
 
@@ -25,11 +25,16 @@ export class LoginComponent implements OnInit{
         console.log("estamos aca");
         console.log("usuario: "+usuario);
         console.log("contasenia: "+pass);
-        this.router.navigate(['/home']);
+        //this.router.navigate(['/home']);)
 
-        //this.loginService.login(usuario,pass).then(response => this.router.navigate['/home']);
+        this.loginService.login(usuario,pass).then(response => this.usuarioLogeado=response);
+        if(this.usuarioLogeado){
+            this.router.navigate(['/home']);
+        }
+        else{
+            console.log("el usuario ingresado no existe")
+        }
         
-        //this.router.navigate(['/home']);
     }
 
     apretarRecuperar(){
