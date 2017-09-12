@@ -68,7 +68,7 @@ def iniciarSesion(request):
         #response.set_cookie(key="csrf_token",value=get_token(request)) #PODEMOS GENERAR NUESTRAS PROPIAAS COOKIES
         #ACA MISMO PODEMOS SETEAR UNA COOKIE CON EL ID DE LA SESION Q GENERAMOS
         print(request.session.session_key)# ESTO ES IMPORTANTE DJANGO CREA SESIONES ESTA CLAVE DEBERIAMOS USARLA PARA CREAR NUESTRA PROPIA CLASES SESION
-        return HttpResponse(autenticado)
+        return HttpResponse('{"usuario":"'+str(user)+'"}')
     else:
         return HttpResponse(False)
 
