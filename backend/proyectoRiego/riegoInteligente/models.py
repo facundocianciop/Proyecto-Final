@@ -188,9 +188,19 @@ class MecanismoRiegoFinca(models.Model):
     OIDMecanismoRiegoFinca = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     direccionIP=models.CharField(max_length=20)
     fechaInstalacion=models.DateTimeField()
-    idFincaMecanismoRiego=models.IntegerField()
+    idMecanismoRiegoFinca=models.IntegerField()
 
     finca=models.ForeignKey(Finca,db_column="OIDFinca")
+    tipoMecanismoRiego=models.ForeignKey("TipoMecanismoRiego",db_column="OIDTipoMecanismoRiego",null=True)
+
+    def as_json(self):
+        return dict(OIDMecanismoRiegoFinca=str(self.OIDMecanismoRiegoFinca),
+                    direccionIP=self.user.username,
+                    fechaInstalacion=self.fechaInstalacion,
+                    idMecanismoRiegoFinca=self.idMecanismoRiegoFinca,
+                    tipoMecanismoRiego=self.tipoMecanismoRiego.nombreMecanismo)
+
+                    #imagenUsuario=self.imagenUsuario)
 
 
 class EstadoMecanismoRiegoFinca(models.Model):
@@ -314,6 +324,13 @@ class CaracteristicaSubtipo(models.Model):
 
 class TipoMecanismoRiego(models.Model):
     OIDTipoMecanismoRiego = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    nombreMecanismo=models.CharField(max_length=30,unique=True)
+    descripcion=models.CharField(max_length=200,null=True)
+    presionEstandar=models.FloatField(null=True)
+    eficiencia=models.FloatField(null=True)
+    fechaAltaTipoMecanismoRiego=models.DateTimeField()
+    fechaBajaTipoMecanismoRiego=models.DateTimeField(null=True)
+    habilitado=models.BooleanField(default=True)
 
 
 class TipoConfiguracionRiego(models.Model):
