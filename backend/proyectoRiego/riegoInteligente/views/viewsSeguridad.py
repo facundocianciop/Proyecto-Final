@@ -113,44 +113,45 @@ def iniciarSesion(request):
             return response
 
 
-
 @csrf_exempt
 @transaction.atomic()
 def recuperarCuenta(request):
     # usuario = request.POST.get("user")
     # contrasenia = request.POST.get("password")
-    datos=armarJson(request)
-    response=HttpResponse()
+    datos = armarJson(request)
+    response = HttpResponse()
+    if request.method == "POST":
 
-    try:
+        try:
 
-        usuario = Usuario.objects.get(email=datos['email'])
-        sesiones_abiertas=Sesion.objects.get(usuario=usuario,fechaYHoraFin__isnull=True)
-        for sesion in sesiones_abiertas:
-            sesion.fechaYHoraFin=datetime.now()
-        contrasenia_aleatoria=id_generator()
-        usuario.user.set_password(contrasenia_aleatoria)
-        #with mail.get_connection() as connection:
-        # mail.EmailMessage('SmartFarming: Recuperacion de cueta ',body="Su nueva contraseña es %s"%contrasenia_aleatoria,from1='facundocianciop',
-        #                       to1='facundocianciop',connection=connection).send()
-        # FALTA MANDAR EL MAIL, CONFIGURAR LA CONTRASEÑA Y EL PUERTO
-        # ACA PENSE QUE EN CASO DE RECHAZAR LA FINCA QUE EL ADMINISTRADOR ESCRIBIERA UN MENSAJE DICIENDO POR QUÉ LA RECHAZÓ
+            usuario = Usuario.objects.get(email=datos['email'])
+            if Usuario.objects.filter(email=datos['email']):
+                raise ValueError("No se encontró usuario con el mail ingresado")
+            sesiones_abiertas = Sesion.objects.get(usuario=usuario, fechaYHoraFin__isnull=True)
+            for sesion in sesiones_abiertas:
+                sesion.fechaYHoraFin = datetime.now()
+            contrasenia_aleatoria = id_generator()
+            usuario.user.set_password(contrasenia_aleatoria)
+            # with mail.get_connection() as connection:
+            # mail.EmailMessage('SmartFarming: Recuperacion de cueta ',body="Su nueva contraseña es %s"%contrasenia_aleatoria,from1='facundocianciop',
+            #                       to1='facundocianciop',connection=connection).send()
+            # FALTA MANDAR EL MAIL, CONFIGURAR LA CONTRASEÑA Y EL PUERTO
+            # ACA PENSE QUE EN CASO DE RECHAZAR LA FINCA QUE EL ADMINISTRADOR ESCRIBIERA UN MENSAJE DICIENDO POR QUÉ LA RECHAZÓ
 
 
+            response.content = dumps(contrasenia_aleatoria)
+            response.status_code = 200
+            return response
+        except (IntegrityError, ValueError) as err:
+            response.status_code = 401
 
-        response.status_code=200
-        return response
-    except IntegrityError as e:
-        response.status_code=401
-        descripcion_error="No se encontró usuario con el mail ingresado"
-        response.content=descripcion_error
-        return response
-        #   print(received_json_data)
-        #   try:
-        # user = User.objects.create_user(username=usuario,password=contrasenia)  # Luego de esto ya está guardado aunque no le haga save
-        #     user.save()#CUANDO LO MODIFICO SI NECESITO EL SAVE
-        # return HttpResponse(user.password)
-
+            response.content = err.args
+            return response
+            #   print(received_json_data)
+            #   try:
+            # user = User.objects.create_user(username=usuario,password=contrasenia)  # Luego de esto ya está guardado aunque no le haga save
+            #     user.save()#CUANDO LO MODIFICO SI NECESITO EL SAVE
+            # return HttpResponse(user.password)
 
 
 @transaction.atomic()
