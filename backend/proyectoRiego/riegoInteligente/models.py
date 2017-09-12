@@ -26,7 +26,7 @@ class Usuario(models.Model):
     fechaNacimiento=models.DateTimeField(null=True)
     imagenUsuario=models.ImageField(null=True)
     #LAS RELACIONES CON OTRAS CLASES LAS SEPARE UN RENGLON
-    #OIDEstadoUsuario=models.ForeignKey(EstadoUsuario,null=True)
+
 
     @receiver(post_save,sender=User)
     def crearUsuario(sender,instance,created,**kwargs):
@@ -36,6 +36,18 @@ class Usuario(models.Model):
     @receiver(post_save,sender=User)
     def guardarUsuario(sender,instance,**kwargs):
         instance.usuario.save()
+
+    def as_json(self):
+        return dict(OIDUsuario=str(self.OIDUsuario),
+                    usuario=self.user.username,
+                    nombre=self.user.first_name,
+                    apellido=self.user.last_name,
+                    cuit=self.cuit,
+                    dni=self.dni,
+                    domicilio=self.domicilio,
+                    email=self.user.email,
+                    fechaNacimiento=self.fechaNacimiento)
+                    #imagenUsuario=self.imagenUsuario)
 
 
 class Contrasenia(models.Model):
@@ -75,7 +87,7 @@ class Sesion(models.Model):
 
 class Rol(models.Model):
     OIDRol = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    nombreRol=models.CharField(max_length=10)
+    nombreRol=models.CharField(max_length=30)
     fechaAltaRol=models.DateTimeField()
     fechaBajaRol=models.DateTimeField(null=True)
 
@@ -91,8 +103,8 @@ class UsuarioFinca(models.Model):
 
 class RolUsuarioFinca(models.Model):
     OIDRolUsuarioFinca=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    fechaAltaUsuarioFinca=models.DateTimeField()
-    fechaBajaUsuarioFinca=models.DateTimeField(null=True)
+    fechaAltaRolUsuarioFinca=models.DateTimeField()
+    fechaBajaRolUsuarioFinca=models.DateTimeField(null=True)
 
     rol=models.ForeignKey(Rol,db_column="OIDRol")
     usuarioFinca=models.ForeignKey(UsuarioFinca,db_column="OIDUsuarioFinca",related_name="rolUsuarioFincaList",null=True)
@@ -176,19 +188,31 @@ class MecanismoRiegoFinca(models.Model):
     OIDMecanismoRiegoFinca = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     direccionIP=models.CharField(max_length=20)
     fechaInstalacion=models.DateTimeField()
-    idFincaMecanismoRiego=models.IntegerField()
+    idMecanismoRiegoFinca=models.IntegerField()
 
     finca=models.ForeignKey(Finca,db_column="OIDFinca")
+    tipoMecanismoRiego=models.ForeignKey("TipoMecanismoRiego",db_column="OIDTipoMecanismoRiego",null=True)
+
+    def as_json(self):
+        return dict(OIDMecanismoRiegoFinca=str(self.OIDMecanismoRiegoFinca),
+                    direccionIP=self.user.username,
+                    fechaInstalacion=self.fechaInstalacion,
+                    idMecanismoRiegoFinca=self.idMecanismoRiegoFinca,
+                    tipoMecanismoRiego=self.tipoMecanismoRiego.nombreMecanismo)
+
+                    #imagenUsuario=self.imagenUsuario)
 
 
 class EstadoMecanismoRiegoFinca(models.Model):
     OIDEstadoMecanismoRiegoFinca = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    nombreEstadoMecanismoRiegoFincaSector=models.CharField(max_length=20)
-    descripcionEstadoMecanismoRiegoFincaSector=models.CharField(max_length=100)
+    nombreEstadoMecanismoRiegoFinca=models.CharField(max_length=20)
+    descripcionEstadoMecanismoRiegoFinca=models.CharField(max_length=100)
 
 
 class HistoricoMecanismoRiegoFinca(models.Model):
     OIDHistoricoMecanismoRiegoFinca =models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
+    fechaInicioEstadoMecanismoRiegoFinca=models.DateTimeField(null=True)
+    fechaFinEstadoMecanismoRiegoFinca = models.DateTimeField(null=True)
     mecanismo_riego_finca=models.ForeignKey(MecanismoRiegoFinca,db_column="OIDMecanismoRiegoFinca",related_name="historicoMecanismoRiegoFinca")
     estado_mecanismo_riego_finca=models.ForeignKey(EstadoMecanismoRiegoFinca,db_column="OIDEstadoMecanismoRiegoFinca")
 
@@ -300,6 +324,13 @@ class CaracteristicaSubtipo(models.Model):
 
 class TipoMecanismoRiego(models.Model):
     OIDTipoMecanismoRiego = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    nombreMecanismo=models.CharField(max_length=30,unique=True)
+    descripcion=models.CharField(max_length=200,null=True)
+    presionEstandar=models.FloatField(null=True)
+    eficiencia=models.FloatField(null=True)
+    fechaAltaTipoMecanismoRiego=models.DateTimeField()
+    fechaBajaTipoMecanismoRiego=models.DateTimeField(null=True)
+    habilitado=models.BooleanField(default=True)
 
 
 class TipoConfiguracionRiego(models.Model):
