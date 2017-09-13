@@ -24,6 +24,8 @@ urlpatterns = [
     url(r'^mostrarMecanismosRiegoFinca/$', viewsConfiguracionFinca.mostrarMecanismosRiegoFinca, name='mostrarMecanismosRiegoFinca'),
     url(r'^mostrarMecanismosNuevos/$', viewsConfiguracionFinca.mostrarMecanismosNuevos,
         name='mostrarMecanismosNuevos'),
+    url(r'^agregarMecanismoRiegoFinca/$', viewsConfiguracionFinca.agregarMecanismoRiegoFinca, name='agregarMecanismoRiegoFinca'),
+
     url(r'^registrarse/$', viewsSeguridad.registrarse, name='registrarse'),
     url(r'^iniciarSesion/$', viewsSeguridad.iniciarSesion, name='iniciarSesion'),
     url(r'^mostrarUsuario/$', viewsSeguridad.mostrarUsuario, name='mostrarUsuario'),
