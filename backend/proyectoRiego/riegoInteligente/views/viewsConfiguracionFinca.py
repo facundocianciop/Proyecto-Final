@@ -77,8 +77,13 @@ def agregarMecanismoRiegoFinca(request):
         tipo_mecanismo=TipoMecanismoRiego.objects.get(nombreMecanismo=datos['nombreTipoMecanismo'])
         estado_habilitado=EstadoMecanismoRiegoFinca.objects.get(nombreEstadoMecanismoRiegoFinca="Habilitado")
         historico_nuevo=HistoricoMecanismoRiegoFinca(fechaInicioEstadoMecanismoRiegoFinca=datetime.now(),estado_mecanismo_riego_finca=estado_habilitado)
+
         finca_actual=Finca.objects.get(OIDFinca=datos['OIDFinca'])
+
         mecanismo_riego_finca=MecanismoRiegoFinca(finca=finca_actual,tipoMecanismoRiego=tipo_mecanismo,fechaInstalacion=datetime.now())
+        mecanismo_riego_finca.save()
+        historico_nuevo.mecanismo_riego_finca=mecanismo_riego_finca
+        historico_nuevo.save()
         mecanismo_riego_finca.historicoMecanismoRiegoFincaList.add(historico_nuevo,bulk=False)
         mecanismo_riego_finca.save()
         response.status_code=200
