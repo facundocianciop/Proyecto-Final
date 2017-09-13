@@ -5,9 +5,9 @@
     <div *ngIf=divPrimero>
         <h1>Paso 1</h1>
         <label>Email</label><br>
-        <input type="email" name="email" maxlength="50" placeholder="Ejemplo@gmail.com" required="Debe ingresar un email"><br>
-        <button class="aceptar" type="submit" (click)="obtenerDatosDivPrimero()">Aceptar</button>
-        <button class="cancelar">Cancelar</button>
+        <input type="email" name="email" #email maxlength="50" placeholder="Ejemplo@gmail.com" required="Debe ingresar un email"><br>
+        <button class="aceptar" type="submit" (click)="apretarAceptarDivPrimero(email.value)">Aceptar</button>
+        <button class="cancelar" (click)="apretarCancelarDivPrimero()">Cancelar</button>
 
     </div>
 </form>
@@ -15,20 +15,20 @@
     <div *ngIf=divSegundo>
         <h1>Paso 2</h1>
         <label>C&oacute;digo de verificicaci&oacute;n</label><br>
-        <input type="text" name="codigoVerificacion" maxlength="10" placeholder="Ingrese c&oacute;digo" required="Debe ingresar un c&oacute;digo"><br>
-        <button class="aceptar" type="submit" (click)="obtenerDatosDivSegundo()">Aceptar</button>
-        <button class="cancelar">Cancelar</button>
+        <input type="text" name="codigoVerificacion" #codigo maxlength="10" placeholder="Ingrese c&oacute;digo" required="Debe ingresar un c&oacute;digo"><br>
+        <button class="aceptar" type="submit" (click)="apretarAceptarDivSegundo(codigo.value)">Aceptar</button>
+        <button class="cancelar" (click)="apretarCancelarDivSegundo()">Cancelar</button>
     </div>
 </form>
 <form>
     <div *ngIf=divTercero>
         <h1>Paso 3</h1>
         <label>Contrase&ntilde;a</label><br>
-        <input type="password" name="password"  maxlength="20" placeholder="Ingrese contrase&ntilde;a" required="Debe ingresar una contrase&ntilde;a"><br>
+        <input type="password" name="password" #pass1 maxlength="20" placeholder="Ingrese contrase&ntilde;a" required="Debe ingresar una contrase&ntilde;a"><br>
         <label>Repetir Contrase&ntilde;a</label><br>
-        <input type="password" name="repepassword"   maxlength="20" placeholder="Ingrese contrase&ntilde;a" required="Debe ingresar una contrase&ntilde;a"><br>
-        <button class="aceptar" type="submit" (click)="obtenerDatosDivTercero()">Reestablecer</button>
-        <button class="cancelar">Volver</button>
+        <input type="password" name="repepassword"  #pass2 maxlength="20" placeholder="Ingrese contrase&ntilde;a" required="Debe ingresar una contrase&ntilde;a"><br>
+        <button class="aceptar" type="submit" (click)="apretarReestablecerDivTercero(pass1.value,pass2.value)">Reestablecer</button>
+        <button class="cancelar" (click)="apretarCancelarDivTercero()">Volver</button>
 
     </div>
 </form>

@@ -10,9 +10,13 @@ import { LoginService } from './Modulo_Seguridad/CU_Iniciar_Sesion/login.service
 import { RegistrarUsuarioComponent } from './Modulo_Seguridad/CU_Registrar_Usuario/registrar.usuario.component'
 import { RegistrarUsuarioService } from './Modulo_Seguridad/CU_Registrar_Usuario/registrar.usuario.service'
 import { RecuperarCuentaComponent } from './Modulo_Seguridad/CU_Recuperar_Cuenta/recuperar.cuenta.component'
+import { RecuperarCuentaService } from './Modulo_Seguridad/CU_Recuperar_Cuenta/recuperar.cuenta.service'
+import { CerrarSesionComponent } from './Modulo_Seguridad/CU_Cerrar_Sesion/cerrar.sesion.component'
+import { CerrarSesionService } from './Modulo_Seguridad/CU_Cerrar_Sesion/cerrar.sesion.service'
 
 
 import { HomeComponent } from './Modulo_Pantallas/home.component'
+import { PerfilUsuarioComponent } from './Modulo_Pantallas/Perfil_Usuario/perfil.usuario.component'
 
 import { SolicitarCreacionFincaComponent } from './Modulo_Configuracion_Finca/CU_Solicitar_Creacion_Finca/solicitar.creacion.finca.component'
 import { SolicitarCreacionFincaService } from './Modulo_Configuracion_Finca/CU_Solicitar_Creacion_Finca/solicitar.creacion.finca.service'
@@ -22,9 +26,11 @@ import { SolicitarCreacionFincaService } from './Modulo_Configuracion_Finca/CU_S
   declarations: [
     AppComponent,
     LoginComponent,
+    CerrarSesionComponent,
     RegistrarUsuarioComponent,
     RecuperarCuentaComponent,
     HomeComponent,
+    PerfilUsuarioComponent,
     SolicitarCreacionFincaComponent
   ],
   imports: [
@@ -35,7 +41,13 @@ import { SolicitarCreacionFincaService } from './Modulo_Configuracion_Finca/CU_S
     NgbModule.forRoot()
     
   ],
-  providers: [LoginService,SolicitarCreacionFincaService,RegistrarUsuarioService],
+  providers: [
+    LoginService,
+    CerrarSesionService,
+    SolicitarCreacionFincaService,
+    RegistrarUsuarioService,
+    RecuperarCuentaService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

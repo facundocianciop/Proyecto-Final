@@ -15,6 +15,7 @@ export class RestBaseService {
 
     let errMsg: string;
     if (error instanceof Response) {
+      console.log(error);
       const body = error.json() || '';
       return Promise.reject(body);
     } else {
@@ -26,6 +27,7 @@ export class RestBaseService {
   protected getRestHeader(): RequestOptions {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     //headers.append( 'Access-Control-Allow-Origin', '*' );        
+    //headers.getAll( 'set-cookie' );        
     const options = new RequestOptions({ headers: headers });
     return options;
   }

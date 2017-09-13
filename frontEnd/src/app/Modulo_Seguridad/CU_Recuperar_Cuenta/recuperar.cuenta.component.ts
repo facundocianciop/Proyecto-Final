@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { RecuperarCuentaService, Cuenta } from './recuperar.cuenta.service'
 
 @Component({
     selector:'app-recuperar',
@@ -12,7 +13,9 @@ export class RecuperarCuentaComponent implements OnInit{
     divPrimero:Boolean;
     divSegundo:Boolean;
     divTercero:Boolean;
-    constructor(private router:Router){
+    cuenta:Cuenta;
+    constructor(private router:Router,
+                private recuperarCuentaService:RecuperarCuentaService){
 
     }
 
@@ -22,25 +25,43 @@ export class RecuperarCuentaComponent implements OnInit{
         this.divTercero=false;
 
     }
-    
-    aprertarRegistrar(){
-        console.log("estamos aca");
-        this.router.navigate(['/login']);
+
+    apretarAceptarDivPrimero(email:string){
+        this.recuperarCuentaService.recuperarCuenta(email).then(recuperar => this.cuenta=recuperar);
+        this.divPrimero=false;
+        this.divSegundo=true;        
     }
 
-    aprertarCancelar(){
-        console.log("estamos aca");
-        this.router.navigate(['/login']);
+    aprertarCancelarDivPrimero(){
+        this.router.navigate(['/']);
     }
-    obtenerDatosDivPrimero(){
-        this.divPrimero=false;
-        this.divSegundo=true;
+  
+    
+    apretarAceptarDivSegundo(codigo:string){
+        if(this.cuenta.codigo==codigo){
+            console.log("los codigos coinciden");
+            this.divSegundo=false;
+            this.divTercero=true;
+        }
+        else{
+            console.log("error de codigo");
+        }
     }
-    obtenerDatosDivSegundo(){
+
+
+    apretarCancelarDivSegundo(){
+        console.log("apretar cancelar div segundo");
+        this.divPrimero=true;
         this.divSegundo=false;
-        this.divTercero=true;
+       
     }
-    obtenerDatosDivTercero(){
-        this.router.navigate(['/login']);
+    apretarReestablecerDivTercero(pass1:string,pass2:string){
+        if(pass1==pass2){
+            console.log("los pass son iguales");
+            //hay que llamar al rest de cambiar contraseña
+        }
+        else{
+            console.log("los pass son distintos");
+        }
     }
 }

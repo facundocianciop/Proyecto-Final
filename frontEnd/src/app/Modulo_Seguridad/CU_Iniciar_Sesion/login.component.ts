@@ -12,6 +12,9 @@ import { AppComponent } from '../../app.component';
 
 export class LoginComponent implements OnInit{
     usuarioLogeado: Usuario;
+    errors: string[] = [];
+    errorMessage: string;
+    
     constructor(private router:Router,
                 private loginService:LoginService){
 
@@ -27,12 +30,14 @@ export class LoginComponent implements OnInit{
         console.log("contasenia: "+pass);
         //this.router.navigate(['/home']);)
 
-        this.loginService.login(usuario,pass).then(response => this.usuarioLogeado=response);
-        if(this.usuarioLogeado){
-            this.router.navigate(['/home']);
+        this.loginService.login(usuario,pass)
+        .then(response => this.usuarioLogeado=response);
+        if(this.usuarioLogeado.usuario=="None"){
+            console.log("el usuario ingresado no existe")
         }
         else{
-            console.log("el usuario ingresado no existe")
+            
+            this.router.navigate(['/home']);
         }
         
     }
@@ -41,5 +46,5 @@ export class LoginComponent implements OnInit{
         console.log("estamos aca");
         this.router.navigate(['/recuperarCuenta']);
     }
-    
+
 }

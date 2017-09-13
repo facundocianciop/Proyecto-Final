@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
     
   }
   ngOnInit(){
-    this.bodyInicio=true;
+    this.bodyInicio=false;
   }
   apretarIngresar(){
     this.bodyInicio=false;
