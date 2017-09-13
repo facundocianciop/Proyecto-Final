@@ -89,17 +89,17 @@ def iniciarSesion(request):
             print usuario_inicial.username
             if usuario_inicial is not None:
                 if Sesion.objects.filter(usuario=usuario_inicial.usuario,fechaYHoraFin__isnull=True):
-                    raise ValueError("Ya tiene una sesión iniciada")
+                    raise ValueError("Ya tiene una sesion iniciada")
                 login(request, usuario_inicial)
                 sesion = Sesion(fechaYHoraInicio=datetime.now(), horaUltimoAcceso=datetime.now())
                 tipoSesion = TipoSesion.objects.get(nombre=datos["tipoDispositivo"])
                 sesion.tipoSesion = tipoSesion
                 sesion.idSesion=uuid.uuid4()
+                print sesion.idSesion
                 sesion.save()
                 usuario_inicial.usuario.sesionList.add(sesion)
                 usuario_inicial.save()
-                response.set_cookie("idsesion", sesion.idSesion, max_age=3600)
-                response.set_cookie(key="idsesion",value=sesion.idSesion)  # PODEMOS GENERAR NUESTRAS PROPIAAS COOKIES
+                response.set_cookie(key="idsesion",value=sesion.idSesion,max_age=3600)  # PODEMOS GENERAR NUESTRAS PROPIAAS COOKIES
                 usuario_json=usuario_inicial.usuario.as_json()
                 response.content=dumps(usuario_json)
                 response.status_code = 200
@@ -295,7 +295,9 @@ def autenticarse(request):
 def finalizarSesion(request):
     if request.method=='POST':
         try:
-
+            s=Sesion.objects.get(idSesion=request.COOKIES['idsesion'])
+            print s.idSesion
+            print request.COOKIES.get('idSesion')
             sesion = Sesion.objects.get(idSesion=request.COOKIES.get('idSesion'))
             #BUSCO LA SESION CON ESE ID EN LA BASE DE DATOS
             # Si se encontro la sesion se finaliza y se devuelve que la sesion

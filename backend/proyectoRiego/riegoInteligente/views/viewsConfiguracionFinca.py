@@ -66,7 +66,12 @@ def mostrarMecanismosNuevos(request):
             response.status_code=401
             return response
 
-
-
-
+""""
+@csrf_exempt
+@transaction.atomic()
+def agregarMecanismoRiegoFinca(request):
+    response=HttpResponse()
+    datos=armarJson(request)
+    if request.method=='PUT':
+"""
 
