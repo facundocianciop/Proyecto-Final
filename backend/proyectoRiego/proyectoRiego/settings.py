@@ -80,6 +80,7 @@ WSGI_APPLICATION = 'proyectoRiego.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 """DATABASES = {
+<<<<<<< HEAD
      'default': {
          'ENGINE': 'django.db.backends.postgresql_psycopg2',
          'NAME': 'riegoInteligente',
@@ -92,6 +93,8 @@ WSGI_APPLICATION = 'proyectoRiego.wsgi.application'
 """
 """
 DATABASES = {
+=======
+>>>>>>> 6ef8f4daa73c0a15979ddf49c2b970a2357b847d
         'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'riegoInteligente',
@@ -103,7 +106,11 @@ DATABASES = {
 }
 """
 
+<<<<<<< HEAD
 
+=======
+"""
+>>>>>>> 6ef8f4daa73c0a15979ddf49c2b970a2357b847d
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -114,7 +121,10 @@ DATABASES = {
         'PORT': '3306',
      }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6ef8f4daa73c0a15979ddf49c2b970a2357b847d
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
