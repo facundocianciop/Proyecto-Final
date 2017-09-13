@@ -125,13 +125,14 @@ def recuperarCuenta(request):
         try:
 
             usuario = Usuario.objects.get(email=datos['email'])
-            if Usuario.objects.filter(email=datos['email']):
+            if Usuario.objects.filter(email=datos['email']).__len__() == 0:
                 raise ValueError("No se encontró usuario con el mail ingresado")
             sesiones_abiertas = Sesion.objects.get(usuario=usuario, fechaYHoraFin__isnull=True)
             for sesion in sesiones_abiertas:
                 sesion.fechaYHoraFin = datetime.now()
             contrasenia_aleatoria = id_generator()
             usuario.user.set_password(contrasenia_aleatoria)
+            print contrasenia_aleatoria
             # with mail.get_connection() as connection:
             # mail.EmailMessage('SmartFarming: Recuperacion de cueta ',body="Su nueva contraseña es %s"%contrasenia_aleatoria,from1='facundocianciop',
             #                       to1='facundocianciop',connection=connection).send()
@@ -291,13 +292,11 @@ def autenticarse(request):
 
 @csrf_exempt
 def finalizarSesion(request):
-    if request.method=='POST':
+    if request.method == 'POST':
         try:
-            s=Sesion.objects.get(idSesion=request.COOKIES['idsesion'])
-            print s.idSesion
-            print request.COOKIES.get('idSesion')
-            sesion = Sesion.objects.get(idSesion=request.COOKIES.get('idSesion'))
-            #BUSCO LA SESION CON ESE ID EN LA BASE DE DATOS
+
+            sesion = Sesion.objects.get(idSesion=request.COOKIES['idSesion'])
+            # BUSCO LA SESION CON ESE ID EN LA BASE DE DATOS
             # Si se encontro la sesion se finaliza y se devuelve que la sesion
             # finalizo correctamente
 
