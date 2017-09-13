@@ -79,27 +79,6 @@ def iniciarSesion(request):
     response=HttpResponse()
     datos = armarJson(request)
     if request.method=='POST':
-        datos=armarJson(request)
-        usuario = datos["usuario"]
-        contrasenia = datos["contrasenia"]
-
-        print (usuario,contrasenia)
-        print django.middleware.csrf.get_token(request)
-        # u=User.objects.get(username=usuario,password=contrasenia)
-        # print (u.username)
-        user=authenticate(username=usuario,password=contrasenia)
-        if user is not None:
-            autenticado=True
-        else:
-            autenticado=False
-        context={'autenticado':autenticado}
-        #response=render (request, 'riego/autenticarse.html', context)
-        #response.set_cookie(key="csrf_token",value=get_token(request)) #PODEMOS GENERAR NUESTRAS PROPIAAS COOKIES
-        #ACA MISMO PODEMOS SETEAR UNA COOKIE CON EL ID DE LA SESION Q GENERAMOS
-        print(request.session.session_key)# ESTO ES IMPORTANTE DJANGO CREA SESIONES ESTA CLAVE DEBERIAMOS USARLA PARA CREAR NUESTRA PROPIA CLASES SESION
-        return HttpResponse('{"usuario":"'+str(user)+'"}')
-    else:
-        return HttpResponse(False)
         try:
 
             usuario = datos["usuario"]
@@ -293,12 +272,10 @@ def autenticarse(request):
                 sesion.tipoSesion=tipoSesion
                 sesion.save()
                 user.usuario.sesionList.add(sesion)
-
                 user.save()
                 response.set_cookie("idsesion",sesion.idSesion,max_age=3600)
                 response.status_code=200
                 autenticado=True
-
             else:
                 autenticado=False
                 response.status_code = 404
