@@ -125,7 +125,7 @@ def recuperarCuenta(request):
         try:
 
             usuario = Usuario.objects.get(email=datos['email'])
-            if Usuario.objects.filter(email=datos['email']):
+            if Usuario.objects.filter(email=datos['email']).__len__()==0:
                 raise ValueError("No se encontró usuario con el mail ingresado")
             sesiones_abiertas = Sesion.objects.get(usuario=usuario, fechaYHoraFin__isnull=True)
             for sesion in sesiones_abiertas:
