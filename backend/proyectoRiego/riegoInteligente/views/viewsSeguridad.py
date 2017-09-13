@@ -64,9 +64,9 @@ def mostrarUsuario(request):
 @csrf_exempt
 def obtenerUsuarioActual(request):
     try:
-        if Sesion.objects.filter(idSesion=request.COOKIES['idsesion']).__len__==0:
+        if Sesion.objects.filter(idSesion=request.COOKIES['idSesion']).__len__==0:
             raise ValueError("No hay sesion actual")
-        sesion_actual=Sesion.objects.get(idSesion=request.COOKIES['idsesion'])
+        sesion_actual=Sesion.objects.get(idSesion=request.COOKIES['idSesion'])
         usuario_actual=sesion_actual.usuario
         return usuario_actual
     except ValueError as err:
@@ -132,6 +132,7 @@ def recuperarCuenta(request):
                 sesion.fechaYHoraFin = datetime.now()
             contrasenia_aleatoria = id_generator()
             usuario.user.set_password(contrasenia_aleatoria)
+            print contrasenia_aleatoria
             # with mail.get_connection() as connection:
             # mail.EmailMessage('SmartFarming: Recuperacion de cueta ',body="Su nueva contraseña es %s"%contrasenia_aleatoria,from1='facundocianciop',
             #                       to1='facundocianciop',connection=connection).send()
@@ -290,15 +291,13 @@ def autenticarse(request):
         else:
             return response
 """
-
+@transaction.atomic()
 @csrf_exempt
 def finalizarSesion(request):
     if request.method=='POST':
         try:
-            s=Sesion.objects.get(idSesion=request.COOKIES['idsesion'])
-            print s.idSesion
-            print request.COOKIES.get('idSesion')
-            sesion = Sesion.objects.get(idSesion=request.COOKIES.get('idSesion'))
+
+            sesion = Sesion.objects.get(idSesion=request.COOKIES['idSesion'])
             #BUSCO LA SESION CON ESE ID EN LA BASE DE DATOS
             # Si se encontro la sesion se finaliza y se devuelve que la sesion
             # finalizo correctamente
