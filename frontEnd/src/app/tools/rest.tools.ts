@@ -28,7 +28,7 @@ export class RestBaseService {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     //headers.append( 'Access-Control-Allow-Origin', '*' );        
     //headers.getAll( 'set-cookie' );        
-    const options = new RequestOptions({ headers: headers });
+    const options = new RequestOptions({ headers: headers});
     return options;
   }
 }

@@ -32,7 +32,7 @@ export class RecuperarCuentaComponent implements OnInit{
         this.divSegundo=true;        
     }
 
-    aprertarCancelarDivPrimero(){
+    apretarCancelarDivPrimero(){
         this.router.navigate(['/']);
     }
   

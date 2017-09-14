@@ -1,31 +1,49 @@
 <h1>Soliciar Creaci&oacute;n Finca</h1>
 
-<form>
+<div *ngIf="divDatosFinca" class="container">
+    <h3>Datos de la Finca</h3>
+    <form>
 
-    <div>
+        <div>
 
-        <label>Nombre</label><br>
-        <input type="text" name="nombre" #nombreFinca maxlength="20" placeholder="Ingrese Nombre de Finca" required="Debe ingresar un nombre"><br>
+            <label>Nombre</label><br>
+            <input type="text" name="nombre" #nombreFinca maxlength="20" placeholder="Ingrese Nombre de Finca" required="Debe ingresar un nombre"><br>
 
-        <label>Direcci&oacute;n Legal</label><br>
-        <input type="text" name="dir" #dirLegalFinca maxlength="40" placeholder="Ingrese Direcci&oacute; Legal" required="Debe ingresar una direcci&oacute;n"><br>
+            <label>Direcci&oacute;n Legal</label><br>
+            <input type="text" name="dir" #dirLegalFinca maxlength="40" placeholder="Ingrese Direcci&oacute; Legal" required="Debe ingresar una direcci&oacute;n"><br>
 
-        <label>Ubicaci&oacute;n</label><br>
-        <input type="text" name="ubicacion" #ubicacionFinca  maxlength="60" placeholder="Ingrese Ubicaci&oacute;n" required="Debe ingresar una ubicaci&oacute;n"><br>
+            <label>Ubicaci&oacute;n</label><br>
+            <input type="text" name="ubicacion" #ubicacionFinca maxlength="60" placeholder="Ingrese Ubicaci&oacute;n" required="Debe ingresar una ubicaci&oacute;n"><br>
 
-        <label>Tama&ntilde;o</label><br>
-        <input type="number" name="tamanio" #tamanioFinca maxlength="10" placeholder="Ingrese Tama&ntilde;o" required="Debe ingresar un tama&ntilde;o"><br>
+            <label>Tama&ntilde;o</label><br>
+            <input type="number" name="tamanio" #tamanioFinca maxlength="10" placeholder="Ingrese Tama&ntilde;o" required="Debe ingresar un tama&ntilde;o"><br>
 
-        <button class="solicitar" (click)="apretarSolicitar(nombreFinca.value,dirLegalFinca.value,ubicacionFinca.value,tamanioFinca.value)">Solicitar</button>
+            <button class="solicitar" (click)="apretarSolicitar(nombreFinca.value,dirLegalFinca.value,ubicacionFinca.value,tamanioFinca.value)">Solicitar</button>
+            <button class="cancelar" (click)="apretarCancelar()">Cancelar</button>
+
+        </div>
+
+    </form>
+
+</div>
+<div *ngIf="divDatosProveedor">
+
+    <h3>Seleccionar Proveedor de Informaci&oacute;n externa</h3>
+
+    <form>
+        <label>Proveedor Informaci&oacute;n</label>
+        <select placeholder="Seleccionar Proveedor" #seleccionado [(ngModel)]="selectedValue">
+                <option *ngFor="let proveedor of proveedoresInformacion" [value]="proveedor.nombreProveedor">
+                  {{proveedor.nombreProveedor}}
+                </option>
+        </select>
+
+        <button class="solicitar" (click)="apretarSeleccionar(seleccionado.value)">Seleccionar</button>
         <button class="cancelar" (click)="apretarCancelar()">Cancelar</button>
 
-    </div>
+    </form>
 
-</form>
-
-<div *ngIf="finca">
-    <h1>{{finca.nombre}}</h1>
-    <h1>{{finca.direccionLegal}}</h1>
-    <h1>{{finca.tamanio}}</h1>
-    <h1>{{finca.ubicacion}}</h1>
+</div>
+<div *ngIf="proveedorSeleccionado">
+    {{proveedorSeleccionado}}
 </div>

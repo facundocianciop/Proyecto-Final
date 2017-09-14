@@ -1,0 +1,66 @@
+<body>
+    
+        <ul>
+          <li><a href="#inicio">Logo</a></li>
+           <li class="menuDerecho"> <a href="#ingresar">Salir</a></li>
+            <li class="menuDerecho"> <a [routerLink]="['/perfilUsuario']">Perfil</a></li>
+
+        </ul>
+    <div class="row">
+        <div class=col-lg-5>
+            <h3>Finca con Rol Encargado</h3>
+            <table>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Tama&ntilde;o</th>
+                    <th>Ubicaci&oacute;n</th>
+                </tr>
+
+            </table>
+
+            <h3>Finca con otro Rol</h3>
+            <label>Rol: </label>
+            <select>
+                <option>StakeHolder</option>
+                <option>Rol 1</option>
+                <option>Rol 2</option>	
+            </select>
+            
+            <table>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Tama&ntilde;o</th>
+                    <th>Ubicaci&oacute;n</th>
+                </tr>
+
+            </table>
+        </div>
+
+        <div class="col-lg-5">
+                <h3>Finca Pendiente de Aprobacion</h3>    
+                <table>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Tama&ntilde;o</th>
+                        <th>Ubicaci&oacute;n</th>
+                    </tr>
+    
+                </table>
+        </div>
+
+        <div class="col-lg-2">
+            <h3>Acciones</h3>
+            <button class="btn btn-primary col-lg-12" [routerLink]="['/crearFinca']">Crear Finca</button>           
+        </div>
+
+
+    </div>
+
+    
+
+        
+
+
+
+</body>
+

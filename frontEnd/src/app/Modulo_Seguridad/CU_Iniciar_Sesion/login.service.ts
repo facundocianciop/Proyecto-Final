@@ -22,11 +22,13 @@ export class LoginService extends RestBaseService{
     return this.http.post(LoginService.serverUrl +this.loginUrl, JSON.stringify(data), this.getRestHeader())
       .toPromise()
       .then(response => {
+        let estado = response.status;
         return response.json() as Usuario;
+
       })
       .catch(this.handleError);
   }
-
+  
 }
 
 export interface Usuario {

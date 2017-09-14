@@ -5,7 +5,7 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class RecuperarCuentaService extends RestBaseService{
-  private loginUrl = '/recuperarCuenta/';
+  private recuerparUrl = '/recuperarCuenta/';
 
   
 
@@ -17,7 +17,7 @@ export class RecuperarCuentaService extends RestBaseService{
       'email': email
     };
 
-    return this.http.post(RecuperarCuentaService.serverUrl +this.loginUrl, JSON.stringify(data), this.getRestHeader())
+    return this.http.post(RecuperarCuentaService.serverUrl +this.recuerparUrl, JSON.stringify(data), this.getRestHeader())
       .toPromise()
       .then(response => {
         return response.json() as Cuenta;

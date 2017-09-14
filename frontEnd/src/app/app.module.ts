@@ -13,14 +13,14 @@ import { RecuperarCuentaComponent } from './Modulo_Seguridad/CU_Recuperar_Cuenta
 import { RecuperarCuentaService } from './Modulo_Seguridad/CU_Recuperar_Cuenta/recuperar.cuenta.service'
 import { CerrarSesionComponent } from './Modulo_Seguridad/CU_Cerrar_Sesion/cerrar.sesion.component'
 import { CerrarSesionService } from './Modulo_Seguridad/CU_Cerrar_Sesion/cerrar.sesion.service'
+import { ModificarUsuarioComponent } from './Modulo_Seguridad/CU_Modificar_Usuario/modificar.usuario.component'
+import { ModificarUsuarioService } from './Modulo_Seguridad/CU_Modificar_Usuario/modificar.usuario.service'
 
-
-import { HomeComponent } from './Modulo_Pantallas/home.component'
-import { PerfilUsuarioComponent } from './Modulo_Pantallas/Perfil_Usuario/perfil.usuario.component'
-
+import { HomeFincaComponent } from './Modulo_Configuracion_Finca/Home_Finca/home.finca.component'
 import { SolicitarCreacionFincaComponent } from './Modulo_Configuracion_Finca/CU_Solicitar_Creacion_Finca/solicitar.creacion.finca.component'
 import { SolicitarCreacionFincaService } from './Modulo_Configuracion_Finca/CU_Solicitar_Creacion_Finca/solicitar.creacion.finca.service'
-
+import { GestionarFincaComponent } from './Modulo_Configuracion_Finca/CU_Gestionar_Finca/gestionar.finca.component'
+import { GestionarFincaService } from './Modulo_Configuracion_Finca/CU_Gestionar_Finca/gestionar.finca.service'
 
 @NgModule({
   declarations: [
@@ -29,9 +29,11 @@ import { SolicitarCreacionFincaService } from './Modulo_Configuracion_Finca/CU_S
     CerrarSesionComponent,
     RegistrarUsuarioComponent,
     RecuperarCuentaComponent,
-    HomeComponent,
-    PerfilUsuarioComponent,
-    SolicitarCreacionFincaComponent
+    ModificarUsuarioComponent,
+
+    HomeFincaComponent,
+    SolicitarCreacionFincaComponent,
+    GestionarFincaComponent
   ],
   imports: [
     BrowserModule,
@@ -44,9 +46,13 @@ import { SolicitarCreacionFincaService } from './Modulo_Configuracion_Finca/CU_S
   providers: [
     LoginService,
     CerrarSesionService,
-    SolicitarCreacionFincaService,
     RegistrarUsuarioService,
-    RecuperarCuentaService
+    RecuperarCuentaService,
+    ModificarUsuarioService,
+
+    SolicitarCreacionFincaService,
+    GestionarFincaService
+
   ],
   bootstrap: [AppComponent]
 })

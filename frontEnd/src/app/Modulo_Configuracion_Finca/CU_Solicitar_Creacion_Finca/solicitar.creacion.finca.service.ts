@@ -5,10 +5,9 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class SolicitarCreacionFincaService extends RestBaseService{
-  private loginUrl = '/crearFinca/';
-
-  
-
+  private crearFincaUrl = '/crearFinca/';
+  private obtenerProvUrl = '/buscarProveedoresInformacion/';
+  private selecProvUrl = '/elegirProveedorInformacion/';
 
   constructor(private http: Http) {super();}
 
@@ -20,7 +19,7 @@ export class SolicitarCreacionFincaService extends RestBaseService{
       'tamanio':tamFinca
     };
 
-    return this.http.post(SolicitarCreacionFincaService.serverUrl +this.loginUrl, JSON.stringify(data), this.getRestHeader())
+    return this.http.post(SolicitarCreacionFincaService.serverUrl +this.crearFincaUrl, JSON.stringify(data), this.getRestHeader())
       .toPromise()
       .then(response => {
         return response.json() as Finca;
@@ -28,12 +27,42 @@ export class SolicitarCreacionFincaService extends RestBaseService{
       .catch(this.handleError);
   }
 
+  obtenerProveedores():Promise<ProveedorInformacion[]>{
+    return this.http.get(SolicitarCreacionFincaService.serverUrl + this.obtenerProvUrl, this.getRestHeader())
+    .toPromise()
+    .then(response => {return response.json() as ProveedorInformacion[];})
+    .catch(this.handleError);
+  }
+
+  seleccionarProveedor(proveedor:string,oidfinca:string,oidusuario:string):Promise<any>{
+    const data = {
+      'nombreProveedor': proveedor,
+      'OIDFinca': oidfinca,
+      'OIDusuario':oidusuario
+
+    };
+
+    return this.http.post(SolicitarCreacionFincaService.serverUrl +this.selecProvUrl, JSON.stringify(data), this.getRestHeader())
+      .toPromise()
+      .then(response => {
+        return "";
+      })
+      .catch(this.handleError);
+  }
+
 }
 
 export interface Finca {
+  OIDFinca: string;
   nombre: string;
   direccionLegal: string;
   ubicacion: string;
   tamanio: number;
+}
+
+export interface ProveedorInformacion{
+  nombreProveedor:string;
+  frecuenciaMaxPosible:number;
+  urlAPI:string;
 }
 
