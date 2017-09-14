@@ -123,25 +123,14 @@ def recuperarCuenta(request):
     if request.method == "POST":
 
         try:
-<<<<<<< HEAD
-            print(datos['email'])
-            usuario = Usuario.objects.get(email=datos['email'])
-            if Usuario.objects.filter(email=datos['email']).__len__() == 0:
-                raise ValueError("No se encontró usuario con el mail ingresado")
-            # sesiones_abiertas = Sesion.objects.get(usuario=usuario, fechaYHoraFin__isnull=True)
-            # for sesion in sesiones_abiertas:
-            #     sesion.fechaYHoraFin = datetime.now()
-            contrasenia_aleatoria = id_generator()
-            usuario.user.set_password(contrasenia_aleatoria)
-=======
             print  datos['email']
-            usuario_datos=User.objects.get(email=datos['email'])
+            usuario_datos = User.objects.get(email=datos['email'])
             print usuario_datos.email
             usuario = Usuario.objects.get(user=usuario_datos)
             print usuario.user.email
-            if User.objects.filter(email=datos['email']).__len__()==0:
+            if User.objects.filter(email=datos['email']).__len__() == 0:
                 raise ValueError("No se encontró usuario con el mail ingresado")
-            if Sesion.objects.filter(usuario=usuario, fechaYHoraFin__isnull=True).__len__()!=0:
+            if Sesion.objects.filter(usuario=usuario, fechaYHoraFin__isnull=True).__len__() != 0:
                 sesiones_abiertas = Sesion.objects.filter(usuario=usuario, fechaYHoraFin__isnull=True)
                 for sesion in sesiones_abiertas:
                     sesion.fechaYHoraFin = datetime.now()
@@ -150,7 +139,6 @@ def recuperarCuenta(request):
             usuario.user.save()
             usuario.save()
 
->>>>>>> 8113d3a9890d316a83a7af17c5b4d86bf7e9e9ff
             print contrasenia_aleatoria
             # with mail.get_connection() as connection:
             # mail.EmailMessage('SmartFarming: Recuperacion de cueta ',body="Su nueva contraseña es %s"%contrasenia_aleatoria,from1='facundocianciop',
@@ -161,7 +149,7 @@ def recuperarCuenta(request):
             response_data = {}
             response_data['contraseniaGenerada'] = contrasenia_aleatoria
             response.content = dumps(response_data)
-            response.content_type="application/json"
+            response.content_type = "application/json"
             response.status_code = 200
             return response
         except (IntegrityError, ValueError) as err:
@@ -317,11 +305,7 @@ def finalizarSesion(request):
         try:
 
             sesion = Sesion.objects.get(idSesion=request.COOKIES['idSesion'])
-<<<<<<< HEAD
             # BUSCO LA SESION CON ESE ID EN LA BASE DE DATOS
-=======
-            #BUSCO LA SESION CON ESE ID EN LA BASE DE DATOS
->>>>>>> 8113d3a9890d316a83a7af17c5b4d86bf7e9e9ff
             # Si se encontro la sesion se finaliza y se devuelve que la sesion
             # finalizo correctamente
 
