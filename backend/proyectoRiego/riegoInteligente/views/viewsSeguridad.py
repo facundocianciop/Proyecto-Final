@@ -123,15 +123,22 @@ def recuperarCuenta(request):
     if request.method == "POST":
 
         try:
-
-            usuario = Usuario.objects.get(email=datos['email'])
-            if Usuario.objects.filter(email=datos['email']).__len__()==0:
+            print  datos['email']
+            usuario_datos=User.objects.get(email=datos['email'])
+            print usuario_datos.email
+            usuario = Usuario.objects.get(user=usuario_datos)
+            print usuario.user.email
+            if User.objects.filter(email=datos['email']).__len__()==0:
                 raise ValueError("No se encontró usuario con el mail ingresado")
-            sesiones_abiertas = Sesion.objects.get(usuario=usuario, fechaYHoraFin__isnull=True)
-            for sesion in sesiones_abiertas:
-                sesion.fechaYHoraFin = datetime.now()
+            if Sesion.objects.filter(usuario=usuario, fechaYHoraFin__isnull=True).__len__()!=0:
+                sesiones_abiertas = Sesion.objects.filter(usuario=usuario, fechaYHoraFin__isnull=True)
+                for sesion in sesiones_abiertas:
+                    sesion.fechaYHoraFin = datetime.now()
             contrasenia_aleatoria = id_generator()
             usuario.user.set_password(contrasenia_aleatoria)
+            usuario.user.save()
+            usuario.save()
+
             print contrasenia_aleatoria
             # with mail.get_connection() as connection:
             # mail.EmailMessage('SmartFarming: Recuperacion de cueta ',body="Su nueva contraseña es %s"%contrasenia_aleatoria,from1='facundocianciop',
@@ -139,8 +146,10 @@ def recuperarCuenta(request):
             # FALTA MANDAR EL MAIL, CONFIGURAR LA CONTRASEÑA Y EL PUERTO
             # ACA PENSE QUE EN CASO DE RECHAZAR LA FINCA QUE EL ADMINISTRADOR ESCRIBIERA UN MENSAJE DICIENDO POR QUÉ LA RECHAZÓ
 
-
-            response.content = dumps(contrasenia_aleatoria)
+            response_data = {}
+            response_data['contraseniaGenerada'] = contrasenia_aleatoria
+            response.content = dumps(response_data)
+            response.content_type="application/json"
             response.status_code = 200
             return response
         except (IntegrityError, ValueError) as err:
