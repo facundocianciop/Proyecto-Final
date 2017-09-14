@@ -20,6 +20,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <state relative-caret-position="901">
               <caret line="53" column="61" lean-forward="false" selection-start-line="53" selection-start-column="61" selection-end-line="53" selection-end-column="61" />
 =======
@@ -31,6 +32,9 @@
 >>>>>>> b673d1c0c6ef58a64e6734b6f4a6256d9b1ee2c0
 =======
             <state relative-caret-position="345">
+=======
+            <state relative-caret-position="17">
+>>>>>>> 8113d3a9890d316a83a7af17c5b4d86bf7e9e9ff
               <caret line="91" column="0" lean-forward="false" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
 >>>>>>> 6ef8f4daa73c0a15979ddf49c2b970a2357b847d
               <folding />
@@ -38,11 +42,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="viewsSeguridad.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="viewsSeguridad.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/backend/proyectoRiego/riegoInteligente/views/viewsSeguridad.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="484">
-              <caret line="103" column="52" lean-forward="false" selection-start-line="103" selection-start-column="52" selection-end-line="103" selection-end-column="52" />
+            <state relative-caret-position="365">
+              <caret line="135" column="40" lean-forward="false" selection-start-line="135" selection-start-column="40" selection-end-line="135" selection-end-column="40" />
               <folding>
                 <element signature="e#24#37#0" expanded="true" />
               </folding>
@@ -53,7 +57,7 @@
       <file leaf-file-name="utilFunctions.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backend/proyectoRiego/riegoInteligente/views/supportClases/utilFunctions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
+            <state relative-caret-position="153">
               <caret line="9" column="20" lean-forward="false" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
@@ -87,6 +91,7 @@
           <provider selected="true" editor-type-id="text-editor">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <state relative-caret-position="119">
               <caret line="315" column="49" lean-forward="true" selection-start-line="315" selection-start-column="49" selection-end-line="315" selection-end-column="49" />
 >>>>>>> f7005a8d28ecae1f2c004263b6049eb90d51fad8
@@ -96,6 +101,9 @@
 >>>>>>> b673d1c0c6ef58a64e6734b6f4a6256d9b1ee2c0
 =======
             <state relative-caret-position="5797">
+=======
+            <state relative-caret-position="5729">
+>>>>>>> 8113d3a9890d316a83a7af17c5b4d86bf7e9e9ff
               <caret line="341" column="73" lean-forward="false" selection-start-line="341" selection-start-column="73" selection-end-line="341" selection-end-column="73" />
 >>>>>>> 6ef8f4daa73c0a15979ddf49c2b970a2357b847d
               <folding>
@@ -108,6 +116,7 @@
       <file leaf-file-name="viewsSeguridad.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backend/proyectoRiego/riegoInteligente/views/viewsSeguridad.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -125,6 +134,10 @@
             <state relative-caret-position="391">
               <caret line="23" column="128" lean-forward="true" selection-start-line="23" selection-start-column="128" selection-end-line="23" selection-end-column="128" />
 >>>>>>> 6ef8f4daa73c0a15979ddf49c2b970a2357b847d
+=======
+            <state relative-caret-position="340">
+              <caret line="23" column="128" lean-forward="false" selection-start-line="23" selection-start-column="128" selection-end-line="23" selection-end-column="128" />
+>>>>>>> 8113d3a9890d316a83a7af17c5b4d86bf7e9e9ff
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
               </folding>
@@ -153,11 +166,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="viewsConfiguracionFinca.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="viewsConfiguracionFinca.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backend/proyectoRiego/riegoInteligente/views/viewsConfiguracionFinca.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="416">
-              <caret line="64" column="37" lean-forward="true" selection-start-line="64" selection-start-column="37" selection-end-line="64" selection-end-column="37" />
+            <state relative-caret-position="901">
+              <caret line="70" column="12" lean-forward="true" selection-start-line="70" selection-start-column="12" selection-end-line="70" selection-end-column="12" />
               <folding>
                 <element signature="e#24#73#0" expanded="true" />
               </folding>
@@ -240,11 +253,14 @@
 >>>>>>> 6ef8f4daa73c0a15979ddf49c2b970a2357b847d
         <option value="$PROJECT_DIR$/backend/proyectoRiego/riegoInteligente/views/viewsFinca.py" />
         <option value="$PROJECT_DIR$/backend/proyectoRiego/proyectoRiego/settings.py" />
-        <option value="$PROJECT_DIR$/backend/proyectoRiego/riegoInteligente/views/viewsSeguridad.py" />
         <option value="$PROJECT_DIR$/backend/proyectoRiego/riegoInteligente/models.py" />
         <option value="$PROJECT_DIR$/backend/proyectoRiego/riegoInteligente/urls.py" />
         <option value="$PROJECT_DIR$/backend/proyectoRiego/riegoInteligente/views/viewsConfiguracionFinca.py" />
+<<<<<<< HEAD
 >>>>>>> b673d1c0c6ef58a64e6734b6f4a6256d9b1ee2c0
+=======
+        <option value="$PROJECT_DIR$/backend/proyectoRiego/riegoInteligente/views/viewsSeguridad.py" />
+>>>>>>> 8113d3a9890d316a83a7af17c5b4d86bf7e9e9ff
       </list>
     </option>
   </component>
@@ -794,13 +810,13 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32827735" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32827735" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
 <<<<<<< HEAD
 =======
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31527627" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="manage.py@Proyecto-Final" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32827735" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29211086" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="manage.py@Proyecto-Final" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32827735" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29850745" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
 >>>>>>> f7005a8d28ecae1f2c004263b6049eb90d51fad8
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1260,6 +1276,7 @@
       </provider>
     </entry>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/backend/proyectoRiego/riegoInteligente/views/supportClases/utilFunctions.py">
 =======
 =======
@@ -1304,6 +1321,8 @@
         <state relative-caret-position="289">
           <caret line="19" column="85" lean-forward="false" selection-start-line="19" selection-start-column="85" selection-end-line="19" selection-end-column="85" />
 =======
+=======
+>>>>>>> 8113d3a9890d316a83a7af17c5b4d86bf7e9e9ff
     <entry file="file://$PROJECT_DIR$/backend/proyectoRiego/riegoInteligente/views/supportClases/authentication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="510">
@@ -1341,6 +1360,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/backend/proyectoRiego/proyectoRiego/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="901">
@@ -1355,20 +1375,28 @@
 =======
     <entry file="file://$PROJECT_DIR$/backend/proyectoRiego/riegoInteligente/views/viewsSeguridad.py">
 >>>>>>> 6ef8f4daa73c0a15979ddf49c2b970a2357b847d
+=======
+    <entry file="file://$PROJECT_DIR$/backend/proyectoRiego/riegoInteligente/urls.py">
+>>>>>>> 8113d3a9890d316a83a7af17c5b4d86bf7e9e9ff
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="484">
-          <caret line="103" column="52" lean-forward="false" selection-start-line="103" selection-start-column="52" selection-end-line="103" selection-end-column="52" />
+        <state relative-caret-position="340">
+          <caret line="23" column="128" lean-forward="false" selection-start-line="23" selection-start-column="128" selection-end-line="23" selection-end-column="128" />
           <folding>
+<<<<<<< HEAD
 <<<<<<< HEAD
             <element signature="e#0#28#0" expanded="true" />
 >>>>>>> b673d1c0c6ef58a64e6734b6f4a6256d9b1ee2c0
 =======
             <element signature="e#24#37#0" expanded="true" />
 >>>>>>> 6ef8f4daa73c0a15979ddf49c2b970a2357b847d
+=======
+            <element signature="e#0#32#0" expanded="true" />
+>>>>>>> 8113d3a9890d316a83a7af17c5b4d86bf7e9e9ff
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/backend/proyectoRiego/riegoInteligente/views/viewsSeguridad.py">
@@ -1412,17 +1440,31 @@
     <entry file="file://$PROJECT_DIR$/backend/proyectoRiego/riegoInteligente/views/viewsFinca.py">
 =======
 >>>>>>> 6ef8f4daa73c0a15979ddf49c2b970a2357b847d
+=======
+    <entry file="file://$PROJECT_DIR$/backend/proyectoRiego/riegoInteligente/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="128" lean-forward="true" selection-start-line="23" selection-start-column="128" selection-end-line="23" selection-end-column="128" />
+        <state relative-caret-position="5729">
+          <caret line="341" column="73" lean-forward="false" selection-start-line="341" selection-start-column="73" selection-end-line="341" selection-end-column="73" />
           <folding>
-            <element signature="e#0#32#0" expanded="true" />
+            <element signature="e#0#28#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/backend/proyectoRiego/riegoInteligente/models.py">
+    <entry file="file://$PROJECT_DIR$/backend/proyectoRiego/riegoInteligente/views/viewsConfiguracionFinca.py">
+>>>>>>> 8113d3a9890d316a83a7af17c5b4d86bf7e9e9ff
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="901">
+          <caret line="70" column="12" lean-forward="true" selection-start-line="70" selection-start-column="12" selection-end-line="70" selection-end-column="12" />
+          <folding>
+            <element signature="e#24#73#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backend/proyectoRiego/proyectoRiego/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
 <<<<<<< HEAD
         <state relative-caret-position="51">
           <caret line="3" column="41" lean-forward="false" selection-start-line="3" selection-start-column="41" selection-end-line="3" selection-end-column="41" />
@@ -1431,19 +1473,31 @@
         <state relative-caret-position="5797">
           <caret line="341" column="73" lean-forward="false" selection-start-line="341" selection-start-column="73" selection-end-line="341" selection-end-column="73" />
 >>>>>>> 6ef8f4daa73c0a15979ddf49c2b970a2357b847d
+=======
+        <state relative-caret-position="17">
+          <caret line="91" column="0" lean-forward="false" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backend/proyectoRiego/riegoInteligente/views/supportClases/utilFunctions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="20" lean-forward="false" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
+>>>>>>> 8113d3a9890d316a83a7af17c5b4d86bf7e9e9ff
           <folding>
-            <element signature="e#0#28#0" expanded="true" />
+            <element signature="e#0#22#0" expanded="true" />
           </folding>
 >>>>>>> f7005a8d28ecae1f2c004263b6049eb90d51fad8
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/backend/proyectoRiego/riegoInteligente/views/viewsConfiguracionFinca.py">
+    <entry file="file://$PROJECT_DIR$/backend/proyectoRiego/riegoInteligente/views/viewsSeguridad.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
-          <caret line="64" column="37" lean-forward="true" selection-start-line="64" selection-start-column="37" selection-end-line="64" selection-end-column="37" />
+        <state relative-caret-position="365">
+          <caret line="135" column="40" lean-forward="false" selection-start-line="135" selection-start-column="40" selection-end-line="135" selection-end-column="40" />
           <folding>
-            <element signature="e#24#73#0" expanded="true" />
+            <element signature="e#24#37#0" expanded="true" />
           </folding>
         </state>
       </provider>
