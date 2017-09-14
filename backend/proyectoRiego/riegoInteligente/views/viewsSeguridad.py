@@ -86,7 +86,7 @@ def iniciarSesion(request):
 
             print (usuario,contrasenia)
             usuario_inicial= authenticate(username=usuario,password=contrasenia)
-            print usuario_inicial.username
+            #print usuario_inicial.username
             if usuario_inicial is not None:
                 if Sesion.objects.filter(usuario=usuario_inicial.usuario,fechaYHoraFin__isnull=True):
                     raise ValueError("Ya tiene una sesion iniciada")
@@ -123,13 +123,13 @@ def recuperarCuenta(request):
     if request.method == "POST":
 
         try:
-
+            print(datos['email'])
             usuario = Usuario.objects.get(email=datos['email'])
             if Usuario.objects.filter(email=datos['email']).__len__() == 0:
                 raise ValueError("No se encontró usuario con el mail ingresado")
-            sesiones_abiertas = Sesion.objects.get(usuario=usuario, fechaYHoraFin__isnull=True)
-            for sesion in sesiones_abiertas:
-                sesion.fechaYHoraFin = datetime.now()
+            # sesiones_abiertas = Sesion.objects.get(usuario=usuario, fechaYHoraFin__isnull=True)
+            # for sesion in sesiones_abiertas:
+            #     sesion.fechaYHoraFin = datetime.now()
             contrasenia_aleatoria = id_generator()
             usuario.user.set_password(contrasenia_aleatoria)
             print contrasenia_aleatoria
