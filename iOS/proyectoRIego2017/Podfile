@@ -1,0 +1,22 @@
+source 'https://github.com/CocoaPods/Old-Specs.git'
+# Uncomment this line to define a global platform for your project
+# platform :ios, '8.0'
+
+# use_frameworks!
+
+target 'proyectoRIego2017' do
+
+pod 'AFNetworking', '~>3.0'
+pod 'CCTextFieldEffects'
+pod 'Masonry'
+
+end
+
+target 'proyectoRIego2017Tests' do
+
+end
+
+target 'proyectoRIego2017UITests' do
+
+end
+
