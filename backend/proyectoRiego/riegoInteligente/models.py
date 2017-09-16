@@ -13,10 +13,11 @@ class EstadoUsuario(models.Model):
     nombreEstadoUsuario=models.CharField(max_length=100)
 
 
-class Usuario(models.Model):
+class DatosUsuario(models.Model):
     user=models.OneToOneField(User, on_delete=models.CASCADE,null=True)
-    OIDUsuario = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    OIDDatosUsuario = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nombre=models.CharField(max_length=30,null=True)
+    codigoVerificacion=models.CharField(max_length=10,null=True)
 
     apellido=models.CharField(max_length=30,null=True)
     cuit=models.CharField(max_length=15,null=True)
@@ -24,14 +25,14 @@ class Usuario(models.Model):
     domicilio=models.CharField(max_length=50,null=True)
     email=models.CharField(max_length=30,null=True)
     fechaNacimiento=models.DateTimeField(null=True)
-    imagenUsuario=models.ImageField(null=True)
+    #imagenUsuario=models.ImageField(null=True)
     #LAS RELACIONES CON OTRAS CLASES LAS SEPARE UN RENGLON
 
 
     @receiver(post_save,sender=User)
     def crearUsuario(sender,instance,created,**kwargs):
         if created:
-            Usuario.objects.create(user=instance)
+            DatosUsuario.objects.create(user=instance)
 
     @receiver(post_save,sender=User)
     def guardarUsuario(sender,instance,**kwargs):
@@ -56,7 +57,7 @@ class Contrasenia(models.Model):
     fechaAltaContrasenia=models.DateTimeField()
     fechaBajaContrasenia=models.DateTimeField()
 
-    OIDUsuario=models.ForeignKey(Usuario,db_column="OIDUsuario",related_name="contrasenia")
+    OIDUsuario=models.ForeignKey(DatosUsuario,db_column="OIDDatosUsuario",related_name="contrasenia")
 
 
 class HistoricoEstadoUsuario(models.Model):
@@ -64,7 +65,7 @@ class HistoricoEstadoUsuario(models.Model):
     fechaFinEstadoUsuario=models.DateTimeField(null=True)
     fechaInicioEstadoUsuario=models.DateTimeField()
 
-    usuario=models.ForeignKey(Usuario,db_column="OIDUsuario",related_name="historicoEstadoUsuarioList",null=True)
+    usuario=models.ForeignKey(DatosUsuario,db_column="OIDDatosUsuario",related_name="historicoEstadoUsuarioList",null=True)
     estadoUsuario=models.ForeignKey(EstadoUsuario,db_column="OIDEstadoUsuario")
 
 
@@ -81,7 +82,7 @@ class Sesion(models.Model):
     fechaYHoraInicio=models.DateTimeField()
     idSesion=models.UUIDField(default=uuid.uuid4, editable=False)
 
-    usuario=models.ForeignKey(Usuario,db_column="OIDUsuario",related_name="sesionList",null=True)
+    usuario=models.ForeignKey(DatosUsuario,db_column="OIDDatosUsuario",related_name="sesionList",null=True)
     tipoSesion=models.ForeignKey(TipoSesion,db_column="OIDTipoSesion")
 
 
@@ -98,7 +99,7 @@ class UsuarioFinca(models.Model):
     fechaBajaUsuarioFinca=models.DateTimeField(null=True)
 
     finca=models.ForeignKey('Finca',db_column="OIDFinca")
-    usuario=models.ForeignKey(Usuario,db_column="OIDUsuario",related_name='usuarioFincaList')
+    usuario=models.ForeignKey(DatosUsuario,db_column="OIDDatosUsuario",related_name='usuarioFincaList')
 
 
 class RolUsuarioFinca(models.Model):
@@ -156,7 +157,7 @@ class Finca(models.Model):
     OIDFinca=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     idFinca=models.IntegerField(default=1,unique=True)
     direccionLegal=models.CharField(max_length=50)
-    logoFinca=models.ImageField(null=True)
+    #logoFinca=models.ImageField(null=True)
     nombre=models.CharField(max_length=50)
     tamanio=models.FloatField()
     ubicacion=models.CharField(max_length=50)
@@ -172,8 +173,8 @@ class Finca(models.Model):
             direccionLegal=self.direccionLegal,
             idFinca=self.idFinca,
             nombre=self.nombre,tamanio=self.tamanio,
-            ubicacion=self.ubicacion,
-            logoFinca=self.logoFinca)
+            ubicacion=self.ubicacion)
+            #logoFinca=self.logoFinca)
 
 
 class EstadoFinca(models.Model):

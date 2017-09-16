@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 import django
 from django.http import HttpResponse, JsonResponse, response
-from ..models import TipoSesion,Sesion,EstadoUsuario,HistoricoEstadoUsuario,Usuario
+from ..models import TipoSesion,Sesion,EstadoUsuario,HistoricoEstadoUsuario,DatosUsuario
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login
 from django.views.decorators.csrf import csrf_exempt
@@ -124,22 +124,19 @@ def recuperarCuenta(request):
 
         try:
             print  datos['email']
-            usuario_datos=User.objects.get(email=datos['email'])
-            print usuario_datos.email
-            usuario = Usuario.objects.get(user=usuario_datos)
-            print usuario.user.email
+            user=User.objects.get(email=datos['email'])
+            usuario=user.datosusuario
             if User.objects.filter(email=datos['email']).__len__()==0:
                 raise ValueError("No se encontró usuario con el mail ingresado")
             if Sesion.objects.filter(usuario=usuario, fechaYHoraFin__isnull=True).__len__()!=0:
                 sesiones_abiertas = Sesion.objects.filter(usuario=usuario, fechaYHoraFin__isnull=True)
                 for sesion in sesiones_abiertas:
                     sesion.fechaYHoraFin = datetime.now()
-            contrasenia_aleatoria = id_generator()
-            usuario.user.set_password(contrasenia_aleatoria)
+            codigo_verificacion = id_generator()
+            usuario.codigoVerificacion(codigo_verificacion)
             usuario.user.save()
             usuario.save()
 
-            print contrasenia_aleatoria
             # with mail.get_connection() as connection:
             # mail.EmailMessage('SmartFarming: Recuperacion de cueta ',body="Su nueva contraseña es %s"%contrasenia_aleatoria,from1='facundocianciop',
             #                       to1='facundocianciop',connection=connection).send()
@@ -147,14 +144,12 @@ def recuperarCuenta(request):
             # ACA PENSE QUE EN CASO DE RECHAZAR LA FINCA QUE EL ADMINISTRADOR ESCRIBIERA UN MENSAJE DICIENDO POR QUÉ LA RECHAZÓ
 
             response_data = {}
-            response_data['contraseniaGenerada'] = contrasenia_aleatoria
+            response_data['usuarioId'] = user.username
             response.content = dumps(response_data)
-            response.content_type="application/json"
             response.status_code = 200
             return response
         except (IntegrityError, ValueError) as err:
             response.status_code = 401
-
             response.content = err.args
             return response
             #   print(received_json_data)
@@ -195,6 +190,36 @@ def cambiarContrasenia(request):
         # return HttpResponse(u.check_password('1234'))
 
 
+@transaction.atomic()
+@csrf_exempt
+def cambiarContraseniaRecuperarCuenta(request):
+    response=HttpResponse()
+    datos = armarJson(request)
+    if request.method=='POST':
+        # if autenticarse(request):
+        #     u=User.objects.get(username='Facundo')#BUSCO AL USUARIO CON ESE NOMBRE DE USUARIO
+
+        usuario_a_modificar = User.objects.get(username=datos['usuarioId'])
+        contrasenia_nueva=datos["contrasenia"]
+        user=User.objects.filter(codigoVerificacion=datos["codigoVerificacion"],username=datos['usuarioId'])
+
+        if user is not None:
+            user.set_password(contrasenia_nueva)
+            user.save()
+            response_data = {}
+            response_data['resultado'] = True
+            response.content = dumps(response_data)
+            response.status_code = 200
+            response.status_code=200
+        else:
+            response.status_code=401
+        return response
+
+        # if (u.check_password('123')):
+        #     u.set_password('1234')
+        #     u.save()
+        #     u = User.objects.get(username='Facundo')  # BUSCO AL USUARIO CON ESE NOMBRE DE USUARIO
+        # return HttpResponse(u.check_password('1234'))
 
 
 @csrf_exempt
