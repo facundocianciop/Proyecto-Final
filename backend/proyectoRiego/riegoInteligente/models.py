@@ -1,5 +1,4 @@
 import uuid
-from datetime import datetime
 
 from django.conf import settings
 from django.db import models
@@ -39,6 +38,7 @@ class DatosUsuario(models.Model):
     imagenUsuario=models.ImageField(null=True)
 
     reset_password = models.BooleanField(default=False)
+    codigoVerificacion=models.CharField(max_length=10,null=True)
 
     @receiver(post_save,sender=User)
     def crearDatosUsuario(sender,instance,created,**kwargs):
@@ -83,6 +83,24 @@ class Rol(models.Model):
     fechaBajaRol=models.DateTimeField(null=True)
 
 
+class UsuarioFinca(models.Model):
+    OIDUsuarioFinca=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
+    fechaAltaUsuarioFinca=models.DateTimeField()
+    fechaBajaUsuarioFinca=models.DateTimeField(null=True)
+
+    finca=models.ForeignKey('Finca',db_column="OIDFinca")
+    usuario=models.ForeignKey(DatosUsuario,db_column="OIDUsuario",related_name='usuarioFincaList')
+
+
+class RolUsuarioFinca(models.Model):
+    OIDRolUsuarioFinca=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
+    fechaAltaRolUsuarioFinca=models.DateTimeField()
+    fechaBajaRolUsuarioFinca=models.DateTimeField(null=True)
+
+    rol=models.ForeignKey(Rol,db_column="OIDRol")
+    usuarioFinca=models.ForeignKey(UsuarioFinca,db_column="OIDUsuarioFinca",related_name="rolUsuarioFincaList",null=True)
+
+
 class ConjuntoPermisos (models.Model):
     OIDConjuntoPermisos=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     puedeAsignarComponenteSensor=models.BooleanField()
@@ -112,25 +130,6 @@ class ConjuntoPermisos (models.Model):
 
     rol=models.ForeignKey(Rol,db_column="OIDRol",related_name="conjuntoPermisos")
 
-
-class UsuarioFinca(models.Model):
-    OIDUsuarioFinca=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    fechaAltaUsuarioFinca=models.DateTimeField()
-    fechaBajaUsuarioFinca=models.DateTimeField(null=True)
-
-    finca=models.ForeignKey('Finca',db_column="OIDFinca")
-    usuario=models.ForeignKey(DatosUsuario,db_column="OIDUsuario",related_name='usuarioFincaList')
-
-
-class RolUsuarioFinca(models.Model):
-    OIDRolUsuarioFinca=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    fechaAltaRolUsuarioFinca=models.DateTimeField()
-    fechaBajaRolUsuarioFinca=models.DateTimeField(null=True)
-
-    rol=models.ForeignKey(Rol,db_column="OIDRol")
-    usuarioFinca=models.ForeignKey(UsuarioFinca,db_column="OIDUsuarioFinca",related_name="rolUsuarioFincaList",null=True)
-
-
 #MODULO FINCA
 
 class ProveedorInformacionClimaticaFinca(models.Model):
@@ -145,19 +144,26 @@ class ProveedorInformacionClimaticaFinca(models.Model):
 
 class Finca(models.Model):
     OIDFinca=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
+    idFinca=models.IntegerField(default=1,unique=True)
     direccionLegal=models.CharField(max_length=50)
-    #idFinca=models.AutoField(unique=True)
-    logoFinca=models.ImageField(null=True)
+    #logoFinca=models.ImageField(null=True)
     nombre=models.CharField(max_length=50)
     tamanio=models.FloatField()
     ubicacion=models.CharField(max_length=50)
 
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        ultimaFinca = Finca.objects.order_by('-idFinca')[0]
+        self.idFinca = ultimaFinca.idFinca + 1
+        super(Finca, self).save()
+
     def as_json(self):
         return dict(
             direccionLegal=self.direccionLegal,
-            #idFinca=self.idFinca,
+            idFinca=self.idFinca,
             nombre=self.nombre,tamanio=self.tamanio,
             ubicacion=self.ubicacion)
+            #logoFinca=self.logoFinca)
 
 
 class EstadoFinca(models.Model):
@@ -179,20 +185,38 @@ class MecanismoRiegoFinca(models.Model):
     OIDMecanismoRiegoFinca = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     direccionIP=models.CharField(max_length=20)
     fechaInstalacion=models.DateTimeField()
-    idFincaMecanismoRiego=models.IntegerField()
+    idMecanismoRiegoFinca=models.IntegerField(default=1,unique=True)
+
 
     finca=models.ForeignKey(Finca,db_column="OIDFinca")
+    tipoMecanismoRiego=models.ForeignKey("TipoMecanismoRiego",db_column="OIDTipoMecanismoRiego",null=True)
 
+    def as_json(self):
+        return dict(
+                    direccionIP=self.user.username,
+                    fechaInstalacion=self.fechaInstalacion,
+                    idMecanismoRiegoFinca=self.idMecanismoRiegoFinca,
+                    tipoMecanismoRiego=self.tipoMecanismoRiego.nombreMecanismo)
+
+
+                    #imagenUsuario=self.imagenUsuario)
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        ultimoMecanismo = MecanismoRiegoFinca.objects.order_by('-idMecanismoRiegoFinca')[0]
+        self.idFinca = ultimoMecanismo.idMecanismoRiegoFinca + 1
+        super(MecanismoRiegoFinca, self).save()
 
 class EstadoMecanismoRiegoFinca(models.Model):
     OIDEstadoMecanismoRiegoFinca = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    nombreEstadoMecanismoRiegoFincaSector=models.CharField(max_length=20)
-    descripcionEstadoMecanismoRiegoFincaSector=models.CharField(max_length=100)
+    nombreEstadoMecanismoRiegoFinca=models.CharField(max_length=20)
+    descripcionEstadoMecanismoRiegoFinca=models.CharField(max_length=100)
 
 
 class HistoricoMecanismoRiegoFinca(models.Model):
     OIDHistoricoMecanismoRiegoFinca =models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    mecanismo_riego_finca=models.ForeignKey(MecanismoRiegoFinca,db_column="OIDMecanismoRiegoFinca",related_name="historicoMecanismoRiegoFinca")
+    fechaInicioEstadoMecanismoRiegoFinca=models.DateTimeField(null=True)
+    fechaFinEstadoMecanismoRiegoFinca = models.DateTimeField(null=True)
+    mecanismo_riego_finca=models.ForeignKey(MecanismoRiegoFinca,db_column="OIDMecanismoRiegoFinca",related_name="historicoMecanismoRiegoFincaList")
     estado_mecanismo_riego_finca=models.ForeignKey(EstadoMecanismoRiegoFinca,db_column="OIDEstadoMecanismoRiegoFinca")
 
 
@@ -235,7 +259,7 @@ class EstadoSector(models.Model):
 
 class HistoricoEstadoSector(models.Model):
     OIDHistoricoEstadoSector=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    fechaFinEstadoSector=models.DateTimeField()
+    fechaFinEstadoSector=models.DateTimeField(null=True)
     fechaInicioEstadoSector=models.DateTimeField()
 
     estado_sector=models.ForeignKey(EstadoSector,db_column="OIDEstadoSector")
@@ -303,6 +327,23 @@ class CaracteristicaSubtipo(models.Model):
 
 class TipoMecanismoRiego(models.Model):
     OIDTipoMecanismoRiego = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    nombreMecanismo=models.CharField(max_length=30,unique=True)
+    descripcion=models.CharField(max_length=200,null=True)
+    presionEstandar=models.FloatField(null=True)
+    eficiencia=models.FloatField(null=True)
+    fechaAltaTipoMecanismoRiego=models.DateTimeField()
+    fechaBajaTipoMecanismoRiego=models.DateTimeField(null=True)
+    habilitado=models.BooleanField(default=True)
+    def as_json(self):
+        return dict(
+            OIDTipoMecanismoRiego=self.OIDTipoMecanismoRiego,
+            nombreMecanismo=self.nombreMecanismo,
+            descripcion=self.descripcion,
+            presionEstandar=self.presionEstandar,
+            eficiencia=self.eficiencia,
+            fechaAltaTipoMecanismoRiego=self.fechaAltaTipoMecanismoRiego,
+            habilitado=self.habilitado
+        )
 
 
 class TipoConfiguracionRiego(models.Model):

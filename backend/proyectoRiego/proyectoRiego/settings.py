@@ -79,14 +79,15 @@ WSGI_APPLICATION = 'proyectoRiego.wsgi.application'
 
 DATABASES = {
         'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'riegoInteligente',
-        'USER': 'postgres',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
-        'PORT': ''
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'riegoInteligente',
+            'USER': 'postgres',
+            'PASSWORD': 'root',
+            'HOST': 'localhost',
+            'PORT': ''
+        }
     }
-}
+
 """
 DATABASES = {
     'default': {
@@ -137,5 +138,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
-#SILENCED_SYSTEM_CHECKS = ['fields.E300', 'fields.E307']
+TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)
+# SILENCED_SYSTEM_CHECKS = ['fields.E300', 'fields.E307']
