@@ -2,7 +2,7 @@
 from django.http import HttpResponse,JsonResponse
 from django.template import loader
 from django.shortcuts import render
-from ..models import Sector,Finca,ProveedorInformacionClimaticaFinca,ProveedorInformacionClimatica,TipoSesion,Sesion,EstadoFinca,HistoricoEstadoFinca,UsuarioFinca,Usuario,Rol,RolUsuarioFinca
+from ..models import Sector,Finca,ProveedorInformacionClimaticaFinca,ProveedorInformacionClimatica,TipoSesion,Sesion,EstadoFinca,HistoricoEstadoFinca,UsuarioFinca,DatosUsuario,Rol,RolUsuarioFinca
 from django.core.serializers import serialize
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.models import User
@@ -389,7 +389,7 @@ def buscarUsuarios(request):
     response=HttpResponse()
     if request.method=="GET":
         try:
-            usuarios_todos=Usuario.objects.all()
+            usuarios_todos=DatosUsuario.objects.all()
             # usuario_logueado=Sesion.objects.get(idSesion=request.COOKIES['idsesion']).usuario ESTO ES PARA QUE CUANDO MUESTRE TODOS LOS USUARIOS NO TE MOSTRES A VOS MISMO
             usuario_logueado=obtenerUsuarioActual(request)
 
@@ -417,8 +417,9 @@ def agregarUsuarioFinca(request):
     datos=armarJson(request)
     if request.method=="PUT":
         try:
-            usuario_ingresado=Usuario.objects.get(OIDUsuario=datos['OIDUsuario'])
-            finca=Finca.objects.get(OIDFinca=datos['OIDFinca'])
+            user=User.objects.get(username=datos['usuario'])
+            usuario_ingresado=user.datosusuario
+            finca=Finca.objects.get(idFinca=datos['idFinca'])
             rol_ingresado=Rol.objects.get(nombreRol=datos['nombreRol'])
             rol_usuario_finca=RolUsuarioFinca(rol=rol_ingresado,fechaAltaRolUsuarioFinca=datetime.now())
 
@@ -444,8 +445,9 @@ def modificarRolUsuario(request):
     datos=armarJson(request)
     if request.method=="POST":
         try:
-            usuario_ingresado = Usuario.objects.get(OIDUsuario=datos['OIDUsuario'])
-            finca = Finca.objects.get(OIDFinca=datos['OIDFinca'])
+            user = User.objects.get(username=datos['usuario'])
+            usuario_ingresado = user.datosusuario
+            finca = Finca.objects.get(idFinca=datos['idFinca'])
             rol_ingresado = Rol.objects.get(nombreRol=datos['nombreRol'])
 
             usuario_finca=UsuarioFinca.objects.get(usuario=usuario_ingresado,finca=finca)
@@ -462,6 +464,40 @@ def modificarRolUsuario(request):
             print err.args
             response.content=err.args
             response.status_code=401
+
+
+@transaction.atomic()
+def buscarFincaId(request):
+    response=HttpResponse()
+    datos=armarJson(request)
+    if request.method=="POST":
+        try:
+            finca = Finca.objects.get(idFinca=datos['idFinca'])
+            response.dumps(finca.as_json())
+            return response
+        except (ValueError,IntegrityError) as err:
+            print err.args
+            response.content=err.args
+            response.status_code = 401
+
+@transaction.atomic()
+def devolverPermisos(request):
+    response=HttpResponse()
+    datos=armarJson(request)
+    try:
+        finca = Finca.objects.get(idFinca=datos['idFinca'])
+        usuario=request.user
+        usuario_finca=UsuarioFinca.objects.get(usuario=usuario,finca=finca)
+        rol_usuario=RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,fechaBajaRolUsuarioFinca__isnull=True)
+        rol=rol_usuario.rol
+        permisos=rol.conjuntoPermisos
+        response.content.dumps(permisos,cls=DjangoJSONEncoder)
+        response.status_code=200
+        return response
+    except IntegrityError as err:
+        print err.args
+        response.status_code=401
+        return response
 
 
 

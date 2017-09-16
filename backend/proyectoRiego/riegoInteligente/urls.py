@@ -21,6 +21,10 @@ urlpatterns = [
     url(r'^agregarUsuarioFinca/$', viewsFinca.agregarUsuarioFinca,name='agregarUsuarioFinca'),
     url(r'^modificarRolUsuario/$', viewsFinca.modificarRolUsuario, name='modificarRolUsuario'),
     url(r'^modificarFinca/$', viewsFinca.modificarFinca, name='modificarFinca'),
+    url(r'^buscarFincaId/$', viewsFinca.buscarFincaId, name='buscarFincaId'),
+    url(r'^devolverPermisos/$', viewsFinca.devolverPermisos, name='devolverPermisos'),
+
+
 
     url(r'^crearSector/$', viewsConfiguracionSectores.crearSector, name='crearSector'),
 
@@ -38,6 +42,8 @@ urlpatterns = [
     url(r'^finalizarSesion/$', viewsSeguridad.finalizarSesion, name='finalizarSesion'),
     url(r'^eliminarUsuario/$',viewsSeguridad.eliminarUsuario,name='eliminarUsuario'),
     url(r'^modificarUsuario/$',viewsSeguridad.modificarUsuario,name='modificarUsuario'),
-    url(r'^recuperarCuenta/$', viewsSeguridad.recuperarCuenta, name='recuperarCuenta')
+    url(r'^recuperarCuenta/$', viewsSeguridad.recuperarCuenta, name='recuperarCuenta'),
+    url(r'^cambiarContraseniaRecuperarCuenta/$', viewsSeguridad.cambiarContraseniaRecuperarCuenta,
+        name='cambiarContraseniaRecuperarCuenta'),
 
 ]

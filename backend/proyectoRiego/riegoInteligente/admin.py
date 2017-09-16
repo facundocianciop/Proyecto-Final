@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.contrib import admin
 from models import *
 
-admin.site.register(Usuario)
+admin.site.register(DatosUsuario)
 admin.site.register(Finca)
 admin.site.register(TipoCultivo)
 admin.site.register(SubtipoCultivo)
