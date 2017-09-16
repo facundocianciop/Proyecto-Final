@@ -48,7 +48,7 @@ def mostrarMecanismosNuevos(request):
     datos=armarJson(request)
     if request.method=='POST':
         try:
-            finca_actual = Finca.objects.get(OIDFinca=datos['OIDFinca'])
+            finca_actual = Finca.objects.get(idFinca=datos['idFinca'])
             mecanismo_riego_finca_list=MecanismoRiegoFinca.objects.filter(finca=finca_actual)
             tipo_mecanismo_existente_list=[]
             for mecanismo_riego in mecanismo_riego_finca_list:

@@ -72,9 +72,7 @@ def obtenerFincasPorUsuario(request):
     datos = armarJson(request)
     if request.method=="POST":
         try:
-            if Usuario.objects.filter(OIDUsuario=datos['OIDUsuario']).__len__()==0:
-                raise ValueError("Usuario no encontrado")
-            usuario=Usuario.objects.get(OIDUsuario=datos['OIDUsuario'])
+            usuario=obtenerUsuarioActual(request)
             print "HOLA"
             lista_DTOFincaRol=[]
             for usuarioFinca in usuario.usuarioFincaList.all():
@@ -108,7 +106,7 @@ def crearFinca(request):
                 finca = Finca(nombre=datos['nombre'], direccionLegal=datos['direccionLegal'], ubicacion=datos['ubicacion'],
                               tamanio=datos['tamanio'])
                 finca.save()
-                response=HttpResponse(dumps(finca.as_json()),content_type="application/json")
+                response=HttpResponse(dumps(finca,cls=DjangoJSONEncoder))
                 response.status_code=200
                 return response
             else:
@@ -144,7 +142,7 @@ def elegirProveedorInformacion(request):
         if ProveedorInformacionClimatica.objects.filter(nombreProveedor=datos['nombreProveedor']).__len__()==1:
             try:
                 proveedorSeleccionado=ProveedorInformacionClimatica.objects.get(nombreProveedor=datos['nombreProveedor'])
-                fincaCreada=Finca.objects.get(OIDFinca=datos["OIDFinca"])
+                fincaCreada=Finca.objects.get(idFinca=datos["idFinca"])
                 print "Encontre la finca"
                 proveedorInformacionClimaticaFinca=ProveedorInformacionClimaticaFinca(proveedorInformacionClimatica=proveedorSeleccionado,finca=fincaCreada)
                 proveedorInformacionClimaticaFinca.fechaAltaProveedorInfoClimaticaFinca=datetime.now()
@@ -161,7 +159,7 @@ def elegirProveedorInformacion(request):
 
                 print fincaCreada.historicoEstadoFincaList
 
-                usuarioActual=Usuario.objects.get(OIDUsuario=datos['OIDUsuario'])
+                usuarioActual=obtenerUsuarioActual(request)
                 print "Encontre al usuario" #DEBERIA BUSCAR EL USUARIO PERTENECIENTE A LA COOKIE QUE TIENE LA SESION
                 usuarioFinca=UsuarioFinca(usuario=usuarioActual,finca=fincaCreada)
                 usuarioFinca.fechaAltaUsuarioFinca = datetime.now()
@@ -209,9 +207,9 @@ def aprobarFinca(request):
     response=HttpResponse()
     datos = armarJson(request)
     if request.method=="POST":
-        if Finca.objects.filter(OIDFinca=datos['OIDFinca']).__len__() == 1:
+        if Finca.objects.filter(idFinca=datos['idFinca']).__len__() == 1:
             try:
-                finca_por_aprobar=Finca.objects.get(OIDFinca=datos['OIDFinca'])
+                finca_por_aprobar=Finca.objects.get(idFinca=datos['idFinca'])
 
                 estado_habilitado=EstadoFinca.objects.get(nombreEstadoFinca="Habilitada")
                 historico_viejo=HistoricoEstadoFinca.objects.get(estadoFinca="Pendiente de Aprobacion",finca=finca_por_aprobar)
@@ -247,9 +245,9 @@ def noAprobarFinca(request):
     response=HttpResponse()
     datos = armarJson(request)
     if request.method=="POST":
-        if Finca.objects.filter(OIDFinca=datos['OIDFinca']).__len__() == 1:
+        if Finca.objects.filter(idFinca=datos['idFinca']).__len__() == 1:
             try:
-                finca_por_aprobar=Finca.objects.get(OIDFinca=datos['OIDFinca'])
+                finca_por_aprobar=Finca.objects.get(idFinca=datos['idFinca'])
                 estado_no_aprobada=EstadoFinca.objects.get(nombreEstadoFinca="No aprobada")
                 historico_viejo = HistoricoEstadoFinca.objects.get(estadoFinca="Pendiente de Aprobacion",
                                                                    finca=finca_por_aprobar)
@@ -291,7 +289,8 @@ def mostrarFincasEncargado(request):
                     if rol.nombreRol=="Encargado":
                         fincas_encargado.append(usuario_finca.finca)
                 fincas_json=[finca.as_json() for finca in fincas_encargado]
-                response.content=dumps(fincas_json,content_type="application/json")
+                response.content=dumps(fincas_json)
+                response.content_type="application/json"
                 response.status_code=200
                 return response
 
@@ -307,15 +306,15 @@ def modificarFinca(request):
     response=HttpResponse()
     datos = armarJson(request)
     if request.method=="POST":
-        if Finca.objects.filter(OIDFinca=datos['OIDFinca']).__len__() == 1:
+        if Finca.objects.filter(idFinca=datos['idFinca']).__len__() == 1:
             try:
-                finca_a_modificar=Finca.objects.get(OIDFinca=datos['OIDFinca'])
-                finca_encontrada=Finca.objects.get(nombre=datos['nombreFinca'])
-                if (finca_encontrada is Finca.objects.get(nombre=datos['nombreFinca'])):
-                    print Finca.objects.get(nombre=datos['nombreFinca']).OIDFinca
-                    print datos['OIDFinca']
-                    print("Ya existe una finca con ese nombre")
-                    raise ValueError("Ya existe una finca con ese nombre")
+                finca_a_modificar=Finca.objects.get(OIDFinca=datos['idFinca'])
+                # finca_encontrada=Finca.objects.get(nombre=datos['nombreFinca'])
+                # if (finca_encontrada is Finca.objects.get(nombre=datos['nombreFinca'])):
+                #     print Finca.objects.get(nombre=datos['nombreFinca']).OIDFinca
+                #     print datos['OIDFinca']
+                #     print("Ya existe una finca con ese nombre")
+                #     raise ValueError("Ya existe una finca con ese nombre")
                 finca_a_modificar.nombre=datos['nombreFinca']
                 finca_a_modificar.ubicacion=datos['ubicacion']
                 finca_a_modificar.tamanio=datos['tamanio']
@@ -346,7 +345,7 @@ def buscarStakeholdersFinca(request):
     datos=armarJson(request)
     if request.method=="POST":
         try:
-            finca=Finca.objects.get(OIDFinca=datos['OIDFinca'])
+            finca=Finca.objects.get(idFinca=datos['idFinca'])
             usuarios_finca=UsuarioFinca.objects.filter(finca=finca)
             rol_stakeholder=Rol.objects.get(nombreRol="Stakeholder")
             DTO_usuario_finca_list=[]

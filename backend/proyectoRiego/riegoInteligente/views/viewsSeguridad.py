@@ -29,7 +29,7 @@ def registrarse(request):
                 raise ValueError ("Ya existe un usuario con ese nombre, por favor ingrese otro")
             user = User.objects.create_user(username=datos['usuario'],password=datos['contrasenia'])
             #Luego de esto ya está guardado aunque no le haga save
-            user.usuario.email=datos['email']
+            user.email=datos['email']
             estado=EstadoUsuario.objects.get(nombreEstadoUsuario="Activado")
             historico=HistoricoEstadoUsuario(fechaInicioEstadoUsuario=datetime.now(),estadoUsuario=estado)
             print(historico.fechaInicioEstadoUsuario)
@@ -206,11 +206,12 @@ def modificarUsuario(request):
             datos=armarJson(request)
             usuario_a_modificar=obtenerUsuarioActual(request)
             usuario_a_modificar.user.username=datos['usuario']
-            usuario_a_modificar.user.email = datos['mail']
-            usuario_a_modificar.email=datos['mail']
+            usuario_a_modificar.user.email=datos['mail']
 
             usuario_a_modificar.nombre = datos['nombre']
             usuario_a_modificar.apellido = datos['apellido']
+            if datos['domicilio'] !="":
+                usuario_a_modificar.user.domicilio = datos['domicilio']
             if datos['dni']!="":
                 usuario_a_modificar.dni=int(datos['dni'])
             if datos['cuit'] != "":
