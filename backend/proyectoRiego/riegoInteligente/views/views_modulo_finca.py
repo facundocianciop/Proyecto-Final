@@ -2,7 +2,7 @@
 from django.http import HttpResponse,JsonResponse
 from django.template import loader
 from django.shortcuts import render
-from ..models import Sector,Finca,ProveedorInformacionClimaticaFinca,ProveedorInformacionClimatica,TipoSesion,Sesion,EstadoFinca,HistoricoEstadoFinca,UsuarioFinca,Usuario,Rol,RolUsuarioFinca
+from ..models import Sector,Finca,ProveedorInformacionClimaticaFinca,ProveedorInformacionClimatica,TipoSesion,EstadoFinca,HistoricoEstadoFinca,UsuarioFinca,Rol,RolUsuarioFinca
 from django.core.serializers import serialize
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.models import User
@@ -14,7 +14,7 @@ from datetime import datetime
 from json import loads,dumps
 from django.core.mail import send_mail
 from django.core import mail
-from supportClases.utilFunctions import *
+from supportClases.views_util_functions import *
 
 
 class DTOFincaRol():
@@ -67,7 +67,7 @@ def sector(request):
 @transaction.atomic()
 def obtenerFincasPorUsuario(request):
     response=HttpResponse()
-    datos = armarJson(request)
+    datos = obtener_datos_json(request)
     if request.method=="POST":
         try:
             if Usuario.objects.filter(OIDUsuario=datos['OIDUsuario']).__len__()==0:
@@ -100,7 +100,7 @@ def obtenerFincasPorUsuario(request):
 def crearFinca(request):
     response = HttpResponse()
     if request.method == "POST":
-        datos = armarJson(request)
+        datos = obtener_datos_json(request)
         if Finca.objects.filter(nombre=datos['nombre'], direccionLegal=datos['direccionLegal']).__len__() == 0:
             finca = Finca(nombre=datos['nombre'], direccionLegal=datos['direccionLegal'], ubicacion=datos['ubicacion'],
                           tamanio=datos['tamanio'])
@@ -134,7 +134,7 @@ def elegirProveedorInformacion(request):
     response=HttpResponse()
     print "HOLA"
     if request.method=="POST":
-        datos=armarJson(request)
+        datos=obtener_datos_json(request)
         if ProveedorInformacionClimatica.objects.filter(nombreProveedor=datos['nombreProveedor']).__len__()==1:
             try:
                 proveedorSeleccionado=ProveedorInformacionClimatica.objects.get(nombreProveedor=datos['nombreProveedor'])
@@ -201,7 +201,7 @@ def obtenerFincasEstadoPendiente(request):
 @transaction.atomic()
 def aprobarFinca(request):
     response=HttpResponse()
-    datos = armarJson(request)
+    datos = obtener_datos_json(request)
     if request.method=="POST":
         if Finca.objects.filter(OIDFinca=datos['OIDFinca']).__len__() == 1:
             try:
@@ -239,7 +239,7 @@ def aprobarFinca(request):
 @transaction.atomic()
 def noAprobarFinca(request):
     response=HttpResponse()
-    datos = armarJson(request)
+    datos = obtener_datos_json(request)
     if request.method=="POST":
         if Finca.objects.filter(OIDFinca=datos['OIDFinca']).__len__() == 1:
             try:
@@ -270,7 +270,7 @@ def noAprobarFinca(request):
 @transaction.atomic()
 def modificarFinca(request):
     response=HttpResponse()
-    datos = armarJson(request)
+    datos = obtener_datos_json(request)
     if request.method=="POST":
         if Finca.objects.filter(OIDFinca=datos['OIDFinca']).__len__() == 1:
             try:
@@ -307,7 +307,7 @@ def modificarFinca(request):
 @transaction.atomic()
 def mostrarFincasEncargado(request):
     response=HttpResponse()
-    datos = armarJson(request)
+    datos = obtener_datos_json(request)
     if request.method=="POST":
 
 
@@ -335,7 +335,7 @@ def mostrarFincasEncargado(request):
 @transaction.atomic()
 def buscarStakeholdersFinca(request):
     response=HttpResponse()
-    datos=armarJson(request)
+    datos=obtener_datos_json(request)
     if request.method=="POST":
         try:
             finca=Finca.objects.get(OIDFinca=datos['OIDFinca'])
@@ -364,7 +364,7 @@ def buscarStakeholdersFinca(request):
 @transaction.atomic()
 def eliminarStakeholderFinca(request):
     response=HttpResponse()
-    datos=armarJson(request)
+    datos=obtener_datos_json(request)
     if request.method=="DELETE":
         try:
             usuarios_finca=UsuarioFinca.objects.get(OIDUsuarioFinca=datos['OIDUsuarioFinca'])
@@ -409,7 +409,7 @@ def buscarUsuarios(request):
 @transaction.atomic()
 def agregarUsuario(request):
     response=HttpResponse()
-    datos=armarJson(request)
+    datos=obtener_datos_json(request)
     if request.method=="PUT":
         try:
             usuario_ingresado=Usuario.objects.get(OIDUsuario=datos['OIDUsuario'])
