@@ -38,7 +38,7 @@ class Usuario(models.Model):
         instance.usuario.save()
 
     def as_json(self):
-        return dict(OIDUsuario=str(self.OIDUsuario),
+        return dict(
                     usuario=self.user.username,
                     nombre=self.user.first_name,
                     apellido=self.user.last_name,
@@ -154,19 +154,26 @@ class ProveedorInformacionClimaticaFinca(models.Model):
 
 class Finca(models.Model):
     OIDFinca=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
+    idFinca=models.IntegerField(default=1,unique=True)
     direccionLegal=models.CharField(max_length=50)
-    #idFinca=models.AutoField(unique=True)
     logoFinca=models.ImageField(null=True)
     nombre=models.CharField(max_length=50)
     tamanio=models.FloatField()
     ubicacion=models.CharField(max_length=50)
 
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        ultimaFinca = Finca.objects.order_by('-idFinca')[0]
+        self.idFinca = ultimaFinca.idFinca + 1
+        super(Finca, self).save()
+
     def as_json(self):
         return dict(
             direccionLegal=self.direccionLegal,
-            #idFinca=self.idFinca,
+            idFinca=self.idFinca,
             nombre=self.nombre,tamanio=self.tamanio,
-            ubicacion=self.ubicacion)
+            ubicacion=self.ubicacion,
+            logoFinca=self.logoFinca)
 
 
 class EstadoFinca(models.Model):
@@ -195,14 +202,19 @@ class MecanismoRiegoFinca(models.Model):
     tipoMecanismoRiego=models.ForeignKey("TipoMecanismoRiego",db_column="OIDTipoMecanismoRiego",null=True)
 
     def as_json(self):
-        return dict(OIDMecanismoRiegoFinca=str(self.OIDMecanismoRiegoFinca),
+        return dict(
                     direccionIP=self.user.username,
                     fechaInstalacion=self.fechaInstalacion,
                     idMecanismoRiegoFinca=self.idMecanismoRiegoFinca,
                     tipoMecanismoRiego=self.tipoMecanismoRiego.nombreMecanismo)
 
-                    #imagenUsuario=self.imagenUsuario)
 
+                    #imagenUsuario=self.imagenUsuario)
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        ultimoMecanismo = MecanismoRiegoFinca.objects.order_by('-idMecanismoRiegoFinca')[0]
+        self.idFinca = ultimoMecanismo.idMecanismoRiegoFinca + 1
+        super(MecanismoRiegoFinca, self).save()
 
 class EstadoMecanismoRiegoFinca(models.Model):
     OIDEstadoMecanismoRiegoFinca = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
@@ -257,7 +269,7 @@ class EstadoSector(models.Model):
 
 class HistoricoEstadoSector(models.Model):
     OIDHistoricoEstadoSector=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    fechaFinEstadoSector=models.DateTimeField()
+    fechaFinEstadoSector=models.DateTimeField(null=True)
     fechaInicioEstadoSector=models.DateTimeField()
 
     estado_sector=models.ForeignKey(EstadoSector,db_column="OIDEstadoSector")

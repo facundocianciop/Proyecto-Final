@@ -2,6 +2,7 @@ from django.conf.urls import url
 from .views import viewsSeguridad
 from views import viewsFinca
 from views import viewsConfiguracionFinca
+from views import viewsConfiguracionSectores
 
 urlpatterns = [
     url(r'^index/$', viewsFinca.index, name='index'),
@@ -20,6 +21,10 @@ urlpatterns = [
     url(r'^agregarUsuarioFinca/$', viewsFinca.agregarUsuarioFinca,name='agregarUsuarioFinca'),
     url(r'^modificarRolUsuario/$', viewsFinca.modificarRolUsuario, name='modificarRolUsuario'),
     url(r'^modificarFinca/$', viewsFinca.modificarFinca, name='modificarFinca'),
+
+    url(r'^crearSector/$', viewsConfiguracionSectores.crearSector, name='crearSector'),
+
+
 
     url(r'^mostrarMecanismosRiegoFinca/$', viewsConfiguracionFinca.mostrarMecanismosRiegoFinca, name='mostrarMecanismosRiegoFinca'),
     url(r'^mostrarMecanismosNuevos/$', viewsConfiguracionFinca.mostrarMecanismosNuevos,

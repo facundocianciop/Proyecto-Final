@@ -8,3 +8,8 @@ def armarJson(request):
     return datos
 def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
+def armarJsonErrores(error,descripcion):
+    json_error = {}
+    json_error['error'] = error
+    json_error['descripcion']=descripcion
+    return json_error
