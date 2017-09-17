@@ -16,6 +16,7 @@ KEY_EMAIL = 'email'
 KEY_CONTRASENIA = 'contrasenia'
 KEY_CONTRASENIA_VIEJA = 'contraseniaVieja'
 KEY_CONTRASENIA_NUEVA = 'contraseniaNueva'
+KEY_CODIGO_VERIFICACION = 'codigoVerificacion'
 
 KEY_NOMBRE_USUARIO = 'nombre'
 KEY_APELLIDO_USUARIO = 'apellido'
