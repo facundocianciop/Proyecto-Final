@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -8,17 +9,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css']
   
 })
-export class AppComponent {
-
+export class AppComponent implements OnInit {
+  bodyInicio:Boolean;
   constructor(private router:Router){
     
   }
-  private apretarLogin(){
-    this.router.navigate(['/login]']);
+  ngOnInit(){
+    this.bodyInicio=false;
   }
-
-  private apretarRegistrar(){
-    this.router.navigate(['/registrar']);
+  apretarIngresar(){
+    this.bodyInicio=false;
   }
-
 }

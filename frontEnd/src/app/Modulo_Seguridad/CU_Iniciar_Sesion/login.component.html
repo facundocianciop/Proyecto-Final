@@ -1,16 +1,20 @@
+<h1>Iniciar Sesi&oacute;n</h1>
+<form>
+    <div class="container">
+        <label>Usuario</label>
+        <input type="text" name="usuario" #usuario placeholder="Ingrese usuario">
+        <label>Contrase&ntilde;a</label>
+        <input type="password" name="password" #pass placeholder="Ingrese contrase&ntilde;a">
+        <label class="olvida"><a [routerLink]="['/recuperarCuenta']">¿Has olvidado la contrase&ntilde;a?</a></label>
+        <button type="submit" (click)="apretarIngresar(usuario.value,pass.value)">Ingresar</button>        
+    </div>
+</form>
+<!---<homeFinca [usuarioLogeado]="usuarioLogeado"></homeFinca>-->
 
-    <h1>Ingresar a Sistema de Riego (poner logo tambien)</h1>
-    <form>
-        <div class="container">
-
-            <label>Usuario</label>
-            <input type="text" name="usuario" #usuario placeholder="Ingrese usuario" required>
-            <label>Contrase&ntilde;a</label>
-            <input type="password" name="password" #pass placeholder="Ingrese contrase&ntilde;a" required>
-            <button type = "submit" (click)="apretarIngresar(usuario.value,pass.value)">Ingresar</button>
-            <label class="olvida" (click)="apretarRecuperar()"><a>¿Has olvidado la contrase&ntilde;a?</a></label>
-        </div>
-    </form>
-    <router-outlet></router-outlet>
-    
+<div *ngIf="usuarioLogeado">
+    <h1>Error datos invalidos</h1>
+</div>
+<div *ngIf="errorMessage">
+    <h1>Error datos invalidos {{errorMessage}}</h1>
+</div>
 

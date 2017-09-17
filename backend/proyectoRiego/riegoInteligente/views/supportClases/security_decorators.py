@@ -5,9 +5,8 @@ from functools import wraps
 from django.http import HttpResponse
 from django.utils.decorators import available_attrs
 
-from riegoInteligente.models import SesionUsuario
+from ...models import SesionUsuario
 from error_handler import *
-
 
 # Controla si el usuario haciendo una llamada esta loggeado
 def login_requerido(funcion):

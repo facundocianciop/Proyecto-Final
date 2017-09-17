@@ -163,7 +163,8 @@ def recuperar_cuenta(request):
         usuario = User.objects.get(email=email)
 
         contrasenia_aleatoria = id_generator()
-        usuario.user.set_password(contrasenia_aleatoria)
+        usuario.set_password(contrasenia_aleatoria)
+        print(contrasenia_aleatoria)
 
         # with mail.get_connection() as connection:
         # mail.EmailMessage('SmartFarming: Recuperacion de cueta ',body="Su nueva contraseña es
@@ -347,3 +348,31 @@ def mostrar_usuario(request):
 
     except (IntegrityError, TypeError, KeyError):
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+def cambiar_contrasenia_recuperar_cuenta(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if KEY_CONTRASENIA_NUEVA not in datos:
+            raise KeyError(ERROR_DATOS_FALTANTES, "Falta el dato contrasenia")
+        contrasenia_nueva = datos[KEY_CONTRASENIA_NUEVA]
+        user = User.objects.filter(codigoVerificacion=datos[KEY_CODIGO_VERIFICACION], username=datos[KEY_USUARIO])
+
+        if user is not None:
+            user.set_password(contrasenia_nueva)
+            user.save()
+            response_data = {}
+            response_data[KEY_RESULTADO_OPERACION] = True
+            response.content = dumps(armar_response_content(response_data))
+            response.status_code = 200
+            return response
+        else:
+            response.status_code = 401
+    except KeyError as err:
+        print err.args
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    return response
