@@ -16,16 +16,17 @@ export class CerrarSesionComponent implements OnInit{
     }
 
     ngOnInit(){
-        this.cerrarSesionService.cerrarSesion("cookie")
-        .then(response => this.sesion=response);
-        if(this.sesion==true){
-            console.log("el usuario ha finalizado su sesion")
-            this.router.navigate(['/login']);
+        this.cerrarSesionService.cerrarSesion()
+        .then(
+            response => this.sesion=response
+        )
+        .then(
+            response=> this.router.navigate(['/login'])
+        );
             
-        }
-        else{
-            console.log("error al cerrar sesion");
-        }
+            
+            
+        
     }
 
 

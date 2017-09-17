@@ -2,10 +2,12 @@
     
         <ul>
           <li><a href="#inicio">Logo</a></li>
-           <li class="menuDerecho"> <a href="#ingresar">Salir</a></li>
+           <li class="menuDerecho"> <a [routerLink]="['/cerrarSesion']">Salir</a></li>
             <li class="menuDerecho"> <a [routerLink]="['/perfilUsuario']">Perfil</a></li>
 
         </ul>
+        <!--<label>Usuario: </label>
+        <label>{{usuarioLogeado.nombre}}</label>-->     
     <div class="row">
         <div class=col-lg-5>
             <h3>Finca con Rol Encargado</h3>
@@ -14,8 +16,17 @@
                     <th>Nombre</th>
                     <th>Tama&ntilde;o</th>
                     <th>Ubicaci&oacute;n</th>
+                    <th>Ver</th>
                 </tr>
-
+                <tr *ngFor="let fincaEncargado of fincasEncargado">
+                    <td >{{fincaEncargado.nombre}}</td>
+                    <td >{{fincaEncargado.tamanio}}</td>
+                    <td >{{fincaEncargado.ubicacion}}</td>
+                    <td >
+                        <img src="../../../assets/visualizar.png" [routerLink]="['/homeFincaDetalle']"/>
+                    </td>
+                </tr>
+                
             </table>
 
             <h3>Finca con otro Rol</h3>
@@ -31,6 +42,7 @@
                     <th>Nombre</th>
                     <th>Tama&ntilde;o</th>
                     <th>Ubicaci&oacute;n</th>
+                    <th>Ver</th>
                 </tr>
 
             </table>
@@ -43,8 +55,21 @@
                         <th>Nombre</th>
                         <th>Tama&ntilde;o</th>
                         <th>Ubicaci&oacute;n</th>
+                        <th>Ver</th>
                     </tr>
-    
+                    <tr *ngFor="let fincaPendiente of fincasPendientes">
+                        <td >{{fincaPendiente.nombre}}</td>
+                        <td >{{fincaPendiente.tamanio}}</td>
+                        <td >{{fincaPendiente.ubicacion}}</td>
+                        <td >
+                            <img src="../../../assets/visualizar.png" [routerLink]="['/homeFincaDetalle/', fincaPendiente.tamanio]"/>
+                        </td>
+                    <!--<td >
+                            <img src="../../../assets/visualizar.png" [routerLink]="['/aprobarFinca/' + fincaPendiente.nombre ]"/>
+                        </td>
+                        
+                    -->
+                    </tr>
                 </table>
         </div>
 

@@ -9,15 +9,13 @@ export class CerrarSesionService extends RestBaseService{
 
   constructor(private http: Http) {super();}
 
-  cerrarSesion(idsesion: string): Promise<Boolean> {
-    const data = {
-      'idSesion': idsesion
-    };
+  cerrarSesion()  {
 
-    return this.http.post(CerrarSesionService.serverUrl +this.cerrarSesionUrl, JSON.stringify(data), this.getRestHeader())
+
+    return this.http.post(CerrarSesionService.serverUrl +this.cerrarSesionUrl, this.getRestHeader())
       .toPromise()
       .then(response => {
-        return response.json() as Boolean;
+        return response.json();
       })
       .catch(this.handleError);
   }

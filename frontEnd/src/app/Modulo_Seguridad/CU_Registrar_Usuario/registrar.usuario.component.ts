@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {RegistrarUsuarioService, Usuario} from './registrar.usuario.service'
+import {RegistrarUsuarioService, RespuestaRegistrar} from './registrar.usuario.service'
 
 @Component({
     selector:'app-registrar',
@@ -10,9 +10,8 @@ import {RegistrarUsuarioService, Usuario} from './registrar.usuario.service'
 })
 
 export class RegistrarUsuarioComponent implements OnInit{
-    errorMessage: string;
-    errors: string[] = [];
-    usuarioRegistrado: Usuario;
+    
+    usuarioRegistrado: RespuestaRegistrar;
     
     constructor(private router:Router,
                 private registrarUsuarioService:RegistrarUsuarioService){
@@ -23,13 +22,20 @@ export class RegistrarUsuarioComponent implements OnInit{
 
     }
     
-    apretarRegistrar(usuario:string, contrasenia:string,email:string){
-        console.log("estamos aca");
-        console.log(usuario);
-        console.log(contrasenia);
-        console.log(email);
+    apretarRegistrar(nombre:string,apellido:string,dni:number,cuit:number,
+        fechaNac:string,direc:string, email:string, usuario:string,pass1:string,pass2:string){
+        console.log("apretamos Registrar");
+        if(pass1==pass2){
+            this.registrarUsuarioService.login(nombre,apellido,dni,cuit,fechaNac,direc,email,usuario,pass1)
+                                        .then(
+                                            registrar => this.usuarioRegistrado=registrar
+                                        )
+                                        .then(
+                                            response => this.router.navigate(['/login'])
+                                        )
+        }
         //this.router.navigate(['/login']);
-        this.registrarUsuarioService.login(usuario,contrasenia,email).then(registrar => this.usuarioRegistrado=registrar);
+        
     }
 
     apretarCancelar(){

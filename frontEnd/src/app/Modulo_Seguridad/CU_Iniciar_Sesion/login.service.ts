@@ -16,7 +16,7 @@ export class LoginService extends RestBaseService{
     const data = {
       'usuario': username,
       'contrasenia': password,
-      'tipoDispositivo':"tipoDispositivo"
+      //'tipoDispositivo':
     };
 
     return this.http.post(LoginService.serverUrl +this.loginUrl, JSON.stringify(data), this.getRestHeader())

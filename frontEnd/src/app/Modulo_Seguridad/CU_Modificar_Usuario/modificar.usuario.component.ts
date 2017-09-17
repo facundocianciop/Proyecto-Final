@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModificarUsuarioService, Usuario} from './modificar.usuario.service'
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -12,20 +13,27 @@ import { ModificarUsuarioService, Usuario} from './modificar.usuario.service'
 
 export class ModificarUsuarioComponent implements OnInit{
     editar:Boolean;
+    userForm: any;    
     cambiarContrasenia:Boolean;
     usuarioModificado:Usuario;
     usuarioEliminado: Usuario;
     usuarioActual: Usuario;
     
     constructor(private router:Router,
-                private modificarUsuarioService:ModificarUsuarioService){
+                private modificarUsuarioService:ModificarUsuarioService,
+                private formBuilder: FormBuilder){
         this.editar=false;
         this.cambiarContrasenia=false;
+  
+          
+        
     }
 
     ngOnInit(){
-        this.modificarUsuarioService.obtenerUsuarioActual(1)
+        this.modificarUsuarioService.obtenerUsuarioActual()
                                     .then(response => this.usuarioActual = response);
+
+        
     }
     
     apretarEditar(){
@@ -36,8 +44,8 @@ export class ModificarUsuarioComponent implements OnInit{
     apretarModificar(usuario:string,nombre:string,apellido:string,domicilio:string,
         fechaNac:string,email:string,dni:number,cuit:number){
         console.log("estamos aca");
-        this.modificarUsuarioService.modificarUsuario(usuario,nombre,apellido,domicilio,fechaNac,email,dni,cuit)
-        .then(response => this.usuarioModificado=response);
+        /*this.modificarUsuarioService.modificarUsuario(usuario,nombre,apellido,domicilio,fechaNac,email,dni,cuit)
+        .then(response => this.usuarioModificado=response);*/
     }
     
     apretarCancelarModificacion(){

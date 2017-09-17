@@ -27,7 +27,7 @@ export class RecuperarCuentaComponent implements OnInit{
     }
 
     apretarAceptarDivPrimero(email:string){
-        this.recuperarCuentaService.recuperarCuenta(email).then(recuperar => this.cuenta=recuperar);
+        this.recuperarCuentaService.recuperarCuenta(email);
         this.divPrimero=false;
         this.divSegundo=true;        
     }

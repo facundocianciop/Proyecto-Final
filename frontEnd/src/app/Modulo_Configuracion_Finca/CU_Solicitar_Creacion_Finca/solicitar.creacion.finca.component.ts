@@ -43,7 +43,7 @@ export class SolicitarCreacionFincaComponent implements OnInit{
 
     apretarCancelar(){
         console.log("estamos aca");
-        this.router.navigate(['/home']);
+        this.router.navigate(['/homeFinca']);
     }
 
     apretarSeleccionar(proveedor:string){

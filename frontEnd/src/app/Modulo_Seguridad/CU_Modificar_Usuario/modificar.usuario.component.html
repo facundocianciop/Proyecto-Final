@@ -11,7 +11,7 @@
         <button (click)="apretarCambiarContrasenia()">Cambiar Contrase&ntilde;a</button><br>
 
         <label id=atributo class="col-2">Nombre:</label>
-        <label id=valor class="col-3">NombreUsuarioReal</label><br>
+        <label id=valor class="col-3">{{usuarioActual.nombre}}</label><br>
 
         <label id=atributo class="col-2">Apellido:</label>
         <label id=valor class="col-3">ApellidoUsuarioReal</label><br>
@@ -42,6 +42,7 @@
                                 <input type="text" class="form-control" #usuario id="usuario" placeholder="Usuario">
                         </div>
                 </div>
+                
                 <div class="form-group row">
                         <label for="nombre" class="col-sm-1 col-form-label">Nombre</label>
                         <div class="col-sm-5">

@@ -4,7 +4,7 @@ import pytz
 from django.db import transaction
 from django.contrib.auth.signals import user_logged_in, user_logged_out
 
-from riegoInteligente.models import SesionUsuario, TipoSesion
+from ...models import SesionUsuario, TipoSesion
 from views_util_functions import *
 from views_constants import *
 from security_parameters import *

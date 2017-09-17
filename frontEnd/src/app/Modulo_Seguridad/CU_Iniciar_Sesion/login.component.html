@@ -9,9 +9,12 @@
         <button type="submit" (click)="apretarIngresar(usuario.value,pass.value)">Ingresar</button>        
     </div>
 </form>
+<!---<homeFinca [usuarioLogeado]="usuarioLogeado"></homeFinca>-->
+
 <div *ngIf="usuarioLogeado">
     <h1>Error datos invalidos</h1>
 </div>
 <div *ngIf="errorMessage">
     <h1>Error datos invalidos {{errorMessage}}</h1>
 </div>
+

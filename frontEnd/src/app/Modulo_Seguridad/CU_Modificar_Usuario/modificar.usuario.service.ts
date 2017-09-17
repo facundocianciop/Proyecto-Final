@@ -15,8 +15,8 @@ export class ModificarUsuarioService extends RestBaseService{
 
   constructor(private http: Http) {super();}
 
-  obtenerUsuarioActual(id: number): Promise<Usuario> {
-    return this.http.get(ModificarUsuarioService.serverUrl + this.obtenerUsuarioActualUrl + '/' + id, this.getRestHeader())
+  obtenerUsuarioActual(): Promise<Usuario> {
+    return this.http.get(ModificarUsuarioService.serverUrl + this.obtenerUsuarioActualUrl, this.getRestHeader())
     .toPromise()
     .then(response => {return response.json() as Usuario;})
     .catch(this.handleError);
