@@ -1,71 +1,24 @@
-from django.db import models
-from django.contrib.auth.models import User
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 import uuid
 
-
-#MODULO SEGURIDAD
-
-class EstadoUsuario(models.Model):
-    OIDEstadoUsuario = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    descripcionEstadoUsuario=models.CharField(max_length=100)
-    nombreEstadoUsuario=models.CharField(max_length=100)
-
-
-class Usuario(models.Model):
-    user=models.OneToOneField(User, on_delete=models.CASCADE,null=True)
-    OIDUsuario = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    nombre=models.CharField(max_length=30,null=True)
-
-    apellido=models.CharField(max_length=30,null=True)
-    cuit=models.CharField(max_length=15,null=True)
-    dni=models.IntegerField(null=True)
-    domicilio=models.CharField(max_length=50,null=True)
-    email=models.CharField(max_length=30,null=True)
-    fechaNacimiento=models.DateTimeField(null=True)
-    imagenUsuario=models.ImageField(null=True)
-    #LAS RELACIONES CON OTRAS CLASES LAS SEPARE UN RENGLON
+from django.conf import settings
+from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.contrib.auth.models import User
+from django.contrib.sessions.models import Session
 
 
-    @receiver(post_save,sender=User)
-    def crearUsuario(sender,instance,created,**kwargs):
-        if created:
-            Usuario.objects.create(user=instance)
+# MODULO SEGURIDAD
 
-    @receiver(post_save,sender=User)
-    def guardarUsuario(sender,instance,**kwargs):
-        instance.usuario.save()
+class SesionUsuario(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    session = models.ForeignKey(Session, null=True, on_delete=models.SET_NULL)
 
-    def as_json(self):
-        return dict(OIDUsuario=str(self.OIDUsuario),
-                    usuario=self.user.username,
-                    nombre=self.user.first_name,
-                    apellido=self.user.last_name,
-                    cuit=self.cuit,
-                    dni=self.dni,
-                    domicilio=self.domicilio,
-                    email=self.user.email,
-                    fechaNacimiento=self.fechaNacimiento)
-                    #imagenUsuario=self.imagenUsuario)
+    tipo_sesion = models.ForeignKey('TipoSesion', db_column="OIDTipoSesion", null=True)
 
-
-class Contrasenia(models.Model):
-    OIDContrasenia = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    #contrasenia= HAY Q VER COMO HACER ESTO
-    fechaAltaContrasenia=models.DateTimeField()
-    fechaBajaContrasenia=models.DateTimeField()
-
-    OIDUsuario=models.ForeignKey(Usuario,db_column="OIDUsuario",related_name="contrasenia")
-
-
-class HistoricoEstadoUsuario(models.Model):
-    OIDHistoricoEstadoUsuario =models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    fechaFinEstadoUsuario=models.DateTimeField(null=True)
-    fechaInicioEstadoUsuario=models.DateTimeField()
-
-    usuario=models.ForeignKey(Usuario,db_column="OIDUsuario",related_name="historicoEstadoUsuarioList",null=True)
-    estadoUsuario=models.ForeignKey(EstadoUsuario,db_column="OIDEstadoUsuario")
+    fecha_y_hora_ultimo_acceso = models.DateTimeField(null=True)
+    fecha_y_hora_fin = models.DateTimeField(null=True)
+    fecha_y_hora_inicio = models.DateTimeField(null=True)
 
 
 class TipoSesion(models.Model):
@@ -74,15 +27,53 @@ class TipoSesion(models.Model):
     nombre=models.CharField(max_length=15)
 
 
-class Sesion(models.Model):
-    OIDSesion = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    fechaYHoraFin=models.DateTimeField(null=True)
-    horaUltimoAcceso=models.DateTimeField(null=True)
-    fechaYHoraInicio=models.DateTimeField()
-    idSesion=models.UUIDField(default=uuid.uuid4, editable=False)
+class DatosUsuario(models.Model):
+    user=models.OneToOneField(User, on_delete=models.CASCADE,null=True)
+    OIDDatosUsuario = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    usuario=models.ForeignKey(Usuario,db_column="OIDUsuario",related_name="sesionList",null=True)
-    tipoSesion=models.ForeignKey(TipoSesion,db_column="OIDTipoSesion")
+    cuit=models.CharField(max_length=15,null=True)
+    dni=models.IntegerField(null=True)
+    domicilio=models.CharField(max_length=50,null=True)
+    fechaNacimiento=models.DateTimeField(null=True)
+    imagenUsuario=models.ImageField(null=True)
+
+    reset_password = models.BooleanField(default=False)
+    codigoVerificacion=models.CharField(max_length=10,null=True)
+
+    @receiver(post_save,sender=User)
+    def crearDatosUsuario(sender,instance,created,**kwargs):
+        if created:
+            DatosUsuario.objects.create(user=instance)
+
+    @receiver(post_save,sender=User)
+    def guardarDatosUsuario(sender,instance,**kwargs):
+        instance.datosusuario.save()
+
+    def as_json(self):
+        return dict(usuario=self.user.username,
+                    nombre=self.user.first_name,
+                    apellido=self.user.last_name,
+                    email=self.user.email,
+                    cuit=self.cuit,
+                    dni=self.dni,
+                    domicilio=self.domicilio,
+                    fechaNacimiento=self.fechaNacimiento)
+                    #imagenUsuario=self.imagenUsuario)
+
+
+class EstadoUsuario(models.Model):
+    OIDEstadoUsuario = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
+    descripcionEstadoUsuario=models.CharField(max_length=100)
+    nombreEstadoUsuario=models.CharField(max_length=100)
+
+
+class HistoricoEstadoUsuario(models.Model):
+    OIDHistoricoEstadoUsuario =models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
+    fechaFinEstadoUsuario=models.DateTimeField(null=True)
+    fechaInicioEstadoUsuario=models.DateTimeField()
+
+    usuario=models.ForeignKey(DatosUsuario,db_column="OIDUsuario",related_name="historicoEstadoUsuarioList",null=True)
+    estadoUsuario=models.ForeignKey(EstadoUsuario,db_column="OIDEstadoUsuario")
 
 
 class Rol(models.Model):
@@ -98,7 +89,7 @@ class UsuarioFinca(models.Model):
     fechaBajaUsuarioFinca=models.DateTimeField(null=True)
 
     finca=models.ForeignKey('Finca',db_column="OIDFinca")
-    usuario=models.ForeignKey(Usuario,db_column="OIDUsuario",related_name='usuarioFincaList')
+    usuario=models.ForeignKey(DatosUsuario,db_column="OIDUsuario",related_name='usuarioFincaList')
 
 
 class RolUsuarioFinca(models.Model):
@@ -139,7 +130,6 @@ class ConjuntoPermisos (models.Model):
 
     rol=models.ForeignKey(Rol,db_column="OIDRol",related_name="conjuntoPermisos")
 
-
 #MODULO FINCA
 
 class ProveedorInformacionClimaticaFinca(models.Model):
@@ -154,19 +144,26 @@ class ProveedorInformacionClimaticaFinca(models.Model):
 
 class Finca(models.Model):
     OIDFinca=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
+    idFinca=models.IntegerField(default=1,unique=True)
     direccionLegal=models.CharField(max_length=50)
-    #idFinca=models.AutoField(unique=True)
-    logoFinca=models.ImageField(null=True)
+    #logoFinca=models.ImageField(null=True)
     nombre=models.CharField(max_length=50)
     tamanio=models.FloatField()
     ubicacion=models.CharField(max_length=50)
 
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        ultimaFinca = Finca.objects.order_by('-idFinca')[0]
+        self.idFinca = ultimaFinca.idFinca + 1
+        super(Finca, self).save()
+
     def as_json(self):
         return dict(
             direccionLegal=self.direccionLegal,
-            #idFinca=self.idFinca,
+            idFinca=self.idFinca,
             nombre=self.nombre,tamanio=self.tamanio,
             ubicacion=self.ubicacion)
+            #logoFinca=self.logoFinca)
 
 
 class EstadoFinca(models.Model):
@@ -195,14 +192,19 @@ class MecanismoRiegoFinca(models.Model):
     tipoMecanismoRiego=models.ForeignKey("TipoMecanismoRiego",db_column="OIDTipoMecanismoRiego",null=True)
 
     def as_json(self):
-        return dict(OIDMecanismoRiegoFinca=str(self.OIDMecanismoRiegoFinca),
+        return dict(
                     direccionIP=self.user.username,
                     fechaInstalacion=self.fechaInstalacion,
                     idMecanismoRiegoFinca=self.idMecanismoRiegoFinca,
                     tipoMecanismoRiego=self.tipoMecanismoRiego.nombreMecanismo)
 
-                    #imagenUsuario=self.imagenUsuario)
 
+                    #imagenUsuario=self.imagenUsuario)
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        ultimoMecanismo = MecanismoRiegoFinca.objects.order_by('-idMecanismoRiegoFinca')[0]
+        self.idFinca = ultimoMecanismo.idMecanismoRiegoFinca + 1
+        super(MecanismoRiegoFinca, self).save()
 
 class EstadoMecanismoRiegoFinca(models.Model):
     OIDEstadoMecanismoRiegoFinca = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
@@ -257,7 +259,7 @@ class EstadoSector(models.Model):
 
 class HistoricoEstadoSector(models.Model):
     OIDHistoricoEstadoSector=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    fechaFinEstadoSector=models.DateTimeField()
+    fechaFinEstadoSector=models.DateTimeField(null=True)
     fechaInicioEstadoSector=models.DateTimeField()
 
     estado_sector=models.ForeignKey(EstadoSector,db_column="OIDEstadoSector")

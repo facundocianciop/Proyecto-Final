@@ -39,20 +39,27 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+<<<<<<< HEAD
     'corsheaders'
 
+=======
+>>>>>>> 0b4867be1e5c31e013fa94dcc8e2d5f62b796547
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+<<<<<<< HEAD
     'django.middleware.csrf.CsrfViewMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+=======
+>>>>>>> 0b4867be1e5c31e013fa94dcc8e2d5f62b796547
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -79,6 +86,7 @@ WSGI_APPLICATION = 'proyectoRiego.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
+<<<<<<< HEAD
 """DATABASES = {
 <<<<<<< HEAD
      'default': {
@@ -95,15 +103,24 @@ WSGI_APPLICATION = 'proyectoRiego.wsgi.application'
 DATABASES = {
 =======
 >>>>>>> 6ef8f4daa73c0a15979ddf49c2b970a2357b847d
+=======
+
+DATABASES = {
+>>>>>>> 0b4867be1e5c31e013fa94dcc8e2d5f62b796547
         'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'riegoInteligente',
-        'USER': 'postgres',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
-        'PORT': ''
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'riegoInteligente',
+            'USER': 'postgres',
+            'PASSWORD': 'root',
+            'HOST': 'localhost',
+            'PORT': ''
+        }
     }
+<<<<<<< HEAD
 }
+=======
+
+>>>>>>> 0b4867be1e5c31e013fa94dcc8e2d5f62b796547
 """
 
 DATABASES = {
@@ -116,10 +133,10 @@ DATABASES = {
         'PORT': '3306',
      }
 }
+"""
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -155,5 +172,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
-#SILENCED_SYSTEM_CHECKS = ['fields.E300', 'fields.E307']
+TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)
+# SILENCED_SYSTEM_CHECKS = ['fields.E300', 'fields.E307']
