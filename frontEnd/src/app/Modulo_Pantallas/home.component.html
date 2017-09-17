@@ -3,7 +3,7 @@
         <ul>
           <li><a href="#inicio">Logo</a></li>
            <li class="menuDerecho"> <a href="#ingresar">Salir</a></li>
-            <li class="menuDerecho"> <a href="#perfil">Perfil</a></li>
+            <li class="menuDerecho"> <a [routerLink]="['/perfilUsuario']">Perfil</a></li>
 
         </ul>
         
@@ -38,7 +38,7 @@
             </table>
         </div>
 
-        <button class=crear>Crear Finca</button>
+        <button class=crear [routerLink]="['/crearFinca']">Crear Finca</button>
         
         <div>
             <h3>Finca con otro Rol</h3>

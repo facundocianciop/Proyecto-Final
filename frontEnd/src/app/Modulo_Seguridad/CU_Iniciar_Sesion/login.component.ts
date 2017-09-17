@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService, Usuario } from './login.service';
-import { AppComponent } from '../../app.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HomeFincaComponent } from '../../Modulo_Configuracion_Finca/Home_Finca/home.finca.component';
 
 @Component({
     selector:'app-login',
@@ -11,9 +12,14 @@ import { AppComponent } from '../../app.component';
 })
 
 export class LoginComponent implements OnInit{
-    usuario: Usuario;
+    usuarioLogeado: Usuario;
+    errorMessage:string="";
+    usuario:string;
+
+    
     constructor(private router:Router,
                 private loginService:LoginService){
+        
 
     }
 
@@ -21,20 +27,29 @@ export class LoginComponent implements OnInit{
 
     }
     
-    apretarIngresar(usuario:string, pass:string){
-        console.log("estamos aca");
+    apretarIngresar(usuario:string,contrasenia:string){
+        console.log("apretamos login");
         console.log("usuario: "+usuario);
-        console.log("contasenia: "+pass);
-        this.router.navigate(['/home']);
-
-        //this.loginService.login(usuario,pass).then(response => this.router.navigate['/home']);
+        console.log("contasenia: "+contrasenia);
+        //this.router.navigate(['/home']);)}
+        this.loginService.login(usuario,contrasenia)
+        .then(
+            response => this.usuarioLogeado=response
+        )
+        .then(
+            response => this.router.navigate(['/homeFinca'])
+        )
+        .catch(error => this.errorMessage=<any>error);
         
-        //this.router.navigate(['/home']);
+        
+        
+    
+        
     }
 
     apretarRecuperar(){
-        console.log("estamos aca");
+        console.log("apretamos recuperar");
         this.router.navigate(['/recuperarCuenta']);
     }
-    
+
 }

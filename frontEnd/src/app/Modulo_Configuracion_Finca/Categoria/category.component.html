@@ -1,0 +1,31 @@
+<h1>Angular 2 Search & Sort</h1>
+
+<div class="form-group">
+  <div class="col-md-6">
+    <input type="text" [(ngModel)]="searchText" class="form-control" placeholder="Search" />
+  </div>
+</div>
+{{column}} : {{isDesc}}
+<div class="col-md-12">
+  <table class="table table-responsive table-hover">
+    <tr>
+      <th class="pointer" (click)="sort('CategoryID')">
+        Category ID
+        <i class="fa" [ngClass]="{'fa-sort': column != 'CategoryID', 'fa-sort-asc': (column == 'CategoryID' && isDesc), 'fa-sort-desc': (column == 'CategoryID' && !isDesc) }" aria-hidden="true"> </i>
+      </th>
+      <th class="pointer" (click)="sort('CategoryName')">
+        Category
+        <i class="fa" [ngClass]="{'fa-sort': column != 'CategoryName', 'fa-sort-asc': (column == 'CategoryName' && isDesc), 'fa-sort-desc': (column == 'CategoryName' && !isDesc) }" aria-hidden="true"> </i>
+      </th>
+      <th class="pointer" (click)="sort('Description')">
+        Description
+        <i class="fa" [ngClass]="{'fa-sort': column != 'Description', 'fa-sort-asc': (column == 'Description' && isDesc), 'fa-sort-desc': (column == 'Description' && !isDesc) }" aria-hidden="true"> </i>
+      </th>
+    </tr>
+    <tr *ngFor="#item of records | category: searchText | orderBy: {property: column, direction: direction}">
+      <td>{{item.CategoryID}}</td>
+      <td>{{item.CategoryName}}</td>
+      <td>{{item.Description}}</td>
+    </tr>
+  </table>
+</div>
