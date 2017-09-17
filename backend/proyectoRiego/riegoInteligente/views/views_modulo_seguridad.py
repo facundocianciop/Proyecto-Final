@@ -139,10 +139,13 @@ def finalizar_sesion(request):
     response = HttpResponse()
 
     try:
-        logout(request)
-        response.content = armar_response_content(None)
-        response.status_code = 200
-        return response
+        if request.user is None:
+            logout(request)
+            response.content = armar_response_content(None)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError
 
     except (IntegrityError, ValueError, KeyError):
         return build_bad_request_error(response, ERROR_LOGOUT_FALLIDO, "Log out fallo")
