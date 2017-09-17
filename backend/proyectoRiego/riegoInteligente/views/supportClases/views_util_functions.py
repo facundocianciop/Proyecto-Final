@@ -15,6 +15,9 @@ def obtener_datos_json(request):
     except (TypeError, ValueError):
         return ""
 
+def armar_response_list_content(lista):
+    response_dictionary=[item.as_json() for item in lista]
+    return dumps(response_dictionary, cls=DjangoJSONEncoder)
 
 def armar_response_content(objeto):
     response_dictionary = {}

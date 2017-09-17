@@ -85,11 +85,24 @@ class Rol(models.Model):
 
 class UsuarioFinca(models.Model):
     OIDUsuarioFinca=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
+    idUsuarioFinca = models.IntegerField(default=1)
     fechaAltaUsuarioFinca=models.DateTimeField()
     fechaBajaUsuarioFinca=models.DateTimeField(null=True)
 
     finca=models.ForeignKey('Finca',db_column="OIDFinca")
     usuario=models.ForeignKey(DatosUsuario,db_column="OIDUsuario",related_name='usuarioFincaList')
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        if UsuarioFinca.objects.all().__len__() == 0:
+            self.idUsuarioFinca = 1
+            super(UsuarioFinca, self).save()
+        else:
+            if UsuarioFinca.objects.get(idUsuarioFinca=self.idUsuarioFinca) == self:
+                super(UsuarioFinca, self).save()
+            else:
+                ultimoUsuarioFinca = UsuarioFinca.objects.order_by('-idUsuarioFinca')[0]
+                self.idFinca = ultimoUsuarioFinca.idUsuarioFinca + 1
+                super(UsuarioFinca, self).save()
 
 
 class RolUsuarioFinca(models.Model):
@@ -143,8 +156,8 @@ class ProveedorInformacionClimaticaFinca(models.Model):
 
 
 class Finca(models.Model):
-    OIDFinca=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    idFinca=models.IntegerField(default=1,unique=True)
+    OIDFinca=models.UUIDField( primary_key=True ,default=uuid.uuid4, editable=False)
+    idFinca=models.IntegerField(default=1, unique=True)
     direccionLegal=models.CharField(max_length=50)
     #logoFinca=models.ImageField(null=True)
     nombre=models.CharField(max_length=50)
@@ -153,9 +166,16 @@ class Finca(models.Model):
 
     def save(self):
         "Get last value of Code and Number from database, and increment before save"
-        ultimaFinca = Finca.objects.order_by('-idFinca')[0]
-        self.idFinca = ultimaFinca.idFinca + 1
-        super(Finca, self).save()
+        if Finca.objects.all().__len__() == 0:
+            self.idFinca = 1
+            super(Finca, self).save()
+        else:
+            if Finca.objects.get(idFinca=self.idFinca) == self:
+                super(Finca, self).save()
+            else:
+                ultimaFinca = Finca.objects.order_by('-idFinca')[0]
+                self.idFinca = ultimaFinca.idFinca + 1
+                super(Finca, self).save()
 
     def as_json(self):
         return dict(
@@ -193,7 +213,7 @@ class MecanismoRiegoFinca(models.Model):
 
     def as_json(self):
         return dict(
-                    direccionIP=self.user.username,
+                    direccionIP=self.direccionIP,
                     fechaInstalacion=self.fechaInstalacion,
                     idMecanismoRiegoFinca=self.idMecanismoRiegoFinca,
                     tipoMecanismoRiego=self.tipoMecanismoRiego.nombreMecanismo)
@@ -201,10 +221,19 @@ class MecanismoRiegoFinca(models.Model):
 
                     #imagenUsuario=self.imagenUsuario)
     def save(self):
-        "Get last value of Code and Number from database, and increment before save"
-        ultimoMecanismo = MecanismoRiegoFinca.objects.order_by('-idMecanismoRiegoFinca')[0]
-        self.idFinca = ultimoMecanismo.idMecanismoRiegoFinca + 1
+        if MecanismoRiegoFinca.objects.all().__len__() == 0:
+                self.idMecanismoRiegoFinca = 1
+                super(MecanismoRiegoFinca, self).save()
+        else:
+            if MecanismoRiegoFinca.objects.get(idMecanismoRiegoFinca=self.idMecanismoRiegoFinca) == self:
+                super(MecanismoRiegoFinca, self).save()
+            else:
+                ultimoMecanismo = MecanismoRiegoFinca.objects.order_by('-idMecanismoRiegoFinca')[0]
+                self.idMecanismoRiegoFinca = ultimoMecanismo.idMecanismoRiegoFinca + 1
+                super(MecanismoRiegoFinca, self).save()
         super(MecanismoRiegoFinca, self).save()
+
+
 
 class EstadoMecanismoRiegoFinca(models.Model):
     OIDEstadoMecanismoRiegoFinca = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)

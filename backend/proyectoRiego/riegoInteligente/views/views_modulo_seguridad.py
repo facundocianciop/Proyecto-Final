@@ -162,8 +162,8 @@ def recuperar_cuenta(request):
         email = datos[KEY_EMAIL]
         usuario = User.objects.get(email=email)
 
-        contrasenia_aleatoria = id_generator()
-        usuario.user.set_password(contrasenia_aleatoria)
+        codigo_verificacion = id_generator()
+        usuario.datosusuario.codigoVerificacion(codigo_verificacion)
 
         # with mail.get_connection() as connection:
         # mail.EmailMessage('SmartFarming: Recuperacion de cueta ',body="Su nueva contraseña es
@@ -172,10 +172,10 @@ def recuperar_cuenta(request):
         # FALTA MANDAR EL MAIL, CONFIGURAR LA CONTRASEÑA Y EL PUERTO
         # ACA PENSE QUE EN CASO DE RECHAZAR LA FINCA QUE EL ADMINISTRADOR ESCRIBIERA UN MENSAJE DICIENDO
         # POR QUÉ LA RECHAZÓ
-
-        response.content = armar_response_content(None)
+        response_data = {}
+        response_data[KEY_USUARIO] = usuario.username
+        response.content = armar_response_content(response_data)
         response.status_code = 200
-
         return response
 
     except ValueError as err:
@@ -213,7 +213,6 @@ def cambiar_contrasenia(request):
             logout(request)
             response.content = armar_response_content(None)
             response.status_code = 200
-
             return response
 
         else:
@@ -350,7 +349,6 @@ def mostrar_usuario(request):
 
 
 @transaction.atomic()
-@login_requerido
 @metodos_requeridos([METHOD_POST])
 def cambiar_contrasenia_recuperar_cuenta(request):
     response = HttpResponse()
@@ -366,7 +364,7 @@ def cambiar_contrasenia_recuperar_cuenta(request):
             user.save()
             response_data = {}
             response_data[KEY_RESULTADO_OPERACION] = True
-            response.content = dumps(armar_response_content(response_data))
+            response.content = armar_response_content(response_data)
             response.status_code = 200
             return response
         else:
@@ -378,4 +376,6 @@ def cambiar_contrasenia_recuperar_cuenta(request):
     except ValueError as err:
         print(err.args)
         return build_bad_request_error(response, err.args[0], err.args[1])
+
+
 
