@@ -14,8 +14,8 @@ from supportClases.views_constants import *
 from supportClases.error_handler import *
 
 
-@metodos_requeridos([METHOD_PUT])
 @transaction.atomic()
+@metodos_requeridos([METHOD_PUT])
 def registrar_usuario(request):
 
     datos = obtener_datos_json(request)
@@ -98,8 +98,8 @@ def registrar_usuario(request):
         return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, "Datos incorrectos")
 
 
-@metodos_requeridos([METHOD_POST])
 @transaction.atomic()
+@metodos_requeridos([METHOD_POST])
 def iniciar_sesion(request):
 
     datos = obtener_datos_json(request)
@@ -132,8 +132,8 @@ def iniciar_sesion(request):
         return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, "Datos incorrectos")
 
 
-@metodos_requeridos([METHOD_POST])
 @transaction.atomic()
+@metodos_requeridos([METHOD_POST])
 def finalizar_sesion(request):
 
     response = HttpResponse()
@@ -148,8 +148,8 @@ def finalizar_sesion(request):
         return build_bad_request_error(response, ERROR_LOGOUT_FALLIDO, "Log out fallo")
 
 
-@metodos_requeridos([METHOD_POST])
 @transaction.atomic()
+@metodos_requeridos([METHOD_POST])
 def recuperar_cuenta(request):
 
     datos = obtener_datos_json(request)
@@ -188,9 +188,9 @@ def recuperar_cuenta(request):
         return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, "Datos incorrectos")
 
 
+@transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
-@transaction.atomic()
 def cambiar_contrasenia(request):
 
     datos = obtener_datos_json(request)
@@ -229,9 +229,9 @@ def cambiar_contrasenia(request):
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 
+@transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
-@transaction.atomic()
 def modificar_usuario(request):
 
     datos = obtener_datos_json(request)
@@ -293,9 +293,9 @@ def modificar_usuario(request):
         return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, "Datos incorrectos")
 
 
+@transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_DELETE])
-@transaction.atomic()
 def eliminar_usuario(request):
 
     response = HttpResponse()
@@ -330,9 +330,9 @@ def eliminar_usuario(request):
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 
+@transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_GET])
-@transaction.atomic()
 def mostrar_usuario(request):
 
     response = HttpResponse()
