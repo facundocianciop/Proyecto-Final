@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+"""
 import django
 from django.http import HttpResponse, JsonResponse, response
 from ..models import TipoSesion,Sesion,EstadoUsuario,HistoricoEstadoUsuario,DatosUsuario
@@ -294,7 +295,7 @@ def eliminarUsuario(request):
             response.content = descripcion_error
             return response
 
-"""
+
 def autenticarse(request):
     #CREO QUE ESTE METODO DEBERIA LLAMARSE CADA VEZ QUE SE EJECUTA ALGUN OTRO AL PRINCIPIO, PARA VER SI EL USUARIO SIGUE CON SESION INICIADA
      # PIENSO Q EL AUTENTICARSE DEBERIA BUSCAR LA ULTIMA SESION ACTIVA(O SEA CON FECHA FIN NULA) Y QUE EL ID DE LA COOKIE Q VIENE EN EL REQUEST SEA IGUAL AL ID DE LA SESION
@@ -308,12 +309,10 @@ def autenticarse(request):
                 sesion.tipoSesion=tipoSesion
                 sesion.save()
                 user.usuario.sesionList.add(sesion)
-
                 user.save()
                 response.set_cookie("idsesion",sesion.idSesion,max_age=3600)
                 response.status_code=200
                 autenticado=True
-
             else:
                 autenticado=False
                 response.status_code = 404
@@ -325,7 +324,7 @@ def autenticarse(request):
             return response
         else:
             return response
-"""
+
 @transaction.atomic()
 @csrf_exempt
 def finalizarSesion(request):
@@ -349,3 +348,6 @@ def finalizarSesion(request):
     else:
         print "No entró ni al post"
         return HttpResponse(False)
+
+"""
+

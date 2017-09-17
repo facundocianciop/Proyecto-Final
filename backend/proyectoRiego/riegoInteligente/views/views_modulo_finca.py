@@ -50,7 +50,7 @@ def crear_finca(request):
                           ubicacion=datos[KEY_UBICACION],
                           tamanio=datos[KEY_TAMANIO])
             finca.save()
-            response.content=armar_response_content(finca)
+            response.content = armar_response_content(finca)
             response.status_code=200
             return response
         else:
@@ -67,7 +67,6 @@ def buscar_proveedores_informacion(request):
     try:
         proveedores = ProveedorInformacionClimatica.objects.filter(habilitado=True)
         response.content=armar_response_list_content(proveedores)
-        print "por aca"
         response.status_code=200
         return response
     except (IntegrityError, TypeError, KeyError):
@@ -100,8 +99,8 @@ def elegir_proveedor_informacion(request):
             usuarioFinca.fechaAltaUsuarioFinca = datetime.now()
             usuarioFinca.save()
             fincaCreada.save()
-            response.status_code=200
             response.content=armar_response_content(None)
+            response.status_code = 200
             return response
         else:
             raise ValueError(ERROR_PROVEEDOR_NO_ENCONTRADO, "No se encontro el proveedor seleccionado")
@@ -117,9 +116,10 @@ def elegir_proveedor_informacion(request):
 def obtener_fincas_estado_pendiente(request):
     response=HttpResponse()
     try:
-        estado_pendiente=EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_PENDIENTE_APROBACION)
-        historicos_pendientes=HistoricoEstadoFinca.objects.filter(estadoFinca=estado_pendiente)
-        fincas_pendientes=[]
+        estado_pendiente = EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_PENDIENTE_APROBACION)
+        historicos_pendientes = HistoricoEstadoFinca.objects.filter(estadoFinca=estado_pendiente,
+                                                                    fechaFinEstadoFinca__isnull=True)
+        fincas_pendientes= []
         for historico in historicos_pendientes:
             fincas_pendientes.append(historico.finca)
         response.content = armar_response_list_content(fincas_pendientes)
@@ -280,47 +280,47 @@ def modificar_finca(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
-def buscar_no_encargados(request):
+def buscar_usuarios_no_encargado(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
     try:
         finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
         usuarios_finca = UsuarioFinca.objects.filter(finca=finca)
-        rol_stakeholder = Rol.objects.get(nombreRol=ROL_STAKEHOLDER)
-        DTO_usuario_finca_list = []
+        rol_encargado = Rol.objects.get(nombreRol=ROL_ENCARGADO)
+        dto_usuario_finca_list = []
         for usuario_finca in usuarios_finca:
-            if RolUsuarioFinca.objects.filter(usuarioFinca=usuario_finca, rol=rol_stakeholder,
-                                              fechaBajaRolUsuarioFinca__isnull=True).__len__() == 1:
-                DTO_usuario_finca_list.append(DtoUsuarioFinca(OIDUsuarioFinca=usuario_finca.OIDUsuarioFinca,
+            rol_actual = RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,
+                                                        fechaBajaRolUsuarioFinca__isnull=True)
+            if rol_actual.rol != rol_encargado:
+                dto_usuario_finca_list.append(DtoUsuarioFinca(idUsuarioFinca=usuario_finca.idUsuarioFinca,
                                                               usuario=usuario_finca.usuario.user.username,
                                                               nombreUsuario=usuario_finca.usuario.user.first_name,
                                                               apellidoUsuario=usuario_finca.usuario.user.last_name,
                                                               email=usuario_finca.usuario.user.email,
-                                                              imagenUsuario=usuario_finca.usuario.imagenUsuario))
+                                                              imagenUsuario=usuario_finca.usuario.imagenUsuario,
+                                                              rol= rol_actual.rol.nombreRol))
 
                 #SI EXISTE SIGNIFICA QUE ES UN USUARIO DE ESA FINCA CON EL ROL STAKEHOLDER Y LO AGREGO A LA LISTA
-        response.content = armar_response_list_content(DTO_usuario_finca_list)
+        response.content = armar_response_list_content(dto_usuario_finca_list)
         response.content_type = "application/json"
         response.status_code=200
         return response
-    except (ValueError,IntegrityError) as err:
-        print err.args
-        response.content=err.args
-        response.status_code=401
-        return response
+    except (IntegrityError, TypeError, KeyError):
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_DELETE])
-def eliminarStakeholderFinca(request):
+def eliminar_usuario_finca(request):
     response=HttpResponse()
     datos=obtener_datos_json(request)
     try:
-        usuarios_finca=UsuarioFinca.objects.get(OIDUsuarioFinca=datos['OIDUsuarioFinca'])
-        usuarios_finca.fechaBajaUsuarioFinca=datetime.now()
+        usuarios_finca = UsuarioFinca.objects.get(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA])
+        usuarios_finca.fechaBajaUsuarioFinca = datetime.now()
         usuarios_finca.save()
-        response.status_code=200
+        response.content = armar_response_content(None)
+        response.status_code = 200
         return response
     except IntegrityError as e:
         print e.args
@@ -330,25 +330,28 @@ def eliminarStakeholderFinca(request):
 
 @transaction.atomic()
 @login_requerido
-@metodos_requeridos([METHOD_GET])
-def buscarUsuarios(request):
-    response=HttpResponse()
+@metodos_requeridos([METHOD_POST])
+def buscar_usuarios_no_finca(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
     try:
-        usuarios_todos=DatosUsuario.objects.all()
+        usuarios_todos = DatosUsuario.objects.all()
         # usuario_logueado=Sesion.objects.get(idSesion=request.COOKIES['idsesion']).usuario ESTO ES PARA QUE CUANDO MUESTRE TODOS LOS USUARIOS NO TE MOSTRES A VOS MISMO
-        usuario_logueado=obtener_datos_json(request)
-
-        usuarios=[]
+        user = request.user
+        usuario_logueado = user.datosusuario
+        usuarios = []
+        finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
         for usuario in usuarios_todos:
-            print usuario.OIDUsuario
-            print usuario_logueado.OIDUsuario
-            print (usuario == usuario_logueado)
-            if (usuario == usuario_logueado)==False:
+            if ((UsuarioFinca.objects.filter(usuario=usuario, finca= finca,
+                                                     fechaBajaUsuarioFinca__isnull=True).__len__() == 0) and
+                    ((usuario == usuario_logueado)==False)):
                 usuarios.append(usuario)
+            # if (usuario == usuario_logueado)==False:
+            #     usuarios.append(usuario)
 
-        usuarios_json=[usuario.as_json() for usuario in usuarios]
-        response.content=dumps(usuarios_json,content_type="application/json")
-        response.status_code=200
+        # usuarios_json=[usuario.as_json() for usuario in usuarios]
+        response.content=armar_response_list_content(usuarios)
+        response.status_code = 200
         return response
     except IntegrityError as err:
         print err.args
@@ -359,54 +362,58 @@ def buscarUsuarios(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_PUT])
-def agregarUsuarioFinca(request):
-    response=HttpResponse()
-    datos=obtener_datos_json(request)
+def agregar_usuario_finca(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
     try:
-        user=User.objects.get(username=datos['usuario'])
-        usuario_ingresado=user.datosusuario
-        finca=Finca.objects.get(idFinca=datos['idFinca'])
-        rol_ingresado=Rol.objects.get(nombreRol=datos['nombreRol'])
-        rol_usuario_finca=RolUsuarioFinca(rol=rol_ingresado,fechaAltaRolUsuarioFinca=datetime.now())
-
-        print "hasta aca bien"
-        usuario_finca_nuevo=UsuarioFinca(usuario=usuario_ingresado,finca=finca,fechaAltaUsuarioFinca=datetime.now())
+        if User.objects.filter(username=datos[KEY_USUARIO]).__len__() == 0:
+            raise ValueError(ERROR_USUARIO_NO_ENCONTRADO, "No se encuentra al usuario")
+        user = User.objects.get(username=datos[KEY_USUARIO])
+        usuario_ingresado = user.datosusuario
+        finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+        rol_ingresado = Rol.objects.get(nombreRol=datos[KEY_NOMBRE_ROL])
+        rol_usuario_finca = RolUsuarioFinca(rol=rol_ingresado, fechaAltaRolUsuarioFinca=datetime.now())
+        usuario_finca_nuevo = UsuarioFinca(usuario=usuario_ingresado, finca=finca, fechaAltaUsuarioFinca=datetime.now())
         usuario_finca_nuevo.save()
+        print "joya"
         rol_usuario_finca.usuarioFinca = usuario_finca_nuevo
         usuario_finca_nuevo.rolUsuarioFincaList.add(rol_usuario_finca,bulk=False)
-
-
-        response.content_type="application/json"
+        response.content=armar_response_content(None)
         response.status_code=200
         return response
-    except IntegrityError as err:
+    except ValueError as err:
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
         print err.args
-        response.status_code=401
-        return response
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
-def modificarRolUsuario(request):
-    response=HttpResponse()
-    datos=obtener_datos_json(request)
+def modificar_rol_usuario(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
     try:
-        user = User.objects.get(username=datos['usuario'])
+        user = User.objects.get(username=datos[KEY_USUARIO])
         usuario_ingresado = user.datosusuario
-        finca = Finca.objects.get(idFinca=datos['idFinca'])
-        rol_ingresado = Rol.objects.get(nombreRol=datos['nombreRol'])
+        finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+        rol_ingresado = Rol.objects.get(nombreRol=datos[KEY_NOMBRE_ROL])
 
-        usuario_finca=UsuarioFinca.objects.get(usuario=usuario_ingresado,finca=finca)
+        usuario_finca = UsuarioFinca.objects.get(usuario=usuario_ingresado,finca=finca,
+                                                 fechaBajaUsuarioFinca__isnull=True)
 
-        rol_usuario_finca_viejo=RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,fechaBajaRolUsuarioFinca__isnull=True)
+        rol_usuario_finca_viejo=RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,
+                                                            fechaBajaRolUsuarioFinca__isnull=True)
         if rol_ingresado == rol_usuario_finca_viejo.rol:
-            raise ValueError("El usuario ya dispone de ese rol , por favor intente con otro rol")
+            raise ValueError(ERROR_USUARIO_YA_TIENE_ESE_ROL, "El usuario ya dispone de ese rol , por favor intente con otro rol")
         rol_usuario_finca_viejo.fechaBajaRolUsuarioFinca=datetime.now()
         rol_usuario_finca_viejo.save()
-        rol_usuario_finca_nuevo=RolUsuarioFinca(usuarioFinca=usuario_finca,fechaAltaRolUsuarioFinca=datetime.now(),rol=rol_ingresado)
+        rol_usuario_finca_nuevo = RolUsuarioFinca(usuarioFinca=usuario_finca,fechaAltaRolUsuarioFinca=datetime.now(),rol=rol_ingresado)
         usuario_finca.rolUsuarioFincaList.add(rol_usuario_finca_nuevo,bulk=False)
         usuario_finca.save()
+        response.content = armar_response_content(None)
+        return response
     except (ValueError,IntegrityError) as err:
         print err.args
         response.content=err.args
@@ -416,37 +423,34 @@ def modificarRolUsuario(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
-def buscarFincaId(request):
+def buscar_finca_id(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
     try:
-        finca = Finca.objects.get(idFinca=datos['idFinca'])
-        response.dumps(finca.as_json())
+        finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+        response.content = armar_response_content(finca)
         return response
     except (ValueError,IntegrityError) as err:
         print err.args
         response.content=err.args
-        response.status_code = 401
 
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
-def devolverPermisos(request):
+def devolver_permisos(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
     try:
-        finca = Finca.objects.get(idFinca=datos['idFinca'])
+        finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
         user=request.user
         usuario=user.datosusuario
-        usuario_finca=UsuarioFinca.objects.get(usuario=usuario,finca=finca)
-        rol_usuario=RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,fechaBajaRolUsuarioFinca__isnull=True)
-        rol=rol_usuario.rol
-        permisos=rol.conjuntoPermisos
-        response.content=dumps(armar_response_content(permisos,cls=DjangoJSONEncoder))
+        usuario_finca = UsuarioFinca.objects.get(usuario=usuario, finca=finca)
+        rol_usuario = RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca, fechaBajaRolUsuarioFinca__isnull=True)
+        rol = rol_usuario.rol
+        permisos = rol.conjuntoPermisos
+        response.content = armar_response_content(permisos)
         response.status_code=200
         return response
-    except IntegrityError as err:
+    except (IntegrityError, TypeError, KeyError) as err:
         print err.args
-        response.content=build_bad_request_error(response,err.args[0],err.args[1])
-        response.status_code=401
-        return response
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")

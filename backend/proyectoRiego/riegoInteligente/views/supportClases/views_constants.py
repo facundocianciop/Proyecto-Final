@@ -28,6 +28,8 @@ KEY_UBICACION = 'ubicacion'
 KEY_TAMANIO = 'tamanio'
 KEY_LOGO = 'logo'
 KEY_ESTADO_FINCA = 'estadoFinca'
+KEY_ID_USUARIO_FINCA = 'usuarioFincaId'
+KEY_NOMBRE_ROL = 'nombreRol'
 
 KEY_NOMBRE_PROVEEDOR = 'nombreProveedor'
 

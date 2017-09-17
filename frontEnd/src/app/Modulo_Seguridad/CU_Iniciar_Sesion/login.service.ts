@@ -14,23 +14,33 @@ export class LoginService extends RestBaseService{
 
   login(username: string, password: string): Promise<Usuario> {
     const data = {
-      'login': username,
-      'password': password
+      'usuario': username,
+      'contrasenia': password,
+      //'tipoDispositivo':
     };
 
     return this.http.post(LoginService.serverUrl +this.loginUrl, JSON.stringify(data), this.getRestHeader())
       .toPromise()
       .then(response => {
+        let estado = response.status;
         return response.json() as Usuario;
+
       })
       .catch(this.handleError);
   }
-
+  
 }
 
 export interface Usuario {
+  apellido:string;
+  cuit:number;
   usuario: string;
-  contrasenia: string;
+  dni:number;
+  OIDUsuario:string;
+  nombre:string;
+  email:string;
+  docimicilio:string;
+  fechaNacimiento;
 }
 
 

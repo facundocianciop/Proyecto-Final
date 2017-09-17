@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders'
+
+
 ]
 
 MIDDLEWARE = [
@@ -48,10 +51,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
 ]
 
 
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'proyectoRiego.urls'
 
@@ -78,6 +83,21 @@ WSGI_APPLICATION = 'proyectoRiego.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
+
+     'default': {
+         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+         'NAME': 'riegoInteligente',
+         'USER': 'postgres',
+         'PASSWORD': 'root',
+         'HOST': 'localhost',
+         'PORT': ''
+     }
+}
+
+"""
+
+DATABASES = {
+>>>>>>> 0b4867be1e5c31e013fa94dcc8e2d5f62b796547
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': 'riegoInteligente',
@@ -88,7 +108,8 @@ DATABASES = {
         }
     }
 
-"""
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

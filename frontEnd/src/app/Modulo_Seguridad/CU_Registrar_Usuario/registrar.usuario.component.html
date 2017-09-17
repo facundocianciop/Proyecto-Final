@@ -1,0 +1,43 @@
+<h1>Registrar Usuario</h1>
+
+<form>
+
+    <div>
+
+        <label>Nombre</label><br>
+        <input type="text" name="nombre" #nombre  maxlength="20" placeholder="Ingrese Nombre"><br>
+
+        <label>Apellido</label><br>
+        <input type="text" name="apellido" #apellido maxlength="20" placeholder="Ingrese Apellido"><br>
+
+        <label>DNI</label><br>
+        <input type="number" name="dni" #dni required pattern="[0-9]" title="S&oacute;lo debe ingresar n&uacute;meros" maxlength="8" placeholder="Ingrese DNI"><br>
+        
+        <label>CUIT</label><br>
+        <input type="number" name="cuit" #cuit  required pattern="[0-9]" title="S&oacute;lo debe ingresar n&uacute;meros" maxlength="8" placeholder="Ingrese DNI"><br>
+
+        <label>Fecha Nacimiento</label><br>
+        <input type="text" name="fechaNac"  #fechaNac required pattern="[0-9]" title="S&oacute;lo debe ingresar n&uacute;meros" maxlength="50" placeholder="Ingrese DNI"><br>
+
+        <label>Direcci&oacute;n</label><br>
+        <input type="text" name="direccion" #direc maxlength="50" placeholder="Ingrese Direcci&oacute;n"><br>
+        
+        <label>Email</label><br>
+        <input type="text" name="email" #email maxlength="40" placeholder="Ingrese Email"><br>
+
+        <label>Usuario</label><br>
+        <input type="text" name="usuario" #usuario maxlength="20" placeholder="Ingrese Usuario"><br>
+
+        <label>Contrase&ntilde;a</label><br>
+        <input type="password" name="password" #pass1  maxlength="20" placeholder="***********"><br>
+
+        <label>Repetir Contrase&ntilde;a</label><br>
+        <input type="password" name="repepassword" #pass2  maxlength="20" placeholder="***********"><br>
+
+        <button class="registrar" (click)="apretarRegistrar(nombre.value,apellido.value,dni.value,cuit.value,
+           fechaNac.value,direc.value, email.value, usuario.value,pass1.value,pass2.value)">Registrar</button>
+        <button class="cancelar" (click)="apretarCancelar()">Cancelar</button>
+
+    </div>
+
+</form>

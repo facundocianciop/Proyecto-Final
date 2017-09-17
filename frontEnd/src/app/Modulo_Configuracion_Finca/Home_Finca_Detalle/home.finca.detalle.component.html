@@ -1,0 +1,92 @@
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-5">
+            <h3>Datos Finca</h3>
+            <label id=atributo>Nombre:</label>
+            <label id=valor>NombreFinca</label><br>
+
+            <label id=atributo>Direcci&oacute;n:</label>
+            <label id=valor>DireccionFinca</label><br>
+
+            <label id=atributo>Ubicaci&oacute;n:</label>
+            <label id=valor>UbicacionFinca</label><br>
+
+            <label id=atributo>Tama&ntilde;o:</label>
+            <label id=valor>TamanioFinca</label><br>
+
+            <button type="button" (click)="apretarEditarFinca()" >Editar Finca</button>
+            <button type="button" data-toggle="modal" data-target="#exampleModal">
+                    Eliminar Finca
+            </button><br>            
+
+
+        </div>
+
+
+        <div class="col-lg-5">
+            <h3>Acciones</h3>
+                <button type="button" class="btn btn-link col-lg-10" (click)="apretarAdministrarUsuario()">Administrar Usuarios Finca</button>
+            <button type="button" class="btn btn-link col-lg-10">Administrar Sectores</button>
+
+        </div>
+
+
+
+    </div>
+</div>
+
+<div *ngIf="editar" class="container">
+        <h1>Editar Finca</h1>
+        <form>
+                <div class="form-group row">
+                        <label for="nombre" class="col-sm-1 col-form-label">Nombre</label>
+                        <div class="col-sm-5">
+                                <input type="text" class="form-control" #nombre id="nombre" placeholder="Nombre Finca">
+                        </div>
+                </div>
+                <div class="form-group row">
+                        <label for="direccion" class="col-sm-1 col-form-label">Direcci&oacute;n</label>
+                        <div class="col-sm-5">
+                                <input type="text" class="form-control" #direccion id="direccion" placeholder="Direcci&oacute;n Finca">
+                        </div>
+                </div>
+                <div class="form-group row">
+                                <label for="ubicacion" class="col-sm-1 col-form-label">Ubicaci&oacute;n</label>
+                                <div class="col-sm-5">
+                                        <input type="text" class="form-control" #ubicacion id="ubicacion" placeholder="Ubicaci&oacute;n Finca">
+                                </div>
+                </div>
+                <div class="form-group row">
+                        <label for="tamanio" class="col-sm-1 col-form-label">Tama&ntilde;o</label>
+                        <div class="col-sm-5">
+                                <input type="number" class="form-control" #tamanio id="tamanio" placeholder="Tama&ntilde;o Finca">
+                        </div>
+                </div>
+                
+                <button type="button" class="btn btn-success" (click)="apretarModificar(nombre.value,direccion.value,ubicacion.value,tamanio.value)">Modificar</button>
+                <button type="button" class="btn btn-danger" (click)="apretarCancelarModificacion()">Cancelar</button>
+                
+        </form>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                        <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Eliminar Finca</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+                        </div>
+                        <div class="modal-body">
+                                <label>¿Desea eliminar la finca?</label>
+                        </div>
+                        <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-success" (click)="apretarEliminarFinca()">Eliminar</button>
+                        </div>
+                </div>
+        </div>
+</div>

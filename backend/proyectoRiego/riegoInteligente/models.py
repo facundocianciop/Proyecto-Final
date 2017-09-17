@@ -85,7 +85,7 @@ class Rol(models.Model):
 
 class UsuarioFinca(models.Model):
     OIDUsuarioFinca=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    idUsuarioFinca = models.IntegerField(default=1)
+    idUsuarioFinca = models.IntegerField(default=1, unique=True)
     fechaAltaUsuarioFinca=models.DateTimeField()
     fechaBajaUsuarioFinca=models.DateTimeField(null=True)
 
@@ -101,7 +101,7 @@ class UsuarioFinca(models.Model):
                 super(UsuarioFinca, self).save()
             else:
                 ultimoUsuarioFinca = UsuarioFinca.objects.order_by('-idUsuarioFinca')[0]
-                self.idFinca = ultimoUsuarioFinca.idUsuarioFinca + 1
+                self.idUsuarioFinca = ultimoUsuarioFinca.idUsuarioFinca + 1
                 super(UsuarioFinca, self).save()
 
 
@@ -141,7 +141,35 @@ class ConjuntoPermisos (models.Model):
     puedeIniciarODetenerRiegoManualmente= models.BooleanField()
     puedeModificarConfiguracionRiego= models.BooleanField()
 
-    rol=models.ForeignKey(Rol,db_column="OIDRol",related_name="conjuntoPermisos")
+    rol = models.ForeignKey(Rol, db_column="OIDRol", related_name="conjuntoPermisos")
+
+    def as_json(self):
+        return dict(
+        puedeAsignarComponenteSensor = self.puedeAsignarComponenteSensor,
+        puedeAsignarCultivo = self.puedeAsignarCultivo,
+        puedeAsignarMecRiegoAFinca = self.puedeAsignarMecRiegoAFinca,
+        puedeAsignarMecRiegoASector = self.puedeAsignarMecRiegoASector,
+        puedeConfigurarObtencionInfoExterna = self.puedeConfigurarObtencionInfoExterna,
+        puedeCrearComponenteSensor = self.puedeCrearComponenteSensor,
+        puedeCrearConfiguracionRiego = self.puedeCrearConfiguracionRiego,
+        puedeCrearSector = self.puedeCrearSector,
+        puedeGenerarInformeCruzadoRiegoMedicion = self.puedeGenerarInformeCruzadoRiegoMedicion,
+        puedeGenerarInformeEstadoActualSectores = self.puedeGenerarInformeEstadoActualSectores,
+        puedeGenerarInformeEstadoHistoricoSectoresFinca = self.puedeGenerarInformeEstadoHistoricoSectoresFinca,
+        puedeGenerarInformeEventoPersonalizado = self.puedeGenerarInformeEventoPersonalizado,
+        puedeGenerarInformeHeladasHistorico = self.puedeGenerarInformeHeladasHistorico,
+        puedeGenerarInformeRiegoEnEjecucion = self.puedeGenerarInformeRiegoEnEjecucion,
+        puedeGenerarInformeRiegoPorSectoresHistorico = self.puedeGenerarInformeRiegoPorSectoresHistorico,
+        puedeGestionarComponenteSensor = self.puedeGestionarComponenteSensor,
+        puedeGestionarCultivoSector = self.puedeGestionarCultivoSector,
+        puedeGestionarEventoPersonalizado = self.puedeGestionarEventoPersonalizado,
+        puedeGestionarFinca = self.puedeGestionarFinca,
+        puedeGestionarSector = self.puedeGestionarSector,
+        puedeGestionarSensores = self.puedeGestionarSensores,
+        puedeGestionarUsuariosFinca = self.puedeGestionarUsuariosFinca,
+        puedeIniciarODetenerRiegoManualmente = self.puedeIniciarODetenerRiegoManualmente,
+        puedeModificarConfiguracionRiego = self.puedeModificarConfiguracionRiego)
+
 
 #MODULO FINCA
 
@@ -159,7 +187,7 @@ class Finca(models.Model):
     OIDFinca=models.UUIDField( primary_key=True ,default=uuid.uuid4, editable=False)
     idFinca=models.IntegerField(default=1, unique=True)
     direccionLegal=models.CharField(max_length=50)
-    #logoFinca=models.ImageField(null=True)
+    logoFinca=models.ImageField(null=True)
     nombre=models.CharField(max_length=50)
     tamanio=models.FloatField()
     ubicacion=models.CharField(max_length=50)
@@ -205,7 +233,7 @@ class MecanismoRiegoFinca(models.Model):
     OIDMecanismoRiegoFinca = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     direccionIP=models.CharField(max_length=20)
     fechaInstalacion=models.DateTimeField()
-    idMecanismoRiegoFinca=models.IntegerField(default=1,unique=True)
+    idMecanismoRiegoFinca=models.IntegerField(default=1, unique=True)
 
 
     finca=models.ForeignKey(Finca,db_column="OIDFinca")

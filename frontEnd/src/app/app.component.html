@@ -1,16 +1,139 @@
-<html>
+<ul>
+  <li><a href=#inicio>Inicio</a></li>
+  <li><a href=#nosotros>Nosotros</a></li>
+  <li><a href=#servicios>Servicios</a></li>
+  <li><a href=#contacto>Contacto</a></li>
+  <li class=menuDerecho><a [routerLink]="['/login']" routerLinkActive="active"(click)="apretarIngresar()">Ingresar</a></li>
+  <li class=menuDerecho><a [routerLink]="['/registrar']" routerLinkActive="active">Registrar</a></li>
+</ul>
+<router-outlet></router-outlet>
+<body *ngIf="bodyInicio">
+<div id=inicio>
+  <ngb-carousel>
+    <ng-template ngbSlide>
+      <img src="../assets/imagen1.jpeg"> alt="Random first slide">
+      <div class="carousel-caption">
+        <h1>Smart Farming</h1>
+        <h3>El mejor aliado para el riego de tu finca</h3>
+      </div>
+    </ng-template>
+    <ng-template ngbSlide>
+      <img src="../assets/imagen2.jpeg" alt="Random second slide">
+      <div class="carousel-caption">
+        <h1>Smart Farming</h1>
+        <h3>Te permite llevar a cabo el riego de forma remota</h3>
+      </div>
+    </ng-template>
+    <ng-template ngbSlide>
+      <img src="../assets/imagen3.jpeg" alt="Random third slide">
+      <div class="carousel-caption">
+        <h1>Smart Farming</h1>
+        <h3>Te ayuda a proteger tus cultivos de las heladas</h3>
+      </div>
+    </ng-template>
+  </ngb-carousel>
+</div>
 
-  <body>
-    <ul>
-      <li><a [routerLink]="['/inicio']" routerLinkActive="active">Inicio</a></li>
-      <li><a [routerLink]="['/nosotros']">Nosotros</a></li>
-      <li><a [routerLink]="['/servicios']">Servicios</a></li>
-      <li><a [routerLink]="['/contacto']">Contacto</a></li>
-      <li class=menuDerecho><a [routerLink]="['/login']" routerLinkActive="active">Ingresar</a></li>
-      <li class=menuDerecho><a [routerLink]="['/registrar']" routerLinkActive="active">Registrar</a></li>      
-    </ul>
-    <router-outlet></router-outlet>
+<div class="servicios" id="servicios">
+  <h1>Servicios</h1>
+  <div class="row">
+    <div class="col-sm-3">
+      <h3>Riego Inteligente</h3>
+      <p text-justify>
+        Smart Farming implementa un m&oacute;dulo de aprendizaje de m&aacute;quinas que determina cu&aacute;ndo, d&oacute;nde y c&oacute;mo
+        regar.
+      </p>
+    </div>
+    <div class="col-sm-3">
+      <h3>Riego Remoto</h3>
+      <p text-justify>
+        Smart Farming te permite regar sin necesidad de encontrarte fisicamente en el lugar.
+      </p>
+    </div>
+    <div class="col-sm-3">
+      <h3>Prevenci&oacute;n de da&ntilde;os climatol&oacute;gicos</h3>
+      <p text-justify>
+        Smart Farming evita que su cultivo sea da&ntilde;ado por factores adversos, como son las heladas y las sequ&iacute;s.
+      </p>
+    </div>
+  </div>
+  <div class="col-sm-3">
+    <h3>Meteorolog&iacute;a</h3>
+    <p text-justify>
+      Smart Farming permite conocer los datos climatol&oacute;gicos actules, los cuales son ulilizados posteriormente para el riego
+      inteligente.
+    </p>
+  </div>
+</div>
 
-  </body>
-
-</html>
+<div class="nosotros" id=nosotros>
+  <h1>Nosotros</h1>
+  <div class="row">
+    <div class="col-3">
+      <h3>Facundo Ciancio</h3>
+      <img src="../assets/perfil.png" class="img-circle" width="300" height="200">
+      <p text-justify>
+        Facundo Ciancio es el desarrollador del sistema.
+      </p>
+    </div>
+    <div class="col-3">
+      <h3>Facundo Palma</h3>
+      <img src="../assets/perfil.png" class="img-circle" width="300" height="200">
+      <p text-justify>
+        Facundo Palma es el lider del proyecto.
+      </p>
+    </div>
+    <div class="col-3">
+      <h3>Emanuel Valdez</h3>
+      <img src="../assets/perfil.png" class="img-circle" width="300" height="200">
+      <p text-justify>
+        Emanuel Valdez es el diseñador del sistema.
+      </p>
+    </div>
+  </div>
+</div>
+<div class="container" id=contacto>
+  <h1>Contacto</h1>
+  <form>
+    <div class="form-group row">
+      <label for="nombre" class="col-sm-1 col-form-label">Nombre</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="nombre" placeholder="Nombre">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="email" class="col-sm-1 col-form-label">Email</label>
+      <div class="col-sm-5">
+        <input type="email" class="form-control" id="email" placeholder="Email">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="telefono" class="col-sm-1 col-form-label">Tel&eacute;fono</label>
+      <div class="col-sm-5">
+        <input type="number" class="form-control" id="telefono" placeholder="Ej: 261 4122343">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="asunto" class="col-sm-1 col-form-label">Asunto</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="asunto" placeholder="Asunto">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="mensaje" class="col-sm-1 col-form-label">Mensaje</label>
+      <div class="col-sm-5">
+        <textarea class="form-control" id="mensaje" rows="5" placeholder="Escribir Mensaje"></textarea>
+      </div>
+    </div>
+  </form>
+</div>
+<div id="footer">
+  <div class="row">
+    <div class="col-xs-12">
+      <p id="footerp" class="text-xs-center">
+        &copy; Copyright 2017 - Mendoza, Argentina. All rights reserved.
+      </p>
+    </div>
+  </div>
+</div>
+</body>
