@@ -39,22 +39,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-<<<<<<< HEAD
     'corsheaders'
 
-=======
->>>>>>> 0b4867be1e5c31e013fa94dcc8e2d5f62b796547
+
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-<<<<<<< HEAD
+
     'django.middleware.csrf.CsrfViewMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-=======
->>>>>>> 0b4867be1e5c31e013fa94dcc8e2d5f62b796547
+
+
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -86,9 +84,9 @@ WSGI_APPLICATION = 'proyectoRiego.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-<<<<<<< HEAD
-"""DATABASES = {
-<<<<<<< HEAD
+
+DATABASES = {
+
      'default': {
          'ENGINE': 'django.db.backends.postgresql_psycopg2',
          'NAME': 'riegoInteligente',
@@ -98,12 +96,8 @@ WSGI_APPLICATION = 'proyectoRiego.wsgi.application'
          'PORT': ''
      }
 }
+
 """
-"""
-DATABASES = {
-=======
->>>>>>> 6ef8f4daa73c0a15979ddf49c2b970a2357b847d
-=======
 
 DATABASES = {
 >>>>>>> 0b4867be1e5c31e013fa94dcc8e2d5f62b796547
@@ -116,12 +110,8 @@ DATABASES = {
             'PORT': ''
         }
     }
-<<<<<<< HEAD
-}
-=======
 
->>>>>>> 0b4867be1e5c31e013fa94dcc8e2d5f62b796547
-"""
+
 
 DATABASES = {
     'default': {

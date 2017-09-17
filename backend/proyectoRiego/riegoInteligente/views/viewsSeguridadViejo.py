@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+"""
 import django
 from django.http import HttpResponse, JsonResponse, response
 from ..models import TipoSesion,Sesion,EstadoUsuario,HistoricoEstadoUsuario,DatosUsuario
@@ -86,7 +87,7 @@ def iniciarSesion(request):
 
             print (usuario,contrasenia)
             usuario_inicial= authenticate(username=usuario,password=contrasenia)
-            #print usuario_inicial.username
+            print usuario_inicial.username
             if usuario_inicial is not None:
                 if Sesion.objects.filter(usuario=usuario_inicial.usuario,fechaYHoraFin__isnull=True):
                     raise ValueError("Ya tiene una sesion iniciada")
@@ -124,19 +125,11 @@ def recuperarCuenta(request):
 
         try:
             print  datos['email']
-<<<<<<< HEAD:backend/proyectoRiego/riegoInteligente/views/viewsSeguridad.py
-            usuario_datos = User.objects.get(email=datos['email'])
-            print usuario_datos.email
-            usuario = Usuario.objects.get(user=usuario_datos)
-            print usuario.user.email
-            if User.objects.filter(email=datos['email']).__len__() == 0:
-=======
             user=User.objects.get(email=datos['email'])
             usuario=user.datosusuario
             if User.objects.filter(email=datos['email']).__len__()==0:
->>>>>>> 0b4867be1e5c31e013fa94dcc8e2d5f62b796547:backend/proyectoRiego/riegoInteligente/views/viewsSeguridadViejo.py
                 raise ValueError("No se encontró usuario con el mail ingresado")
-            if Sesion.objects.filter(usuario=usuario, fechaYHoraFin__isnull=True).__len__() != 0:
+            if Sesion.objects.filter(usuario=usuario, fechaYHoraFin__isnull=True).__len__()!=0:
                 sesiones_abiertas = Sesion.objects.filter(usuario=usuario, fechaYHoraFin__isnull=True)
                 for sesion in sesiones_abiertas:
                     sesion.fechaYHoraFin = datetime.now()
@@ -154,10 +147,6 @@ def recuperarCuenta(request):
             response_data = {}
             response_data['usuarioId'] = user.username
             response.content = dumps(response_data)
-<<<<<<< HEAD:backend/proyectoRiego/riegoInteligente/views/viewsSeguridad.py
-            response.content_type = "application/json"
-=======
->>>>>>> 0b4867be1e5c31e013fa94dcc8e2d5f62b796547:backend/proyectoRiego/riegoInteligente/views/viewsSeguridadViejo.py
             response.status_code = 200
             return response
         except (IntegrityError, ValueError) as err:
@@ -306,7 +295,7 @@ def eliminarUsuario(request):
             response.content = descripcion_error
             return response
 
-"""
+
 def autenticarse(request):
     #CREO QUE ESTE METODO DEBERIA LLAMARSE CADA VEZ QUE SE EJECUTA ALGUN OTRO AL PRINCIPIO, PARA VER SI EL USUARIO SIGUE CON SESION INICIADA
      # PIENSO Q EL AUTENTICARSE DEBERIA BUSCAR LA ULTIMA SESION ACTIVA(O SEA CON FECHA FIN NULA) Y QUE EL ID DE LA COOKIE Q VIENE EN EL REQUEST SEA IGUAL AL ID DE LA SESION
@@ -335,15 +324,15 @@ def autenticarse(request):
             return response
         else:
             return response
-"""
+
 @transaction.atomic()
 @csrf_exempt
 def finalizarSesion(request):
-    if request.method == 'POST':
+    if request.method=='POST':
         try:
 
             sesion = Sesion.objects.get(idSesion=request.COOKIES['idSesion'])
-            # BUSCO LA SESION CON ESE ID EN LA BASE DE DATOS
+            #BUSCO LA SESION CON ESE ID EN LA BASE DE DATOS
             # Si se encontro la sesion se finaliza y se devuelve que la sesion
             # finalizo correctamente
 
@@ -359,3 +348,6 @@ def finalizarSesion(request):
     else:
         print "No entró ni al post"
         return HttpResponse(False)
+
+"""
+
