@@ -20,8 +20,8 @@ export class HomeFincaComponent implements OnInit{
     }
 
     ngOnInit(){
-        this.homeFincaService.obtenerFincasPendientes()
-                             .then(response=>this.fincasPendientes=response);
+        /*this.homeFincaService.obtenerFincasPendientes()
+                             .then(response=>this.fincasPendientes=response);*/
         /*this.homeFincaService.obtenerFincasUsuario()
                              .then(response=>this.fincasUsuario=response);
         this.homeFincaService.obtenerFincasEncargado()
