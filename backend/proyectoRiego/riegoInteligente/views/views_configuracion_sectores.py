@@ -1,26 +1,18 @@
 # -*- coding: UTF-8 -*-
-from django.http import HttpResponse,JsonResponse
-from django.template import loader
-from django.shortcuts import render
-from ..models import *
-from django.core.serializers import serialize
-from django.core.serializers.json import DjangoJSONEncoder
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
-from django.views.decorators.csrf import csrf_exempt
-from django.middleware.csrf import get_token
-from django.db import IntegrityError,transaction
 from datetime import datetime
-from json import loads,dumps
-from django.core.mail import send_mail
-from django.core import mail
-from supportClases.utilFunctions import *
-from .viewsSeguridad import obtenerUsuarioActual
-@csrf_exempt
+
+from django.http import HttpResponse
+from django.db import IntegrityError,transaction
+
+from riegoInteligente.models import *
+from supportClases.views_util_functions import *
+from supportClases.error_handler import *
+
+
 @transaction.atomic()
 def crearSector(request):
     response=HttpResponse()
-    datos=armarJson(request)
+    datos=obtener_datos_json(request)
     if request.method=='PUT':
         try:
             finca_actual=Finca.objects.get(OIDFinca=datos['OIDFinca'])
@@ -32,7 +24,4 @@ def crearSector(request):
             historico_nuevo=HistoricoEstadoSector(estado_sector=estado_habilitado,sector=sector_nuevo,fechaInicioEstadoSector=datetime.now())
             historico_nuevo.save()
         except (ValueError,IntegrityError) as err:
-            print err.args
-            response.content=armarJsonErrores("error","descripcion")
-            response.status_code=401
-            return response
+            return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, "Datos incorrectos")

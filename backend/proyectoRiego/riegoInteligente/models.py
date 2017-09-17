@@ -1,72 +1,24 @@
-from django.db import models
-from django.contrib.auth.models import User
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 import uuid
 
-
-#MODULO SEGURIDAD
-
-class EstadoUsuario(models.Model):
-    OIDEstadoUsuario = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    descripcionEstadoUsuario=models.CharField(max_length=100)
-    nombreEstadoUsuario=models.CharField(max_length=100)
-
-
-class DatosUsuario(models.Model):
-    user=models.OneToOneField(User, on_delete=models.CASCADE,null=True)
-    OIDDatosUsuario = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    nombre=models.CharField(max_length=30,null=True)
-    codigoVerificacion=models.CharField(max_length=10,null=True)
-
-    apellido=models.CharField(max_length=30,null=True)
-    cuit=models.CharField(max_length=15,null=True)
-    dni=models.IntegerField(null=True)
-    domicilio=models.CharField(max_length=50,null=True)
-    email=models.CharField(max_length=30,null=True)
-    fechaNacimiento=models.DateTimeField(null=True)
-    #imagenUsuario=models.ImageField(null=True)
-    #LAS RELACIONES CON OTRAS CLASES LAS SEPARE UN RENGLON
+from django.conf import settings
+from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.contrib.auth.models import User
+from django.contrib.sessions.models import Session
 
 
-    @receiver(post_save,sender=User)
-    def crearUsuario(sender,instance,created,**kwargs):
-        if created:
-            DatosUsuario.objects.create(user=instance)
+# MODULO SEGURIDAD
 
-    @receiver(post_save,sender=User)
-    def guardarUsuario(sender,instance,**kwargs):
-        instance.usuario.save()
+class SesionUsuario(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    session = models.ForeignKey(Session, null=True, on_delete=models.SET_NULL)
 
-    def as_json(self):
-        return dict(
-                    usuario=self.user.username,
-                    nombre=self.user.first_name,
-                    apellido=self.user.last_name,
-                    cuit=self.cuit,
-                    dni=self.dni,
-                    domicilio=self.domicilio,
-                    email=self.user.email,
-                    fechaNacimiento=self.fechaNacimiento)
-                    #imagenUsuario=self.imagenUsuario)
+    tipo_sesion = models.ForeignKey('TipoSesion', db_column="OIDTipoSesion", null=True)
 
-
-class Contrasenia(models.Model):
-    OIDContrasenia = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    #contrasenia= HAY Q VER COMO HACER ESTO
-    fechaAltaContrasenia=models.DateTimeField()
-    fechaBajaContrasenia=models.DateTimeField()
-
-    OIDUsuario=models.ForeignKey(DatosUsuario,db_column="OIDDatosUsuario",related_name="contrasenia")
-
-
-class HistoricoEstadoUsuario(models.Model):
-    OIDHistoricoEstadoUsuario =models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    fechaFinEstadoUsuario=models.DateTimeField(null=True)
-    fechaInicioEstadoUsuario=models.DateTimeField()
-
-    usuario=models.ForeignKey(DatosUsuario,db_column="OIDDatosUsuario",related_name="historicoEstadoUsuarioList",null=True)
-    estadoUsuario=models.ForeignKey(EstadoUsuario,db_column="OIDEstadoUsuario")
+    fecha_y_hora_ultimo_acceso = models.DateTimeField(null=True)
+    fecha_y_hora_fin = models.DateTimeField(null=True)
+    fecha_y_hora_inicio = models.DateTimeField(null=True)
 
 
 class TipoSesion(models.Model):
@@ -75,15 +27,53 @@ class TipoSesion(models.Model):
     nombre=models.CharField(max_length=15)
 
 
-class Sesion(models.Model):
-    OIDSesion = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    fechaYHoraFin=models.DateTimeField(null=True)
-    horaUltimoAcceso=models.DateTimeField(null=True)
-    fechaYHoraInicio=models.DateTimeField()
-    idSesion=models.UUIDField(default=uuid.uuid4, editable=False)
+class DatosUsuario(models.Model):
+    user=models.OneToOneField(User, on_delete=models.CASCADE,null=True)
+    OIDDatosUsuario = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    usuario=models.ForeignKey(DatosUsuario,db_column="OIDDatosUsuario",related_name="sesionList",null=True)
-    tipoSesion=models.ForeignKey(TipoSesion,db_column="OIDTipoSesion")
+    cuit=models.CharField(max_length=15,null=True)
+    dni=models.IntegerField(null=True)
+    domicilio=models.CharField(max_length=50,null=True)
+    fechaNacimiento=models.DateTimeField(null=True)
+    imagenUsuario=models.ImageField(null=True)
+
+    reset_password = models.BooleanField(default=False)
+    codigoVerificacion=models.CharField(max_length=10,null=True)
+
+    @receiver(post_save,sender=User)
+    def crearDatosUsuario(sender,instance,created,**kwargs):
+        if created:
+            DatosUsuario.objects.create(user=instance)
+
+    @receiver(post_save,sender=User)
+    def guardarDatosUsuario(sender,instance,**kwargs):
+        instance.datosusuario.save()
+
+    def as_json(self):
+        return dict(usuario=self.user.username,
+                    nombre=self.user.first_name,
+                    apellido=self.user.last_name,
+                    email=self.user.email,
+                    cuit=self.cuit,
+                    dni=self.dni,
+                    domicilio=self.domicilio,
+                    fechaNacimiento=self.fechaNacimiento)
+                    #imagenUsuario=self.imagenUsuario)
+
+
+class EstadoUsuario(models.Model):
+    OIDEstadoUsuario = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
+    descripcionEstadoUsuario=models.CharField(max_length=100)
+    nombreEstadoUsuario=models.CharField(max_length=100)
+
+
+class HistoricoEstadoUsuario(models.Model):
+    OIDHistoricoEstadoUsuario =models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
+    fechaFinEstadoUsuario=models.DateTimeField(null=True)
+    fechaInicioEstadoUsuario=models.DateTimeField()
+
+    usuario=models.ForeignKey(DatosUsuario,db_column="OIDUsuario",related_name="historicoEstadoUsuarioList",null=True)
+    estadoUsuario=models.ForeignKey(EstadoUsuario,db_column="OIDEstadoUsuario")
 
 
 class Rol(models.Model):
@@ -99,7 +89,7 @@ class UsuarioFinca(models.Model):
     fechaBajaUsuarioFinca=models.DateTimeField(null=True)
 
     finca=models.ForeignKey('Finca',db_column="OIDFinca")
-    usuario=models.ForeignKey(DatosUsuario,db_column="OIDDatosUsuario",related_name='usuarioFincaList')
+    usuario=models.ForeignKey(DatosUsuario,db_column="OIDUsuario",related_name='usuarioFincaList')
 
 
 class RolUsuarioFinca(models.Model):
@@ -139,7 +129,6 @@ class ConjuntoPermisos (models.Model):
     puedeModificarConfiguracionRiego= models.BooleanField()
 
     rol=models.ForeignKey(Rol,db_column="OIDRol",related_name="conjuntoPermisos")
-
 
 #MODULO FINCA
 

@@ -1,21 +1,14 @@
 # -*- coding: UTF-8 -*-
-from django.http import HttpResponse,JsonResponse
-from django.template import loader
-from django.shortcuts import render
-from ..models import Sector,Finca,ProveedorInformacionClimaticaFinca,ProveedorInformacionClimatica,TipoSesion,Sesion,EstadoFinca,HistoricoEstadoFinca,UsuarioFinca,DatosUsuario,Rol,RolUsuarioFinca
-from django.core.serializers import serialize
-from django.core.serializers.json import DjangoJSONEncoder
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
-from django.views.decorators.csrf import csrf_exempt
-from django.middleware.csrf import get_token
-from django.db import IntegrityError,transaction
 from datetime import datetime
-from json import loads,dumps
-from django.core.mail import send_mail
-from django.core import mail
-from supportClases.utilFunctions import *
-from .viewsSeguridad import obtenerUsuarioActual
+
+from django.http import HttpResponse,JsonResponse
+from django.core.serializers import serialize
+from django.contrib.auth.models import User
+from django.db import IntegrityError,transaction
+
+from riegoInteligente.models import Sector,Finca,ProveedorInformacionClimaticaFinca,ProveedorInformacionClimatica,\
+    EstadoFinca,HistoricoEstadoFinca,UsuarioFinca,DatosUsuario,Rol,RolUsuarioFinca
+from supportClases.views_util_functions import *
 
 
 class DTOFincaRol():
@@ -27,6 +20,8 @@ class DTOFincaRol():
             nombreFinca=self.nombreFinca,
             # idFinca=self.idFinca,
             nombreRol=self.nombreRol)
+
+
 class DTOUsuarioFinca:
     def __init__(self,OIDUsuarioFinca,usuario,nombreUsuario,apellidoUsuario,email,imagenUsuario,rol):
         self.OID_usuario_finca=OIDUsuarioFinca
@@ -47,7 +42,6 @@ class DTOUsuarioFinca:
         )
 
 
-
 def index(request):
     fincas=Finca.objects.all()
     cantidadFincas=fincas.count()
@@ -65,14 +59,14 @@ def sector(request):
     json=serialize('json',[s])#ASI ES PARA UN SOLO OBJETO
     return JsonResponse(json,safe=False)
 
-@csrf_exempt
+
 @transaction.atomic()
 def obtenerFincasPorUsuario(request):
     response=HttpResponse()
-    datos = armarJson(request)
+    datos = obtener_datos_json(request)
     if request.method=="POST":
         try:
-            usuario=obtenerUsuarioActual(request)
+            usuario=request.user
             print "HOLA"
             lista_DTOFincaRol=[]
             for usuarioFinca in usuario.usuarioFincaList.all():
@@ -94,13 +88,11 @@ def obtenerFincasPorUsuario(request):
             return response
 
 
-
-@csrf_exempt
 @transaction.atomic()
 def crearFinca(request):
     response = HttpResponse()
     if request.method == "POST":
-        datos = armarJson(request)
+        datos = obtener_datos_json(request)
         try:
             if Finca.objects.filter(nombre=datos['nombre'], direccionLegal=datos['direccionLegal']).__len__() == 0:
                 finca = Finca(nombre=datos['nombre'], direccionLegal=datos['direccionLegal'], ubicacion=datos['ubicacion'],
@@ -114,11 +106,10 @@ def crearFinca(request):
         except (ValueError,IntegrityError) as err:
             print err.args
             response.content=err.args
-
     else:
         return HttpResponse(False)
 
-@csrf_exempt
+
 @transaction.atomic()
 def buscarProveedoresInformacion(request):
     response=HttpResponse()
@@ -132,13 +123,13 @@ def buscarProveedoresInformacion(request):
         return response
     else:
         return HttpResponse(False)
+
+
 @transaction.atomic()
-@csrf_exempt
 def elegirProveedorInformacion(request):
     response=HttpResponse()
-    print "HOLA"
     if request.method=="POST":
-        datos=armarJson(request)
+        datos=obtener_datos_json(request)
         if ProveedorInformacionClimatica.objects.filter(nombreProveedor=datos['nombreProveedor']).__len__()==1:
             try:
                 proveedorSeleccionado=ProveedorInformacionClimatica.objects.get(nombreProveedor=datos['nombreProveedor'])
@@ -159,7 +150,7 @@ def elegirProveedorInformacion(request):
 
                 print fincaCreada.historicoEstadoFincaList
 
-                usuarioActual=obtenerUsuarioActual(request)
+                usuarioActual=obtener_datos_json(request)
                 print "Encontre al usuario" #DEBERIA BUSCAR EL USUARIO PERTENECIENTE A LA COOKIE QUE TIENE LA SESION
                 usuarioFinca=UsuarioFinca(usuario=usuarioActual,finca=fincaCreada)
                 usuarioFinca.fechaAltaUsuarioFinca = datetime.now()
@@ -184,7 +175,8 @@ def elegirProveedorInformacion(request):
                 response.status_code=401
                 print "error de integridad"
                 return response
-@csrf_exempt
+
+
 @transaction.atomic()
 def obtenerFincasEstadoPendiente(request):
     response=HttpResponse()
@@ -201,11 +193,11 @@ def obtenerFincasEstadoPendiente(request):
     else:
         return HttpResponse(False)
 
-@csrf_exempt
+
 @transaction.atomic()
 def aprobarFinca(request):
     response=HttpResponse()
-    datos = armarJson(request)
+    datos = obtener_datos_json(request)
     if request.method=="POST":
         if Finca.objects.filter(idFinca=datos['idFinca']).__len__() == 1:
             try:
@@ -239,11 +231,10 @@ def aprobarFinca(request):
                 return response
 
 
-@csrf_exempt
 @transaction.atomic()
 def noAprobarFinca(request):
     response=HttpResponse()
-    datos = armarJson(request)
+    datos = obtener_datos_json(request)
     if request.method=="POST":
         if Finca.objects.filter(idFinca=datos['idFinca']).__len__() == 1:
             try:
@@ -271,17 +262,15 @@ def noAprobarFinca(request):
                 return response
 
 
-
-@csrf_exempt
 @transaction.atomic()
 def mostrarFincasEncargado(request):
     response=HttpResponse()
-    datos = armarJson(request)
+    datos = obtener_datos_json(request)
     if request.method=="GET":
 
 
             try:
-                usuario=obtenerUsuarioActual(request)
+                usuario=request.user
                 usuario_finca_lista=usuario.usuarioFincaList.all()
                 fincas_encargado=[]
                 for usuario_finca in usuario_finca_lista:
@@ -300,11 +289,11 @@ def mostrarFincasEncargado(request):
                 response.content=err.args
                 return response
 
-@csrf_exempt
+
 @transaction.atomic()
 def modificarFinca(request):
     response=HttpResponse()
-    datos = armarJson(request)
+    datos = obtener_datos_json(request)
     if request.method=="POST":
         if Finca.objects.filter(idFinca=datos['idFinca']).__len__() == 1:
             try:
@@ -338,11 +327,11 @@ def modificarFinca(request):
                 response.content=err.args
                 return response
 
-@csrf_exempt
+
 @transaction.atomic()
 def buscarStakeholdersFinca(request):
     response=HttpResponse()
-    datos=armarJson(request)
+    datos=obtener_datos_json(request)
     if request.method=="POST":
         try:
             finca=Finca.objects.get(idFinca=datos['idFinca'])
@@ -366,11 +355,11 @@ def buscarStakeholdersFinca(request):
             response.status_code=401
             return response
 
-@csrf_exempt
+
 @transaction.atomic()
 def eliminarStakeholderFinca(request):
     response=HttpResponse()
-    datos=armarJson(request)
+    datos=obtener_datos_json(request)
     if request.method=="DELETE":
         try:
             usuarios_finca=UsuarioFinca.objects.get(OIDUsuarioFinca=datos['OIDUsuarioFinca'])
@@ -383,7 +372,7 @@ def eliminarStakeholderFinca(request):
             response.status_code=401
             return response
 
-@csrf_exempt
+
 @transaction.atomic()
 def buscarUsuarios(request):
     response=HttpResponse()
@@ -391,7 +380,7 @@ def buscarUsuarios(request):
         try:
             usuarios_todos=DatosUsuario.objects.all()
             # usuario_logueado=Sesion.objects.get(idSesion=request.COOKIES['idsesion']).usuario ESTO ES PARA QUE CUANDO MUESTRE TODOS LOS USUARIOS NO TE MOSTRES A VOS MISMO
-            usuario_logueado=obtenerUsuarioActual(request)
+            usuario_logueado=obtener_datos_json(request)
 
             usuarios=[]
             for usuario in usuarios_todos:
@@ -410,11 +399,11 @@ def buscarUsuarios(request):
             response.status_code=401
             return response
 
-@csrf_exempt
+
 @transaction.atomic()
 def agregarUsuarioFinca(request):
     response=HttpResponse()
-    datos=armarJson(request)
+    datos=obtener_datos_json(request)
     if request.method=="PUT":
         try:
             user=User.objects.get(username=datos['usuario'])
@@ -438,11 +427,11 @@ def agregarUsuarioFinca(request):
             response.status_code=401
             return response
 
-@csrf_exempt
+
 @transaction.atomic()
 def modificarRolUsuario(request):
     response=HttpResponse()
-    datos=armarJson(request)
+    datos=obtener_datos_json(request)
     if request.method=="POST":
         try:
             user = User.objects.get(username=datos['usuario'])
@@ -468,8 +457,8 @@ def modificarRolUsuario(request):
 
 @transaction.atomic()
 def buscarFincaId(request):
-    response=HttpResponse()
-    datos=armarJson(request)
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
     if request.method=="POST":
         try:
             finca = Finca.objects.get(idFinca=datos['idFinca'])
@@ -482,8 +471,8 @@ def buscarFincaId(request):
 
 @transaction.atomic()
 def devolverPermisos(request):
-    response=HttpResponse()
-    datos=armarJson(request)
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
     try:
         finca = Finca.objects.get(idFinca=datos['idFinca'])
         usuario=request.user
@@ -498,11 +487,3 @@ def devolverPermisos(request):
         print err.args
         response.status_code=401
         return response
-
-
-
-
-
-
-
-
