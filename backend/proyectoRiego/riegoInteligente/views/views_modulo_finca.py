@@ -4,10 +4,11 @@ from datetime import datetime
 from django.http import HttpResponse,JsonResponse
 from django.core.serializers import serialize
 from django.contrib.auth.models import User
-from django.db import IntegrityError,transaction
+from django.db import IntegrityError, transaction
 
-from ..models import Sector,Finca,ProveedorInformacionClimaticaFinca,ProveedorInformacionClimatica,\
-    EstadoFinca,HistoricoEstadoFinca,UsuarioFinca,DatosUsuario,Rol,RolUsuarioFinca
+from ..models import Sector, Finca, ProveedorInformacionClimaticaFinca, ProveedorInformacionClimatica, \
+    EstadoFinca, HistoricoEstadoFinca, UsuarioFinca, DatosUsuario, Rol, RolUsuarioFinca
+from supportClases.dto_modulo_finca import *
 
 from supportClases.security_util_functions import *  # Se importa para que se ejecuten los handlers de sesion
 from supportClases.security_decorators import *
@@ -15,36 +16,6 @@ from supportClases.views_util_functions import *
 from supportClases.views_constants import *
 from supportClases.error_handler import *
 
-
-class DTOFincaRol():
-    def __init__(self,nombreFinca,nombreRol):
-        self.nombreFinca=nombreFinca
-        self.nombreRol=nombreRol
-    def as_json(self):
-        return dict(
-            nombreFinca=self.nombreFinca,
-            # idFinca=self.idFinca,
-            nombreRol=self.nombreRol)
-
-
-class DTOUsuarioFinca:
-    def __init__(self,OIDUsuarioFinca,usuario,nombreUsuario,apellidoUsuario,email,imagenUsuario,rol):
-        self.OID_usuario_finca=OIDUsuarioFinca
-        self.usuario=usuario
-        self.nombre_usuario=nombreUsuario
-        self.apellido_usuario=apellidoUsuario
-        self.email=email
-        self.imagen_usuario=imagenUsuario
-        self.rol=rol
-    def as_json(self):
-        return dict(
-            OIDUsuarioFinca=self.OID_usuario_finca,
-            nombreUsuario=self.nombre_usuario,
-            apellidoUsuario=self.apellido_usuario,
-            email=self.email,
-            imagenUsuario=self.imagen_usuario,
-            rol=self.rol
-        )
 
 
 @transaction.atomic()
@@ -55,16 +26,16 @@ def obtenerFincasPorUsuario(request):
     datos = obtener_datos_json(request)
     try:
         usuario=request.user
-        print "HOLA"
         lista_DTOFincaRol=[]
         for usuarioFinca in usuario.usuarioFincaList.all():
-            finca=usuarioFinca.finca
-            ultimo_historico=HistoricoEstadoFinca.objects.get(finca=finca,fechaFinEstadoFinca__isnull=True)
-            if ultimo_historico.estadoFinca.nombreEstadoFinca=="Habilitada":
-                rol_usuario_finca=RolUsuarioFinca.objects.get(usuarioFinca=usuarioFinca,fechaBajaUsuarioFinca__isnull=True)
-                nombre_rol=rol_usuario_finca.rol.nombreRol
-                lista_DTOFincaRol.append(DTOFincaRol(nombreFinca=usuarioFinca.finca.nombre,nombreRol=nombre_rol))
-        lista_DTOFincaRol_json= [DTO_finca_rol.as_json() for DTO_finca_rol in lista_DTOFincaRol]
+            finca = usuarioFinca.finca
+            ultimo_historico = HistoricoEstadoFinca.objects.get(finca=finca,fechaFinEstadoFinca__isnull=True)
+            if ultimo_historico.estadoFinca.nombreEstadoFinca == "Habilitada":
+                rol_usuario_finca = RolUsuarioFinca.objects.get(usuarioFinca=usuarioFinca,
+                                                                fechaBajaUsuarioFinca__isnull=True)
+                nombre_rol = rol_usuario_finca.rol.nombreRol
+                lista_DTOFincaRol.append(DTOFincaRol(nombreFinca=usuarioFinca.finca.nombre, nombreRol=nombre_rol))
+        lista_DTOFincaRol_json = [DTO_finca_rol.as_json() for DTO_finca_rol in lista_DTOFincaRol]
         response.status_code=200
         response.content=dumps(lista_DTOFincaRol_json)
         response.content_type="application/json"

@@ -370,8 +370,12 @@ def cambiar_contrasenia_recuperar_cuenta(request):
             response.status_code = 200
             return response
         else:
-            response.status_code = 401
+            raise ValueError(ERROR_DATOS_INCORRECTOS, "No hay un usuario con esos datos")
     except KeyError as err:
         print err.args
         return build_bad_request_error(response, err.args[0], err.args[1])
-    return response
+
+    except ValueError as err:
+        print(err.args)
+        return build_bad_request_error(response, err.args[0], err.args[1])
+
