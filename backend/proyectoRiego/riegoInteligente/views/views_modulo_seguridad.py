@@ -163,10 +163,11 @@ def recuperar_cuenta(request):
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
 
         email = datos[KEY_EMAIL]
+        print email
         usuario = User.objects.get(email=email)
-
+        print usuario.email
         codigo_verificacion = id_generator()
-        usuario.datosusuario.codigoVerificacion(codigo_verificacion)
+        usuario.datosusuario.codigoVerificacion=codigo_verificacion
         # with mail.get_connection() as connection:
         # mail.EmailMessage('SmartFarming: Recuperacion de cueta ',body="Su nueva contraseña es
         # %s"%contrasenia_aleatoria,from1='facundocianciop',
@@ -176,7 +177,8 @@ def recuperar_cuenta(request):
         # POR QUÉ LA RECHAZÓ
         response_data = {}
         response_data[KEY_USUARIO] = usuario.username
-        response.content = armar_response_content(response_data)
+        response.content=dumps(response_data)
+        #response.content = armar_response_content(response_data)
         response.status_code = 200
         return response
 
@@ -186,7 +188,8 @@ def recuperar_cuenta(request):
     except KeyError:
         return build_bad_request_error(response, ERROR_DATOS_FALTANTES, "Faltan ingresar datos")
 
-    except (IntegrityError, TypeError):
+    except (IntegrityError, TypeError) as err:
+        print err.args
         return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, "Datos incorrectos")
 
 
