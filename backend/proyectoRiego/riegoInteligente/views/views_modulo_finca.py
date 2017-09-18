@@ -97,7 +97,7 @@ def elegir_proveedor_informacion(request):
             fincaCreada.historicoEstadoFincaList.add(historicoCreado)
             user = request.user
             usuario = user.datosusuario
-            usuarioFinca=UsuarioFinca(usuario=usuario,finca=fincaCreada)
+            usuarioFinca = UsuarioFinca(usuario=usuario,finca=fincaCreada)
             usuarioFinca.fechaAltaUsuarioFinca = datetime.now()
             usuarioFinca.save()
             fincaCreada.save()
@@ -116,14 +116,17 @@ def elegir_proveedor_informacion(request):
 @login_requerido
 @metodos_requeridos([METHOD_GET])
 def obtener_fincas_estado_pendiente(request):
-    response=HttpResponse()
+    response = HttpResponse()
     try:
+        user = request.user
+        usuario = user.datosusuario
         estado_pendiente = EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_PENDIENTE_APROBACION)
         historicos_pendientes = HistoricoEstadoFinca.objects.filter(estadoFinca=estado_pendiente,
                                                                     fechaFinEstadoFinca__isnull=True)
         fincas_pendientes= []
         for historico in historicos_pendientes:
-            fincas_pendientes.append(historico.finca)
+            if UsuarioFinca.objects.filter(finca=historico.finca, usuario=usuario).__len__() == 1:
+                 fincas_pendientes.append(historico.finca)
         response.content = armar_response_list_content(fincas_pendientes)
         response.content_type = "application/json"
         response.status_code = 200
@@ -387,7 +390,7 @@ def buscar_usuarios_no_finca(request):
         for usuario in usuarios_todos:
             if ((UsuarioFinca.objects.filter(usuario=usuario, finca= finca,
                                                      fechaBajaUsuarioFinca__isnull=True).__len__() == 0) and
-                    ((usuario == usuario_logueado)==False)):
+                    ((usuario == usuario_logueado)==False)) and usuario.user.is_staff == False:
                 usuarios.append(usuario)
             # if (usuario == usuario_logueado)==False:
             #     usuarios.append(usuario)

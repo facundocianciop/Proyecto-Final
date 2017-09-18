@@ -90,7 +90,7 @@ class UsuarioFinca(models.Model):
     fechaBajaUsuarioFinca=models.DateTimeField(null=True)
 
     finca=models.ForeignKey('Finca',db_column="OIDFinca")
-    usuario=models.ForeignKey(DatosUsuario,db_column="OIDUsuario",related_name='usuarioFincaList')
+    usuario=models.ForeignKey(DatosUsuario,db_column="OIDUsuario", related_name='usuarioFincaList')
     def save(self):
         "Get last value of Code and Number from database, and increment before save"
         if UsuarioFinca.objects.all().__len__() == 0:
@@ -111,7 +111,8 @@ class RolUsuarioFinca(models.Model):
     fechaBajaRolUsuarioFinca=models.DateTimeField(null=True)
 
     rol=models.ForeignKey(Rol,db_column="OIDRol")
-    usuarioFinca=models.ForeignKey(UsuarioFinca,db_column="OIDUsuarioFinca",related_name="rolUsuarioFincaList",null=True)
+    usuarioFinca=models.ForeignKey(UsuarioFinca,db_column="OIDUsuarioFinca",related_name="rolUsuarioFincaList",
+                                   null=True)
 
 
 class ConjuntoPermisos (models.Model):
@@ -295,7 +296,7 @@ class Cultivo(models.Model):
     descripcion = models.CharField(max_length=100)
     nombre = models.CharField(max_length=20)
     fechaPlantacion = models.DateTimeField()
-    fechaEliminacion = models.DateTimeField()
+    fechaEliminacion = models.DateTimeField(null=True)
     habilitado = models.BooleanField()
 
     subtipo_cultivo = models.ForeignKey('SubtipoCultivo', db_column="OIDSubtipoCultivo")
@@ -343,7 +344,7 @@ class ComponenteSensor(models.Model):
     numeroComponente=models.IntegerField()
     habilitado=models.BooleanField()
     fechaAltaComponenteSensor=models.DateTimeField()
-    fechaBajaComponenteSensor=models.DateTimeField()
+    fechaBajaComponenteSensor=models.DateTimeField(null=True)
 
 
 #MODULO CULTIVOS
@@ -355,7 +356,7 @@ class TipoCultivo(models.Model):
     descripcion = models.CharField(max_length=100)
     habilitado = models.BooleanField()
     fechaAltaTipoCultivo = models.DateTimeField()
-    fechaBajaTipoCultivo = models.DateTimeField()
+    fechaBajaTipoCultivo = models.DateTimeField(null=True)
 
 
 class SubtipoCultivo(models.Model):
@@ -365,7 +366,7 @@ class SubtipoCultivo(models.Model):
     habilitado = models.BooleanField()
     descripcion = models.CharField(max_length=100)
     fechaAltaSubtipoCultivo = models.DateTimeField()
-    fechaBajaSubtipoCultivo = models.DateTimeField()
+    fechaBajaSubtipoCultivo = models.DateTimeField(null=True)
 
     tipo_cultivo = models.ForeignKey(TipoCultivo, db_column="OIDTipoCultivo")
 
@@ -404,13 +405,13 @@ class TipoMecanismoRiego(models.Model):
 
 
 class TipoConfiguracionRiego(models.Model):
-    OIDTipoConfiguracionRiego=models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
+    OIDTipoConfiguracionRiego=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     idTipoConfiguracion=models.IntegerField(unique=True)
     nombre=models.CharField(max_length=20,unique=True)
 
 
 class ConfiguracionRiego(models.Model):
-    OIDConfiguracionRiego=models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
+    OIDConfiguracionRiego=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nombre=models.CharField(max_length=20)
     descripcion=models.CharField(max_length=100)
     duracionMaxima=models.FloatField()
@@ -422,50 +423,53 @@ class ConfiguracionRiego(models.Model):
 
 
 class EstadoConfiguracionRiego(models.Model):
-    OIDEstadoConfiguracionRiego=models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
+    OIDEstadoConfiguracionRiego=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nombreEstadoConfiguracionRiego=models.CharField(max_length=20,unique=True)
     descripcionEstadoConfiguracionRiego=models.CharField(max_length=100)
 
 
 class HistoricoEstadoConfiguracionRiego(models.Model):
-    OIDHistoricoEstadoConfiguracionRiego=models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
-    fechaFinEstadoConfiguracionRiego=models.DateTimeField()
-    fechaInicioEstadoConfiguracionRiego=models.DateTimeField()
+    OIDHistoricoEstadoConfiguracionRiego=  models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    fechaFinEstadoConfiguracionRiego = models.DateTimeField()
+    fechaInicioEstadoConfiguracionRiego = models.DateTimeField()
 
-    configuracion_riego=models.ForeignKey(ConfiguracionRiego,db_column="OIDConfiguracionRiego",related_name="historicoEstadoConfiguracionRiegoList")
-    estado_configuracion_riego=models.ForeignKey(EstadoConfiguracionRiego,db_column="OIDEstadoConfiguracionRiego")
+    configuracion_riego = models.ForeignKey(ConfiguracionRiego,db_column="OIDConfiguracionRiego",
+                                          related_name="historicoEstadoConfiguracionRiegoList")
+    estado_configuracion_riego = models.ForeignKey(EstadoConfiguracionRiego,
+                                                 db_column="OIDEstadoConfiguracionRiego")
 
 
 class EstadoEjecucionRiego(models.Model):
-    OIDEstadoEjecucionRiego=models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
-    nombreEstadoEjecucionRiego=models.CharField(max_length=20,unique=True)
-    descripcionEstadoEjecucionRiego=models.CharField(max_length=100)
+    OIDEstadoEjecucionRiego = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    nombreEstadoEjecucionRiego = models.CharField(max_length=20,unique=True)
+    descripcionEstadoEjecucionRiego = models.CharField(max_length=100)
 
 
 class MecanismoRiegoFincaSector(models.Model):
-    OIDMecanismoRiegoFincaSector=models.UUIDField( primary_key=True, editable=False)
-    caudal=models.FloatField()
-    presion=models.FloatField()
+    OIDMecanismoRiegoFincaSector = models.UUIDField( primary_key=True, editable=False)
+    caudal = models.FloatField()
+    presion = models.FloatField()
 
 
 class EjecucionRiego(models.Model):
-    OIDEjecucionRiego=models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
-    cantidadAguaUtilizada=models.FloatField()
-    detalle=models.CharField(max_length=100)
-    duracionActual=models.FloatField()
-    fechaHoraFinalizacion=models.DateTimeField()
-    fechaHoraFinalProgramada=models.DateTimeField()
-    fechaHoraInicio=models.DateTimeField()
-    fechaHoraInicioProgramada=models.DateTimeField()
+    OIDEjecucionRiego = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    cantidadAguaUtilizada = models.FloatField()
+    detalle = models.CharField(max_length=100)
+    duracionActual = models.FloatField()
+    fechaHoraFinalizacion = models.DateTimeField()
+    fechaHoraFinalProgramada = models.DateTimeField()
+    fechaHoraInicio = models.DateTimeField()
+    fechaHoraInicioProgramada = models.DateTimeField()
 
-    configuracion_riego=models.ForeignKey(ConfiguracionRiego,db_column="OIDConfiguracionRiego")
-    estado_ejecucion_riego=models.ForeignKey(EstadoEjecucionRiego,db_column="OIDEstadoEjecucionRiego")
-    mecanismo_riego_finca_sector=models.ForeignKey(MecanismoRiegoFincaSector,db_column="OIDMecanismoRiegoFincaSector",related_name="ejecucionRiegoList")
+    configuracion_riego = models.ForeignKey(ConfiguracionRiego, db_column="OIDConfiguracionRiego")
+    estado_ejecucion_riego = models.ForeignKey(EstadoEjecucionRiego, db_column="OIDEstadoEjecucionRiego")
+    mecanismo_riego_finca_sector = models.ForeignKey(MecanismoRiegoFincaSector, db_column="OIDMecanismoRiegoFincaSector",
+                                                   related_name="ejecucionRiegoList")
 
 
 class CriterioRiego(models.Model):
-    OIDCriterioRiego=models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
-    fechaCreacionCriterio=models.DateTimeField()
+    OIDCriterioRiego = models.UUIDField(primary_key=True,default=uuid.uuid4, editable=False)
+    fechaCreacionCriterio = models.DateTimeField()
     # class Meta:
     #     abstract=True
     #ESTO ES LO MAS IMPORTANTE HAY Q VER COMO IMPLEMENTAMOS LOS CRITERIOS INICIALES Y FINALES
@@ -473,13 +477,15 @@ class CriterioRiego(models.Model):
     #Y Q LA OTRA TENGA DOS ATRIBUTOS Q PARA LOS CRITERIOS INICIALES Y PARA LOS FINALES(LOS Q ESTAN EN EL related_name)
     # configuracionRiegoInicial = models.ForeignKey(ConfiguracionRiego, db_column="OIDConfiguracionRiegoInicial",
     #                                               related_name="criterioRiegoInicioList")
-    configuracionRiegoInicial = models.OneToOneField(ConfiguracionRiego,on_delete=models.CASCADE,db_column="OIDConfiguracionRiegoInicial",related_name="criterioRiegoInicial",null=True)
+    configuracionRiegoInicial = models.OneToOneField(ConfiguracionRiego, on_delete=models.CASCADE,
+                                                     db_column="OIDConfiguracionRiegoInicial",
+                                                     related_name="criterioRiegoInicial", null=True)
     configuracionRiegoFinal = models.ForeignKey(ConfiguracionRiego, db_column="OIDConfiguracionRiegoFinal",
-                                                related_name="criterioRiegoFinal",null=True)
+                                                related_name="criterioRiegoFinal", null=True)
 
 
 class CriterioRiegoPorMedicion(CriterioRiego):
-    valor=models.FloatField()
+    valor = models.FloatField()
     # class Meta(CriterioRiego.Meta):
     #     db_table="CriterioRiegoPorMedicion"
     # configuracionRiegoInicial=models.ForeignKey(ConfiguracionRiego,db_column="OIDConfiguracionRiegoInicial",related_name="%(class)scriterioRiegoInicioList")
@@ -487,7 +493,7 @@ class CriterioRiegoPorMedicion(CriterioRiego):
 
 
 class CriterioRiegoVolumenAgua(CriterioRiego):
-    volumen=models.FloatField()
+    volumen = models.FloatField()
     # class Meta(CriterioRiego.Meta):
     #     db_table="CriterioRiegoVolumenAgua"
     # configuracionRiegoInicial=models.ForeignKey(ConfiguracionRiego,db_column="OIDConfiguracionRiegoInicial",related_name="%(class)scriterioRiegoInicioList")
@@ -495,8 +501,8 @@ class CriterioRiegoVolumenAgua(CriterioRiego):
 
 
 class CriterioRiegoPorHora(CriterioRiego):
-    hora=models.DateTimeField()
-    numeroDia=models.IntegerField()
+    hora = models.DateTimeField()
+    numeroDia = models.IntegerField()
     # class Meta(CriterioRiego.Meta):
     #     db_table = "CriterioRiegoPorHora"
     # configuracionRiegoInicial=models.ForeignKey(ConfiguracionRiego,db_column="OIDConfiguracionRiegoInicial",related_name="%(class)scriterioRiegoInicioList")
@@ -506,20 +512,20 @@ class CriterioRiegoPorHora(CriterioRiego):
 #MODULO SENSORES
 
 class TipoMedicion(models.Model):
-    OIDTipoMedicion=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    idTipoMedicion=models.IntegerField()
-    nombreTipoMedicion=models.CharField(max_length=20)
+    OIDTipoMedicion = models.UUIDField( primary_key=True, default=uuid.uuid4, editable=False)
+    idTipoMedicion = models.IntegerField()
+    nombreTipoMedicion = models.CharField(max_length=20)
     unidadMedicion = models.CharField(max_length=20)
-    habilitado=models.BooleanField()
-    fechaAltaTipoMedicion=models.DateTimeField()
-    fechaBajaTipoMedicion=models.DateTimeField()
+    habilitado = models.BooleanField()
+    fechaAltaTipoMedicion = models.DateTimeField()
+    fechaBajaTipoMedicion = models.DateTimeField(null=True)
 
 
 class Sensor(models.Model):
-    OIDSensor=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    idSensor=models.IntegerField()
+    OIDSensor = models.UUIDField( primary_key=True, default=uuid.uuid4, editable=False)
+    idSensor = models.IntegerField()
     fechaAltaSensor=models.DateTimeField()
-    fechaBajaSensor=models.DateTimeField()
+    fechaBajaSensor=models.DateTimeField(null=True)
     habilitado=models.BooleanField()
     modelo=models.CharField(max_length=20)
 
@@ -538,7 +544,7 @@ class ComponenteSensorSector(models.Model):
 class HistoricoComponenteSensorSector(models.Model):
     OIDHistoricoComponenteSensorSector=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     fechaAltaComponenteSensorSector=models.DateTimeField()
-    fechaBajaComponenteSensorSecto=models.DateTimeField()
+    fechaBajaComponenteSensorSecto=models.DateTimeField(null=True)
     componenteSensorSector=models.ForeignKey(ComponenteSensorSector,db_column="OIDComponenteSensorSector",related_name="historicoComponenteSensorSector")
 
 
@@ -588,7 +594,7 @@ class ConfiguracionEventoPersonalizado(models.Model):
     descripcion = models.CharField(max_length=100)
     notificacionActivada = models.BooleanField()
     fechaAltaConfiguracionEventoPersonalizado = models.DateTimeField()
-    fechaBajaConfiguracionEventoPersonalizado = models.DateTimeField()
+    fechaBajaConfiguracionEventoPersonalizado = models.DateTimeField(null=True)
     fechaHoraCreacion = models.DateTimeField()
 
     usuario_finca = models.ForeignKey(UsuarioFinca, db_column="OIDUsuarioFinca",
@@ -606,27 +612,18 @@ class EventoPersonalizado(models.Model):
 
 #MODULO INFORMACION EXTERNA
 
-class MetodoProveedorInformacionClimatica(models.Model):
-    OIDMetodoProveedorInformacionClimatica=models.UUIDField(default=uuid.uuid4,primary_key=True)
-    nombreMetodo=models.CharField(max_length=40)
-    tipoMetodo=models.CharField(max_length=10,unique=True)
-    proveedor_informacion_climatica=models.ForeignKey('ProveedorInformacionClimatica',db_column="OIDProveedorInformacionClimatica",related_name="metodoProveedorInformacionClimaticaList")
-
-
 class TipoMedicionClimatica(models.Model):
-    OIDTipoMedicionClimatica=models.UUIDField(default=uuid.uuid4,primary_key=True)
+    OIDTipoMedicionClimatica=models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     idTipoMedicionClimatica=models.IntegerField(unique=True)
     nombreTipoMedicionClimatica=models.IntegerField(unique=True)
     tipoDato=models.CharField(max_length=10)
     fechaAltaTipoMedicionClimatica=models.DateTimeField()
-    fechaBajaTipoMedicionClimatica=models.DateTimeField()
+    fechaBajaTipoMedicionClimatica=models.DateTimeField(null=True)
     habilitada=models.BooleanField()
-
-    metodo_proveedor_informacion_climatica=models.ForeignKey(MetodoProveedorInformacionClimatica,db_column="OIDMetodoProveedorInformacionClimatica",related_name="tipoMedicionClimatica")
 
 
 class ProveedorInformacionClimatica(models.Model):
-    OIDProveedorInformacionClimatica=models.UUIDField(default=uuid.uuid4,primary_key=True)
+    OIDProveedorInformacionClimatica=models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     nombreProveedor=models.CharField(max_length=20,unique=True)
     habilitado=models.BooleanField()
     urlAPI=models.CharField(max_length=100,null=True)
@@ -651,17 +648,9 @@ class MedicionEstadoExterno(MedicionEvento):
     #     db_table = "MedicionEstadoExterno"
 
 
-class Parametro(models.Model):
-    OIDParametro=models.UUIDField(default=uuid.uuid4,primary_key=True)
-    nombre=models.CharField(max_length=20)
-    tipo=models.CharField(max_length=20)
-    descripcion=models.CharField(max_length=100)
-
-    metodo_proveedor_informacion_climatica=models.ForeignKey(MetodoProveedorInformacionClimatica,db_column="OIDMetodoProveedorInformacionClimatica",related_name="parametro_list")
-
 
 class MedicionInformacionClimaticaCabecera(models.Model):
-    OIDMedicionInformacionClimaticaCabecera=models.UUIDField(default=uuid.uuid4,primary_key=True)
+    OIDMedicionInformacionClimaticaCabecera=models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     nroMedicion=models.IntegerField(unique=True)
     fechaHora=models.DateTimeField()
 
@@ -669,7 +658,7 @@ class MedicionInformacionClimaticaCabecera(models.Model):
 
 
 class MedicionInformacionClimaticaDetalle(models.Model):
-    OIDMedicionInformacionClimaticaDetalle=models.UUIDField(default=uuid.uuid4,primary_key=True)
+    OIDMedicionInformacionClimaticaDetalle=models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     nroRenglon=models.IntegerField()
     valor=models.FloatField()
 
