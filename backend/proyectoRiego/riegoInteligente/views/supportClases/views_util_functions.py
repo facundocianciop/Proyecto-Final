@@ -37,5 +37,9 @@ def armar_response_content(objeto):
         return dumps(response_error_dictionary, cls=DjangoJSONEncoder)
 
 
+def armar_response_simple(objeto):
+    return dumps(objeto, cls=DjangoJSONEncoder)
+
+
 def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
