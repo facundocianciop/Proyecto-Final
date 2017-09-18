@@ -178,8 +178,7 @@ def recuperar_cuenta(request):
         usuario.save()
         response_data = {}
         response_data[KEY_USUARIO] = usuario.username
-        response.content=dumps(response_data)
-        #response.content = armar_response_content(response_data)
+        response.content = armar_response_simple(response_data)
         response.status_code = 200
         return response
 
@@ -370,7 +369,7 @@ def cambiar_contrasenia_recuperar_cuenta(request):
             user.save()
             response_data = {}
             response_data[KEY_RESULTADO_OPERACION] = True
-            response.content = dumps(response_data)
+            response.content = armar_response_simple(response_data)
             response.status_code = 200
             return response
         else:

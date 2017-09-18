@@ -14,9 +14,9 @@ from supportClases.error_handler import *
 
 @transaction.atomic()
 @login_requerido
-@metodos_requeridos([METHOD_POST])
+@metodos_requeridos([METHOD_GET])
 def obtener_fincas_por_usuario(request):
-    response=HttpResponse()
+    response = HttpResponse()
     try:
         user = request.user
         usuario = user.datosusuario
@@ -30,7 +30,7 @@ def obtener_fincas_por_usuario(request):
                 nombre_rol = rol_usuario_finca.rol.nombreRol
                 lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre, nombreRol=nombre_rol,
                                                        idFinca= finca.idFinca))
-        response.content=armar_response_list_content(lista_dto_finca_rol)
+        response.content = armar_response_list_content(lista_dto_finca_rol)
         response.content_type = "application/json"
         response.status_code = 200
         return response
@@ -79,19 +79,19 @@ def buscar_proveedores_informacion(request):
 @login_requerido
 @metodos_requeridos([METHOD_POST])
 def elegir_proveedor_informacion(request):
-    response=HttpResponse()
-    datos=obtener_datos_json(request)
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
     try:
         if ProveedorInformacionClimatica.objects.filter(nombreProveedor=datos[KEY_NOMBRE_PROVEEDOR]).__len__() == 1:
-            proveedorSeleccionado=ProveedorInformacionClimatica.objects.get(nombreProveedor=datos[KEY_NOMBRE_PROVEEDOR])
-            fincaCreada=Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
-            proveedorInformacionClimaticaFinca=ProveedorInformacionClimaticaFinca(
-                proveedorInformacionClimatica=proveedorSeleccionado,finca=fincaCreada)
-            proveedorInformacionClimaticaFinca.fechaAltaProveedorInfoClimaticaFinca=datetime.now()
+            proveedorSeleccionado = ProveedorInformacionClimatica.objects.get(nombreProveedor=datos[KEY_NOMBRE_PROVEEDOR])
+            fincaCreada = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+            proveedorInformacionClimaticaFinca = ProveedorInformacionClimaticaFinca(
+                proveedorInformacionClimatica=proveedorSeleccionado, finca=fincaCreada)
+            proveedorInformacionClimaticaFinca.fechaAltaProveedorInfoClimaticaFinca = datetime.now()
             proveedorInformacionClimaticaFinca.save()
             estadoFinca=EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_PENDIENTE_APROBACION)
-            historicoCreado=HistoricoEstadoFinca(fechaInicioEstadoFinca=datetime.now(),estadoFinca=estadoFinca)
-            historicoCreado.finca=fincaCreada
+            historicoCreado=HistoricoEstadoFinca(fechaInicioEstadoFinca=datetime.now(), estadoFinca=estadoFinca)
+            historicoCreado.finca = fincaCreada
             historicoCreado.save()
             print historicoCreado.fechaInicioEstadoFinca
             fincaCreada.historicoEstadoFincaList.add(historicoCreado)
