@@ -26,14 +26,16 @@ def obtener_fincas_por_usuario(request):
             ultimo_historico = HistoricoEstadoFinca.objects.get(finca=finca, fechaFinEstadoFinca__isnull=True)
             if ultimo_historico.estadoFinca.nombreEstadoFinca == ESTADO_HABILITADO:
                 rol_usuario_finca = RolUsuarioFinca.objects.get(usuarioFinca=usuarioFinca,
-                                                                fechaBajaUsuarioFinca__isnull=True)
+                                                                fechaBajaRolUsuarioFinca__isnull=True)
                 nombre_rol = rol_usuario_finca.rol.nombreRol
-                lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre, nombreRol=nombre_rol))
+                lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre, nombreRol=nombre_rol,
+                                                       idFinca= finca.idFinca))
         response.content=armar_response_list_content(lista_dto_finca_rol)
         response.content_type = "application/json"
         response.status_code = 200
         return response
-    except (IntegrityError, TypeError, KeyError):
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 
@@ -454,3 +456,4 @@ def devolver_permisos(request):
     except (IntegrityError, TypeError, KeyError) as err:
         print err.args
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
