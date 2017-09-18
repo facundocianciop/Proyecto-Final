@@ -53,7 +53,7 @@ def crear_finca(request):
                           tamanio=datos[KEY_TAMANIO])
             finca.save()
             response.content = armar_response_content(finca)
-            response.status_code=200
+            response.status_code = 200
             return response
         else:
             raise ValueError(ERROR_FINCA_YA_EXISTENTE,"Ya existe una finca con ese nombre")
@@ -278,6 +278,47 @@ def modificar_finca(request):
     except (IntegrityError, TypeError, KeyError):
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_DELETE])
+def eliminar_finca(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if Finca.objects.filter(idFinca=datos[KEY_ID_FINCA]).__len__() == 1:
+            finca_a_eliminar = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+            user = request.user
+            usuario = user.datosusuario
+            usuario_finca = UsuarioFinca.objects.get(usuario=usuario, finca=finca_a_eliminar,
+                                                     fechaBajaUsuarioFinca__isnull=True)
+            rol_usuario_finca = RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,
+                                                            fechaBajaRolUsuarioFinca__isnull=True)
+            if rol_usuario_finca.rol.nombreRol != 'encargado':
+                raise ValueError(ERROR_USUARIO_NO_ENCARGADO, "Este usuario no tiene los privilegios para eliminar "
+                                                             "esta finca")
+
+            historico_actual = HistoricoEstadoFinca.objects.get(finca=finca_a_eliminar,
+                                                                fechaFinEstadoFinca__isnull=True)
+
+            estado__nuevo = EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_DESHABILITADO)
+            historico_actual.fechaFinEstadoFinca = datetime.now()
+            historico_actual.save()
+            historico_nuevo = HistoricoEstadoFinca(fechaInicioEstadoFinca=datetime.now(),
+                                                   finca=finca_a_eliminar, estadoFinca=estado__nuevo)
+            historico_nuevo.save()
+            finca_a_eliminar.save()
+            response.content = armar_response_content(None)
+            response.content_type = "application/json"
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_FINCA_NO_ENCONTRADA, "No se encontro la finca seleccionada")
+    except ValueError as err:
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 @transaction.atomic()
 @login_requerido
