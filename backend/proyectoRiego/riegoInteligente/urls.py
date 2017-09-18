@@ -21,6 +21,8 @@ urlpatterns = [
     url(r'^agregarUsuarioFinca/$', views_modulo_finca.agregar_usuario_finca, name='agregarUsuarioFinca'),
     url(r'^modificarRolUsuario/$', views_modulo_finca.modificar_rol_usuario, name='modificarRolUsuario'),
     url(r'^modificarFinca/$', views_modulo_finca.modificar_finca, name='modificarFinca'),
+    url(r'^eliminarFinca/$', views_modulo_finca.eliminar_finca, name='eliminarFinca'),
+
     url(r'^buscarFincaId/$', views_modulo_finca.buscar_finca_id, name='buscarFincaId'),
     url(r'^devolverPermisos/$', views_modulo_finca.devolver_permisos, name='devolverPermisos'),
 
@@ -35,6 +37,7 @@ urlpatterns = [
     url(r'^iniciarSesion/$', views_modulo_seguridad.iniciar_sesion, name='iniciarSesion'),
     url(r'^mostrarUsuario/$', views_modulo_seguridad.mostrar_usuario, name='mostrarUsuario'),
     url(r'^cambiarContrasenia/$', views_modulo_seguridad.cambiar_contrasenia, name='cambiarContrasenia'),
+    url(r'^cambiarContraseniaRecuperarCuenta/$', views_modulo_seguridad.cambiar_contrasenia_recuperar_cuenta, name='cambiarContraseniaRecuperarCuenta'),
     url(r'^finalizarSesion/$', views_modulo_seguridad.finalizar_sesion, name='finalizarSesion'),
     url(r'^eliminarUsuario/$', views_modulo_seguridad.eliminar_usuario, name='eliminarUsuario'),
     url(r'^modificarUsuario/$', views_modulo_seguridad.modificar_usuario, name='modificarUsuario'),

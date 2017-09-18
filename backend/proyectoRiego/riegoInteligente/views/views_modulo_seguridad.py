@@ -180,6 +180,7 @@ def recuperar_cuenta(request):
         # FALTA MANDAR EL MAIL, CONFIGURAR LA CONTRASEÑA Y EL PUERTO
         # ACA PENSE QUE EN CASO DE RECHAZAR LA FINCA QUE EL ADMINISTRADOR ESCRIBIERA UN MENSAJE DICIENDO
         # POR QUÉ LA RECHAZÓ
+        usuario.save()
         response_data = {}
         response_data[KEY_USUARIO] = usuario.username
         response.content=dumps(response_data)
@@ -367,14 +368,14 @@ def cambiar_contrasenia_recuperar_cuenta(request):
         if KEY_CONTRASENIA_NUEVA not in datos:
             raise KeyError(ERROR_DATOS_FALTANTES, "Falta el dato contrasenia")
         contrasenia_nueva = datos[KEY_CONTRASENIA_NUEVA]
-        user = User.objects.filter(codigoVerificacion=datos[KEY_CODIGO_VERIFICACION], username=datos[KEY_USUARIO])
-
-        if user is not None:
+        user = User.objects.get(username=datos[KEY_USUARIO])
+        usuario = user.datosusuario
+        if usuario.codigoVerificacion == datos[KEY_CODIGO_VERIFICACION]:
             user.set_password(contrasenia_nueva)
             user.save()
             response_data = {}
             response_data[KEY_RESULTADO_OPERACION] = True
-            response.content = armar_response_content(response_data)
+            response.content = dumps(response_data)
             response.status_code = 200
             return response
         else:
