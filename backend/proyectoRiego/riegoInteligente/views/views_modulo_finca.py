@@ -340,7 +340,7 @@ def buscar_usuarios_no_encargado(request):
     datos = obtener_datos_json(request)
     try:
         finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
-        usuarios_finca = UsuarioFinca.objects.filter(finca=finca)
+        usuarios_finca = UsuarioFinca.objects.filter(finca=finca, fechaBajaUsuarioFinca__isnull=True)
         rol_encargado = Rol.objects.get(nombreRol=ROL_ENCARGADO)
         dto_usuario_finca_list = []
         for usuario_finca in usuarios_finca:
@@ -367,7 +367,7 @@ def buscar_usuarios_no_encargado(request):
 
 @transaction.atomic()
 @login_requerido
-@metodos_requeridos([METHOD_DELETE])
+@metodos_requeridos([METHOD_POST])
 def eliminar_usuario_finca(request):
     response=HttpResponse()
     datos=obtener_datos_json(request)
