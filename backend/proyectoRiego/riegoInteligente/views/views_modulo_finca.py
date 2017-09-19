@@ -335,7 +335,7 @@ def buscar_usuarios_no_encargado(request):
         rol_encargado = Rol.objects.get(nombreRol=ROL_ENCARGADO)
         dto_usuario_finca_list = []
         for usuario_finca in usuarios_finca:
-            
+
             rol_actual = RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,
                                                         fechaBajaRolUsuarioFinca__isnull=True)
             if rol_actual.rol != rol_encargado:

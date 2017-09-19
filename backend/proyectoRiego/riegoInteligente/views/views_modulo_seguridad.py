@@ -167,7 +167,7 @@ def recuperar_cuenta(request):
         usuario = User.objects.get(email=email)
         print usuario.email
         codigo_verificacion = id_generator()
-        usuario.datosusuario.codigoVerificacion=codigo_verificacion
+        usuario.datosusuario.codigoVerificacion = codigo_verificacion
         # with mail.get_connection() as connection:
         # mail.EmailMessage('SmartFarming: Recuperacion de cueta ',body="Su nueva contraseña es
         # %s"%contrasenia_aleatoria,from1='facundocianciop',

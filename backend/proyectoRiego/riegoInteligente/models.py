@@ -67,6 +67,10 @@ class EstadoUsuario(models.Model):
     nombreEstadoUsuario=models.CharField(max_length=100)
 
 
+    def __str__(self):
+        return self.nombreEstadoUsuario
+
+
 class HistoricoEstadoUsuario(models.Model):
     OIDHistoricoEstadoUsuario =models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     fechaFinEstadoUsuario=models.DateTimeField(null=True)
@@ -74,6 +78,10 @@ class HistoricoEstadoUsuario(models.Model):
 
     usuario=models.ForeignKey(DatosUsuario,db_column="OIDUsuario",related_name="historicoEstadoUsuarioList",null=True)
     estadoUsuario=models.ForeignKey(EstadoUsuario,db_column="OIDEstadoUsuario")
+
+    def __str__(self):
+        return self.usuario.user.username + "-" + self.fechaInicioEstadoUsuario + "-" + \
+               self.estadoUsuario.nombreEstadoUsuario
 
 
 class Rol(models.Model):
@@ -192,6 +200,9 @@ class Finca(models.Model):
     nombre=models.CharField(max_length=50)
     tamanio=models.FloatField()
     ubicacion=models.CharField(max_length=50)
+
+    def __str__(self):
+        return str(self.idFinca) + "-" + self.nombre
 
     def save(self):
         "Get last value of Code and Number from database, and increment before save"
@@ -632,6 +643,10 @@ class ProveedorInformacionClimatica(models.Model):
     fechaBajaProveedorInfoClimatica=models.DateTimeField(null=True)
 
     tipo_medicion_climatica=models.ManyToManyField(TipoMedicionClimatica)
+
+
+    def __str__(self):
+        return self.nombreProveedor
 
     def as_json(self):
         return dict(
