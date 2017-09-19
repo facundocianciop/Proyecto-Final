@@ -24,9 +24,10 @@ class DtoUsuarioFinca:
 
     def as_json(self):
         return dict(
+            usuario=self.usuario,
             idUsuarioFinca=self.id_usuario_finca,
-            nombreUsuario=self.nombre_usuario,
-            apellidoUsuario=self.apellido_usuario,
+            nombre=self.nombre_usuario,
+            apellido=self.apellido_usuario,
             email=self.email,
             # imagenUsuario=self.imagen_usuario,
             rol=self.rol
