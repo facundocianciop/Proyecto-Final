@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A1B9D44F1F6C7547004930F9"
-               BuildableName = "proyectoRIego2017.app"
-               BlueprintName = "proyectoRIego2017"
-               ReferencedContainer = "container:proyectoRIego2017.xcodeproj">
+               BlueprintIdentifier = "A1CFF8321F74341E00425B70"
+               BuildableName = "proyectoRiego2017.app"
+               BlueprintName = "proyectoRiego2017"
+               ReferencedContainer = "container:proyectoRiego2017.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,30 +32,30 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A1B9D46B1F6C7547004930F9"
-               BuildableName = "proyectoRIego2017Tests.xctest"
-               BlueprintName = "proyectoRIego2017Tests"
-               ReferencedContainer = "container:proyectoRIego2017.xcodeproj">
+               BlueprintIdentifier = "A1CFF84E1F74341E00425B70"
+               BuildableName = "proyectoRiego2017Tests.xctest"
+               BlueprintName = "proyectoRiego2017Tests"
+               ReferencedContainer = "container:proyectoRiego2017.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A1B9D4761F6C7547004930F9"
-               BuildableName = "proyectoRIego2017UITests.xctest"
-               BlueprintName = "proyectoRIego2017UITests"
-               ReferencedContainer = "container:proyectoRIego2017.xcodeproj">
+               BlueprintIdentifier = "A1CFF8591F74341E00425B70"
+               BuildableName = "proyectoRiego2017UITests.xctest"
+               BlueprintName = "proyectoRiego2017UITests"
+               ReferencedContainer = "container:proyectoRiego2017.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A1B9D44F1F6C7547004930F9"
-            BuildableName = "proyectoRIego2017.app"
-            BlueprintName = "proyectoRIego2017"
-            ReferencedContainer = "container:proyectoRIego2017.xcodeproj">
+            BlueprintIdentifier = "A1CFF8321F74341E00425B70"
+            BuildableName = "proyectoRiego2017.app"
+            BlueprintName = "proyectoRiego2017"
+            ReferencedContainer = "container:proyectoRiego2017.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -75,10 +75,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A1B9D44F1F6C7547004930F9"
-            BuildableName = "proyectoRIego2017.app"
-            BlueprintName = "proyectoRIego2017"
-            ReferencedContainer = "container:proyectoRIego2017.xcodeproj">
+            BlueprintIdentifier = "A1CFF8321F74341E00425B70"
+            BuildableName = "proyectoRiego2017.app"
+            BlueprintName = "proyectoRiego2017"
+            ReferencedContainer = "container:proyectoRiego2017.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -94,10 +94,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A1B9D44F1F6C7547004930F9"
-            BuildableName = "proyectoRIego2017.app"
-            BlueprintName = "proyectoRIego2017"
-            ReferencedContainer = "container:proyectoRIego2017.xcodeproj">
+            BlueprintIdentifier = "A1CFF8321F74341E00425B70"
+            BuildableName = "proyectoRiego2017.app"
+            BlueprintName = "proyectoRiego2017"
+            ReferencedContainer = "container:proyectoRiego2017.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

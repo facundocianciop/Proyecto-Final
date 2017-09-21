@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>proyectoRIego2017.xcscheme</key>
+		<key>proyectoRiego2017.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,17 +12,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>A1B9D44F1F6C7547004930F9</key>
+		<key>A1CFF8321F74341E00425B70</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A1B9D46B1F6C7547004930F9</key>
+		<key>A1CFF84E1F74341E00425B70</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A1B9D4761F6C7547004930F9</key>
+		<key>A1CFF8591F74341E00425B70</key>
 		<dict>
 			<key>primary</key>
 			<true/>
