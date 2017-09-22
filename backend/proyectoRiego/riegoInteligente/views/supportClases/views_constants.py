@@ -41,9 +41,18 @@ KEY_IMAGEN_USUARIO = 'imagenUsuario'
 
 KEY_TIPO_SESION = 'tipoSesion'
 
+# Sector
+KEY_NUMERO_SECTOR = 'numeroSector'
+KEY_NOMBRE_SECTOR = 'nombreSector'
+KEY_DESCRIPCION_SECTOR = 'descripcionSector'
+KEY_SUPERFICIE_SECTOR = 'superficieSector'
+
 # Roles
 ROL_ENCARGADO = "encargado"
 ROL_STAKEHOLDER = "stakeholder"
+
+# Mecanismos
+KEY_NOMBRE_TIPO_MECANISMO = 'nombreTipoMecanismo'
 
 # Estados
 

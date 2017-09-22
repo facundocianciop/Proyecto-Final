@@ -294,12 +294,22 @@ class HistoricoMecanismoRiegoFinca(models.Model):
 class Sector(models.Model):
     OIDSector=models.UUIDField( primary_key=True, default=uuid.uuid4, editable=False)
     numeroSector=models.IntegerField()
-    nombreSector=models.CharField(max_length=20)
+    nombreSector=models.CharField(max_length=30)
     descripcionSector=models.CharField(max_length=100)
     superficie=models.FloatField()
 
+    finca = models.ForeignKey("Finca", db_column="OIDFinca", related_name="sectorList", null=True)
+
     def __str__(self):
         return ("Este es el sector %d")%self.numeroSector
+
+    def as_json(self):
+        return dict(
+                    numeroSector=self.numeroSector,
+                    nombreSector=self.nombreSector,
+                    descripcionSector=self.descripcionSector,
+                    superficieSector=self.superficie)
+
 
 
 class Cultivo(models.Model):
@@ -332,7 +342,7 @@ class HistoricoEstadoSector(models.Model):
     fechaInicioEstadoSector=models.DateTimeField()
 
     estado_sector=models.ForeignKey(EstadoSector,db_column="OIDEstadoSector")
-    sector=models.ForeignKey(Sector,db_column="OIDSector",related_name="historicoEstadoSector")
+    sector=models.ForeignKey(Sector,db_column="OIDSector",related_name="historicoEstadoSectorList")
 
 
 class EstadoMecanismoRiegoFincaSector(models.Model):
@@ -405,7 +415,6 @@ class TipoMecanismoRiego(models.Model):
     habilitado=models.BooleanField(default=True)
     def as_json(self):
         return dict(
-            OIDTipoMecanismoRiego=self.OIDTipoMecanismoRiego,
             nombreMecanismo=self.nombreMecanismo,
             descripcion=self.descripcion,
             presionEstandar=self.presionEstandar,
