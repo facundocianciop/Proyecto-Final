@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^devolverPermisos/$', views_modulo_finca.devolver_permisos, name='devolverPermisos'),
 
     url(r'^crearSector/$', views_configuracion_sectores.crearSector, name='crearSector'),
+    url(r'^mostrarSectores/$', views_configuracion_sectores.mostrarSectores, name='mostrarSectores'),
 
     url(r'^mostrarMecanismosRiegoFinca/$', views_configuracion_finca.mostrarMecanismosRiegoFinca, name='mostrarMecanismosRiegoFinca'),
     url(r'^mostrarMecanismosNuevos/$', views_configuracion_finca.mostrarMecanismosNuevos,

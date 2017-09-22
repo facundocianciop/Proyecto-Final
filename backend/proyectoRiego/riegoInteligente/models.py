@@ -293,13 +293,39 @@ class HistoricoMecanismoRiegoFinca(models.Model):
 
 class Sector(models.Model):
     OIDSector=models.UUIDField( primary_key=True, default=uuid.uuid4, editable=False)
+    idSector = models.IntegerField(default=1, unique=True)
     numeroSector=models.IntegerField()
-    nombreSector=models.CharField(max_length=20)
+    nombreSector=models.CharField(max_length=30)
     descripcionSector=models.CharField(max_length=100)
     superficie=models.FloatField()
 
+    finca = models.ForeignKey("Finca", db_column="OIDFinca", related_name="sectorList", null=True)
+
+
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        if Sector.objects.all().__len__() == 0:
+            self.idSector = 1
+            super(Sector, self).save()
+        else:
+            if Sector.objects.get(idSector=self.idSector) == self:
+                super(Sector, self).save()
+            else:
+                ultimoSector = Sector.objects.order_by('-idSector')[0]
+                self.idSector = ultimoSector.idSector + 1
+                super(Sector, self).save()
+
     def __str__(self):
         return ("Este es el sector %d")%self.numeroSector
+
+    def as_json(self):
+        return dict(
+                    idSector=self.idSector,
+                    numeroSector=self.numeroSector,
+                    nombreSector=self.nombreSector,
+                    descripcionSector=self.descripcionSector,
+                    superficieSector=self.superficie)
+
 
 
 class Cultivo(models.Model):
@@ -332,7 +358,7 @@ class HistoricoEstadoSector(models.Model):
     fechaInicioEstadoSector=models.DateTimeField()
 
     estado_sector=models.ForeignKey(EstadoSector,db_column="OIDEstadoSector")
-    sector=models.ForeignKey(Sector,db_column="OIDSector",related_name="historicoEstadoSector")
+    sector=models.ForeignKey(Sector,db_column="OIDSector",related_name="historicoEstadoSectorList")
 
 
 class EstadoMecanismoRiegoFincaSector(models.Model):
@@ -405,7 +431,6 @@ class TipoMecanismoRiego(models.Model):
     habilitado=models.BooleanField(default=True)
     def as_json(self):
         return dict(
-            OIDTipoMecanismoRiego=self.OIDTipoMecanismoRiego,
             nombreMecanismo=self.nombreMecanismo,
             descripcion=self.descripcion,
             presionEstandar=self.presionEstandar,
