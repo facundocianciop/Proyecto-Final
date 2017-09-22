@@ -293,6 +293,7 @@ class HistoricoMecanismoRiegoFinca(models.Model):
 
 class Sector(models.Model):
     OIDSector=models.UUIDField( primary_key=True, default=uuid.uuid4, editable=False)
+    idSector = models.IntegerField(default=1, unique=True)
     numeroSector=models.IntegerField()
     nombreSector=models.CharField(max_length=30)
     descripcionSector=models.CharField(max_length=100)
@@ -300,11 +301,26 @@ class Sector(models.Model):
 
     finca = models.ForeignKey("Finca", db_column="OIDFinca", related_name="sectorList", null=True)
 
+
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        if Sector.objects.all().__len__() == 0:
+            self.idSector = 1
+            super(Sector, self).save()
+        else:
+            if Sector.objects.get(idSector=self.idSector) == self:
+                super(Sector, self).save()
+            else:
+                ultimoSector = Sector.objects.order_by('-idSector')[0]
+                self.idSector = ultimoSector.idSector + 1
+                super(Sector, self).save()
+
     def __str__(self):
         return ("Este es el sector %d")%self.numeroSector
 
     def as_json(self):
         return dict(
+                    idSector=self.idSector,
                     numeroSector=self.numeroSector,
                     nombreSector=self.nombreSector,
                     descripcionSector=self.descripcionSector,

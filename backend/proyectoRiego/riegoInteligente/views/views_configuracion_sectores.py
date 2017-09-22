@@ -14,8 +14,9 @@ def crearSector(request):
     datos = obtener_datos_json(request)
     try:
         finca_actual = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
-        if Sector.objects.filter(numeroSector=datos[KEY_NUMERO_SECTOR]) or Sector.objects.filter(nombreSector=datos[KEY_NOMBRE_SECTOR]):
-            raise ValueError("Ya existe un sector con ese número o nombre")
+        if Sector.objects.filter(numeroSector=datos[KEY_NUMERO_SECTOR],finca= finca_actual) or \
+                Sector.objects.filter(nombreSector=datos[KEY_NOMBRE_SECTOR], finca= finca_actual):
+            raise ValueError(ERROR_SECTOR_YA_EXISTENTE,"Ya existe un sector con ese numero o nombre")
         sector_nuevo = Sector(numeroSector=datos[KEY_NUMERO_SECTOR], nombreSector=datos[KEY_NOMBRE_SECTOR],
                               descripcionSector=datos[KEY_DESCRIPCION_SECTOR], superficie=datos[KEY_SUPERFICIE_SECTOR],
                               finca=finca_actual
@@ -26,8 +27,11 @@ def crearSector(request):
                                                 fechaInicioEstadoSector=datetime.now())
         historico_nuevo.save()
         finca_actual.save()
+        response.content = armar_response_content(None)
+        response.status_code = 200
+        return response
     except ValueError as err:
-        return build_bad_request_error(response,err.args[0], err.args[1])
+        return build_bad_request_error(response, err.args[0], err.args[1])
     except (IntegrityError, TypeError, KeyError) as err:
         print err.args
         response.status_code = 401
@@ -50,7 +54,7 @@ def mostrarSectores(request):
                 sectores_habilitados.append(sector)
 
         response.content = armar_response_list_content(sectores_habilitados)
-        response.content = 200
+        response.status_code = 200
         return response
     except ValueError as err:
         return build_bad_request_error(response,err.args[0], err.args[1])
