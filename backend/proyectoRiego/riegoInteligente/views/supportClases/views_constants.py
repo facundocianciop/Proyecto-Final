@@ -59,7 +59,9 @@ KEY_NOMBRE_SUBTIPO_CULTIVO ="nombreSubtipoCultivo"
 # Cultivo
 KEY_NOMBRE_CULTIVO = "nombreCultivo"
 KEY_DESCRIPCION_CULTIVO = "descripcionCultivo"
+KEY_FECHA_PLANTACION = "fechaPlantacion"
 KEY_ID_CULTIVO = 'idCultivo'
+
 
 
 # Roles

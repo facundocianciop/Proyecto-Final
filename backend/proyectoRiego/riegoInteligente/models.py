@@ -354,8 +354,21 @@ class Cultivo(models.Model):
                 ultimoCultivo = Cultivo.objects.order_by('-idCultivo')[0]
                 self.idCultivo = ultimoCultivo.idCultivo + 1
                 super(Cultivo, self).save()
+
+
     def __str__(self):
         return ("Este es el cultivo %s")%self.nombre
+
+
+    def as_json(self):
+        return dict(descripcion=self.descripcion,
+                    idCultivo=self.idCultivo,
+                    nombre=self.nombre,
+                    fechaPlantacion=self.fechaPlantacion,
+                    fechaEliminacion=self.fechaEliminacion,
+                    habilitado=self.habilitado,
+                    subtipo=self.subtipo_cultivo.nombreSubtipo,
+                    tipo=self.subtipo_cultivo.tipo_cultivo.nombreTipoCultivo)
 
 
 class EstadoSector(models.Model):
@@ -437,7 +450,7 @@ class CaracteristicaSubtipo(models.Model):
 
 class TipoMecanismoRiego(models.Model):
     OIDTipoMecanismoRiego = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    nombreMecanismo=models.CharField(max_length=30,unique=True)
+    nombreMecanismo = models.CharField(max_length=30,unique=True)
     descripcion=models.CharField(max_length=200,null=True)
     caudalEstandar = models.FloatField(null=True)
     presionEstandar=models.FloatField(null=True)

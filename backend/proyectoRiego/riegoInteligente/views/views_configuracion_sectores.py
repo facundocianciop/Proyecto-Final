@@ -156,6 +156,40 @@ def mostrar_sectores(request):
         response.status_code = 401
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+def mostrar_mecanismo_riego_sector(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
+        sector_seleccionado = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
+        if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
+                                                fechaFinEstadoSector__isnull=True).__len__() != 1:
+            raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
+        estado_mecanismo_sector_habilitado = EstadoMecanismoRiegoFincaSector.objects.get(nombreEstadoMecanismoRiegoFincaSector=ESTADO_HABILITADO)
+        mecanismo_sector_lista = sector_seleccionado.mecanismoRiegoFincaSector.all()
+        for mecanismo in mecanismo_sector_lista:
+            if mecanismo.historicoMecanismoRiegoFincaSector.filter(
+                    estado_mecanismo_riego_finca_sector= estado_mecanismo_sector_habilitado,
+                    fechaFinEstadoMecanismoRiegoFincaSector__isnull=True).__len__() == 1:
+                response.content = armar_response_content(mecanismo)
+                response.status_code = 200
+                return response
+        response.content = "[]"
+        response.status_code = 200
+        return response
+    except ValueError as err:
+        print err.args
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_PUT])
@@ -205,8 +239,6 @@ def asignar_mecanismo_a_sector(request):
         response.content = armar_response_content(None)
         response.status_code = 200
         return response
-
-
     except ValueError as err:
         print err.args
         return build_bad_request_error(response, err.args[0], err.args[1])
@@ -290,6 +322,8 @@ def asignar_cultivo_a_sector(request):
     datos = obtener_datos_json(request)
     try:
         sector_seleccionado = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
+        if sector_seleccionado.cultivo_set.filter(habilitado=True).__len__() !=0:
+            raise ValueError (ERROR_SECTOR_YA_TIENE_CULTIVO_ASIGNADO, "El sector ya tiene un cultivo asignado")
         estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
         if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
                                                 fechaFinEstadoSector__isnull=True).__len__() != 1:
@@ -303,7 +337,7 @@ def asignar_cultivo_a_sector(request):
         if subtipo_seleccionado.tipo_cultivo.habilitado != True:
             raise ValueError(ERROR_TIPO_CULTIVO_NO_HABILITADO, "Este tipo de cultivo no esta habilitado")
         cultivo = Cultivo(nombre=datos[KEY_NOMBRE_CULTIVO], descripcion=datos[KEY_DESCRIPCION_CULTIVO], habilitado=True,
-                          sector=sector_seleccionado, fechaPlantacion=datetime.now(),
+                          sector=sector_seleccionado, fechaPlantacion=datos[KEY_FECHA_PLANTACION],
                           subtipo_cultivo=subtipo_seleccionado)
         cultivo.save()
         response.content = armar_response_content(None)
@@ -317,15 +351,25 @@ def asignar_cultivo_a_sector(request):
         response.status_code = 401
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
+
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
-def deshabilitar_cultivo_sector(request):
+def modificar_cultivo_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
     try:
+        if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO]).__len__() == 0:
+            raise ValueError(ERROR_CULTIVO_NO_EXISTENTE, "El id del cultivo no es correcto")
+        if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO], habilitado=True).__len__() == 0:
+            raise ValueError(ERROR_CULTIVO_NO_HABILITADO, "El cultivo no está habilitado")
         cultivo_seleccionado = Cultivo.objects.get(idCultivo=datos[KEY_ID_CULTIVO])
-        cultivo_seleccionado.habilitado = False
+        if KEY_DESCRIPCION_CULTIVO in datos:
+            cultivo_seleccionado.descripcion = datos[KEY_DESCRIPCION_CULTIVO]
+        if KEY_FECHA_PLANTACION in datos:
+            cultivo_seleccionado.fechaPlantacion = datos[KEY_FECHA_PLANTACION]
+        if KEY_NOMBRE_CULTIVO in datos:
+            cultivo_seleccionado.nombre = datos[KEY_NOMBRE_CULTIVO]
         cultivo_seleccionado.save()
         response.content = armar_response_content(None)
         response.status_code = 200
@@ -337,3 +381,111 @@ def deshabilitar_cultivo_sector(request):
         print err.args
         response.status_code = 401
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+def deshabilitar_cultivo_sector(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO]).__len__() == 0:
+            raise ValueError(ERROR_CULTIVO_NO_EXISTENTE, "El id del cultivo no es correcto")
+        if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO], habilitado=True).__len__() == 0:
+            raise ValueError(ERROR_CULTIVO_NO_HABILITADO, "El cultivo no está habilitado")
+        cultivo_seleccionado = Cultivo.objects.get(idCultivo=datos[KEY_ID_CULTIVO])
+        cultivo_seleccionado.habilitado = False
+        cultivo_seleccionado.fechaEliminacion = datetime.now()
+        cultivo_seleccionado.save()
+        response.content = armar_response_content(None)
+        response.status_code = 200
+        return response
+    except ValueError as err:
+        print err.args
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+def mostrar_cultivo_sector(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if Sector.objects.filter(idCultivo=datos[KEY_ID_SECTOR]).__len__() == 0:
+            raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El id del cultivo no es correcto")
+        if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO], habilitado=True).__len__() == 0:
+            raise ValueError(ERROR_CULTIVO_NO_HABILITADO, "El cultivo no está habilitado")
+        cultivo_seleccionado = Cultivo.objects.get(idCultivo=datos[KEY_ID_CULTIVO])
+        response.content = armar_response_content(cultivo_seleccionado)
+        response.status_code = 200
+        return response
+    except ValueError as err:
+        print err.args
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+def mostrar_cultivo_sector(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
+        sector_seleccionado = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
+        if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
+                                                fechaFinEstadoSector__isnull=True).__len__() != 1:
+            raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
+        if sector_seleccionado.cultivo_set.filter(habilitado=True).__len__() == 0 :
+            response.content = "[]"
+            response.status_code = 200
+            return response
+        cultivo_seleccionado = sector_seleccionado.cultivo_set.get(habilitado=True)
+        response.content = armar_response_content(cultivo_seleccionado)
+        response.status_code = 200
+        return response
+    except ValueError as err:
+        print err.args
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+def mostrar_cultivo_sector_historico(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
+        sector_seleccionado = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
+        if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
+                                                fechaFinEstadoSector__isnull=True).__len__() != 1:
+            raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
+        cultivo_seleccionado_lista = sector_seleccionado.cultivo_set.all()
+        response.content = armar_response_list_content(cultivo_seleccionado_lista)
+        response.status_code = 200
+        return response
+    except ValueError as err:
+        print err.args
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+
