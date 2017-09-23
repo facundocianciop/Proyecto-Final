@@ -15,6 +15,9 @@ def obtener_datos_json(request):
     except (TypeError, ValueError):
         return ""
 
+def armar_response_list_content(lista):
+    response_dictionary=[item.as_json() for item in lista]
+    return dumps(response_dictionary, cls=DjangoJSONEncoder)
 
 def armar_response_content(objeto):
     response_dictionary = {}
@@ -32,6 +35,10 @@ def armar_response_content(objeto):
     except (TypeError, ValueError):
         response_error_dictionary = {KEY_RESULTADO_OPERACION: False}
         return dumps(response_error_dictionary, cls=DjangoJSONEncoder)
+
+
+def armar_response_simple(objeto):
+    return dumps(objeto, cls=DjangoJSONEncoder)
 
 
 def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
