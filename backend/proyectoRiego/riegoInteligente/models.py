@@ -369,11 +369,13 @@ class EstadoMecanismoRiegoFincaSector(models.Model):
 
 class HistoricoMecanismoRiegoFincaSector(models.Model):
     OIDHistoricoMecanismoRiegoFincaSector=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    fechaFinEstadoMecanismoRiegoFincaSector=models.DateTimeField()
+    fechaFinEstadoMecanismoRiegoFincaSector=models.DateTimeField(null=True)
     fechaInicioEstadoMecanismoRiegoFincaSector=models.DateTimeField()
 
-    mecanismo_riego_finca_sector=models.ForeignKey('MecanismoRiegoFincaSector',db_column="OIDMecanismoRiegoFincaSector",related_name="historicoMecanismoRiegoFincaSector")
-    estado_mecanismo_riego_finca_sector=models.ForeignKey(EstadoMecanismoRiegoFincaSector,db_column="OIDEstadoMecanismoRiegoFincaSector")
+    mecanismo_riego_finca_sector=models.ForeignKey('MecanismoRiegoFincaSector',db_column="OIDMecanismoRiegoFincaSector",
+                                                   related_name="historicoMecanismoRiegoFincaSector")
+    estado_mecanismo_riego_finca_sector=models.ForeignKey(EstadoMecanismoRiegoFincaSector,
+                                                          db_column="OIDEstadoMecanismoRiegoFincaSector")
 
 
 class ComponenteSensor(models.Model):
@@ -424,6 +426,7 @@ class TipoMecanismoRiego(models.Model):
     OIDTipoMecanismoRiego = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nombreMecanismo=models.CharField(max_length=30,unique=True)
     descripcion=models.CharField(max_length=200,null=True)
+    caudalEstandar = models.FloatField(null=True)
     presionEstandar=models.FloatField(null=True)
     eficiencia=models.FloatField(null=True)
     fechaAltaTipoMecanismoRiego=models.DateTimeField()
@@ -482,9 +485,13 @@ class EstadoEjecucionRiego(models.Model):
 
 
 class MecanismoRiegoFincaSector(models.Model):
-    OIDMecanismoRiegoFincaSector = models.UUIDField( primary_key=True, editable=False)
+    OIDMecanismoRiegoFincaSector = models.UUIDField(default=uuid.uuid4(), primary_key=True, editable=False)
     caudal = models.FloatField()
     presion = models.FloatField()
+
+    mecanismo_riego_finca = models.ForeignKey(MecanismoRiegoFinca, db_column="OIDMecanismoRiegoFinca",
+                                              related_name="mecanismoRiegoSectorList", null=True)
+    sector = models.ForeignKey(Sector, db_column="OIDSector", related_name="mecanismoRiegoFincaSector", null=True)
 
 
 class EjecucionRiego(models.Model):
