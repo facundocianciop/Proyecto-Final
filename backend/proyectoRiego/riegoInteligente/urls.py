@@ -28,6 +28,9 @@ urlpatterns = [
 
     url(r'^crearSector/$', views_configuracion_sectores.crearSector, name='crearSector'),
     url(r'^mostrarSectores/$', views_configuracion_sectores.mostrarSectores, name='mostrarSectores'),
+    url(r'^asignarMecanismoASector/$', views_configuracion_sectores.asignarMecanismoASector, name = 'asignarMecanismoASector'),
+    url(r'^modificarSector/$', views_configuracion_sectores.modificarSector, name = 'modificarSector'),
+    url(r'^eliminarSector/$', views_configuracion_sectores.eliminarSector, name = 'eliminarSector'),
 
     url(r'^mostrarMecanismosRiegoFinca/$', views_configuracion_finca.mostrarMecanismosRiegoFinca, name='mostrarMecanismosRiegoFinca'),
     url(r'^mostrarMecanismosNuevos/$', views_configuracion_finca.mostrarMecanismosNuevos,
