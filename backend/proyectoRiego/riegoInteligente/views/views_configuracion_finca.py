@@ -37,7 +37,7 @@ def mostrarMecanismosRiegoFinca(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
-def mostrarMecanismosNuevos(request):
+def mostrar_mecanismos_nuevos(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
     try:
@@ -63,7 +63,7 @@ def mostrarMecanismosNuevos(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_PUT])
-def agregarMecanismoRiegoFinca(request):
+def agregar_mecanismo_riego_finca(request):
     response=HttpResponse()
     datos = obtener_datos_json(request)
     try:
@@ -80,6 +80,57 @@ def agregarMecanismoRiegoFinca(request):
         historico_nuevo.mecanismo_riego_finca = mecanismo_riego_finca
         mecanismo_riego_finca.historicoMecanismoRiegoFincaList.add(historico_nuevo, bulk=False)
         historico_nuevo.save()
+        mecanismo_riego_finca.save()
+        response.content = armar_response_content(None)
+        response.status_code = 200
+        return response
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+def deshabilitar_mecanismo_riego_finca(request):
+    response=HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        mecanismo_riego_finca = MecanismoRiegoFinca.objects.get(idMecanismoRiegoFinca=
+                                                                datos[KEY_ID_MECANISMO_RIEGO_FINCA])
+        ultimo_historico_mecanismo_finca = HistoricoMecanismoRiegoFinca.objects.get(
+            mecanismo_riego_finca=mecanismo_riego_finca, fechaFinEstadoMecanismoRiegoFinca__isnull=True )
+        ultimo_historico_mecanismo_finca.fechaFinEstadoMecanismoRiegoFinca = datetime.now()
+        ultimo_historico_mecanismo_finca.save()
+        estado_mecanismo_finca_deshabilitado = EstadoMecanismoRiegoFinca.objects.get(nombreEstadoMecanismoRiegoFinca=
+                                                                                     ESTADO_DESHABILITADO)
+        nuevo_historico_mecanismo_finca = HistoricoMecanismoRiegoFinca(estado_mecanismo_riego_finca=
+                                                                       estado_mecanismo_finca_deshabilitado,
+                                                                       fechaInicioEstadoMecanismoRiegoFinca=
+                                                                       datetime.now(),
+                                                                       mecanismo_riego_finca=mecanismo_riego_finca)
+        nuevo_historico_mecanismo_finca.save()
+        mecanismo_riego_finca.save()
+        estado_mecanismo_sector_deshabilitado = EstadoMecanismoRiegoFincaSector.objects.get(
+            nombreEstadoMecanismoRiegoFincaSector=ESTADO_DESHABILITADO)
+        estado_mecanismo_sector_habilitado = EstadoMecanismoRiegoFincaSector.objects.get(
+            nombreEstadoMecanismoRiegoFincaSector=ESTADO_HABILITADO)
+        mecanismo_riego_sector_lista = mecanismo_riego_finca.mecanismoRiegoSectorList.all()
+        for mecanismo_sector in mecanismo_riego_sector_lista:
+            if HistoricoMecanismoRiegoFincaSector.objects.filter(estado_mecanismo_riego_finca_sector=
+                                                                 estado_mecanismo_sector_habilitado,
+                                                                 fechaFinEstadoMecanismoRiegoFincaSector__isnull=True).__len__() == 1:
+                ultimo_historico_mecanismo_sector = HistoricoMecanismoRiegoFincaSector.objects.get(estado_mecanismo_riego_finca_sector=
+                                                                 estado_mecanismo_sector_habilitado,
+                                                                 fechaFinEstadoMecanismoRiegoFincaSector__isnull=True)
+                ultimo_historico_mecanismo_sector.fechaFinEstadoMecanismoRiegoFincaSector = datetime.now()
+                ultimo_historico_mecanismo_sector.save()
+                nuevo_historico_mecanismo_sector = HistoricoMecanismoRiegoFincaSector(
+                    estado_mecanismo_riego_finca_sector=estado_mecanismo_sector_deshabilitado,
+                    fechaInicioEstadoMecanismoRiegoFincaSector=datetime.now(),
+                    mecanismo_riego_finca_sector=mecanismo_sector)
+                nuevo_historico_mecanismo_sector.save()
         mecanismo_riego_finca.save()
         response.content = armar_response_content(None)
         response.status_code = 200

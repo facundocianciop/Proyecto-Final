@@ -58,6 +58,7 @@ def crear_finca(request):
         else:
             raise ValueError(ERROR_FINCA_YA_EXISTENTE,"Ya existe una finca con ese nombre")
     except ValueError as err:
+        print err.args
         return build_bad_request_error(response, err.args[0],err.args[1])
 
 
