@@ -4,6 +4,7 @@ from views import views_modulo_seguridad
 from views import views_modulo_finca
 from views import views_configuracion_finca
 from views import views_configuracion_sectores
+from views import views_modulo_configuracion_riego
 
 
 urlpatterns = [
@@ -45,5 +46,10 @@ urlpatterns = [
     url(r'^finalizarSesion/$', views_modulo_seguridad.finalizar_sesion, name='finalizarSesion'),
     url(r'^eliminarUsuario/$', views_modulo_seguridad.eliminar_usuario, name='eliminarUsuario'),
     url(r'^modificarUsuario/$', views_modulo_seguridad.modificar_usuario, name='modificarUsuario'),
-    url(r'^recuperarCuenta/$', views_modulo_seguridad.recuperar_cuenta, name='recuperarCuenta')
+    url(r'^recuperarCuenta/$', views_modulo_seguridad.recuperar_cuenta, name='recuperarCuenta'),
+
+    url(r'^iniciarRiego/$', views_modulo_configuracion_riego.iniciar_riego_manualente, name='iniciarRiego'),
+    url(r'^detenerRiego/$', views_modulo_configuracion_riego.detener_riego_manualente, name='detenerRiego'),
+    url(r'^obtnerRiegosEnEjecucion/$', views_modulo_configuracion_riego.obtener_riegos_en_ejecucion,
+        name='obtnerRiegosEnEjecucion')
 ]
