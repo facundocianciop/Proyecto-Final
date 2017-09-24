@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		76B6DDDD9C03169D05F287C9 /* libPods-proyectoRiego2017.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 09118ECC832AFFC4BDB5587D /* libPods-proyectoRiego2017.a */; };
+		1BB91EC982CD9234EC5D800E /* libPods-proyectoRiego2017UITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5E86F24DA3C2B1085C7BAAC /* libPods-proyectoRiego2017UITests.a */; };
+		693E97F908262A15AF39FACC /* libPods-proyectoRiego2017.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ACB35212B45F41B82BFFAC4 /* libPods-proyectoRiego2017.a */; };
+		70F3FD52CCFB4DB6E687406F /* libPods-proyectoRiego2017Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58E882179AA4A73C94DBEEA7 /* libPods-proyectoRiego2017Tests.a */; };
 		A13B7B401F7437700016F5AD /* PRViewControllerBase.m in Sources */ = {isa = PBXBuildFile; fileRef = A13B7B3F1F7437700016F5AD /* PRViewControllerBase.m */; };
 		A13B7B441F743F660016F5AD /* PRPantallaActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = A13B7B431F743F660016F5AD /* PRPantallaActivityIndicator.m */; };
 		A13B7B481F74408C0016F5AD /* PRUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A13B7B471F74408C0016F5AD /* PRUtils.m */; };
@@ -46,9 +48,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		09118ECC832AFFC4BDB5587D /* libPods-proyectoRiego2017.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-proyectoRiego2017.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		27C50627D069653957F26456 /* Pods-proyectoRiego2017.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-proyectoRiego2017.release.xcconfig"; path = "Pods/Target Support Files/Pods-proyectoRiego2017/Pods-proyectoRiego2017.release.xcconfig"; sourceTree = "<group>"; };
-		83ED5A5727A7F424D1733177 /* Pods-proyectoRiego2017.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-proyectoRiego2017.debug.xcconfig"; path = "Pods/Target Support Files/Pods-proyectoRiego2017/Pods-proyectoRiego2017.debug.xcconfig"; sourceTree = "<group>"; };
+		3127DB670061E1ABD44361C9 /* Pods-proyectoRiego2017Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-proyectoRiego2017Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-proyectoRiego2017Tests/Pods-proyectoRiego2017Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		3CED9AB0C66457AA8CCDC422 /* Pods-proyectoRiego2017UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-proyectoRiego2017UITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-proyectoRiego2017UITests/Pods-proyectoRiego2017UITests.release.xcconfig"; sourceTree = "<group>"; };
+		4B1E29708A8F1F04571FFDEE /* Pods-proyectoRiego2017Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-proyectoRiego2017Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-proyectoRiego2017Tests/Pods-proyectoRiego2017Tests.release.xcconfig"; sourceTree = "<group>"; };
+		55C545CBE78CE5E35E659F3D /* Pods-proyectoRiego2017UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-proyectoRiego2017UITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-proyectoRiego2017UITests/Pods-proyectoRiego2017UITests.debug.xcconfig"; sourceTree = "<group>"; };
+		58E882179AA4A73C94DBEEA7 /* libPods-proyectoRiego2017Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-proyectoRiego2017Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		91F8184D4536391F419BA72F /* Pods-proyectoRiego2017.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-proyectoRiego2017.release.xcconfig"; path = "Pods/Target Support Files/Pods-proyectoRiego2017/Pods-proyectoRiego2017.release.xcconfig"; sourceTree = "<group>"; };
+		9ACB35212B45F41B82BFFAC4 /* libPods-proyectoRiego2017.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-proyectoRiego2017.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A13B7B3E1F7437700016F5AD /* PRViewControllerBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PRViewControllerBase.h; path = Source/PRViewControllerBase.h; sourceTree = "<group>"; };
 		A13B7B3F1F7437700016F5AD /* PRViewControllerBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PRViewControllerBase.m; path = Source/PRViewControllerBase.m; sourceTree = "<group>"; };
 		A13B7B421F743F660016F5AD /* PRPantallaActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PRPantallaActivityIndicator.h; path = Source/PRPantallaActivityIndicator.h; sourceTree = "<group>"; };
@@ -85,6 +91,8 @@
 		A1CFF8791F74355B00425B70 /* ServiciosModuloFinca.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ServiciosModuloFinca.m; path = Source/ServiciosModuloFinca.m; sourceTree = "<group>"; };
 		A1CFF87A1F74355B00425B70 /* ServiciosModuloSeguridad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServiciosModuloSeguridad.h; path = Source/ServiciosModuloSeguridad.h; sourceTree = "<group>"; };
 		A1CFF87B1F74355B00425B70 /* ServiciosModuloSeguridad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ServiciosModuloSeguridad.m; path = Source/ServiciosModuloSeguridad.m; sourceTree = "<group>"; };
+		C5E86F24DA3C2B1085C7BAAC /* libPods-proyectoRiego2017UITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-proyectoRiego2017UITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE432A9BF6E0F997BB6F8C3A /* Pods-proyectoRiego2017.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-proyectoRiego2017.debug.xcconfig"; path = "Pods/Target Support Files/Pods-proyectoRiego2017/Pods-proyectoRiego2017.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,7 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				76B6DDDD9C03169D05F287C9 /* libPods-proyectoRiego2017.a in Frameworks */,
+				693E97F908262A15AF39FACC /* libPods-proyectoRiego2017.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +108,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				70F3FD52CCFB4DB6E687406F /* libPods-proyectoRiego2017Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,25 +116,32 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BB91EC982CD9234EC5D800E /* libPods-proyectoRiego2017UITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3E3D19006FEF5949A336000B /* Pods */ = {
+		512AB6458B1CEA5F3A01919A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				83ED5A5727A7F424D1733177 /* Pods-proyectoRiego2017.debug.xcconfig */,
-				27C50627D069653957F26456 /* Pods-proyectoRiego2017.release.xcconfig */,
+				FE432A9BF6E0F997BB6F8C3A /* Pods-proyectoRiego2017.debug.xcconfig */,
+				91F8184D4536391F419BA72F /* Pods-proyectoRiego2017.release.xcconfig */,
+				3127DB670061E1ABD44361C9 /* Pods-proyectoRiego2017Tests.debug.xcconfig */,
+				4B1E29708A8F1F04571FFDEE /* Pods-proyectoRiego2017Tests.release.xcconfig */,
+				55C545CBE78CE5E35E659F3D /* Pods-proyectoRiego2017UITests.debug.xcconfig */,
+				3CED9AB0C66457AA8CCDC422 /* Pods-proyectoRiego2017UITests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		7936BEDA06BCDC7CB5A502E6 /* Frameworks */ = {
+		5AE4E151D0023C393F82DA22 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				09118ECC832AFFC4BDB5587D /* libPods-proyectoRiego2017.a */,
+				9ACB35212B45F41B82BFFAC4 /* libPods-proyectoRiego2017.a */,
+				58E882179AA4A73C94DBEEA7 /* libPods-proyectoRiego2017Tests.a */,
+				C5E86F24DA3C2B1085C7BAAC /* libPods-proyectoRiego2017UITests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -155,8 +171,8 @@
 				A1CFF8521F74341E00425B70 /* proyectoRiego2017Tests */,
 				A1CFF85D1F74341E00425B70 /* proyectoRiego2017UITests */,
 				A1CFF8341F74341E00425B70 /* Products */,
-				3E3D19006FEF5949A336000B /* Pods */,
-				7936BEDA06BCDC7CB5A502E6 /* Frameworks */,
+				512AB6458B1CEA5F3A01919A /* Pods */,
+				5AE4E151D0023C393F82DA22 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -285,12 +301,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A1CFF8631F74341E00425B70 /* Build configuration list for PBXNativeTarget "proyectoRiego2017" */;
 			buildPhases = (
-				8E118D13D650B602D2EBE4DF /* Check Pods Manifest.lock */,
+				3316DA62F45FCDD19BE596BB /* [CP] Check Pods Manifest.lock */,
 				A1CFF82F1F74341E00425B70 /* Sources */,
 				A1CFF8301F74341E00425B70 /* Frameworks */,
 				A1CFF8311F74341E00425B70 /* Resources */,
-				264BB9901BCAB56BA82FD3C9 /* Embed Pods Frameworks */,
-				F50A6B34D16A3D870A4B6492 /* Copy Pods Resources */,
+				7CBB18F0E448772D6DF8522F /* [CP] Embed Pods Frameworks */,
+				FAF6B842322BFCAAAF5C464A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -305,9 +321,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A1CFF8661F74341E00425B70 /* Build configuration list for PBXNativeTarget "proyectoRiego2017Tests" */;
 			buildPhases = (
+				CC17AC28E8D3E6E7FDD6232F /* [CP] Check Pods Manifest.lock */,
 				A1CFF84B1F74341E00425B70 /* Sources */,
 				A1CFF84C1F74341E00425B70 /* Frameworks */,
 				A1CFF84D1F74341E00425B70 /* Resources */,
+				CA9BBC410226CA7F8148F040 /* [CP] Embed Pods Frameworks */,
+				B9719883A0CAD2680A2ACBCF /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -323,9 +342,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A1CFF8691F74341E00425B70 /* Build configuration list for PBXNativeTarget "proyectoRiego2017UITests" */;
 			buildPhases = (
+				5999E9270418B62EA24DC9D6 /* [CP] Check Pods Manifest.lock */,
 				A1CFF8561F74341E00425B70 /* Sources */,
 				A1CFF8571F74341E00425B70 /* Frameworks */,
 				A1CFF8581F74341E00425B70 /* Resources */,
+				A9BF3F1F07C086D3AA2B22B3 /* [CP] Embed Pods Frameworks */,
+				06EED866CE6C5D1E5AE2CD94 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -365,7 +387,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A1CFF82E1F74341E00425B70 /* Build configuration list for PBXProject "proyectoRiego2017" */;
+			buildConfigurationList = A1CFF82E1F74341E00425B70 /* Build configuration list for PBXProject "proyectoRIego2017" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -413,14 +435,65 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		264BB9901BCAB56BA82FD3C9 /* Embed Pods Frameworks */ = {
+		06EED866CE6C5D1E5AE2CD94 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-proyectoRiego2017UITests/Pods-proyectoRiego2017UITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3316DA62F45FCDD19BE596BB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-proyectoRiego2017-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5999E9270418B62EA24DC9D6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-proyectoRiego2017UITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7CBB18F0E448772D6DF8522F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -428,30 +501,81 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-proyectoRiego2017/Pods-proyectoRiego2017-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8E118D13D650B602D2EBE4DF /* Check Pods Manifest.lock */ = {
+		A9BF3F1F07C086D3AA2B22B3 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-proyectoRiego2017UITests/Pods-proyectoRiego2017UITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F50A6B34D16A3D870A4B6492 /* Copy Pods Resources */ = {
+		B9719883A0CAD2680A2ACBCF /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-proyectoRiego2017Tests/Pods-proyectoRiego2017Tests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CA9BBC410226CA7F8148F040 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-proyectoRiego2017Tests/Pods-proyectoRiego2017Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CC17AC28E8D3E6E7FDD6232F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-proyectoRiego2017Tests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FAF6B842322BFCAAAF5C464A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-proyectoRiego2017/Pods-proyectoRiego2017-resources.sh",
+				"${PODS_ROOT}/CCTextFieldEffects/CCTextFieldEffects/pencil.png",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -624,7 +748,7 @@
 		};
 		A1CFF8641F74341E00425B70 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 83ED5A5727A7F424D1733177 /* Pods-proyectoRiego2017.debug.xcconfig */;
+			baseConfigurationReference = FE432A9BF6E0F997BB6F8C3A /* Pods-proyectoRiego2017.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = ZKE9H755D4;
@@ -638,7 +762,7 @@
 		};
 		A1CFF8651F74341E00425B70 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 27C50627D069653957F26456 /* Pods-proyectoRiego2017.release.xcconfig */;
+			baseConfigurationReference = 91F8184D4536391F419BA72F /* Pods-proyectoRiego2017.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = ZKE9H755D4;
@@ -652,6 +776,7 @@
 		};
 		A1CFF8671F74341E00425B70 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3127DB670061E1ABD44361C9 /* Pods-proyectoRiego2017Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = ZKE9H755D4;
@@ -665,6 +790,7 @@
 		};
 		A1CFF8681F74341E00425B70 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4B1E29708A8F1F04571FFDEE /* Pods-proyectoRiego2017Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = ZKE9H755D4;
@@ -678,6 +804,7 @@
 		};
 		A1CFF86A1F74341E00425B70 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 55C545CBE78CE5E35E659F3D /* Pods-proyectoRiego2017UITests.debug.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = ZKE9H755D4;
 				INFOPLIST_FILE = proyectoRiego2017UITests/Info.plist;
@@ -690,6 +817,7 @@
 		};
 		A1CFF86B1F74341E00425B70 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3CED9AB0C66457AA8CCDC422 /* Pods-proyectoRiego2017UITests.release.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = ZKE9H755D4;
 				INFOPLIST_FILE = proyectoRiego2017UITests/Info.plist;
@@ -703,7 +831,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A1CFF82E1F74341E00425B70 /* Build configuration list for PBXProject "proyectoRiego2017" */ = {
+		A1CFF82E1F74341E00425B70 /* Build configuration list for PBXProject "proyectoRIego2017" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A1CFF8611F74341E00425B70 /* Debug */,

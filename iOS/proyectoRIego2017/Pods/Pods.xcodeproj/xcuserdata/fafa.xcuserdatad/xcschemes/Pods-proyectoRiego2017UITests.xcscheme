@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '68D36B2D204B567378B2D08C'
-               BlueprintName = 'CCTextFieldEffects'
+               BlueprintIdentifier = '7812B3C1A658DCC85E43F15A632BCDCC'
+               BlueprintName = 'Pods-proyectoRiego2017UITests'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'libCCTextFieldEffects.a'>
+               BuildableName = 'libPods-proyectoRiego2017UITests.a'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

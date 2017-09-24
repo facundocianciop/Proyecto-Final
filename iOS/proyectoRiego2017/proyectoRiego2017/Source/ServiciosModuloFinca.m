@@ -23,7 +23,7 @@
     NSMutableDictionary *params = [NSMutableDictionary new];
     [params setObject:[NSNumber numberWithLong:clientId] forKey:PARAM_CLIENT_ID];
     
-    [[HTTPConector instance] httpOperation:OPERATION_PAYMENT_TYPES method:METHOD_GET withParameters:params completionBlock:^(NSArray *responseObject) {
+    [[HTTPConector instance] httpOperation:@"" method:METHOD_GET withParameters:params completionBlock:^(NSArray *responseObject) {
         completionBlock(responseObject);
     } failureBlock:^(NSError *error) {
         failureBlock(error);
