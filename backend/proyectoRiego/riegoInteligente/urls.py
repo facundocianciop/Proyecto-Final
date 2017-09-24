@@ -4,6 +4,7 @@ from views import views_modulo_seguridad
 from views import views_modulo_finca
 from views import views_configuracion_finca
 from views import views_configuracion_sectores
+from views import views_modulo_sensores
 from views import views_modulo_configuracion_riego
 
 
@@ -66,6 +67,10 @@ urlpatterns = [
         name='deshabilitarMecanismoRiegoFinca'),
     url(r'^habilitarMecanismoRiegoFinca/$', views_configuracion_finca.habilitar_mecanismo_riego_finca,
         name='habilitarMecanismoRiegoFinca'),
+
+    url(r'^crearSensor/$', views_modulo_sensores.crear_sector, name='crearSensor'),
+    url(r'^mostrarTipoMedicion/$', views_modulo_sensores.mostrar_tipo_medicion, name='mostrarTipoMedicion'),
+    url(r'^mostrarSensoresFinca/$', views_modulo_sensores.mostrar_sensores_finca, name='mostrarSensoresFinca'),
 
     url(r'^registrarse/$', views_modulo_seguridad.registrar_usuario, name='registrarse'),
     url(r'^iniciarSesion/$', views_modulo_seguridad.iniciar_sesion, name='iniciarSesion'),

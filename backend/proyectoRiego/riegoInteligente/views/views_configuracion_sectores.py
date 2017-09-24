@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+    # -*- coding: UTF-8 -*-
 from django.db import IntegrityError, transaction
 from .supportClases.security_decorators import *
 from ..models import *
@@ -410,28 +410,28 @@ def deshabilitar_cultivo_sector(request):
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 
-@transaction.atomic()
-@login_requerido
-@metodos_requeridos([METHOD_POST])
-def mostrar_cultivo_sector(request):
-    response = HttpResponse()
-    datos = obtener_datos_json(request)
-    try:
-        if Sector.objects.filter(idCultivo=datos[KEY_ID_SECTOR]).__len__() == 0:
-            raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El id del cultivo no es correcto")
-        if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO], habilitado=True).__len__() == 0:
-            raise ValueError(ERROR_CULTIVO_NO_HABILITADO, "El cultivo no está habilitado")
-        cultivo_seleccionado = Cultivo.objects.get(idCultivo=datos[KEY_ID_CULTIVO])
-        response.content = armar_response_content(cultivo_seleccionado)
-        response.status_code = 200
-        return response
-    except ValueError as err:
-        print err.args
-        return build_bad_request_error(response, err.args[0], err.args[1])
-    except (IntegrityError, TypeError, KeyError) as err:
-        print err.args
-        response.status_code = 401
-        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+# @transaction.atomic()
+# @login_requerido
+# @metodos_requeridos([METHOD_POST])
+# def mostrar_cultivo_sector(request):
+#     response = HttpResponse()
+#     datos = obtener_datos_json(request)
+#     try:
+#         if Sector.objects.filter(idCultivo=datos[KEY_ID_SECTOR]).__len__() == 0:
+#             raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El id del cultivo no es correcto")
+#         if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO], habilitado=True).__len__() == 0:
+#             raise ValueError(ERROR_CULTIVO_NO_HABILITADO, "El cultivo no está habilitado")
+#         cultivo_seleccionado = Cultivo.objects.get(idCultivo=datos[KEY_ID_CULTIVO])
+#         response.content = armar_response_content(cultivo_seleccionado)
+#         response.status_code = 200
+#         return response
+#     except ValueError as err:
+#         print err.args
+#         return build_bad_request_error(response, err.args[0], err.args[1])
+#     except (IntegrityError, TypeError, KeyError) as err:
+#         print err.args
+#         response.status_code = 401
+#         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 
 @transaction.atomic()

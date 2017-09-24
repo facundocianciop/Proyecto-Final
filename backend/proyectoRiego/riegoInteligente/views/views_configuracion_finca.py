@@ -146,6 +146,10 @@ def deshabilitar_mecanismo_riego_finca(request):
                                                                 datos[KEY_ID_MECANISMO_RIEGO_FINCA])
         ultimo_historico_mecanismo_finca = HistoricoMecanismoRiegoFinca.objects.get(
             mecanismo_riego_finca=mecanismo_riego_finca, fechaFinEstadoMecanismoRiegoFinca__isnull=True )
+        if ultimo_historico_mecanismo_finca.estado_mecanismo_riego_finca.nombreEstadoMecanismoRiegoFinca == ESTADO_DESHABILITADO:
+            raise ValueError(ERROR_MECANISMO_RIEGO_FINCA_NO_HABILITADO,
+                             "El mecanismo de la finca seleccionado ya se encuentra deshabilitado")
+
         ultimo_historico_mecanismo_finca.fechaFinEstadoMecanismoRiegoFinca = datetime.now()
         ultimo_historico_mecanismo_finca.save()
         estado_mecanismo_finca_deshabilitado = EstadoMecanismoRiegoFinca.objects.get(nombreEstadoMecanismoRiegoFinca=
