@@ -516,7 +516,7 @@ class MecanismoRiegoFincaSector(models.Model):
     caudal = models.FloatField()
     presion = models.FloatField()
 
-    mecanismo_riego_finca = models.ForeignKey(MecanismoRiegoFinca, db_column="OIDMecanismoRiegoFinca",
+    mecanismoRiegoFinca = models.ForeignKey(MecanismoRiegoFinca, db_column="OIDMecanismoRiegoFinca",
                                               related_name="mecanismoRiegoSectorList", null=True)
     sector = models.ForeignKey(Sector, db_column="OIDSector", related_name="mecanismoRiegoFincaSector", null=True)
 
@@ -533,7 +533,12 @@ class MecanismoRiegoFincaSector(models.Model):
                 ultimoMecanismoFincaRiegoSector = MecanismoRiegoFincaSector.objects.order_by('-idMecanismoRiegoFincaSector')[0]
                 self.idMecanismoRiegoFincaSector = ultimoMecanismoFincaRiegoSector.idMecanismoRiegoFincaSector + 1
                 super(MecanismoRiegoFincaSector, self).save()
-
+    def as_json(self):
+        return dict(idMecanismoRiegoFincaSector=self.idMecanismoRiegoFincaSector,
+                    caudal=self.caudal,
+                    presion=self.presion,
+                    sector=self.sector.numeroSector,
+                    mecanismoRiegoFinca=self.mecanismoRiegoFinca.idMecanismoRiegoFinca)
 class EjecucionRiego(models.Model):
     OIDEjecucionRiego = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     cantidadAguaUtilizada = models.FloatField()
@@ -596,25 +601,71 @@ class CriterioRiegoPorHora(CriterioRiego):
 
 class TipoMedicion(models.Model):
     OIDTipoMedicion = models.UUIDField( primary_key=True, default=uuid.uuid4, editable=False)
-    idTipoMedicion = models.IntegerField()
+    idTipoMedicion = models.IntegerField(default=1, unique=True)
     nombreTipoMedicion = models.CharField(max_length=20)
     unidadMedicion = models.CharField(max_length=20)
     habilitado = models.BooleanField()
     fechaAltaTipoMedicion = models.DateTimeField()
     fechaBajaTipoMedicion = models.DateTimeField(null=True)
 
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        if TipoMedicion.objects.all().__len__() == 0:
+            self.idTipoMedicion = 1
+            super(TipoMedicion, self).save()
+        else:
+            if TipoMedicion.objects.get(idTipoMedicion=self.idTipoMedicion) == self:
+                super(TipoMedicion, self).save()
+            else:
+                ultimaTipoMedicion = TipoMedicion.objects.order_by('-idTipoMedicion')[0]
+                self.idTipoMedicion = ultimaTipoMedicion.idTipoMedicion + 1
+                super(TipoMedicion, self).save()
+
+
+    def as_json(self):
+        return dict(idTipoMedicion=self.idTipoMedicion,
+                    nombreTipoMedicion=self.nombreTipoMedicion,
+                    unidadMedicion=self.unidadMedicion,
+                    habilitado=self.habilitado,
+                    fechaAltaTipoMedicion=self.fechaAltaTipoMedicion,
+                    fechaBajaTipoMedicion=self.fechaBajaTipoMedicion)
+
+
 
 class Sensor(models.Model):
     OIDSensor = models.UUIDField( primary_key=True, default=uuid.uuid4, editable=False)
-    idSensor = models.IntegerField()
-    fechaAltaSensor=models.DateTimeField()
-    fechaBajaSensor=models.DateTimeField(null=True)
-    habilitado=models.BooleanField()
-    modelo=models.CharField(max_length=20)
+    idSensor = models.IntegerField(default=1, unique=True)
+    fechaAltaSensor = models.DateTimeField()
+    fechaBajaSensor = models.DateTimeField(null=True)
+    habilitado = models.BooleanField()
+    modelo = models.CharField(max_length=20)
 
-    componente_sensor=models.ForeignKey(ComponenteSensor,db_column="OIDComponenteSensor",related_name="sensor")
-    sensorTipoInterna=models.ForeignKey('TipoMedicion',db_column="OIDTipoMedicion")
-    finca=models.ForeignKey(Finca,db_column="OIDFinca")
+    ComponenteSensor = models.ForeignKey(ComponenteSensor,db_column="OIDComponenteSensor",
+                                        related_name="sensor", null=True)
+    tipoMedicion = models.ForeignKey('TipoMedicion',db_column="OIDTipoMedicion", null=True)
+    finca = models.ForeignKey('Finca', db_column="OIDFinca", null=True)
+
+
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        if Sensor.objects.all().__len__() == 0:
+            self.idSensor = 1
+            super(Sensor, self).save()
+        else:
+            if Sensor.objects.get(idSensor=self.idSensor) == self:
+                super(Sensor, self).save()
+            else:
+                ultimoSensor = Sensor.objects.order_by('-idSensor')[0]
+                self.idSensor = ultimoSensor.idSensor + 1
+                super(Sensor, self).save()
+
+    def as_json(self):
+        return dict(idSensor=self.idSensor,
+                    fechaAltaSensor=self.FechaAltaSensor,
+                    fechaBajaSensor=self.fechaBajaSensor,
+                    habilitado=self.habilitado,
+                    modelo=self.modelo,
+                    tipoMedicion=self.tipoMedicion.nombreTipoMedicion)
 
 
 class ComponenteSensorSector(models.Model):
