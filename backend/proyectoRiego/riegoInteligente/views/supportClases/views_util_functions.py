@@ -15,11 +15,13 @@ def obtener_datos_json(request):
     except (TypeError, ValueError):
         return ""
 
+
 def armar_response_list_content(lista):
-    response_dictionary=[item.as_json() for item in lista]
+    response_dictionary = [item.as_json() for item in lista]
     return dumps(response_dictionary, cls=DjangoJSONEncoder)
 
-def armar_response_content(objeto):
+
+def armar_response_content(objeto, *mensaje):
     response_dictionary = {}
 
     if objeto is not None:
@@ -28,7 +30,13 @@ def armar_response_content(objeto):
         except (TypeError, ValueError):
             pass
 
-    response_dictionary[KEY_RESULTADO_OPERACION] = True
+        if mensaje:
+            response_dictionary[KEY_DETALLE_OPERACION] = mensaje
+        response_dictionary[KEY_RESULTADO_OPERACION] = True
+
+    else:
+        response_dictionary[KEY_DETALLE_OPERACION] = "No hay datos"
+        response_dictionary[KEY_RESULTADO_OPERACION] = True
 
     try:
         return dumps(response_dictionary, cls=DjangoJSONEncoder)

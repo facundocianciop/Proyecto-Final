@@ -9,6 +9,7 @@ METHOD_DELETE = 'DELETE'
 # Constantes Dictionary Keys
 
 KEY_RESULTADO_OPERACION = 'resultado'
+KEY_DETALLE_OPERACION = 'detalle_operacion'
 
 KEY_USUARIO = 'usuario'
 KEY_EMAIL = 'email'

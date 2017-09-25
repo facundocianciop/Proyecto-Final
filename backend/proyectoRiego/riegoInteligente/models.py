@@ -1,3 +1,5 @@
+from datetime import datetime
+import pytz
 import uuid
 
 from django.conf import settings
@@ -533,26 +535,52 @@ class MecanismoRiegoFincaSector(models.Model):
                 ultimoMecanismoFincaRiegoSector = MecanismoRiegoFincaSector.objects.order_by('-idMecanismoRiegoFincaSector')[0]
                 self.idMecanismoRiegoFincaSector = ultimoMecanismoFincaRiegoSector.idMecanismoRiegoFincaSector + 1
                 super(MecanismoRiegoFincaSector, self).save()
+
     def as_json(self):
         return dict(idMecanismoRiegoFincaSector=self.idMecanismoRiegoFincaSector,
                     caudal=self.caudal,
                     presion=self.presion,
                     sector=self.sector.numeroSector,
                     mecanismoRiegoFinca=self.mecanismoRiegoFinca.idMecanismoRiegoFinca)
+
+
 class EjecucionRiego(models.Model):
     OIDEjecucionRiego = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    cantidadAguaUtilizada = models.FloatField()
     detalle = models.CharField(max_length=100)
-    duracionActual = models.FloatField()
-    fechaHoraFinalizacion = models.DateTimeField()
-    fechaHoraFinalProgramada = models.DateTimeField()
+    cantidadAguaUtilizada = models.FloatField(default=0)
+    duracionActual = models.FloatField(default=0)
+    fechaHoraFinalizacion = models.DateTimeField(null=True)
+    fechaHoraFinalProgramada = models.DateTimeField(null=True)
     fechaHoraInicio = models.DateTimeField()
-    fechaHoraInicioProgramada = models.DateTimeField()
+    fechaHoraInicioProgramada = models.DateTimeField(null=True)
 
-    configuracion_riego = models.ForeignKey(ConfiguracionRiego, db_column="OIDConfiguracionRiego")
+    configuracion_riego = models.ForeignKey(ConfiguracionRiego, db_column="OIDConfiguracionRiego", null=True)
     estado_ejecucion_riego = models.ForeignKey(EstadoEjecucionRiego, db_column="OIDEstadoEjecucionRiego")
-    mecanismo_riego_finca_sector = models.ForeignKey(MecanismoRiegoFincaSector, db_column="OIDMecanismoRiegoFincaSector",
-                                                   related_name="ejecucionRiegoList")
+    mecanismo_riego_finca_sector = models.ForeignKey(MecanismoRiegoFincaSector,
+                                                     db_column="OIDMecanismoRiegoFincaSector",
+                                                     related_name="ejecucionRiegoList")
+
+    def as_json(self):
+        duracion = datetime.now(pytz.utc) - self.fechaHoraInicio
+        id_configuracion_riego = None
+        cantidad_agua_utilizada = self.mecanismo_riego_finca_sector.caudal * (duracion.seconds / 60.0)
+        if self.fechaHoraFinalizacion:
+            duracion = self.fechaHoraFinalizacion - self.fechaHoraInicio
+
+        if self.configuracion_riego:
+            id_configuracion_riego = self.configuracion_riego.id
+
+        return dict(mecanismoRiegoFincaSector=self.mecanismo_riego_finca_sector.idMecanismoRiegoFincaSector,
+                    configuracion_riego = id_configuracion_riego,
+                    estado_ejecucion_riego=self.estado_ejecucion_riego.nombreEstadoEjecucionRiego,
+                    cantidadAguaUtilizadaLitros=cantidad_agua_utilizada,
+                    detalle=self.detalle,
+                    duracionActualMinutos=duracion.seconds/60.0,
+                    duracionActualSegundos=duracion.seconds,
+                    fechaHoraFinalizacion=self.fechaHoraFinalizacion,
+                    fechaHoraFinalProgramada=self.fechaHoraFinalProgramada,
+                    fechaHoraInicio=self.fechaHoraInicio,
+                    fechaHoraInicioProgramada=self.fechaHoraInicioProgramada)
 
 
 class CriterioRiego(models.Model):

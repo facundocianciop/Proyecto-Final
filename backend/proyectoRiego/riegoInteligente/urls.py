@@ -83,8 +83,13 @@ urlpatterns = [
     url(r'^modificarUsuario/$', views_modulo_seguridad.modificar_usuario, name='modificarUsuario'),
     url(r'^recuperarCuenta/$', views_modulo_seguridad.recuperar_cuenta, name='recuperarCuenta'),
 
-    url(r'^iniciarRiego/$', views_modulo_configuracion_riego.iniciar_riego_manualente, name='iniciarRiego'),
-    url(r'^detenerRiego/$', views_modulo_configuracion_riego.detener_riego_manualente, name='detenerRiego'),
-    url(r'^obtnerRiegosEnEjecucion/$', views_modulo_configuracion_riego.obtener_riegos_en_ejecucion,
-        name='obtnerRiegosEnEjecucion')
+    url(r'^obtenerRiegoEnEjecucionMecanismoRiegoFincaSector/$',
+        views_modulo_configuracion_riego.obtener_riego_en_ejecucion_mecanismo_riego_finca_sector,
+        name='obtenerRiegoEnEjecucionMecanismoRiegoFincaSector'),
+    url(r'^iniciarRiegoManualmente/$', views_modulo_configuracion_riego.iniciar_riego_manualente,
+        name='iniciarRiegoManualmente'),
+    url(r'^pausarRiegoManualmente/$', views_modulo_configuracion_riego.pausar_riego_manualente,
+        name='pausarRiegoManualmente'),
+    url(r'^cancelarRiegoManualmente/$', views_modulo_configuracion_riego.cancelar_riego_manualente,
+        name='cancelarRiegoManualmente')
 ]
