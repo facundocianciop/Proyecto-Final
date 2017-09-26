@@ -73,7 +73,7 @@ KEY_NOMBRE_TIPO_MECANISMO = 'nombreTipoMecanismo'
 
 KEY_ID_TIPO_MEDICION = 'idTipoMedicion'
 KEY_MODELO_SENSOR = 'modeloSensor'
-
+KEY_ID_SENSOR = 'idSensor'
 
 
 # Estados
