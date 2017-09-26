@@ -35,7 +35,10 @@ def armar_response_content(objeto, *mensaje):
         response_dictionary[KEY_RESULTADO_OPERACION] = True
 
     else:
-        response_dictionary[KEY_DETALLE_OPERACION] = "No hay datos"
+        if mensaje:
+            response_dictionary[KEY_DETALLE_OPERACION] = mensaje
+        else:
+            response_dictionary[KEY_DETALLE_OPERACION] = "No hay datos"
         response_dictionary[KEY_RESULTADO_OPERACION] = True
 
     try:

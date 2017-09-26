@@ -101,6 +101,7 @@ class UsuarioFinca(models.Model):
 
     finca=models.ForeignKey('Finca',db_column="OIDFinca")
     usuario=models.ForeignKey(DatosUsuario,db_column="OIDUsuario", related_name='usuarioFincaList')
+
     def save(self):
         "Get last value of Code and Number from database, and increment before save"
         if UsuarioFinca.objects.all().__len__() == 0:
@@ -545,14 +546,14 @@ class MecanismoRiegoFincaSector(models.Model):
 
 
 class EjecucionRiego(models.Model):
-    OIDEjecucionRiego = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    oid_ejecucion_riego = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     detalle = models.CharField(max_length=100)
-    cantidadAguaUtilizada = models.FloatField(default=0)
-    duracionActual = models.FloatField(default=0)
-    fechaHoraFinalizacion = models.DateTimeField(null=True)
-    fechaHoraFinalProgramada = models.DateTimeField(null=True)
-    fechaHoraInicio = models.DateTimeField()
-    fechaHoraInicioProgramada = models.DateTimeField(null=True)
+    duracion_parcial = models.FloatField(default=0)
+    fecha_hora_ultimo_reinicio = models.DateTimeField(null=True)
+    fecha_hora_finalizacion = models.DateTimeField(null=True)
+    fecha_hora_final_programada = models.DateTimeField(null=True)
+    fecha_hora_inicio = models.DateTimeField()
+    fecha_hora_inicio_programada = models.DateTimeField(null=True)
 
     configuracion_riego = models.ForeignKey(ConfiguracionRiego, db_column="OIDConfiguracionRiego", null=True)
     estado_ejecucion_riego = models.ForeignKey(EstadoEjecucionRiego, db_column="OIDEstadoEjecucionRiego")
@@ -561,12 +562,35 @@ class EjecucionRiego(models.Model):
                                                      related_name="ejecucionRiegoList")
 
     def as_json(self):
-        duracion = datetime.now(pytz.utc) - self.fechaHoraInicio
-        id_configuracion_riego = None
-        cantidad_agua_utilizada = self.mecanismo_riego_finca_sector.caudal * (duracion.seconds / 60.0)
-        if self.fechaHoraFinalizacion:
-            duracion = self.fechaHoraFinalizacion - self.fechaHoraInicio
 
+        # Se calcula duracion
+        estado_pausado = EstadoEjecucionRiego.objects.get(nombreEstadoEjecucionRiego="pausado")
+
+        if self.estado_ejecucion_riego == estado_pausado:
+            duracion_total = self.duracion_parcial
+
+        else:
+            if self.fecha_hora_finalizacion:
+                if self.fecha_hora_ultimo_reinicio:
+                    duracion = (self.fecha_hora_finalizacion - self.fecha_hora_ultimo_reinicio).seconds
+
+                else:
+                    duracion = (self.fecha_hora_finalizacion - self.fecha_hora_inicio).seconds
+
+            else:
+                if self.fecha_hora_ultimo_reinicio:
+                    duracion = (datetime.now(pytz.utc) - self.fecha_hora_ultimo_reinicio).seconds
+
+                else:
+                    duracion = (datetime.now(pytz.utc) - self.fecha_hora_inicio).seconds
+
+            duracion_total = duracion + self.duracion_parcial
+
+        # Se calcula cantidad de agua utilizada
+        cantidad_agua_utilizada = self.mecanismo_riego_finca_sector.caudal * (duracion_total / 60.0)
+
+        # Si existe, se define id configuracion riego
+        id_configuracion_riego = None
         if self.configuracion_riego:
             id_configuracion_riego = self.configuracion_riego.id
 
@@ -575,12 +599,12 @@ class EjecucionRiego(models.Model):
                     estado_ejecucion_riego=self.estado_ejecucion_riego.nombreEstadoEjecucionRiego,
                     cantidadAguaUtilizadaLitros=cantidad_agua_utilizada,
                     detalle=self.detalle,
-                    duracionActualMinutos=duracion.seconds/60.0,
-                    duracionActualSegundos=duracion.seconds,
-                    fechaHoraFinalizacion=self.fechaHoraFinalizacion,
-                    fechaHoraFinalProgramada=self.fechaHoraFinalProgramada,
-                    fechaHoraInicio=self.fechaHoraInicio,
-                    fechaHoraInicioProgramada=self.fechaHoraInicioProgramada)
+                    duracionActualMinutos=duracion_total/60.0,
+                    duracionActualSegundos=duracion_total,
+                    fechaHoraFinalizacion=self.fecha_hora_finalizacion,
+                    fechaHoraFinalProgramada=self.fecha_hora_final_programada,
+                    fechaHoraInicio=self.fecha_hora_inicio,
+                    fechaHoraInicioProgramada=self.fecha_hora_inicio_programada)
 
 
 class CriterioRiego(models.Model):
