@@ -69,6 +69,8 @@ urlpatterns = [
         name='habilitarMecanismoRiegoFinca'),
 
     url(r'^crearSensor/$', views_modulo_sensores.crear_sector, name='crearSensor'),
+    url(r'^deshabilitarSensor/$', views_modulo_sensores.deshabilitar_sensor, name='deshabilitarSensor'),
+
     url(r'^mostrarTipoMedicion/$', views_modulo_sensores.mostrar_tipo_medicion, name='mostrarTipoMedicion'),
     url(r'^mostrarSensoresFinca/$', views_modulo_sensores.mostrar_sensores_finca, name='mostrarSensoresFinca'),
 
