@@ -26,8 +26,6 @@ def crear_sector(request):
         sensor = Sensor(modelo=datos[KEY_MODELO_SENSOR], fechaAltaSensor=datetime.now(),
                         tipoMedicion=tipo_medicion)
         sensor.save()
-
-
         response.content = armar_response_content(None)
         response.status_code = 200
         return response
@@ -40,6 +38,29 @@ def crear_sector(request):
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+def deshabilitar_sensor(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if Sensor.objects.filter(idSensor=datos[KEY_ID_SENSOR]).__len__() == 0:
+            raise ValueError(ERROR_SENSOR_NO_EXISTENTE, "No existe el sensor con ese id")
+        sensor = Sensor.objects.get(idSensor=datos[KEY_ID_SENSOR])
+        sensor.habilitado = False
+        sensor.save()
+        response.content = armar_response_content(None)
+        response.status_code = 200
+        return response
+    except ValueError as err:
+        print err.args
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, ValueError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 @transaction.atomic()
 @login_requerido
