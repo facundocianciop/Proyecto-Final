@@ -67,6 +67,10 @@ class EstadoUsuario(models.Model):
     nombreEstadoUsuario=models.CharField(max_length=100)
 
 
+    def __str__(self):
+        return self.nombreEstadoUsuario
+
+
 class HistoricoEstadoUsuario(models.Model):
     OIDHistoricoEstadoUsuario =models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     fechaFinEstadoUsuario=models.DateTimeField(null=True)
@@ -74,6 +78,10 @@ class HistoricoEstadoUsuario(models.Model):
 
     usuario=models.ForeignKey(DatosUsuario,db_column="OIDUsuario",related_name="historicoEstadoUsuarioList",null=True)
     estadoUsuario=models.ForeignKey(EstadoUsuario,db_column="OIDEstadoUsuario")
+
+    def __str__(self):
+        return self.usuario.user.username + "-" + self.fechaInicioEstadoUsuario + "-" + \
+               self.estadoUsuario.nombreEstadoUsuario
 
 
 class Rol(models.Model):
@@ -193,6 +201,9 @@ class Finca(models.Model):
     tamanio=models.FloatField()
     ubicacion=models.CharField(max_length=50)
 
+    def __str__(self):
+        return str(self.idFinca) + "-" + self.nombre
+
     def save(self):
         "Get last value of Code and Number from database, and increment before save"
         if Finca.objects.all().__len__() == 0:
@@ -282,17 +293,44 @@ class HistoricoMecanismoRiegoFinca(models.Model):
 
 class Sector(models.Model):
     OIDSector=models.UUIDField( primary_key=True, default=uuid.uuid4, editable=False)
+    idSector = models.IntegerField(default=1, unique=True)
     numeroSector=models.IntegerField()
-    nombreSector=models.CharField(max_length=20)
+    nombreSector=models.CharField(max_length=30)
     descripcionSector=models.CharField(max_length=100)
     superficie=models.FloatField()
+
+    finca = models.ForeignKey("Finca", db_column="OIDFinca", related_name="sectorList", null=True)
+
+
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        if Sector.objects.all().__len__() == 0:
+            self.idSector = 1
+            super(Sector, self).save()
+        else:
+            if Sector.objects.get(idSector=self.idSector) == self:
+                super(Sector, self).save()
+            else:
+                ultimoSector = Sector.objects.order_by('-idSector')[0]
+                self.idSector = ultimoSector.idSector + 1
+                super(Sector, self).save()
 
     def __str__(self):
         return ("Este es el sector %d")%self.numeroSector
 
+    def as_json(self):
+        return dict(
+                    idSector=self.idSector,
+                    numeroSector=self.numeroSector,
+                    nombreSector=self.nombreSector,
+                    descripcionSector=self.descripcionSector,
+                    superficieSector=self.superficie)
+
+
 
 class Cultivo(models.Model):
     OIDCultivo = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    idCultivo = models.IntegerField(default=1, unique=True)
     descripcion = models.CharField(max_length=100)
     nombre = models.CharField(max_length=20)
     fechaPlantacion = models.DateTimeField()
@@ -302,8 +340,35 @@ class Cultivo(models.Model):
     subtipo_cultivo = models.ForeignKey('SubtipoCultivo', db_column="OIDSubtipoCultivo")
     sector= models.ForeignKey(Sector, db_column="OIDSector")
 
+
+
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        if Cultivo.objects.all().__len__() == 0:
+            self.idCultivo = 1
+            super(Cultivo, self).save()
+        else:
+            if Cultivo.objects.get(idCultivo=self.idCultivo) == self:
+                super(Cultivo, self).save()
+            else:
+                ultimoCultivo = Cultivo.objects.order_by('-idCultivo')[0]
+                self.idCultivo = ultimoCultivo.idCultivo + 1
+                super(Cultivo, self).save()
+
+
     def __str__(self):
         return ("Este es el cultivo %s")%self.nombre
+
+
+    def as_json(self):
+        return dict(descripcion=self.descripcion,
+                    idCultivo=self.idCultivo,
+                    nombre=self.nombre,
+                    fechaPlantacion=self.fechaPlantacion,
+                    fechaEliminacion=self.fechaEliminacion,
+                    habilitado=self.habilitado,
+                    subtipo=self.subtipo_cultivo.nombreSubtipo,
+                    tipo=self.subtipo_cultivo.tipo_cultivo.nombreTipoCultivo)
 
 
 class EstadoSector(models.Model):
@@ -321,7 +386,7 @@ class HistoricoEstadoSector(models.Model):
     fechaInicioEstadoSector=models.DateTimeField()
 
     estado_sector=models.ForeignKey(EstadoSector,db_column="OIDEstadoSector")
-    sector=models.ForeignKey(Sector,db_column="OIDSector",related_name="historicoEstadoSector")
+    sector=models.ForeignKey(Sector,db_column="OIDSector",related_name="historicoEstadoSectorList")
 
 
 class EstadoMecanismoRiegoFincaSector(models.Model):
@@ -332,11 +397,13 @@ class EstadoMecanismoRiegoFincaSector(models.Model):
 
 class HistoricoMecanismoRiegoFincaSector(models.Model):
     OIDHistoricoMecanismoRiegoFincaSector=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    fechaFinEstadoMecanismoRiegoFincaSector=models.DateTimeField()
+    fechaFinEstadoMecanismoRiegoFincaSector=models.DateTimeField(null=True)
     fechaInicioEstadoMecanismoRiegoFincaSector=models.DateTimeField()
 
-    mecanismo_riego_finca_sector=models.ForeignKey('MecanismoRiegoFincaSector',db_column="OIDMecanismoRiegoFincaSector",related_name="historicoMecanismoRiegoFincaSector")
-    estado_mecanismo_riego_finca_sector=models.ForeignKey(EstadoMecanismoRiegoFincaSector,db_column="OIDEstadoMecanismoRiegoFincaSector")
+    mecanismo_riego_finca_sector=models.ForeignKey('MecanismoRiegoFincaSector',db_column="OIDMecanismoRiegoFincaSector",
+                                                   related_name="historicoMecanismoRiegoFincaSector")
+    estado_mecanismo_riego_finca_sector=models.ForeignKey(EstadoMecanismoRiegoFincaSector,
+                                                          db_column="OIDEstadoMecanismoRiegoFincaSector")
 
 
 class ComponenteSensor(models.Model):
@@ -351,7 +418,6 @@ class ComponenteSensor(models.Model):
 
 class TipoCultivo(models.Model):
     OIDTipoCultivo = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    idTipo = models.IntegerField(unique=True)
     nombreTipoCultivo = models.CharField(max_length=20)
     descripcion = models.CharField(max_length=100)
     habilitado = models.BooleanField()
@@ -361,7 +427,6 @@ class TipoCultivo(models.Model):
 
 class SubtipoCultivo(models.Model):
     OIDSubtipoCultivo = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    idSubtipo = models.IntegerField(unique=True)
     nombreSubtipo = models.CharField(max_length=20)
     habilitado = models.BooleanField()
     descripcion = models.CharField(max_length=100)
@@ -385,8 +450,9 @@ class CaracteristicaSubtipo(models.Model):
 
 class TipoMecanismoRiego(models.Model):
     OIDTipoMecanismoRiego = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    nombreMecanismo=models.CharField(max_length=30,unique=True)
+    nombreMecanismo = models.CharField(max_length=30,unique=True)
     descripcion=models.CharField(max_length=200,null=True)
+    caudalEstandar = models.FloatField(null=True)
     presionEstandar=models.FloatField(null=True)
     eficiencia=models.FloatField(null=True)
     fechaAltaTipoMecanismoRiego=models.DateTimeField()
@@ -394,7 +460,6 @@ class TipoMecanismoRiego(models.Model):
     habilitado=models.BooleanField(default=True)
     def as_json(self):
         return dict(
-            OIDTipoMecanismoRiego=self.OIDTipoMecanismoRiego,
             nombreMecanismo=self.nombreMecanismo,
             descripcion=self.descripcion,
             presionEstandar=self.presionEstandar,
@@ -446,11 +511,34 @@ class EstadoEjecucionRiego(models.Model):
 
 
 class MecanismoRiegoFincaSector(models.Model):
-    OIDMecanismoRiegoFincaSector = models.UUIDField( primary_key=True, editable=False)
+    OIDMecanismoRiegoFincaSector = models.UUIDField(default=uuid.uuid4(), primary_key=True, editable=False)
+    idMecanismoRiegoFincaSector = models.IntegerField(default=1, unique=True)
     caudal = models.FloatField()
     presion = models.FloatField()
 
+    mecanismoRiegoFinca = models.ForeignKey(MecanismoRiegoFinca, db_column="OIDMecanismoRiegoFinca",
+                                              related_name="mecanismoRiegoSectorList", null=True)
+    sector = models.ForeignKey(Sector, db_column="OIDSector", related_name="mecanismoRiegoFincaSector", null=True)
 
+
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        if MecanismoRiegoFincaSector.objects.all().__len__() == 0:
+            self.idMecanismoRiegoFincaSector = 1
+            super(MecanismoRiegoFincaSector, self).save()
+        else:
+            if MecanismoRiegoFincaSector.objects.get(idMecanismoRiegoFincaSector=self.idMecanismoRiegoFincaSector) == self:
+                super(MecanismoRiegoFincaSector, self).save()
+            else:
+                ultimoMecanismoFincaRiegoSector = MecanismoRiegoFincaSector.objects.order_by('-idMecanismoRiegoFincaSector')[0]
+                self.idMecanismoRiegoFincaSector = ultimoMecanismoFincaRiegoSector.idMecanismoRiegoFincaSector + 1
+                super(MecanismoRiegoFincaSector, self).save()
+    def as_json(self):
+        return dict(idMecanismoRiegoFincaSector=self.idMecanismoRiegoFincaSector,
+                    caudal=self.caudal,
+                    presion=self.presion,
+                    sector=self.sector.numeroSector,
+                    mecanismoRiegoFinca=self.mecanismoRiegoFinca.idMecanismoRiegoFinca)
 class EjecucionRiego(models.Model):
     OIDEjecucionRiego = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     cantidadAguaUtilizada = models.FloatField()
@@ -513,25 +601,71 @@ class CriterioRiegoPorHora(CriterioRiego):
 
 class TipoMedicion(models.Model):
     OIDTipoMedicion = models.UUIDField( primary_key=True, default=uuid.uuid4, editable=False)
-    idTipoMedicion = models.IntegerField()
+    idTipoMedicion = models.IntegerField(default=1, unique=True)
     nombreTipoMedicion = models.CharField(max_length=20)
     unidadMedicion = models.CharField(max_length=20)
     habilitado = models.BooleanField()
     fechaAltaTipoMedicion = models.DateTimeField()
     fechaBajaTipoMedicion = models.DateTimeField(null=True)
 
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        if TipoMedicion.objects.all().__len__() == 0:
+            self.idTipoMedicion = 1
+            super(TipoMedicion, self).save()
+        else:
+            if TipoMedicion.objects.get(idTipoMedicion=self.idTipoMedicion) == self:
+                super(TipoMedicion, self).save()
+            else:
+                ultimaTipoMedicion = TipoMedicion.objects.order_by('-idTipoMedicion')[0]
+                self.idTipoMedicion = ultimaTipoMedicion.idTipoMedicion + 1
+                super(TipoMedicion, self).save()
+
+
+    def as_json(self):
+        return dict(idTipoMedicion=self.idTipoMedicion,
+                    nombreTipoMedicion=self.nombreTipoMedicion,
+                    unidadMedicion=self.unidadMedicion,
+                    habilitado=self.habilitado,
+                    fechaAltaTipoMedicion=self.fechaAltaTipoMedicion,
+                    fechaBajaTipoMedicion=self.fechaBajaTipoMedicion)
+
+
 
 class Sensor(models.Model):
     OIDSensor = models.UUIDField( primary_key=True, default=uuid.uuid4, editable=False)
-    idSensor = models.IntegerField()
-    fechaAltaSensor=models.DateTimeField()
-    fechaBajaSensor=models.DateTimeField(null=True)
-    habilitado=models.BooleanField()
-    modelo=models.CharField(max_length=20)
+    idSensor = models.IntegerField(default=1, unique=True)
+    fechaAltaSensor = models.DateTimeField()
+    fechaBajaSensor = models.DateTimeField(null=True)
+    habilitado = models.BooleanField()
+    modelo = models.CharField(max_length=20)
 
-    componente_sensor=models.ForeignKey(ComponenteSensor,db_column="OIDComponenteSensor",related_name="sensor")
-    sensorTipoInterna=models.ForeignKey('TipoMedicion',db_column="OIDTipoMedicion")
-    finca=models.ForeignKey(Finca,db_column="OIDFinca")
+    ComponenteSensor = models.ForeignKey(ComponenteSensor,db_column="OIDComponenteSensor",
+                                        related_name="sensor", null=True)
+    tipoMedicion = models.ForeignKey('TipoMedicion',db_column="OIDTipoMedicion", null=True)
+    finca = models.ForeignKey('Finca', db_column="OIDFinca", null=True)
+
+
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        if Sensor.objects.all().__len__() == 0:
+            self.idSensor = 1
+            super(Sensor, self).save()
+        else:
+            if Sensor.objects.get(idSensor=self.idSensor) == self:
+                super(Sensor, self).save()
+            else:
+                ultimoSensor = Sensor.objects.order_by('-idSensor')[0]
+                self.idSensor = ultimoSensor.idSensor + 1
+                super(Sensor, self).save()
+
+    def as_json(self):
+        return dict(idSensor=self.idSensor,
+                    fechaAltaSensor=self.FechaAltaSensor,
+                    fechaBajaSensor=self.fechaBajaSensor,
+                    habilitado=self.habilitado,
+                    modelo=self.modelo,
+                    tipoMedicion=self.tipoMedicion.nombreTipoMedicion)
 
 
 class ComponenteSensorSector(models.Model):
@@ -632,6 +766,10 @@ class ProveedorInformacionClimatica(models.Model):
     fechaBajaProveedorInfoClimatica=models.DateTimeField(null=True)
 
     tipo_medicion_climatica=models.ManyToManyField(TipoMedicionClimatica)
+
+
+    def __str__(self):
+        return self.nombreProveedor
 
     def as_json(self):
         return dict(

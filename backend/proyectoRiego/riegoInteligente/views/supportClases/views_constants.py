@@ -30,8 +30,12 @@ KEY_LOGO = 'logo'
 KEY_ESTADO_FINCA = 'estadoFinca'
 KEY_ID_USUARIO_FINCA = 'usuarioFincaId'
 KEY_NOMBRE_ROL = 'nombreRol'
-
+KEY_ID_MECANISMO_RIEGO_FINCA = 'idMecanismoRiegoFinca'
+KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR = 'idMecanismoRiegoFincaSector'
 KEY_NOMBRE_PROVEEDOR = 'nombreProveedor'
+KEY_MECANISMO_RIEGO_CAUDAL = 'caudalMecanismoRiego'
+KEY_MECANISMO_RIEGO_PRESION = 'presionMecanismoRiego'
+
 
 KEY_DNI = 'dni'
 KEY_CUIT = 'cuit'
@@ -41,9 +45,36 @@ KEY_IMAGEN_USUARIO = 'imagenUsuario'
 
 KEY_TIPO_SESION = 'tipoSesion'
 
+# Sector
+KEY_NUMERO_SECTOR = 'numeroSector'
+KEY_NOMBRE_SECTOR = 'nombreSector'
+KEY_DESCRIPCION_SECTOR = 'descripcionSector'
+KEY_SUPERFICIE_SECTOR = 'superficieSector'
+KEY_ID_SECTOR = 'idSector'
+
+# Subtipo Cultivos
+KEY_NOMBRE_SUBTIPO_CULTIVO ="nombreSubtipoCultivo"
+
+
+# Cultivo
+KEY_NOMBRE_CULTIVO = "nombreCultivo"
+KEY_DESCRIPCION_CULTIVO = "descripcionCultivo"
+KEY_FECHA_PLANTACION = "fechaPlantacion"
+KEY_ID_CULTIVO = 'idCultivo'
+
+
+
 # Roles
 ROL_ENCARGADO = "encargado"
 ROL_STAKEHOLDER = "stakeholder"
+
+# Mecanismos
+KEY_NOMBRE_TIPO_MECANISMO = 'nombreTipoMecanismo'
+
+KEY_ID_TIPO_MEDICION = 'idTipoMedicion'
+KEY_MODELO_SENSOR = 'modeloSensor'
+KEY_ID_SENSOR = 'idSensor'
+
 
 # Estados
 

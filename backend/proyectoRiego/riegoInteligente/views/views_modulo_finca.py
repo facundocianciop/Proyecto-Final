@@ -58,6 +58,7 @@ def crear_finca(request):
         else:
             raise ValueError(ERROR_FINCA_YA_EXISTENTE,"Ya existe una finca con ese nombre")
     except ValueError as err:
+        print err.args
         return build_bad_request_error(response, err.args[0],err.args[1])
 
 
@@ -231,12 +232,13 @@ def mostrar_fincas_encargado(request):
     try:
         user = request.user
         usuario = user.datosusuario
-        usuario_finca_lista = usuario.usuarioFincaList.all()
+        usuario_finca_lista = UsuarioFinca.objects.filter(usuario=usuario, fechaBajaUsuarioFinca__isnull=True)
         fincas_encargado = []
         for usuario_finca in usuario_finca_lista:
-            rol = RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca, fechaBajaRolUsuarioFinca__isnull=True).rol
-            if rol.nombreRol == ROL_ENCARGADO:
-                fincas_encargado.append(usuario_finca.finca)
+            if RolUsuarioFinca.objects.filter(usuarioFinca=usuario_finca, fechaBajaRolUsuarioFinca__isnull=True).__len__() != 0:
+                rol = RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca, fechaBajaRolUsuarioFinca__isnull=True).rol
+                if rol.nombreRol == ROL_ENCARGADO:
+                    fincas_encargado.append(usuario_finca.finca)
         response.content = armar_response_list_content(fincas_encargado)
         response.content_type = "application/json"
         response.status_code = 200
@@ -284,7 +286,7 @@ def modificar_finca(request):
 
 @transaction.atomic()
 @login_requerido
-@metodos_requeridos([METHOD_DELETE])
+@metodos_requeridos([METHOD_POST])
 def eliminar_finca(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -311,6 +313,14 @@ def eliminar_finca(request):
                                                    finca=finca_a_eliminar, estadoFinca=estado__nuevo)
             historico_nuevo.save()
             finca_a_eliminar.save()
+            usuario_finca_list = finca_a_eliminar.usuariofinca_set.all()
+            for usuario_finca_a_eliminar in usuario_finca_list:
+                usuario_finca_a_eliminar.fechaBajaUsuarioFinca = datetime.now()
+                ultimo_historico = RolUsuarioFinca.objects.get(usuarioFinca= usuario_finca_a_eliminar,
+                                                               fechaBajaRolUsuarioFinca__isnull= True)
+                ultimo_historico.fechaBajaRolUsuarioFinca = datetime.now()
+                ultimo_historico.save()
+                usuario_finca_a_eliminar.save()
             response.content = armar_response_content(None)
             response.content_type = "application/json"
             response.status_code = 200
@@ -331,11 +341,11 @@ def buscar_usuarios_no_encargado(request):
     datos = obtener_datos_json(request)
     try:
         finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
-        usuarios_finca = UsuarioFinca.objects.filter(finca=finca)
+        usuarios_finca = UsuarioFinca.objects.filter(finca=finca, fechaBajaUsuarioFinca__isnull=True)
         rol_encargado = Rol.objects.get(nombreRol=ROL_ENCARGADO)
         dto_usuario_finca_list = []
         for usuario_finca in usuarios_finca:
-            
+
             rol_actual = RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,
                                                         fechaBajaRolUsuarioFinca__isnull=True)
             if rol_actual.rol != rol_encargado:
@@ -358,7 +368,7 @@ def buscar_usuarios_no_encargado(request):
 
 @transaction.atomic()
 @login_requerido
-@metodos_requeridos([METHOD_DELETE])
+@metodos_requeridos([METHOD_POST])
 def eliminar_usuario_finca(request):
     response=HttpResponse()
     datos=obtener_datos_json(request)
