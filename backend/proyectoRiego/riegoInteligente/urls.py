@@ -57,8 +57,13 @@ urlpatterns = [
     url(r'^habilitarMecanismoRiegoFinca/$', views_configuracion_finca.habilitar_mecanismo_riego_finca,
         name='habilitarMecanismoRiegoFinca'),
 
-    url(r'^crearSensor/$', views_modulo_sensores.crear_sector, name='crearSensor'),
+    url(r'^crearSensor/$', views_modulo_sensores.crear_sensor, name='crearSensor'),
     url(r'^deshabilitarSensor/$', views_modulo_sensores.deshabilitar_sensor, name='deshabilitarSensor'),
+    url(r'^buscarSensoresNoAsignados/$', views_modulo_sensores.buscar_sensores_no_asignados, name='buscarSensoresNoAsignados'),
+
+    url(r'^crearComponenteSensor/$', views_modulo_sensores.crear_componente_sensor, name='crearComponenteSensor'),
+    url(r'^mostrarComponentesSensorFinca/$', views_modulo_sensores.mostrar_componentes_sensor_finca, name='mostrarComponentesSensorFinca'),
+    url(r'^mostrarComponentesSensorFincaHabilitados/$', views_modulo_sensores.mostrar_componentes_sensor_finca_habilitados, name='mostrarComponentesSensorFincaHabilitados'),
 
     url(r'^mostrarTipoMedicion/$', views_modulo_sensores.mostrar_tipo_medicion, name='mostrarTipoMedicion'),
     url(r'^mostrarSensoresFinca/$', views_modulo_sensores.mostrar_sensores_finca, name='mostrarSensoresFinca'),

@@ -75,12 +75,14 @@ KEY_ID_TIPO_MEDICION = 'idTipoMedicion'
 KEY_MODELO_SENSOR = 'modeloSensor'
 KEY_ID_SENSOR = 'idSensor'
 
+KEY_NUMERO_COMPONENTE_SENSOR = "numeroComponenteSensor"
 
 # Estados
 
 ESTADO_ACTIVADO = 'activado'
 ESTADO_DESACTIVADO = 'desactivado'
 ESTADO_HABILITADO = 'habilitado'
+ESTADO_EN_REPARACION = 'enReparacion'
 ESTADO_PENDIENTE_APROBACION = 'pendienteAprobacion'
 ESTADO_NO_APROBADO = 'noAprobado'
 ESTADO_DESHABILITADO = 'deshabilitado'
