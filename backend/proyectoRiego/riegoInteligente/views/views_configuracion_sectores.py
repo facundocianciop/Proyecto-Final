@@ -359,21 +359,26 @@ def modificar_cultivo_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
     try:
-        if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO]).__len__() == 0:
-            raise ValueError(ERROR_CULTIVO_NO_EXISTENTE, "El id del cultivo no es correcto")
-        if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO], habilitado=True).__len__() == 0:
-            raise ValueError(ERROR_CULTIVO_NO_HABILITADO, "El cultivo no está habilitado")
-        cultivo_seleccionado = Cultivo.objects.get(idCultivo=datos[KEY_ID_CULTIVO])
-        if KEY_DESCRIPCION_CULTIVO in datos:
-            cultivo_seleccionado.descripcion = datos[KEY_DESCRIPCION_CULTIVO]
-        if KEY_FECHA_PLANTACION in datos:
-            cultivo_seleccionado.fechaPlantacion = datos[KEY_FECHA_PLANTACION]
-        if KEY_NOMBRE_CULTIVO in datos:
-            cultivo_seleccionado.nombre = datos[KEY_NOMBRE_CULTIVO]
-        cultivo_seleccionado.save()
-        response.content = armar_response_content(None)
-        response.status_code = 200
-        return response
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if (KEY_ID_CULTIVO & KEY_DESCRIPCION_CULTIVO and KEY_FECHA_PLANTACION & KEY_NOMBRE_CULTIVO)  in datos:
+            if datos[KEY_ID_CULTIVO] == '' or datos[KEY_DESCRIPCION_CULTIVO] == '' or datos[KEY_FECHA_PLANTACION] == '' or datos[KEY_NOMBRE_CULTIVO] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO]).__len__() == 0:
+                raise ValueError(ERROR_CULTIVO_NO_EXISTENTE, "El id del cultivo no es correcto")
+            if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO], habilitado=True).__len__() == 0:
+                raise ValueError(ERROR_CULTIVO_NO_HABILITADO, "El cultivo no está habilitado")
+            cultivo_seleccionado = Cultivo.objects.get(idCultivo=datos[KEY_ID_CULTIVO])
+            if KEY_DESCRIPCION_CULTIVO in datos:
+                cultivo_seleccionado.descripcion = datos[KEY_DESCRIPCION_CULTIVO]
+            if KEY_FECHA_PLANTACION in datos:
+                cultivo_seleccionado.fechaPlantacion = datos[KEY_FECHA_PLANTACION]
+            if KEY_NOMBRE_CULTIVO in datos:
+                cultivo_seleccionado.nombre = datos[KEY_NOMBRE_CULTIVO]
+            cultivo_seleccionado.save()
+            response.content = armar_response_content(None)
+            response.status_code = 200
+            return response
     except ValueError as err:
         print err.args
         return build_bad_request_error(response, err.args[0], err.args[1])
@@ -390,17 +395,24 @@ def deshabilitar_cultivo_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
     try:
-        if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO]).__len__() == 0:
-            raise ValueError(ERROR_CULTIVO_NO_EXISTENTE, "El id del cultivo no es correcto")
-        if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO], habilitado=True).__len__() == 0:
-            raise ValueError(ERROR_CULTIVO_NO_HABILITADO, "El cultivo no está habilitado")
-        cultivo_seleccionado = Cultivo.objects.get(idCultivo=datos[KEY_ID_CULTIVO])
-        cultivo_seleccionado.habilitado = False
-        cultivo_seleccionado.fechaEliminacion = datetime.now()
-        cultivo_seleccionado.save()
-        response.content = armar_response_content(None)
-        response.status_code = 200
-        return response
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if KEY_ID_CULTIVO in datos:
+            if datos[KEY_ID_CULTIVO] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO]).__len__() == 0:
+                raise ValueError(ERROR_CULTIVO_NO_EXISTENTE, "El id del cultivo no es correcto")
+            if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO], habilitado=True).__len__() == 0:
+                raise ValueError(ERROR_CULTIVO_NO_HABILITADO, "El cultivo no está habilitado")
+            cultivo_seleccionado = Cultivo.objects.get(idCultivo=datos[KEY_ID_CULTIVO])
+            cultivo_seleccionado.habilitado = False
+            cultivo_seleccionado.fechaEliminacion = datetime.now()
+            cultivo_seleccionado.save()
+            response.content = armar_response_content(None)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
     except ValueError as err:
         print err.args
         return build_bad_request_error(response, err.args[0], err.args[1])
@@ -441,19 +453,26 @@ def mostrar_cultivo_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
     try:
-        estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
-        sector_seleccionado = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
-        if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
-                                                fechaFinEstadoSector__isnull=True).__len__() != 1:
-            raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
-        if sector_seleccionado.cultivo_set.filter(habilitado=True).__len__() == 0 :
-            response.content = "[]"
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if KEY_ID_SECTOR in datos:
+            if datos[KEY_ID_SECTOR] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
+            sector_seleccionado = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
+            if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
+                                                    fechaFinEstadoSector__isnull=True).__len__() != 1:
+                raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
+            if sector_seleccionado.cultivo_set.filter(habilitado=True).__len__() == 0 :
+                response.content = "[]"
+                response.status_code = 200
+                return response
+            cultivo_seleccionado = sector_seleccionado.cultivo_set.get(habilitado=True)
+            response.content = armar_response_content(cultivo_seleccionado)
             response.status_code = 200
             return response
-        cultivo_seleccionado = sector_seleccionado.cultivo_set.get(habilitado=True)
-        response.content = armar_response_content(cultivo_seleccionado)
-        response.status_code = 200
-        return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
     except ValueError as err:
         print err.args
         return build_bad_request_error(response, err.args[0], err.args[1])
@@ -470,15 +489,22 @@ def mostrar_cultivo_sector_historico(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
     try:
-        estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
-        sector_seleccionado = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
-        if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
-                                                fechaFinEstadoSector__isnull=True).__len__() != 1:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if KEY_ID_SECTOR in datos:
+            if datos[KEY_ID_SECTOR] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
+            sector_seleccionado = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
+            if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
+                                                    fechaFinEstadoSector__isnull=True).__len__() != 1:
+                raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
+            cultivo_seleccionado_lista = sector_seleccionado.cultivo_set.all()
+            response.content = armar_response_list_content(cultivo_seleccionado_lista)
+            response.status_code = 200
+            return response
+        else:
             raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
-        cultivo_seleccionado_lista = sector_seleccionado.cultivo_set.all()
-        response.content = armar_response_list_content(cultivo_seleccionado_lista)
-        response.status_code = 200
-        return response
     except ValueError as err:
         print err.args
         return build_bad_request_error(response, err.args[0], err.args[1])
@@ -489,3 +515,115 @@ def mostrar_cultivo_sector_historico(request):
 
 
 
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+def asignar_componente_sensor(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if (KEY_ID_SECTOR in datos) and (KEY_ID_COMPONENTE_SENSOR in datos) and (KEY_ID_FINCA in datos):
+            if datos[KEY_ID_SECTOR] == '' or datos[KEY_ID_COMPONENTE_SENSOR] == '' or datos[KEY_ID_FINCA] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
+                raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encuentra un sector con ese id")
+            estado_sector_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
+            sector_seleccionado = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
+            if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_sector_habilitado,
+                                                    fechaFinEstadoSector__isnull=True).__len__() != 1:
+                raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
+            if Finca.objects.filter(idFinca=datos[KEY_ID_FINCA]).__len__() != 1:
+                raise ValueError(ERROR_FINCA_NO_ENCONTRADA, "No existe la finca ingresada")
+            finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+            if ComponenteSensor.objects.filter(idComponenteSensor=datos[KEY_ID_COMPONENTE_SENSOR],
+                                               finca=finca).__len__() == 0:
+                raise ValueError(ERROR_COMPONENTE_SENSOR_NO_PERTENECE_A_FINCA,
+                                 "El componente no pertenece a la finca ingresada")
+            if ComponenteSensor.objects.filter(idComponenteSensor=datos[KEY_ID_COMPONENTE_SENSOR]).__len__() == 0:
+                raise ValueError(ERROR_COMPONENTE_SENSOR_NO_EXISTENTE, "No existe componente sensor con ese id")
+            componente = ComponenteSensor.objects.get(idComponenteSensor=datos[KEY_ID_COMPONENTE_SENSOR])
+            estado_componente_habilitado = EstadoComponenteSensor.objects.get(nombreEstado=ESTADO_HABILITADO)
+            if componente.historico_estado_componente_sensor_list.filter(fechaFinEstadoComponenteSensor__isnull=True,
+                                                                         estadoComponenteSensor=estado_componente_habilitado).__len__() == 0:
+                raise ValueError(ERROR_COMPONENTE_SENSOR_NO_HABILITADO, "El componente no esta habilitado")
+            if componente.componenteSensorSectorList.filter(habilitado=True).__len__() !=0:
+                raise ValueError(ERROR_COMPONENTE_SENSOR_YA_ASIGNADO, "El componente ya esta asignado a otro sector")
+            componente_sensor_sector = ComponenteSensorSector(componente_sensor=componente, sector=sector_seleccionado,
+                                                              habilitado=True)
+            estado_componente_sensor_sector_habilitado = EstadoComponenteSensorSector.objects.get(nombreEstadoComponenteSensorSector=ESTADO_HABILITADO)
+            nuevo_historico = HistoricoEstadoComponenteSensorSector(estadoComponenteSensorSector=estado_componente_sensor_sector_habilitado,
+                                                                    componenteSensorSector=componente_sensor_sector,
+                                                                    fechaAltaComponenteSensorSector=datetime.now())
+            componente_sensor_sector.save()
+            nuevo_historico.save()
+            response.content = armar_response_content(None)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except ValueError as err:
+        print err.args
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+def desasignar_componente_sensor(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if  (KEY_ID_COMPONENTE_SENSOR in datos) and (KEY_ID_FINCA in datos):
+            if  datos[KEY_ID_COMPONENTE_SENSOR] == '' or datos[KEY_ID_FINCA] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if Finca.objects.filter(idFinca=datos[KEY_ID_FINCA]).__len__() != 1:
+                raise ValueError(ERROR_FINCA_NO_ENCONTRADA, "No existe la finca ingresada")
+            finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+            if ComponenteSensor.objects.filter(idComponenteSensor=datos[KEY_ID_COMPONENTE_SENSOR],
+                                               finca=finca).__len__() == 0:
+                raise ValueError(ERROR_COMPONENTE_SENSOR_NO_PERTENECE_A_FINCA,
+                                 "El componente no pertenece a la finca ingresada")
+
+            if ComponenteSensor.objects.filter(idComponenteSensor=datos[KEY_ID_COMPONENTE_SENSOR]).__len__() == 0:
+                raise ValueError(ERROR_COMPONENTE_SENSOR_NO_EXISTENTE, "No existe componente sensor con ese id")
+
+            componente = ComponenteSensor.objects.get(idComponenteSensor=datos[KEY_ID_COMPONENTE_SENSOR])
+            estado_componente_habilitado = EstadoComponenteSensor.objects.get(nombreEstado=ESTADO_HABILITADO)
+            if componente.historico_estado_componente_sensor_list.filter(fechaFinEstadoComponenteSensor__isnull=True,
+                                                                         estadoComponenteSensor=estado_componente_habilitado).__len__() == 0:
+                raise ValueError(ERROR_COMPONENTE_SENSOR_NO_HABILITADO, "El componente no esta habilitado")
+            if componente.componenteSensorSectorList.filter(habilitado=True).__len__() == 0 :
+                raise ValueError(ERROR_COMPONENTE_SENSOR_NO_ASIGNADO, "No se puede desasignar al componente ya que no esta asignado")
+            componente_sensor_sector = componente.componenteSensorSectorList.get(habilitado=True)
+            estado_componente_sensor_deshabilitado = EstadoComponenteSensorSector.objects.get(nombreEstadoComponenteSensorSector=ESTADO_DESHABILITADO)
+            historico_actual = componente_sensor_sector.historicoEstadoComponenteSensorSector.get(
+                fechaBajaComponenteSensorSector__isnull=True)
+            historico_actual.fechaBajaComponenteSensorSector = datetime.now()
+            historico_actual.save()
+            nuevo_historico = HistoricoEstadoComponenteSensorSector(estadoComponenteSensorSector=estado_componente_sensor_deshabilitado,
+                                                                    componenteSensorSector=componente_sensor_sector,
+                                                                    fechaAltaComponenteSensorSector=datetime.now())
+            componente_sensor_sector.habilitado = False
+            componente_sensor_sector.save()
+            nuevo_historico.save()
+            response.content = armar_response_content(None)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except ValueError as err:
+        print err.args
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")

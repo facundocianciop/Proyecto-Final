@@ -108,26 +108,25 @@ def iniciar_sesion(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-
-        nombre_usuario = datos[KEY_USUARIO]
-        contrasenia = datos[KEY_CONTRASENIA]
-
-        usuario = authenticate(username=nombre_usuario, password=contrasenia)
-        if usuario is not None:
-            login(request, usuario)
-
-            response.content = armar_response_content(usuario.datosusuario)
-            response.status_code = 200
-            return response
+        if (KEY_USUARIO and KEY_CONTRASENIA) in datos:
+            if (datos[KEY_USUARIO] == '' or datos[KEY_CONTRASENIA] == ''):
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            nombre_usuario = datos[KEY_USUARIO]
+            contrasenia = datos[KEY_CONTRASENIA]
+            usuario = authenticate(username=nombre_usuario, password=contrasenia)
+            if usuario is not None:
+                login(request, usuario)
+                response.content = armar_response_content(usuario.datosusuario)
+                response.status_code = 200
+                return response
+            else:
+                raise ValueError(ERROR_CREDENCIALES_INCORRECTAS, "Usuario o contrasenia incorrecta")
         else:
-            raise ValueError(ERROR_CREDENCIALES_INCORRECTAS, "Usuario o contrasenia incorrecta")
-
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
     except ValueError as err:
         return build_bad_request_error(response, err.args[0], err.args[1])
-
     except KeyError:
         return build_bad_request_error(response, ERROR_DATOS_FALTANTES, "Faltan ingresar datos")
-
     except (IntegrityError, TypeError):
         return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, "Datos incorrectos")
 

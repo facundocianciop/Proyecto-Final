@@ -408,10 +408,10 @@ class HistoricoMecanismoRiegoFincaSector(models.Model):
 
 class AsignacionSensorComponente(models.Model):
     OIDAsignacionSensorComponente = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    fechaAsignacion = models.DateField()
-    fechaBaja = models.DateField(null=True)
-    sensor = models.ForeignKey("Sensor",db_column="OIDSensor",related_name="asignaciones_list")
-    componenteSensor = models.ForeignKey('ComponenteSensor', db_column="OIDComponenteSensor", related_name="asignaciones_list"    )
+    fechaAsignacion = models.DateTimeField()
+    fechaBaja = models.DateTimeField(null=True)
+    sensor = models.ForeignKey('Sensor', db_column="OIDSensor",related_name="asignaciones_list")
+    componenteSensor = models.ForeignKey('ComponenteSensor', db_column="OIDComponenteSensor", related_name="asignaciones_list")
 
 
 class HistoricoEstadoComponenteSensor(models.Model):
@@ -433,9 +433,8 @@ class ComponenteSensor(models.Model):
     idComponenteSensor = models.IntegerField(default=1, unique=True)
     modelo= models.CharField(max_length=100,null=True)
     descripcion = models.CharField(max_length=200,null=True)
-    habilitado=models.BooleanField()
-    fechaAltaComponenteSensor=models.DateTimeField()
-    fechaBajaComponenteSensor=models.DateTimeField(null=True)
+    cantidadMaximaSensores = models.IntegerField(null=True)
+    cantidadSensoresAsignados = models.IntegerField(default=0)
     finca = models.ForeignKey(Finca, db_column="OIDFinca",null=True)
 
 
@@ -457,9 +456,9 @@ class ComponenteSensor(models.Model):
         return dict(idComponenteSensor=self.idComponenteSensor,
                     modelo=self.modelo,
                     descripcion=self.descripcion,
-                    fechaAltaComponenteSensor=self.fechaAltaComponenteSensor,
-                    fechaBajaComponenteSensor=self.fechaBajaComponenteSensor,
-                    finca=self.finca.idFinca)
+                    finca=self.finca.idFinca,
+                    cantidadMaximaSensores=self.cantidadMaximaSensores,
+                    cantidadSensoresAsignados=self.cantidadSensoresAsignados)
 
 
 
@@ -689,9 +688,6 @@ class Sensor(models.Model):
     fechaBajaSensor = models.DateTimeField(null=True)
     habilitado = models.BooleanField()
     modelo = models.CharField(max_length=20)
-
-    ComponenteSensor = models.ForeignKey(ComponenteSensor,db_column="OIDComponenteSensor",
-                                        related_name="sensor", null=True)
     tipoMedicion = models.ForeignKey('TipoMedicion',db_column="OIDTipoMedicion", null=True)
     finca = models.ForeignKey('Finca', db_column="OIDFinca", null=True)
 
@@ -711,36 +707,53 @@ class Sensor(models.Model):
                 super(Sensor, self).save()
 
     def as_json(self):
-        return dict(idSensor=self.idSensor,
+        return dict(idSensor=str(self.idSensor),
                     fechaAltaSensor=self.fechaAltaSensor,
                     fechaBajaSensor=self.fechaBajaSensor,
-                    habilitado=self.habilitado,
-                    modelo=self.modelo,
+                    habilitado=str(self.habilitado),
+                    modelo=str(self.modelo),
                     tipoMedicion=self.tipoMedicion.nombreTipoMedicion)
 
 
 class ComponenteSensorSector(models.Model):
-    OIDComponenteSensorSector=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    idComponenteSensores=models.IntegerField()
+    OIDComponenteSensorSector = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
+    idComponenteSensorSector = models.IntegerField(default=1, unique=True)
+    habilitado = models.BooleanField()
 
-    componente_sensor=models.ForeignKey(Sector,db_column="OIDSector")
+    sector = models.ForeignKey(Sector, db_column="OIDSector", null=True)
+    componente_sensor = models.ForeignKey(ComponenteSensor, db_column="OIDComponenteSensor",
+                                          related_name="componenteSensorSectorList", null=True)
 
 
-class HistoricoComponenteSensorSector(models.Model):
-    OIDHistoricoComponenteSensorSector=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        if ComponenteSensorSector.objects.all().__len__() == 0:
+            self.idComponenteSensorSector = 1
+            super(ComponenteSensorSector, self).save()
+        else:
+            if ComponenteSensorSector.objects.get(idComponenteSensorSector=self.idComponenteSensorSector) == self:
+                super(ComponenteSensorSector, self).save()
+            else:
+                ultimoComponenteSensorSector = ComponenteSensorSector.objects.order_by('-idComponenteSensorSector')[0]
+                self.idComponenteSensorSector = ultimoComponenteSensorSector.idComponenteSensorSector + 1
+                super(ComponenteSensorSector, self).save()
+
+
+class HistoricoEstadoComponenteSensorSector(models.Model):
+    OIDHistoricoEstadoComponenteSensorSector=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     fechaAltaComponenteSensorSector=models.DateTimeField()
-    fechaBajaComponenteSensorSecto=models.DateTimeField(null=True)
-    componenteSensorSector=models.ForeignKey(ComponenteSensorSector,db_column="OIDComponenteSensorSector",related_name="historicoComponenteSensorSector")
-
+    fechaBajaComponenteSensorSector =models.DateTimeField(null=True)
+    componenteSensorSector = models.ForeignKey('ComponenteSensorSector',db_column="OIDComponenteSensorSector", related_name="historicoEstadoComponenteSensorSector")
+    estadoComponenteSensorSector = models.ForeignKey('EstadoComponenteSensorSector', db_column="OIDEstadoComponenteSensorSector")
 
 class EstadoComponenteSensorSector(models.Model):
-    models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    nombreEstadoSensorSector=models.CharField(max_length=20)
-    descripcionEstadoSensorSector=models.CharField(max_length=100)
+    OIDEstadoComponenteSensorSector = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    nombreEstadoComponenteSensorSector = models.CharField(max_length=20)
+    descripcionEstadoComponenteSensorSector = models.CharField(max_length=100)
 
 
 class MedicionCabecera(models.Model):
-    OIDMedicionCabecera=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
+    OIDMedicionCabecera=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     fechaYHora=models.DateTimeField()
     nroMedicion=models.IntegerField()
 
