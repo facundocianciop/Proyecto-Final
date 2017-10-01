@@ -43,3 +43,27 @@ def metodos_requeridos(request_method_list):
             return func(request, *args, **kwargs)
         return inner
     return decorator
+
+
+# TODO arreglar metodo roles
+def permisos_rol_requeridos(permisos_rol_list):
+    def decorator(func):
+        @wraps(func, assigned=available_attrs(func))
+        def inner(request, *args, **kwargs):
+            """
+            Controlar permisos: pasar a un metodo comun
+            usuario_finca = mecanismo_riego_finca_sector_seleccionado.mecanismoRiegoFinca.finca.usuariofinca_set.get(
+            usuario=request.user.datosusuario
+            )
+
+            rol_usuario_finca = usuario_finca.rolUsuarioFincaList.order_by('-fechaAltaRol').first()
+            permiso_obtener_riego_en_ejecucion = \
+            rol_usuario_finca.conjuntoPermisos.puedeIniciarODetenerRiegoManualmente
+            """
+
+            if request.method not in permisos_rol_list:
+                return build_method_not_allowed_error(HttpResponse(), ERROR_METODO_INCORRECTO,
+                                                      'Metodo/s requeridod: ' + ', '.join(permisos_rol_list))
+            return func(request, *args, **kwargs)
+        return inner
+    return decorator
