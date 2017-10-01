@@ -406,12 +406,62 @@ class HistoricoMecanismoRiegoFincaSector(models.Model):
                                                           db_column="OIDEstadoMecanismoRiegoFincaSector")
 
 
+class AsignacionSensorComponente(models.Model):
+    OIDAsignacionSensorComponente = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
+    fechaAsignacion = models.DateField()
+    fechaBaja = models.DateField(null=True)
+    sensor = models.ForeignKey("Sensor",db_column="OIDSensor",related_name="asignaciones_list")
+    componenteSensor = models.ForeignKey('ComponenteSensor', db_column="OIDComponenteSensor", related_name="asignaciones_list"    )
+
+
+class HistoricoEstadoComponenteSensor(models.Model):
+    OIDHistoricoEstadoComponenteSensor = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
+    fechaFinEstadoComponenteSensor = models.DateTimeField(null=True)
+    fechaInicioEstadoComponenteSensor = models.DateTimeField()
+    componenteSensor = models.ForeignKey('ComponenteSensor', db_column="OIDComponenteSensor", related_name="historico_estado_componente_sensor_list")
+    estadoComponenteSensor = models.ForeignKey('EstadoComponenteSensor', db_column="OIDEstadoComponenteSensor")
+
+
+class EstadoComponenteSensor(models.Model):
+        OIDEstadoComponenteSensor = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
+        nombreEstado = models.CharField(max_length=20)
+        descripcionEstado = models.CharField(max_length=100)
+
+
 class ComponenteSensor(models.Model):
-    OIDComponenteSensor=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    numeroComponente=models.IntegerField()
+    OIDComponenteSensor = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
+    idComponenteSensor = models.IntegerField(default=1, unique=True)
+    modelo= models.CharField(max_length=100,null=True)
+    descripcion = models.CharField(max_length=200,null=True)
     habilitado=models.BooleanField()
     fechaAltaComponenteSensor=models.DateTimeField()
     fechaBajaComponenteSensor=models.DateTimeField(null=True)
+    finca = models.ForeignKey(Finca, db_column="OIDFinca",null=True)
+
+
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        if ComponenteSensor.objects.all().__len__() == 0:
+            self.idComponenteSensor = 1
+            super(ComponenteSensor, self).save()
+        else:
+            if ComponenteSensor.objects.get(idComponenteSensor=self.idComponenteSensor) == self:
+                super(ComponenteSensor, self).save()
+            else:
+                ultimoComponenteSensor = ComponenteSensor.objects.order_by('-idComponenteSensor')[0]
+                self.idComponenteSensor = ultimoComponenteSensor.idComponenteSensor + 1
+                super(ComponenteSensor, self).save()
+
+
+    def as_json(self):
+        return dict(idComponenteSensor=self.idComponenteSensor,
+                    modelo=self.modelo,
+                    descripcion=self.descripcion,
+                    fechaAltaComponenteSensor=self.fechaAltaComponenteSensor,
+                    fechaBajaComponenteSensor=self.fechaBajaComponenteSensor,
+                    finca=self.finca.idFinca)
+
+
 
 
 #MODULO CULTIVOS
@@ -646,6 +696,7 @@ class Sensor(models.Model):
     finca = models.ForeignKey('Finca', db_column="OIDFinca", null=True)
 
 
+
     def save(self):
         "Get last value of Code and Number from database, and increment before save"
         if Sensor.objects.all().__len__() == 0:
@@ -661,7 +712,7 @@ class Sensor(models.Model):
 
     def as_json(self):
         return dict(idSensor=self.idSensor,
-                    fechaAltaSensor=self.FechaAltaSensor,
+                    fechaAltaSensor=self.fechaAltaSensor,
                     fechaBajaSensor=self.fechaBajaSensor,
                     habilitado=self.habilitado,
                     modelo=self.modelo,
