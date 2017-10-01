@@ -637,7 +637,7 @@ def crear_configuracion_riego_automatico_mecanismo_riego_finca_sector(request):
                 raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
 
             # TODO
-            
+
 
 
             response.content = armar_response_content(None)
