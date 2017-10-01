@@ -5,6 +5,7 @@ from views import views_modulo_finca
 from views import views_configuracion_finca
 from views import views_configuracion_sectores
 from views import views_modulo_sensores
+from views import views_obtencion_informacion_externa
 
 
 
@@ -76,6 +77,11 @@ urlpatterns = [
 
     url(r'^mostrarTipoMedicion/$', views_modulo_sensores.mostrar_tipo_medicion, name='mostrarTipoMedicion'),
     url(r'^mostrarSensoresFinca/$', views_modulo_sensores.mostrar_sensores_finca, name='mostrarSensoresFinca'),
+
+    url(r'^obtenerProveedorFinca/$', views_obtencion_informacion_externa.obtener_proveedor_finca, name='obtenerProveedorFinca'),
+    url(r'^modificarProveedorFinca/$', views_obtencion_informacion_externa.modificar_proveedor_finca, name='modificarProveedorFinca'),
+    url(r'^deshabilitarProveedorFinca/$', views_obtencion_informacion_externa.deshabilitar_proveedor_finca, name='deshabilitarProveedorFinca'),
+    url(r'^cambiarProveedorFinca/$', views_obtencion_informacion_externa.cambiar_proveedor_finca, name='cambiarProveedorFinca'),
 
     url(r'^registrarse/$', views_modulo_seguridad.registrar_usuario, name='registrarse'),
     url(r'^iniciarSesion/$', views_modulo_seguridad.iniciar_sesion, name='iniciarSesion'),

@@ -80,6 +80,7 @@ KEY_MODELO_COMPONENTE = "modeloComponente"
 KEY_DESCRIPCION_COMPONENTE = "descripcionComponente"
 KEY_CANTIDAD_MAXIMA_SENSORES = 'cantidadMaximaSensores'
 
+KEY_FRECUENCIA = 'frecuencia'
 # Estados
 
 ESTADO_ACTIVADO = 'activado'

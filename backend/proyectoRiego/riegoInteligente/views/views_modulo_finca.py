@@ -98,6 +98,9 @@ def elegir_proveedor_informacion(request):
             if ProveedorInformacionClimatica.objects.filter(nombreProveedor=datos[KEY_NOMBRE_PROVEEDOR]).__len__() == 1:
                 proveedorSeleccionado = ProveedorInformacionClimatica.objects.get(nombreProveedor=datos[KEY_NOMBRE_PROVEEDOR])
                 fincaCreada = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+                if datos[KEY_FRECUENCIA] > proveedorSeleccionado.frecuenciaMaxPosible:
+                    raise ValueError(ERROR_FRECUENCIA_MAXIMA_SUPERADA,
+                                     "No se puede colocar esa frecuencia, ya que es mayor a la permitida por el proveedor")
                 proveedorInformacionClimaticaFinca = ProveedorInformacionClimaticaFinca(
                     proveedorInformacionClimatica=proveedorSeleccionado, finca=fincaCreada)
                 proveedorInformacionClimaticaFinca.fechaAltaProveedorInfoClimaticaFinca = datetime.now()

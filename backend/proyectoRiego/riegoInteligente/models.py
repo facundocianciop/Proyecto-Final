@@ -812,12 +812,36 @@ class EventoPersonalizado(models.Model):
 
 class TipoMedicionClimatica(models.Model):
     OIDTipoMedicionClimatica=models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    idTipoMedicionClimatica=models.IntegerField(unique=True)
-    nombreTipoMedicionClimatica=models.IntegerField(unique=True)
-    tipoDato=models.CharField(max_length=10)
+    idTipoMedicionClimatica=models.IntegerField(unique=True, default=1)
+    nombreTipoMedicionClimatica=models.CharField(unique=True, max_length=30)
+    unidadMedicion=models.CharField(max_length=20, null=True)
     fechaAltaTipoMedicionClimatica=models.DateTimeField()
     fechaBajaTipoMedicionClimatica=models.DateTimeField(null=True)
     habilitada=models.BooleanField()
+
+
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        if TipoMedicionClimatica.objects.all().__len__() == 0:
+            self.idTipoMedicionClimatica = 1
+            super(TipoMedicionClimatica, self).save()
+        else:
+            if TipoMedicionClimatica.objects.get(idTipoMedicionClimatica=self.idTipoMedicionClimatica) == self:
+                super(TipoMedicionClimatica, self).save()
+            else:
+                ultimoTipoMedicionClimatica = TipoMedicionClimatica.objects.order_by('-idTipoMedicionClimatica')[0]
+                self.idTipoMedicionClimatica = ultimoTipoMedicionClimatica.idTipoMedicionClimatica + 1
+                super(TipoMedicionClimatica, self).save()
+
+
+    def as_json(self):
+        return dict(
+            idTipoMedicionClimatica=self.idTipoMedicionClimatica,
+            nombreTipoMedicionClimatica=self.nombreTipoMedicionClimatica,
+            unidadMedicion=self.unidadMedicion,
+            fechaAltaTipoMedicionClimatica=self.fechaAltaTipoMedicionClimatica,
+            fechaBajaTipoMedicionClimatica=self.fechaBajaTipoMedicionClimatica,
+            habilitada=self.habilitada)
 
 
 class ProveedorInformacionClimatica(models.Model):
@@ -829,16 +853,20 @@ class ProveedorInformacionClimatica(models.Model):
     fechaAltaProveedorInfoClimatica=models.DateTimeField()
     fechaBajaProveedorInfoClimatica=models.DateTimeField(null=True)
 
-    tipo_medicion_climatica=models.ManyToManyField(TipoMedicionClimatica)
+    tipoMedicionClimatica = models.ManyToManyField(TipoMedicionClimatica)
 
 
     def __str__(self):
         return self.nombreProveedor
 
     def as_json(self):
+        self.lista_tipo_medicion_json = []
+        for tipo_medicion in self.tipoMedicionClimatica.all():
+            self.lista_tipo_medicion_json.append(tipo_medicion.as_json())
         return dict(
             nombreProveedor=self.nombreProveedor,
             habilitado=self.habilitado,
+            listatipoMedicion=self.lista_tipo_medicion_json,
             frecuenciaMaxPosible=self.frecuenciaMaxPosible,
             urlAPI=self.urlAPI)
 
