@@ -1,8 +1,9 @@
 # -*- coding: UTF-8 -*-
-from django.db import IntegrityError
+from django.db import IntegrityError, DataError, DatabaseError
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned
 
 # noinspection PyUnresolvedReferences
 from ..models import DatosUsuario, EstadoUsuario, HistoricoEstadoUsuario, Rol, ConjuntoPermisos
@@ -88,14 +89,29 @@ def registrar_usuario(request):
 
         return response
 
-    except ValueError as err:
-        return build_bad_request_error(response, err.args[0], err.args[1])
+    except KeyError as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCOMPLETOS)
 
-    except KeyError:
-        return build_bad_request_error(response, ERROR_DATOS_FALTANTES, "Faltan ingresar datos")
+    except (ValueError, TypeError, AttributeError, DataError, IntegrityError) as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
 
-    except (IntegrityError, TypeError):
-        return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, "Datos incorrectos")
+    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError) as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
+
+    except (SystemError, RuntimeError) as err:
+        if len(err.args) == 2:
+            return build_internal_server_error(response, err.args[0], err.args[1])
+        else:
+            return build_internal_server_error(response, ERROR_DE_SISTEMA, DETALLE_ERROR_DESCONOCIDO)
 
 
 @transaction.atomic()
@@ -122,14 +138,29 @@ def iniciar_sesion(request):
         else:
             raise ValueError(ERROR_CREDENCIALES_INCORRECTAS, "Usuario o contrasenia incorrecta")
 
-    except ValueError as err:
-        return build_bad_request_error(response, err.args[0], err.args[1])
+    except KeyError as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCOMPLETOS)
 
-    except KeyError:
-        return build_bad_request_error(response, ERROR_DATOS_FALTANTES, "Faltan ingresar datos")
+    except (ValueError, TypeError, AttributeError, DataError, IntegrityError) as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
 
-    except (IntegrityError, TypeError):
-        return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, "Datos incorrectos")
+    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError) as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
+
+    except (SystemError, RuntimeError) as err:
+        if len(err.args) == 2:
+            return build_internal_server_error(response, err.args[0], err.args[1])
+        else:
+            return build_internal_server_error(response, ERROR_DE_SISTEMA, DETALLE_ERROR_DESCONOCIDO)
 
 
 @transaction.atomic()
@@ -147,8 +178,12 @@ def finalizar_sesion(request):
         else:
             raise ValueError
 
-    except (IntegrityError, ValueError, KeyError):
-        return build_bad_request_error(response, ERROR_LOGOUT_FALLIDO, "Log out fallo")
+    except (KeyError, ValueError, TypeError, AttributeError, IntegrityError, DataError, SystemError, RuntimeError,
+            ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError) as err:
+        if len(err.args) == 2:
+            return build_internal_server_error(response, err.args[0], err.args[1])
+        else:
+            return build_internal_server_error(response, ERROR_LOGOUT_FALLIDO, DETALLE_ERROR_LOG_OUT_FALLIDO)
 
 
 @transaction.atomic()
@@ -168,6 +203,8 @@ def recuperar_cuenta(request):
         print usuario.email
         codigo_verificacion = id_generator()
         usuario.datosusuario.codigoVerificacion = codigo_verificacion
+
+        # TODO mandar mail
         # with mail.get_connection() as connection:
         # mail.EmailMessage('SmartFarming: Recuperacion de cueta ',body="Su nueva contraseña es
         # %s"%contrasenia_aleatoria,from1='facundocianciop',
@@ -176,21 +213,34 @@ def recuperar_cuenta(request):
         # ACA PENSE QUE EN CASO DE RECHAZAR LA FINCA QUE EL ADMINISTRADOR ESCRIBIERA UN MENSAJE DICIENDO
         # POR QUÉ LA RECHAZÓ
         usuario.save()
-        response_data = {}
-        response_data[KEY_USUARIO] = usuario.username
+        response_data = {KEY_USUARIO: usuario.username}
         response.content = armar_response_simple(response_data)
         response.status_code = 200
         return response
 
-    except ValueError as err:
-        return build_bad_request_error(response, err.args[0], err.args[1])
+    except KeyError as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCOMPLETOS)
 
-    except KeyError:
-        return build_bad_request_error(response, ERROR_DATOS_FALTANTES, "Faltan ingresar datos")
+    except (ValueError, TypeError, AttributeError, DataError, IntegrityError) as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
 
-    except (IntegrityError, TypeError) as err:
-        print err.args
-        return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, "Datos incorrectos")
+    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError) as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
+
+    except (SystemError, RuntimeError) as err:
+        if len(err.args) == 2:
+            return build_internal_server_error(response, err.args[0], err.args[1])
+        else:
+            return build_internal_server_error(response, ERROR_DE_SISTEMA, DETALLE_ERROR_DESCONOCIDO)
 
 
 @transaction.atomic()
@@ -223,14 +273,29 @@ def cambiar_contrasenia(request):
         else:
             raise ValueError(ERROR_DATOS_INCORRECTOS, "Contrasenia incorrecta")
 
-    except ValueError as err:
-        return build_unauthorized_error(response, err.args[0], err.args[1])
+    except KeyError as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCOMPLETOS)
 
-    except KeyError:
-        return build_bad_request_error(response, ERROR_DATOS_FALTANTES, "Faltan ingresar datos")
+    except (ValueError, TypeError, AttributeError, DataError, IntegrityError) as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
 
-    except (IntegrityError, TypeError):
-        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError) as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
+
+    except (SystemError, RuntimeError) as err:
+        if len(err.args) == 2:
+            return build_internal_server_error(response, err.args[0], err.args[1])
+        else:
+            return build_internal_server_error(response, ERROR_DE_SISTEMA, DETALLE_ERROR_DESCONOCIDO)
 
 
 @transaction.atomic()
@@ -290,11 +355,29 @@ def modificar_usuario(request):
 
         return response
 
-    except ValueError as err:
-        return build_bad_request_error(response, err.args[0], err.args[1])
+    except KeyError as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCOMPLETOS)
 
-    except (IntegrityError, TypeError, KeyError):
-        return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, "Datos incorrectos")
+    except (ValueError, TypeError, AttributeError, DataError, IntegrityError) as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
+
+    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError) as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
+
+    except (SystemError, RuntimeError) as err:
+        if len(err.args) == 2:
+            return build_internal_server_error(response, err.args[0], err.args[1])
+        else:
+            return build_internal_server_error(response, ERROR_DE_SISTEMA, DETALLE_ERROR_DESCONOCIDO)
 
 
 @transaction.atomic()
@@ -330,8 +413,12 @@ def eliminar_usuario(request):
 
         return response
 
-    except (IntegrityError, TypeError, KeyError):
-        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+    except(KeyError, ValueError, TypeError, AttributeError, IntegrityError, DataError, SystemError, RuntimeError,
+           ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError) as err:
+        if len(err.args) == 2:
+            return build_internal_server_error(response, err.args[0], err.args[1])
+        else:
+            return build_internal_server_error(response, ERROR_DE_SISTEMA, DETALLE_ERROR_SISTEMA)
 
 
 @transaction.atomic()
@@ -349,15 +436,21 @@ def mostrar_usuario(request):
 
         return response
 
-    except (IntegrityError, TypeError, KeyError):
-        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+    except(KeyError, ValueError, TypeError, AttributeError, IntegrityError, DataError, SystemError, RuntimeError,
+           ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError) as err:
+        if len(err.args) == 2:
+            return build_internal_server_error(response, err.args[0], err.args[1])
+        else:
+            return build_internal_server_error(response, ERROR_DE_SISTEMA, DETALLE_ERROR_SISTEMA)
 
 
 @transaction.atomic()
 @metodos_requeridos([METHOD_POST])
 def cambiar_contrasenia_recuperar_cuenta(request):
+
     response = HttpResponse()
     datos = obtener_datos_json(request)
+
     try:
         if KEY_CONTRASENIA_NUEVA not in datos:
             raise KeyError(ERROR_DATOS_FALTANTES, "Falta el dato contrasenia")
@@ -367,20 +460,33 @@ def cambiar_contrasenia_recuperar_cuenta(request):
         if usuario.codigoVerificacion == datos[KEY_CODIGO_VERIFICACION]:
             user.set_password(contrasenia_nueva)
             user.save()
-            response_data = {}
-            response_data[KEY_RESULTADO_OPERACION] = True
+            response_data = {KEY_RESULTADO_OPERACION: True}
             response.content = armar_response_simple(response_data)
             response.status_code = 200
             return response
         else:
             raise ValueError(ERROR_DATOS_INCORRECTOS, "No hay un usuario con esos datos")
+
     except KeyError as err:
-        print err.args
-        return build_bad_request_error(response, err.args[0], err.args[1])
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCOMPLETOS)
 
-    except ValueError as err:
-        print(err.args)
-        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (ValueError, TypeError, AttributeError, DataError, IntegrityError) as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
 
+    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError) as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
 
-
+    except (SystemError, RuntimeError) as err:
+        if len(err.args) == 2:
+            return build_internal_server_error(response, err.args[0], err.args[1])
+        else:
+            return build_internal_server_error(response, ERROR_DE_SISTEMA, DETALLE_ERROR_DESCONOCIDO)

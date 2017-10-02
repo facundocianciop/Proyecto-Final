@@ -1,18 +1,18 @@
 //
-//  proyectoRIego2017Tests.m
-//  proyectoRIego2017Tests
+//  proyectoRiego2017Tests.m
+//  proyectoRiego2017Tests
 //
-//  Created by Facundo José Palma on 9/15/17.
+//  Created by Facundo José Palma on 9/21/17.
 //  Copyright © 2017 Facundo José Palma. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
 
-@interface proyectoRIego2017Tests : XCTestCase
+@interface proyectoRiego2017Tests : XCTestCase
 
 @end
 
-@implementation proyectoRIego2017Tests
+@implementation proyectoRiego2017Tests
 
 - (void)setUp {
     [super setUp];

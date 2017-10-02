@@ -40,6 +40,27 @@ ERROR_SECTOR_YA_TIENE_CULTIVO_ASIGNADO = 'ERROR_SECTOR_YA_TIENE_CULTIVO_ASIGNADO
 ERROR_TIPO_MEDICION_NO_EXISTENTE = 'ERROR_TIPO_MEDICION_NO_EXISTENTE'
 ERROR_TIPO_MEDICION_NO_HABILITADA = 'ERROR_TIPO_MEDICION_NO_HABILITADA'
 ERROR_SENSOR_NO_EXISTENTE = 'ERROR_SENSOR_NO_EXISTENTE'
+
+# Modulo configuracion riego
+ERROR_EJECUCION_RIEGO = "ERROR_EJECUCION_RIEGO"
+
+
+# Detalle errores
+
+DETALLE_ERROR_DESCONOCIDO = "error_desconocido"
+DETALLE_ERROR_DATOS_INCOMPLETOS = "faltan_ingresar_datos"
+DETALLE_ERROR_DATOS_INCORRECTOS = "datos_incorrectos"
+DETALLE_ERROR_SISTEMA = "error_procesando_llamada"
+
+# Modulo seguridad
+DETALLE_ERROR_LOG_OUT_FALLIDO = 'log_out_fallo'
+
+# Modulo configuracion riego
+DETALLE_ERROR_EJECUION_RIEGO = "fallo_ejecucion_riego"
+DETALLE_ERROR_DETENCION_RIEGO = "fallo_detencion_riego"
+
+DETALLE_ERROR_MODIFICACION_CONFIGURACION_RIEGO = 'configuracion_riego_ya_fue_eliminada'
+
 # Constantes Keys
 
 KEY_ERROR_CODE = 'error_code'
@@ -68,5 +89,11 @@ def build_unauthorized_error(response, error_code, error_descripcion):
 
 def build_method_not_allowed_error(response, error_code, error_descripcion):
     response.status_code = 405
+
+    return build_error(response, error_code, error_descripcion)
+
+
+def build_internal_server_error(response, error_code, error_descripcion):
+    response.status_code = 500
 
     return build_error(response, error_code, error_descripcion)
