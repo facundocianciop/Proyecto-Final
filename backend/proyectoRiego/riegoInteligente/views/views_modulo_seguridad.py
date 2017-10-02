@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-from django.db import IntegrityError
+from django.db import IntegrityError, DataError, DatabaseError
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -95,13 +95,13 @@ def registrar_usuario(request):
         else:
             return build_bad_request_error(response, ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCOMPLETOS)
 
-    except (ValueError, TypeError, IntegrityError) as err:
+    except (ValueError, TypeError, AttributeError, DataError, IntegrityError) as err:
         if len(err.args) == 2:
             return build_bad_request_error(response, err.args[0], err.args[1])
         else:
             return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
 
-    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned) as err:
+    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError) as err:
         if len(err.args) == 2:
             return build_bad_request_error(response, err.args[0], err.args[1])
         else:
@@ -144,13 +144,13 @@ def iniciar_sesion(request):
         else:
             return build_bad_request_error(response, ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCOMPLETOS)
 
-    except (ValueError, TypeError, IntegrityError) as err:
+    except (ValueError, TypeError, AttributeError, DataError, IntegrityError) as err:
         if len(err.args) == 2:
             return build_bad_request_error(response, err.args[0], err.args[1])
         else:
             return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
 
-    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned) as err:
+    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError) as err:
         if len(err.args) == 2:
             return build_bad_request_error(response, err.args[0], err.args[1])
         else:
@@ -178,8 +178,8 @@ def finalizar_sesion(request):
         else:
             raise ValueError
 
-    except (KeyError, ValueError, TypeError, IntegrityError, SystemError, RuntimeError,
-            ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned) as err:
+    except (KeyError, ValueError, TypeError, AttributeError, IntegrityError, DataError, SystemError, RuntimeError,
+            ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError) as err:
         if len(err.args) == 2:
             return build_internal_server_error(response, err.args[0], err.args[1])
         else:
@@ -224,13 +224,13 @@ def recuperar_cuenta(request):
         else:
             return build_bad_request_error(response, ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCOMPLETOS)
 
-    except (ValueError, TypeError, IntegrityError) as err:
+    except (ValueError, TypeError, AttributeError, DataError, IntegrityError) as err:
         if len(err.args) == 2:
             return build_bad_request_error(response, err.args[0], err.args[1])
         else:
             return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
 
-    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned) as err:
+    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError) as err:
         if len(err.args) == 2:
             return build_bad_request_error(response, err.args[0], err.args[1])
         else:
@@ -279,13 +279,13 @@ def cambiar_contrasenia(request):
         else:
             return build_bad_request_error(response, ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCOMPLETOS)
 
-    except (ValueError, TypeError, IntegrityError) as err:
+    except (ValueError, TypeError, AttributeError, DataError, IntegrityError) as err:
         if len(err.args) == 2:
             return build_bad_request_error(response, err.args[0], err.args[1])
         else:
             return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
 
-    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned) as err:
+    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError) as err:
         if len(err.args) == 2:
             return build_bad_request_error(response, err.args[0], err.args[1])
         else:
@@ -361,13 +361,13 @@ def modificar_usuario(request):
         else:
             return build_bad_request_error(response, ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCOMPLETOS)
 
-    except (ValueError, TypeError, IntegrityError) as err:
+    except (ValueError, TypeError, AttributeError, DataError, IntegrityError) as err:
         if len(err.args) == 2:
             return build_bad_request_error(response, err.args[0], err.args[1])
         else:
             return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
 
-    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned) as err:
+    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError) as err:
         if len(err.args) == 2:
             return build_bad_request_error(response, err.args[0], err.args[1])
         else:
@@ -413,8 +413,8 @@ def eliminar_usuario(request):
 
         return response
 
-    except(KeyError, ValueError, TypeError, IntegrityError, SystemError, RuntimeError,
-           ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned) as err:
+    except(KeyError, ValueError, TypeError, AttributeError, IntegrityError, DataError, SystemError, RuntimeError,
+           ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError) as err:
         if len(err.args) == 2:
             return build_internal_server_error(response, err.args[0], err.args[1])
         else:
@@ -436,8 +436,8 @@ def mostrar_usuario(request):
 
         return response
 
-    except(KeyError, ValueError, TypeError, IntegrityError, SystemError, RuntimeError,
-           ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned) as err:
+    except(KeyError, ValueError, TypeError, AttributeError, IntegrityError, DataError, SystemError, RuntimeError,
+           ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError) as err:
         if len(err.args) == 2:
             return build_internal_server_error(response, err.args[0], err.args[1])
         else:
@@ -473,13 +473,13 @@ def cambiar_contrasenia_recuperar_cuenta(request):
         else:
             return build_bad_request_error(response, ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCOMPLETOS)
 
-    except (ValueError, TypeError, IntegrityError) as err:
+    except (ValueError, TypeError, AttributeError, DataError, IntegrityError) as err:
         if len(err.args) == 2:
             return build_bad_request_error(response, err.args[0], err.args[1])
         else:
             return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
 
-    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned) as err:
+    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError) as err:
         if len(err.args) == 2:
             return build_bad_request_error(response, err.args[0], err.args[1])
         else:

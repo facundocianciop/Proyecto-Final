@@ -59,6 +59,8 @@ DETALLE_ERROR_LOG_OUT_FALLIDO = 'log_out_fallo'
 DETALLE_ERROR_EJECUION_RIEGO = "fallo_ejecucion_riego"
 DETALLE_ERROR_DETENCION_RIEGO = "fallo_detencion_riego"
 
+DETALLE_ERROR_MODIFICACION_CONFIGURACION_RIEGO = 'configuracion_riego_ya_fue_eliminada'
+
 # Constantes Keys
 
 KEY_ERROR_CODE = 'error_code'

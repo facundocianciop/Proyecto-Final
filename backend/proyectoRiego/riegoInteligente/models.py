@@ -483,17 +483,17 @@ class TipoConfiguracionRiego(models.Model):
 
 
 class ConfiguracionRiego(models.Model):
-    OIDConfiguracionRiego=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    OIDConfiguracionRiego = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     id_configuracion_riego = models.IntegerField(default=1, unique=True)
-    nombre=models.CharField(max_length=20)
-    descripcion=models.CharField(max_length=100)
-    duracionMaxima=models.FloatField()
-    fechaCreacion=models.DateTimeField()
-    fechaFinalizacion=models.DateTimeField()
+    nombre = models.CharField(max_length=50)
+    descripcion = models.CharField(max_length=100)
+    duracionMaxima = models.FloatField()
+    fechaCreacion = models.DateTimeField()
+    fechaFinalizacion = models.DateTimeField(null=True)
 
-    tipoConfiguracionRiego=models.ForeignKey(TipoConfiguracionRiego,db_column="OIDTipoConfiguracionRiego")
-    mecanismoRiegoFincaSector=models.ForeignKey('MecanismoRiegoFincaSector',db_column="OIDMecanismoRiegoFincaSector",
-                                                null=True)
+    tipoConfiguracionRiego = models.ForeignKey(TipoConfiguracionRiego,db_column="OIDTipoConfiguracionRiego")
+    mecanismoRiegoFincaSector = models.ForeignKey('MecanismoRiegoFincaSector',db_column="OIDMecanismoRiegoFincaSector",
+                                                  null=True)
 
     def __str__(self):
         return str(self.id_configuracion_riego) + ": " + self.nombre
@@ -512,14 +512,27 @@ class ConfiguracionRiego(models.Model):
                 super(ConfiguracionRiego, self).save()
 
     def as_json(self):
+
+        fecha_creacion_date = ""
+        fecha_finalizacion_date = ""
+        if self.fechaCreacion:
+            fecha_creacion_date = self.fechaCreacion.date()
+        if self.fechaFinalizacion:
+            fecha_finalizacion_date = self.fechaFinalizacion.date()
+
+        ultimo_estado_historico = HistoricoEstadoConfiguracionRiego.objects.get(
+            configuracion_riego=self, fechaFinEstadoConfiguracionRiego=None)
+
         return dict(id_configuracion_riego=self.id_configuracion_riego,
                     nombre=self.nombre,
                     descripcion=self.descripcion,
                     duracionMaxima=self.duracionMaxima,
-                    fechaCreacion=self.fechaCreacion,
-                    fechaFinalizacion=self.fechaFinalizacion,
+                    fechaCreacion=fecha_creacion_date,
+                    fechaFinalizacion=fecha_finalizacion_date,
                     tipoConfiguracionRiego=self.tipoConfiguracionRiego.nombre,
-                    mecanismoRiegoFincaSector=self.mecanismoRiegoFincaSector.idMecanismoRiegoFincaSector
+                    mecanismoRiegoFincaSector=self.mecanismoRiegoFincaSector.idMecanismoRiegoFincaSector,
+                    estado_configuracion=ultimo_estado_historico.estado_configuracion_riego.
+                    nombreEstadoConfiguracionRiego
                     )
 
 
@@ -534,7 +547,7 @@ class EstadoConfiguracionRiego(models.Model):
 
 class HistoricoEstadoConfiguracionRiego(models.Model):
     OIDHistoricoEstadoConfiguracionRiego=  models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    fechaFinEstadoConfiguracionRiego = models.DateTimeField()
+    fechaFinEstadoConfiguracionRiego = models.DateTimeField(null=True)
     fechaInicioEstadoConfiguracionRiego = models.DateTimeField()
 
     configuracion_riego = models.ForeignKey(ConfiguracionRiego,db_column="OIDConfiguracionRiego",

@@ -25,19 +25,18 @@ def armar_response_list_content(lista, *mensaje):
     if lista is not None and not len(lista) == 0:
 
         try:
-            response_dictionary = [item.as_json() for item in lista]
+            response_dictionary[KEY_DATOS_OPERACION] = [item.as_json() for item in lista]
         except (KeyError, TypeError, ValueError, SystemError, RuntimeError):
-            response_error_dictionary = {KEY_RESULTADO_OPERACION: False}
-            response_dictionary[KEY_DETALLE_OPERACION] = DETALLE_ERROR_SISTEMA
+            response_error_dictionary = {KEY_RESULTADO_OPERACION: False, KEY_DETALLE_OPERACION: DETALLE_ERROR_SISTEMA}
             return dumps(response_error_dictionary, cls=DjangoJSONEncoder)
 
-        if mensaje:
-            response_dictionary[KEY_DETALLE_OPERACION] = mensaje
+        if mensaje and len(mensaje) >= 1:
+            response_dictionary[KEY_DETALLE_OPERACION] = mensaje[0]
         response_dictionary[KEY_RESULTADO_OPERACION] = True
 
     else:
-        if mensaje:
-            response_dictionary[KEY_DETALLE_OPERACION] = mensaje
+        if mensaje and len(mensaje) >= 1:
+            response_dictionary[KEY_DETALLE_OPERACION] = mensaje[0]
         else:
             response_dictionary[KEY_DETALLE_OPERACION] = DETALLE_OPERACION_VACIA
         response_dictionary[KEY_RESULTADO_OPERACION] = True
@@ -45,8 +44,7 @@ def armar_response_list_content(lista, *mensaje):
     try:
         return dumps(response_dictionary, cls=DjangoJSONEncoder)
     except (KeyError, TypeError, ValueError, SystemError, RuntimeError):
-        response_error_dictionary = {KEY_RESULTADO_OPERACION: False}
-        response_dictionary[KEY_DETALLE_OPERACION] = DETALLE_ERROR_SISTEMA
+        response_error_dictionary = {KEY_RESULTADO_OPERACION: False, KEY_DETALLE_OPERACION: DETALLE_ERROR_SISTEMA}
         return dumps(response_error_dictionary, cls=DjangoJSONEncoder)
 
 
@@ -55,19 +53,18 @@ def armar_response_content(objeto, *mensaje):
 
     if objeto is not None:
         try:
-            response_dictionary = objeto.as_json()
+            response_dictionary[KEY_DATOS_OPERACION] = objeto.as_json()
         except (KeyError, TypeError, ValueError, SystemError, RuntimeError):
-            response_error_dictionary = {KEY_RESULTADO_OPERACION: False}
-            response_dictionary[KEY_DETALLE_OPERACION] = DETALLE_ERROR_SISTEMA
+            response_error_dictionary = {KEY_RESULTADO_OPERACION: False, KEY_DETALLE_OPERACION: DETALLE_ERROR_SISTEMA}
             return dumps(response_error_dictionary, cls=DjangoJSONEncoder)
 
-        if mensaje:
-            response_dictionary[KEY_DETALLE_OPERACION] = mensaje
+        if mensaje and len(mensaje) >= 1:
+            response_dictionary[KEY_DETALLE_OPERACION] = mensaje[0]
         response_dictionary[KEY_RESULTADO_OPERACION] = True
 
     else:
-        if mensaje:
-            response_dictionary[KEY_DETALLE_OPERACION] = mensaje
+        if mensaje and len(mensaje) >= 1:
+            response_dictionary[KEY_DETALLE_OPERACION] = mensaje[0]
         else:
             response_dictionary[KEY_DETALLE_OPERACION] = DETALLE_OPERACION_VACIA
         response_dictionary[KEY_RESULTADO_OPERACION] = True
@@ -75,8 +72,7 @@ def armar_response_content(objeto, *mensaje):
     try:
         return dumps(response_dictionary, cls=DjangoJSONEncoder)
     except (KeyError, TypeError, ValueError, SystemError, RuntimeError):
-        response_error_dictionary = {KEY_RESULTADO_OPERACION: False}
-        response_dictionary[KEY_DETALLE_OPERACION] = DETALLE_ERROR_SISTEMA
+        response_error_dictionary = {KEY_RESULTADO_OPERACION: False, KEY_DETALLE_OPERACION: DETALLE_ERROR_SISTEMA}
         return dumps(response_error_dictionary, cls=DjangoJSONEncoder)
 
 

@@ -1,7 +1,8 @@
 from datetime import datetime
 import pytz
 
-from ...models import EjecucionRiego, EstadoEjecucionRiego
+from ...models import EjecucionRiego, EstadoEjecucionRiego, ConfiguracionRiego, EstadoConfiguracionRiego, \
+    HistoricoEstadoConfiguracionRiego, TipoConfiguracionRiego, MecanismoRiegoFincaSector
 from views_constants import *
 
 
@@ -105,3 +106,78 @@ def cancelar_riego(ejecucion_riego):
         ejecucion_riego.estado_ejecucion_riego = estado_ejecucion_riego_cancelado
         # TODO llamar a adaptador mecanismo riego y detener riego
         ejecucion_riego.save()
+
+
+def crear_configuracion_riego(nombre, descripcion, duracion_maxima, nombre_tipo_configuracion_riego,
+                              id_mecanismo_riego_finca_sector):
+    """
+    Se crea una configuracion de riego
+    :param nombre:
+    :param descripcion:
+    :param duracion_maxima:
+    :param nombre_tipo_configuracion_riego:
+    :param id_mecanismo_riego_finca_sector:
+    :return:
+    """
+    # Se obtienen objetos necesarios para crear la configuracion
+    tipo_configuracion_riego = TipoConfiguracionRiego.objects.get(nombre=nombre_tipo_configuracion_riego)
+    mecanismo_riego_finca_sector = MecanismoRiegoFincaSector.objects.get(
+        idMecanismoRiegoFincaSector=id_mecanismo_riego_finca_sector)
+    estado_configuracion_riego_habilitado = EstadoConfiguracionRiego.objects.get(
+        nombreEstadoConfiguracionRiego=ESTADO_HABILITADO)
+
+    estado_historico = HistoricoEstadoConfiguracionRiego(
+        fechaInicioEstadoConfiguracionRiego=datetime.now(pytz.utc),
+        estado_configuracion_riego=estado_configuracion_riego_habilitado)
+
+    nueva_configuracion_riego = ConfiguracionRiego(
+        nombre=nombre,
+        descripcion=descripcion,
+        duracionMaxima=duracion_maxima,
+        tipoConfiguracionRiego=tipo_configuracion_riego,
+        fechaCreacion=datetime.now(pytz.utc),
+        mecanismoRiegoFincaSector=mecanismo_riego_finca_sector,
+    )
+    nueva_configuracion_riego.save()
+
+    estado_historico.configuracion_riego = nueva_configuracion_riego
+    estado_historico.save()
+
+    return nueva_configuracion_riego
+
+
+def eliminar_configuracion_riego(configuracion_riego):
+    """
+    Se elimina una configuracion de riego
+    :param configuracion_riego:
+    :return:
+    """
+    # Se obtienen objetos necesarios para eliminar la configuracion
+    estado_configuracion_riego_habilitado = EstadoConfiguracionRiego.objects.get(
+        nombreEstadoConfiguracionRiego=ESTADO_HABILITADO)
+    estado_configuracion_riego_deshabilitado = EstadoConfiguracionRiego.objects.get(
+        nombreEstadoConfiguracionRiego=ESTADO_DESHABILITADO)
+    estado_configuracion_riego_eliminado = EstadoConfiguracionRiego.objects.get(
+        nombreEstadoConfiguracionRiego=ESTADO_ELIMINADO)
+
+    ultimo_estado_historico = HistoricoEstadoConfiguracionRiego.objects.get(
+        configuracion_riego=configuracion_riego, fechaFinEstadoConfiguracionRiego=None)
+
+    if ultimo_estado_historico.estado_configuracion_riego == estado_configuracion_riego_habilitado \
+            or ultimo_estado_historico.estado_configuracion_riego == estado_configuracion_riego_deshabilitado:
+
+        ultimo_estado_historico.fechaFinEstadoConfiguracionRiego = datetime.now(pytz.utc)
+        ultimo_estado_historico.save()
+
+        estado_historico_eliminado = HistoricoEstadoConfiguracionRiego(
+            fechaInicioEstadoConfiguracionRiego=datetime.now(pytz.utc),
+            estado_configuracion_riego=estado_configuracion_riego_eliminado)
+        estado_historico_eliminado.configuracion_riego = configuracion_riego
+        estado_historico_eliminado.save()
+
+        configuracion_riego.fechaFinalizacion = datetime.now(pytz.utc)
+        configuracion_riego.save()
+
+        return True
+
+    return False
