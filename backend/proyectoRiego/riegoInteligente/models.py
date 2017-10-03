@@ -671,7 +671,9 @@ class EjecucionRiego(models.Model):
 class CriterioRiego(models.Model):
     OIDCriterioRiego = models.UUIDField(primary_key=True,default=uuid.uuid4, editable=False)
     id_criterio_riego = models.IntegerField(default=1, unique=True)
-    fechaCreacionCriterio = models.DateTimeField()
+    fecha_creacion_criterio = models.DateTimeField()
+    fecha_eliminacion_criterio = models.DateTimeField(null=True)
+    nombre = models.CharField(max_length=50, null=True)
     descripcion = models.CharField(max_length=100, null=True)
     # class Meta:
     #     abstract=True
@@ -717,10 +719,15 @@ class CriterioRiegoPorMedicion(CriterioRiego):
     # configuracionRiegoFinal = models.ForeignKey(ConfiguracionRiego, db_column="OIDConfiguracionRiegoFinal", related_name="%(class)scriterioRiegoFinal")
 
     def as_json(self):
+        fecha_creacion_date = ""
+        if self.fecha_creacion_criterio:
+            fecha_creacion_date = self.fecha_creacion_criterio.date()
+
         return dict(id_criterio_riego=self.id_criterio_riego,
                     tipo_criterio_riego="criterio_riego_medicion",
+                    nombre=self.nombre,
                     descripcion=self.descripcion,
-                    fechaCreacionCriterio=self.fechaCreacionCriterio,
+                    fechaCreacionCriterio=fecha_creacion_date,
                     valor=self.valor
                     )
 
@@ -733,10 +740,15 @@ class CriterioRiegoVolumenAgua(CriterioRiego):
     # configuracionRiegoFinal = models.ForeignKey(ConfiguracionRiego, db_column="OIDConfiguracionRiegoFinal", related_name="%(class)scriterioRiegoFinal")
 
     def as_json(self):
+        fecha_creacion_date = ""
+        if self.fecha_creacion_criterio:
+            fecha_creacion_date = self.fecha_creacion_criterio.date()
+
         return dict(id_criterio_riego=self.id_criterio_riego,
+                    nombre=self.nombre,
                     tipo_criterio_riego="criterio_riego_volumen_agua",
                     descripcion=self.descripcion,
-                    fechaCreacionCriterio=self.fechaCreacionCriterio,
+                    fechaCreacionCriterio=fecha_creacion_date,
                     volumen=self.volumen
                     )
 
@@ -750,10 +762,15 @@ class CriterioRiegoPorHora(CriterioRiego):
     # configuracionRiegoFinal = models.ForeignKey(ConfiguracionRiego, db_column="OIDConfiguracionRiegoFinal", related_name="%(class)scriterioRiegoFinal")
 
     def as_json(self):
+        fecha_creacion_date = ""
+        if self.fecha_creacion_criterio:
+            fecha_creacion_date = self.fecha_creacion_criterio.date()
+
         return dict(id_criterio_riego=self.id_criterio_riego,
+                    nombre=self.nombre,
                     tipo_criterio_riego="criterio_riego_hora",
                     descripcion=self.descripcion,
-                    fechaCreacionCriterio=self.fechaCreacionCriterio,
+                    fechaCreacionCriterio=fecha_creacion_date,
                     hora=self.hora.time(),
                     numeroDia=self.numeroDia
                     )

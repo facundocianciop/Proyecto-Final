@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist, EmptyResultSet, MultipleO
 
 from ..models import MecanismoRiegoFincaSector, Finca, ConfiguracionRiego, EstadoConfiguracionRiego, \
     HistoricoEstadoConfiguracionRiego, TipoConfiguracionRiego, CriterioRiegoPorHora, CriterioRiegoPorMedicion, \
-    CriterioRiegoVolumenAgua, CriterioRiego
+    CriterioRiegoVolumenAgua, CriterioRiego, TipoMedicion
 
 from supportClases.configuracion_riego_util_functions import *
 from supportClases.security_decorators import *
@@ -848,6 +848,10 @@ def cambiar_estado_configuracion_riego_mecanismo_riego_finca_sector(request):
             configuracion_riego_elegida = ConfiguracionRiego.objects.get(
                 id_configuracion_riego=datos[KEY_ID_CONFIGURACION_RIEGO])
 
+            # Comprobar que la configuracion elegida se corresponde con el mecanismo finca sector seleccionado
+            if not configuracion_riego_elegida.mecanismoRiegoFincaSector == mecanismo_riego_finca_sector_seleccionado:
+                raise ValueError
+
             # Se obtienen objetos necesarios para cambiar estado a la configuracion
             estado_configuracion_riego_habilitado = EstadoConfiguracionRiego.objects.get(
                 nombreEstadoConfiguracionRiego=ESTADO_HABILITADO)
@@ -928,8 +932,8 @@ def cambiar_estado_configuracion_riego_mecanismo_riego_finca_sector(request):
 def modificar_configuracion_riego_mecanismo_riego_finca_sector(request):
     """
     Se modifica el nombre, descripcion y duracion maxima de una configuracion riego
-    :param request: idFinca, idMecanismoRiegoFincaSector, nombreConfiguracionRiego, descripcionConfiguracionRiego,
-    duracionMaximaConfiguracionRiego
+    :param request: idFinca, idMecanismoRiegoFincaSector, idConfiguracionRiego, nombreConfiguracionRiego,
+    descripcionConfiguracionRiego, duracionMaximaConfiguracionRiego
     :return:
     """
     datos = obtener_datos_json(request)
@@ -953,7 +957,13 @@ def modificar_configuracion_riego_mecanismo_riego_finca_sector(request):
                 raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
 
             # TODO
-            # Comprobar que se mandan todos los datos necesarios
+            # Se comprueba que se hayan mandando los datos necesarios
+            if KEY_ID_CONFIGURACION_RIEGO not in datos:
+                raise KeyError
+
+            if datos[KEY_ID_CONFIGURACION_RIEGO] == "":
+                raise ValueError
+
             if KEY_NOMBRE_CONFIGURACION_RIEGO not in datos or datos[KEY_NOMBRE_CONFIGURACION_RIEGO] == "":
                 raise KeyError
 
@@ -972,6 +982,10 @@ def modificar_configuracion_riego_mecanismo_riego_finca_sector(request):
             # Se obtiene la configuracion elegida
             configuracion_riego_elegida = ConfiguracionRiego.objects.get(
                 id_configuracion_riego=datos[KEY_ID_CONFIGURACION_RIEGO])
+
+            # Comprobar que la configuracion elegida se corresponde con el mecanismo finca sector seleccionado
+            if not configuracion_riego_elegida.mecanismoRiegoFincaSector == mecanismo_riego_finca_sector_seleccionado:
+                raise ValueError
 
             # Se comprueba que la configuracion elegida no haya sido eliminada
             ultimo_estado_historico = HistoricoEstadoConfiguracionRiego.objects.get(
@@ -1062,6 +1076,10 @@ def eliminar_configuracion_riego_mecanismo_riego_finca_sector(request):
             configuracion_riego_elegida = ConfiguracionRiego.objects.get(
                 id_configuracion_riego=datos[KEY_ID_CONFIGURACION_RIEGO])
 
+            # Comprobar que la configuracion elegida se corresponde con el mecanismo finca sector seleccionado
+            if not configuracion_riego_elegida.mecanismoRiegoFincaSector == mecanismo_riego_finca_sector_seleccionado:
+                raise ValueError
+
             if eliminar_configuracion_riego(configuracion_riego_elegida):
                 response.content = armar_response_content(configuracion_riego_elegida)
                 response.status_code = 200
@@ -1124,11 +1142,113 @@ def agregar_criterio_configuracion_riego_mecanismo_riego_finca_sector(request):
                 raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
 
             # TODO
+            # Se comprueba que se hayan mandando los datos necesarios
+            if KEY_ID_CONFIGURACION_RIEGO not in datos:
+                raise KeyError
 
-            response.content = armar_response_content(None)
-            response.status_code = 200
+            if datos[KEY_ID_CONFIGURACION_RIEGO] == "":
+                raise ValueError
 
-            return response
+            if KEY_NOMBRE_CRITERIO_RIEGO not in datos:
+                raise KeyError
+
+            if datos[KEY_NOMBRE_CRITERIO_RIEGO] == "":
+                raise ValueError
+
+            if KEY_DESCRIPCION_CRITERIO_RIEGO not in datos:
+                raise KeyError
+
+            if KEY_TIPO_CRITERIO_RIEGO not in datos:
+                raise KeyError
+
+            if datos[KEY_TIPO_CRITERIO_RIEGO] == TIPO_CRITERIO_RIEGO_MEDICION:
+
+                if KEY_VALOR_MEDICION_CRITERIO_RIEGO not in datos:
+                    raise KeyError
+
+                if datos[KEY_VALOR_MEDICION_CRITERIO_RIEGO] == "":
+                    raise ValueError
+
+                if KEY_ID_TIPO_MEDICION not in datos:
+                    raise KeyError
+
+                if datos[KEY_ID_TIPO_MEDICION] == "":
+                    raise ValueError
+
+            elif datos[KEY_TIPO_CRITERIO_RIEGO] == TIPO_CRITERIO_RIEGO_VOLUMEN_AGUA:
+
+                raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INICIAL_INCORRECTO)
+
+            elif datos[KEY_TIPO_CRITERIO_RIEGO] == TIPO_CRITERIO_RIEGO_HORA:
+
+                if KEY_HORA_INICIO_CRITERIO_RIEGO not in datos:
+                    raise KeyError
+
+                if datos[KEY_HORA_INICIO_CRITERIO_RIEGO] == "":
+                    raise ValueError
+
+                if KEY_DIA_INICIO_CRITERIO_RIEGO not in datos:
+                    raise KeyError
+
+                if datos[KEY_DIA_INICIO_CRITERIO_RIEGO] == "":
+                    raise ValueError
+
+            else:
+                raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INCORRECTO)
+
+
+            # Se obtienen los objetos necesarios para modificar la configuracion
+            estado_configuracion_riego_habilitado = EstadoConfiguracionRiego.objects.get(
+                nombreEstadoConfiguracionRiego=ESTADO_HABILITADO)
+            estado_configuracion_riego_deshabilitado = EstadoConfiguracionRiego.objects.get(
+                nombreEstadoConfiguracionRiego=ESTADO_DESHABILITADO)
+
+            # Se obtiene la configuracion elegida
+            configuracion_riego_elegida = ConfiguracionRiego.objects.get(
+                id_configuracion_riego=datos[KEY_ID_CONFIGURACION_RIEGO])
+
+            # Comprobar que la configuracion elegida se corresponde con el mecanismo finca sector seleccionado
+            if not configuracion_riego_elegida.mecanismoRiegoFincaSector == mecanismo_riego_finca_sector_seleccionado:
+                raise ValueError
+
+            # Se comprueba que la configuracion elegida no haya sido eliminada
+            ultimo_estado_historico = HistoricoEstadoConfiguracionRiego.objects.get(
+                configuracion_riego=configuracion_riego_elegida, fechaFinEstadoConfiguracionRiego=None)
+
+            if ultimo_estado_historico.estado_configuracion_riego == estado_configuracion_riego_habilitado \
+                    or ultimo_estado_historico.estado_configuracion_riego == estado_configuracion_riego_deshabilitado:
+
+                # Se verifica el tipo de criterio riego y se crea el tipo de criterio correspondiente
+                if datos[KEY_TIPO_CRITERIO_RIEGO] == TIPO_CRITERIO_RIEGO_MEDICION:
+
+                    # Se obtiene el tipo de medicion
+                    tipo_medicion_elegido = TipoMedicion.objects.get(idTipoMedicion=datos[KEY_ID_TIPO_MEDICION])
+
+                    
+
+                elif datos[KEY_TIPO_CRITERIO_RIEGO] == TIPO_CRITERIO_RIEGO_VOLUMEN_AGUA:
+
+                    raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INICIAL_INCORRECTO)
+
+                elif datos[KEY_TIPO_CRITERIO_RIEGO] == TIPO_CRITERIO_RIEGO_HORA:
+
+
+
+                else:
+                    raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INCORRECTO)
+
+
+
+
+                configuracion_riego_elegida.save()
+
+                response.content = armar_response_content()
+                response.status_code = 200
+
+                return response
+
+            else:
+                raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_MODIFICACION_CONFIGURACION_RIEGO)
 
         else:
             raise KeyError

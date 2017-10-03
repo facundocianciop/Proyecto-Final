@@ -60,6 +60,10 @@ DETALLE_ERROR_EJECUION_RIEGO = "fallo_ejecucion_riego"
 DETALLE_ERROR_DETENCION_RIEGO = "fallo_detencion_riego"
 
 DETALLE_ERROR_MODIFICACION_CONFIGURACION_RIEGO = 'configuracion_riego_ya_fue_eliminada'
+DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INCORRECTO = 'tipo_criterio_riego_incorrecto'
+DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INICIAL_INCORRECTO = 'tipo_criterio_riego_no_valido_como_criterio_inicial'
+DETALLE_ERROR_TIPO_CRITERIO_RIEGO_FINAL_INCORRECTO = 'tipo_criterio_riego_no_valido_como_criterio_final'
+
 
 # Constantes Keys
 
