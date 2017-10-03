@@ -1,8 +1,8 @@
 //
 //  main.m
-//  proyectoRIego2017
+//  proyectoRiego2017
 //
-//  Created by Facundo José Palma on 9/15/17.
+//  Created by Facundo José Palma on 9/21/17.
 //  Copyright © 2017 Facundo José Palma. All rights reserved.
 //
 

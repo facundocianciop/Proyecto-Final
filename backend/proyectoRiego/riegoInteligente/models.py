@@ -1,3 +1,5 @@
+from datetime import datetime
+import pytz
 import uuid
 
 from django.conf import settings
@@ -7,6 +9,8 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.contrib.sessions.models import Session
 
+#from views.supportClases.views_constants import TIPO_CRITERIO_RIEGO_HORA, TIPO_CRITERIO_RIEGO_MEDICION, \
+ #   TIPO_CRITERIO_RIEGO_VOLUMEN_AGUA
 
 # MODULO SEGURIDAD
 
@@ -66,7 +70,6 @@ class EstadoUsuario(models.Model):
     descripcionEstadoUsuario=models.CharField(max_length=100)
     nombreEstadoUsuario=models.CharField(max_length=100)
 
-
     def __str__(self):
         return self.nombreEstadoUsuario
 
@@ -99,6 +102,7 @@ class UsuarioFinca(models.Model):
 
     finca=models.ForeignKey('Finca',db_column="OIDFinca")
     usuario=models.ForeignKey(DatosUsuario,db_column="OIDUsuario", related_name='usuarioFincaList')
+
     def save(self):
         "Get last value of Code and Number from database, and increment before save"
         if UsuarioFinca.objects.all().__len__() == 0:
@@ -523,17 +527,62 @@ class TipoConfiguracionRiego(models.Model):
     idTipoConfiguracion=models.IntegerField(unique=True)
     nombre=models.CharField(max_length=20,unique=True)
 
+    def __str__(self):
+        return self.nombre
+
 
 class ConfiguracionRiego(models.Model):
-    OIDConfiguracionRiego=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    nombre=models.CharField(max_length=20)
-    descripcion=models.CharField(max_length=100)
-    duracionMaxima=models.FloatField()
-    fechaCreacion=models.DateTimeField()
-    fechaFinalizacion=models.DateTimeField()
+    OIDConfiguracionRiego = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id_configuracion_riego = models.IntegerField(default=1, unique=True)
+    nombre = models.CharField(max_length=50)
+    descripcion = models.CharField(max_length=100)
+    duracionMaxima = models.FloatField()
+    fechaCreacion = models.DateTimeField()
+    fechaFinalizacion = models.DateTimeField(null=True)
 
-    tipoConfiguracionRiego=models.ForeignKey(TipoConfiguracionRiego,db_column="OIDTipoConfiguracionRiego")
-    mecanismoRiegoFincaSector=models.ForeignKey('MecanismoRiegoFincaSector',db_column="OIDMecanismoRiegoFincaSector",null=True)
+    tipoConfiguracionRiego = models.ForeignKey(TipoConfiguracionRiego,db_column="OIDTipoConfiguracionRiego")
+    mecanismoRiegoFincaSector = models.ForeignKey('MecanismoRiegoFincaSector',db_column="OIDMecanismoRiegoFincaSector",
+                                                  null=True)
+
+    def __str__(self):
+        return str(self.id_configuracion_riego) + ": " + self.nombre
+
+    def save(self):
+        "Crear o incrementar id_configuracion_riego"
+        if ConfiguracionRiego.objects.all().__len__() == 0:
+            self.id_configuracion_riego = 1
+            super(ConfiguracionRiego, self).save()
+        else:
+            if ConfiguracionRiego.objects.get(id_configuracion_riego=self.id_configuracion_riego) == self:
+                super(ConfiguracionRiego, self).save()
+            else:
+                ultima_configuracion_riego = ConfiguracionRiego.objects.order_by('-id_configuracion_riego')[0]
+                self.id_configuracion_riego = ultima_configuracion_riego.id_configuracion_riego + 1
+                super(ConfiguracionRiego, self).save()
+
+    def as_json(self):
+
+        fecha_creacion_date = ""
+        fecha_finalizacion_date = ""
+        if self.fechaCreacion:
+            fecha_creacion_date = self.fechaCreacion.date()
+        if self.fechaFinalizacion:
+            fecha_finalizacion_date = self.fechaFinalizacion.date()
+
+        ultimo_estado_historico = HistoricoEstadoConfiguracionRiego.objects.get(
+            configuracion_riego=self, fechaFinEstadoConfiguracionRiego=None)
+
+        return dict(id_configuracion_riego=self.id_configuracion_riego,
+                    nombre=self.nombre,
+                    descripcion=self.descripcion,
+                    duracionMaxima=self.duracionMaxima,
+                    fechaCreacion=fecha_creacion_date,
+                    fechaFinalizacion=fecha_finalizacion_date,
+                    tipoConfiguracionRiego=self.tipoConfiguracionRiego.nombre,
+                    mecanismoRiegoFincaSector=self.mecanismoRiegoFincaSector.idMecanismoRiegoFincaSector,
+                    estado_configuracion=ultimo_estado_historico.estado_configuracion_riego.
+                    nombreEstadoConfiguracionRiego
+                    )
 
 
 class EstadoConfiguracionRiego(models.Model):
@@ -541,10 +590,13 @@ class EstadoConfiguracionRiego(models.Model):
     nombreEstadoConfiguracionRiego=models.CharField(max_length=20,unique=True)
     descripcionEstadoConfiguracionRiego=models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.nombreEstadoConfiguracionRiego
+
 
 class HistoricoEstadoConfiguracionRiego(models.Model):
     OIDHistoricoEstadoConfiguracionRiego=  models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    fechaFinEstadoConfiguracionRiego = models.DateTimeField()
+    fechaFinEstadoConfiguracionRiego = models.DateTimeField(null=True)
     fechaInicioEstadoConfiguracionRiego = models.DateTimeField()
 
     configuracion_riego = models.ForeignKey(ConfiguracionRiego,db_column="OIDConfiguracionRiego",
@@ -552,11 +604,17 @@ class HistoricoEstadoConfiguracionRiego(models.Model):
     estado_configuracion_riego = models.ForeignKey(EstadoConfiguracionRiego,
                                                  db_column="OIDEstadoConfiguracionRiego")
 
+    def __str__(self):
+        return self.estado_configuracion_riego.nombreEstadoConfiguracionRiego
+
 
 class EstadoEjecucionRiego(models.Model):
     OIDEstadoEjecucionRiego = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nombreEstadoEjecucionRiego = models.CharField(max_length=20,unique=True)
     descripcionEstadoEjecucionRiego = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nombreEstadoEjecucionRiego
 
 
 class MecanismoRiegoFincaSector(models.Model):
@@ -569,6 +627,9 @@ class MecanismoRiegoFincaSector(models.Model):
                                               related_name="mecanismoRiegoSectorList", null=True)
     sector = models.ForeignKey(Sector, db_column="OIDSector", related_name="mecanismoRiegoFincaSector", null=True)
 
+    def __str__(self):
+        return self.mecanismoRiegoFinca.tipoMecanismoRiego.nombreMecanismo + "(Finca: " + \
+               str(self.mecanismoRiegoFinca.finca.idFinca) + ", Sector: " + str(self.sector.idSector) + ")"
 
     def save(self):
         "Get last value of Code and Number from database, and increment before save"
@@ -582,43 +643,119 @@ class MecanismoRiegoFincaSector(models.Model):
                 ultimoMecanismoFincaRiegoSector = MecanismoRiegoFincaSector.objects.order_by('-idMecanismoRiegoFincaSector')[0]
                 self.idMecanismoRiegoFincaSector = ultimoMecanismoFincaRiegoSector.idMecanismoRiegoFincaSector + 1
                 super(MecanismoRiegoFincaSector, self).save()
+
     def as_json(self):
         return dict(idMecanismoRiegoFincaSector=self.idMecanismoRiegoFincaSector,
                     caudal=self.caudal,
                     presion=self.presion,
                     sector=self.sector.numeroSector,
                     mecanismoRiegoFinca=self.mecanismoRiegoFinca.idMecanismoRiegoFinca)
-class EjecucionRiego(models.Model):
-    OIDEjecucionRiego = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    cantidadAguaUtilizada = models.FloatField()
-    detalle = models.CharField(max_length=100)
-    duracionActual = models.FloatField()
-    fechaHoraFinalizacion = models.DateTimeField()
-    fechaHoraFinalProgramada = models.DateTimeField()
-    fechaHoraInicio = models.DateTimeField()
-    fechaHoraInicioProgramada = models.DateTimeField()
 
-    configuracion_riego = models.ForeignKey(ConfiguracionRiego, db_column="OIDConfiguracionRiego")
+
+class EjecucionRiego(models.Model):
+    oid_ejecucion_riego = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    detalle = models.CharField(max_length=100)
+    duracion_parcial = models.FloatField(default=0)
+    fecha_hora_ultima_pausa = models.DateTimeField(null=True)
+    fecha_hora_ultimo_reinicio = models.DateTimeField(null=True)
+    fecha_hora_finalizacion = models.DateTimeField(null=True)
+    fecha_hora_final_programada = models.DateTimeField(null=True)
+    fecha_hora_inicio = models.DateTimeField()
+    fecha_hora_inicio_programada = models.DateTimeField(null=True)
+
+    configuracion_riego = models.ForeignKey(ConfiguracionRiego, db_column="OIDConfiguracionRiego", null=True)
     estado_ejecucion_riego = models.ForeignKey(EstadoEjecucionRiego, db_column="OIDEstadoEjecucionRiego")
-    mecanismo_riego_finca_sector = models.ForeignKey(MecanismoRiegoFincaSector, db_column="OIDMecanismoRiegoFincaSector",
-                                                   related_name="ejecucionRiegoList")
+    mecanismo_riego_finca_sector = models.ForeignKey(MecanismoRiegoFincaSector,
+                                                     db_column="OIDMecanismoRiegoFincaSector",
+                                                     related_name="ejecucionRiegoList")
+
+    def __str__(self):
+        return "Mecanismo riego finca sentor: " + self.mecanismo_riego_finca_sector_id
+        + " detalle: " + self.detalle
+
+    def as_json(self):
+
+        # Se calcula duracion
+        estado_pausado = EstadoEjecucionRiego.objects.get(nombreEstadoEjecucionRiego="pausado")
+
+        if self.estado_ejecucion_riego == estado_pausado:
+            duracion_total = self.duracion_parcial
+
+        else:
+            if self.fecha_hora_finalizacion:
+                if self.fecha_hora_ultimo_reinicio:
+                    duracion = (self.fecha_hora_finalizacion - self.fecha_hora_ultimo_reinicio).seconds
+                else:
+                    duracion = (self.fecha_hora_finalizacion - self.fecha_hora_inicio).seconds
+
+            else:
+                if self.fecha_hora_ultimo_reinicio:
+                    duracion = (datetime.now(pytz.utc) - self.fecha_hora_ultimo_reinicio).seconds
+                else:
+                    duracion = (datetime.now(pytz.utc) - self.fecha_hora_inicio).seconds
+
+            duracion_total = duracion + self.duracion_parcial
+
+        # Se calcula cantidad de agua utilizada
+        cantidad_agua_utilizada = self.mecanismo_riego_finca_sector.caudal * (duracion_total / 60.0)
+
+        # Si existe, se define id configuracion riego
+        id_configuracion_riego = None
+        if self.configuracion_riego:
+            id_configuracion_riego = self.configuracion_riego.id
+
+        return dict(mecanismoRiegoFincaSector=self.mecanismo_riego_finca_sector.idMecanismoRiegoFincaSector,
+                    configuracion_riego = id_configuracion_riego,
+                    estado_ejecucion_riego=self.estado_ejecucion_riego.nombreEstadoEjecucionRiego,
+                    cantidadAguaUtilizadaLitros=cantidad_agua_utilizada,
+                    detalle=self.detalle,
+                    duracionActualMinutos=duracion_total/60.0,
+                    duracionActualSegundos=duracion_total,
+                    fechaHoraFinalizacion=self.fecha_hora_finalizacion,
+                    fechaHoraFinalProgramada=self.fecha_hora_final_programada,
+                    fechaHoraInicio=self.fecha_hora_inicio,
+                    fechaHoraInicioProgramada=self.fecha_hora_inicio_programada)
 
 
 class CriterioRiego(models.Model):
     OIDCriterioRiego = models.UUIDField(primary_key=True,default=uuid.uuid4, editable=False)
+    id_criterio_riego = models.IntegerField(default=1, unique=True)
     fechaCreacionCriterio = models.DateTimeField()
+    descripcion = models.CharField(max_length=100, null=True)
     # class Meta:
     #     abstract=True
-    #ESTO ES LO MAS IMPORTANTE HAY Q VER COMO IMPLEMENTAMOS LOS CRITERIOS INICIALES Y FINALES
-    #COMO LAS RELACIONES SE MANEJAN AL REVES LO Q YO HICE FUE Q APUNTARA DOS VECSE A LA CONFIGURACION DE RIEGO
-    #Y Q LA OTRA TENGA DOS ATRIBUTOS Q PARA LOS CRITERIOS INICIALES Y PARA LOS FINALES(LOS Q ESTAN EN EL related_name)
+    # ESTO ES LO MAS IMPORTANTE HAY Q VER COMO IMPLEMENTAMOS LOS CRITERIOS INICIALES Y FINALES
+    # COMO LAS RELACIONES SE MANEJAN AL REVES LO Q YO HICE FUE Q APUNTARA DOS VECSE A LA CONFIGURACION DE RIEGO
+    # Y Q LA OTRA TENGA DOS ATRIBUTOS Q PARA LOS CRITERIOS INICIALES Y PARA LOS FINALES(LOS Q ESTAN EN EL related_name)
     # configuracionRiegoInicial = models.ForeignKey(ConfiguracionRiego, db_column="OIDConfiguracionRiegoInicial",
     #                                               related_name="criterioRiegoInicioList")
-    configuracionRiegoInicial = models.OneToOneField(ConfiguracionRiego, on_delete=models.CASCADE,
+    configuracionRiegoInicial = models.OneToOneField(ConfiguracionRiego,
+                                                     on_delete=models.CASCADE,
                                                      db_column="OIDConfiguracionRiegoInicial",
-                                                     related_name="criterioRiegoInicial", null=True)
-    configuracionRiegoFinal = models.ForeignKey(ConfiguracionRiego, db_column="OIDConfiguracionRiegoFinal",
-                                                related_name="criterioRiegoFinal", null=True)
+                                                     related_name="criterioRiegoInicial",
+                                                     null=True)
+    configuracionRiegoFinal = models.ForeignKey(ConfiguracionRiego,
+                                                on_delete=models.CASCADE,
+                                                db_column="OIDConfiguracionRiegoFinal",
+                                                related_name="criterioRiegoFinal",
+                                                null=True)
+
+    def __str__(self):
+        return "id criterio riego: " + self.id_criterio_riego + \
+               "(Configuracion riego: " + str(self.id_configuracion_riego) + ")"
+
+    def save(self):
+        "Crear o incrementar id_criterio_riego"
+        if CriterioRiego.objects.all().__len__() == 0:
+            self.id_criterio_riego = 1
+            super(CriterioRiego, self).save()
+        else:
+            if CriterioRiego.objects.get(id_criterio_riego=self.id_criterio_riego) == self:
+                super(CriterioRiego, self).save()
+            else:
+                ultimo_criterio_riego = CriterioRiego.objects.order_by('-id_criterio_riego')[0]
+                self.id_configuracion_riego = ultimo_criterio_riego.id_criterio_riego + 1
+                super(CriterioRiego, self).save()
 
 
 class CriterioRiegoPorMedicion(CriterioRiego):
@@ -628,6 +765,14 @@ class CriterioRiegoPorMedicion(CriterioRiego):
     # configuracionRiegoInicial=models.ForeignKey(ConfiguracionRiego,db_column="OIDConfiguracionRiegoInicial",related_name="%(class)scriterioRiegoInicioList")
     # configuracionRiegoFinal = models.ForeignKey(ConfiguracionRiego, db_column="OIDConfiguracionRiegoFinal", related_name="%(class)scriterioRiegoFinal")
 
+    def as_json(self):
+        return dict(id_criterio_riego=self.id_criterio_riego,
+                    tipo_criterio_riego="criterio_riego_medicion",
+                    descripcion=self.descripcion,
+                    fechaCreacionCriterio=self.fechaCreacionCriterio,
+                    valor=self.valor
+                    )
+
 
 class CriterioRiegoVolumenAgua(CriterioRiego):
     volumen = models.FloatField()
@@ -635,6 +780,14 @@ class CriterioRiegoVolumenAgua(CriterioRiego):
     #     db_table="CriterioRiegoVolumenAgua"
     # configuracionRiegoInicial=models.ForeignKey(ConfiguracionRiego,db_column="OIDConfiguracionRiegoInicial",related_name="%(class)scriterioRiegoInicioList")
     # configuracionRiegoFinal = models.ForeignKey(ConfiguracionRiego, db_column="OIDConfiguracionRiegoFinal", related_name="%(class)scriterioRiegoFinal")
+
+    def as_json(self):
+        return dict(id_criterio_riego=self.id_criterio_riego,
+                    tipo_criterio_riego="criterio_riego_volumen_agua",
+                    descripcion=self.descripcion,
+                    fechaCreacionCriterio=self.fechaCreacionCriterio,
+                    volumen=self.volumen
+                    )
 
 
 class CriterioRiegoPorHora(CriterioRiego):
@@ -645,8 +798,17 @@ class CriterioRiegoPorHora(CriterioRiego):
     # configuracionRiegoInicial=models.ForeignKey(ConfiguracionRiego,db_column="OIDConfiguracionRiegoInicial",related_name="%(class)scriterioRiegoInicioList")
     # configuracionRiegoFinal = models.ForeignKey(ConfiguracionRiego, db_column="OIDConfiguracionRiegoFinal", related_name="%(class)scriterioRiegoFinal")
 
+    def as_json(self):
+        return dict(id_criterio_riego=self.id_criterio_riego,
+                    tipo_criterio_riego="criterio_riego_hora",
+                    descripcion=self.descripcion,
+                    fechaCreacionCriterio=self.fechaCreacionCriterio,
+                    hora=self.hora.time(),
+                    numeroDia=self.numeroDia
+                    )
 
-#MODULO SENSORES
+
+# MODULO SENSORES
 
 class TipoMedicion(models.Model):
     OIDTipoMedicion = models.UUIDField( primary_key=True, default=uuid.uuid4, editable=False)

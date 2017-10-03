@@ -40,8 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders'
-
-
 ]
 
 MIDDLEWARE = [
@@ -84,32 +82,16 @@ WSGI_APPLICATION = 'proyectoRiego.wsgi.application'
 
 DATABASES = {
 
-     'default': {
-         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-         'NAME': 'riegoInteligente',
-         'USER': 'postgres',
-         'PASSWORD': 'root',
-         'HOST': 'localhost',
-         'PORT': ''
-     }
-}
-
-"""
-
-DATABASES = {
->>>>>>> 0b4867be1e5c31e013fa94dcc8e2d5f62b796547
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'riegoInteligente',
-            'USER': 'postgres',
-            'PASSWORD': 'root',
-            'HOST': 'localhost',
-            'PORT': ''
-        }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'riegoInteligente',
+        'USER': 'postgres',
+        'PASSWORD': 'root',
+        'HOST': 'localhost',
+        'PORT': ''
     }
-
-
-
+}
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -118,7 +100,7 @@ DATABASES = {
         'PASSWORD':'',
         'HOST': 'localhost',
         'PORT': '3306',
-     }
+    }
 }
 """
 
@@ -159,5 +141,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)
+# TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)
 # SILENCED_SYSTEM_CHECKS = ['fields.E300', 'fields.E307']
+
+# CELERY STUFF
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
