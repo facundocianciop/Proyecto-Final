@@ -724,13 +724,7 @@ class CriterioRiego(models.Model):
     fecha_eliminacion_criterio = models.DateTimeField(null=True)
     nombre = models.CharField(max_length=50, null=True)
     descripcion = models.CharField(max_length=100, null=True)
-    # class Meta:
-    #     abstract=True
-    # ESTO ES LO MAS IMPORTANTE HAY Q VER COMO IMPLEMENTAMOS LOS CRITERIOS INICIALES Y FINALES
-    # COMO LAS RELACIONES SE MANEJAN AL REVES LO Q YO HICE FUE Q APUNTARA DOS VECSE A LA CONFIGURACION DE RIEGO
-    # Y Q LA OTRA TENGA DOS ATRIBUTOS Q PARA LOS CRITERIOS INICIALES Y PARA LOS FINALES(LOS Q ESTAN EN EL related_name)
-    # configuracionRiegoInicial = models.ForeignKey(ConfiguracionRiego, db_column="OIDConfiguracionRiegoInicial",
-    #                                               related_name="criterioRiegoInicioList")
+
     configuracionRiegoInicial = models.OneToOneField(ConfiguracionRiego,
                                                      on_delete=models.CASCADE,
                                                      db_column="OIDConfiguracionRiegoInicial",
@@ -762,10 +756,8 @@ class CriterioRiego(models.Model):
 
 class CriterioRiegoPorMedicion(CriterioRiego):
     valor = models.FloatField()
-    # class Meta(CriterioRiego.Meta):
-    #     db_table="CriterioRiegoPorMedicion"
-    # configuracionRiegoInicial=models.ForeignKey(ConfiguracionRiego,db_column="OIDConfiguracionRiegoInicial",related_name="%(class)scriterioRiegoInicioList")
-    # configuracionRiegoFinal = models.ForeignKey(ConfiguracionRiego, db_column="OIDConfiguracionRiegoFinal", related_name="%(class)scriterioRiegoFinal")
+    tipo_medicion = models.ForeignKey('TipoMedicion', db_column="OIDTipoMedicion",
+                                      related_name="criterios_riego_medicion_list", null=True)
 
     def as_json(self):
         fecha_creacion_date = ""
@@ -783,10 +775,6 @@ class CriterioRiegoPorMedicion(CriterioRiego):
 
 class CriterioRiegoVolumenAgua(CriterioRiego):
     volumen = models.FloatField()
-    # class Meta(CriterioRiego.Meta):
-    #     db_table="CriterioRiegoVolumenAgua"
-    # configuracionRiegoInicial=models.ForeignKey(ConfiguracionRiego,db_column="OIDConfiguracionRiegoInicial",related_name="%(class)scriterioRiegoInicioList")
-    # configuracionRiegoFinal = models.ForeignKey(ConfiguracionRiego, db_column="OIDConfiguracionRiegoFinal", related_name="%(class)scriterioRiegoFinal")
 
     def as_json(self):
         fecha_creacion_date = ""
@@ -805,10 +793,6 @@ class CriterioRiegoVolumenAgua(CriterioRiego):
 class CriterioRiegoPorHora(CriterioRiego):
     hora = models.DateTimeField()
     numeroDia = models.IntegerField()
-    # class Meta(CriterioRiego.Meta):
-    #     db_table = "CriterioRiegoPorHora"
-    # configuracionRiegoInicial=models.ForeignKey(ConfiguracionRiego,db_column="OIDConfiguracionRiegoInicial",related_name="%(class)scriterioRiegoInicioList")
-    # configuracionRiegoFinal = models.ForeignKey(ConfiguracionRiego, db_column="OIDConfiguracionRiegoFinal", related_name="%(class)scriterioRiegoFinal")
 
     def as_json(self):
         fecha_creacion_date = ""
