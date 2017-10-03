@@ -63,18 +63,37 @@ KEY_SUPERFICIE_SECTOR = 'superficieSector'
 KEY_ID_SECTOR = 'idSector'
 
 # Subtipo Cultivos
+
 KEY_NOMBRE_SUBTIPO_CULTIVO = "nombreSubtipoCultivo"
 
+
 # Cultivo
-KEY_NOMBRE_CULTIVO = "nombreCultivo"
-KEY_DESCRIPCION_CULTIVO = "descripcionCultivo"
-KEY_FECHA_PLANTACION = "fechaPlantacion"
+KEY_NOMBRE_CULTIVO = 'nombreCultivo'
+KEY_DESCRIPCION_CULTIVO = 'descripcionCultivo'
+KEY_FECHA_PLANTACION = 'fechaPlantacion'
 KEY_ID_CULTIVO = 'idCultivo'
 
+
+
+
+# Roles
+ROL_ENCARGADO = 'encargado'
+ROL_STAKEHOLDER = 'stakeholder'
+
+# Mecanismos
+KEY_NOMBRE_TIPO_MECANISMO = 'nombreTipoMecanismo'
+
+
 # Sensores
+
 KEY_ID_TIPO_MEDICION = 'idTipoMedicion'
 KEY_MODELO_SENSOR = 'modeloSensor'
 KEY_ID_SENSOR = 'idSensor'
+
+KEY_ID_COMPONENTE_SENSOR = 'idComponenteSensor'
+KEY_MODELO_COMPONENTE = "modeloComponente"
+KEY_DESCRIPCION_COMPONENTE = "descripcionComponente"
+KEY_CANTIDAD_MAXIMA_SENSORES = 'cantidadMaximaSensores'
 
 # Configuracion riego
 KEY_ID_CONFIGURACION_RIEGO = 'idConfiguracionRiego'
@@ -93,13 +112,19 @@ KEY_HORA_INICIO_CRITERIO_RIEGO = 'horaInicioCriterioRiego'
 KEY_DIA_INICIO_CRITERIO_RIEGO = 'diaInicioCriterioRiego'
 
 
+
+KEY_FRECUENCIA = 'frecuencia'
 # Estados
 
 ESTADO_ACTIVADO = 'activado'
 ESTADO_DESACTIVADO = 'desactivado'
 ESTADO_HABILITADO = 'habilitado'
+
+ESTADO_EN_REPARACION = 'enReparacion'
+
 ESTADO_DESHABILITADO = 'deshabilitado'
 ESTADO_ELIMINADO = 'eliminado'
+
 ESTADO_PENDIENTE_APROBACION = 'pendienteAprobacion'
 ESTADO_NO_APROBADO = 'noAprobado'
 
