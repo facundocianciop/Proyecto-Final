@@ -124,17 +124,19 @@ def iniciar_sesion(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-
-        nombre_usuario = datos[KEY_USUARIO]
-        contrasenia = datos[KEY_CONTRASENIA]
-
-        usuario = authenticate(username=nombre_usuario, password=contrasenia)
-        if usuario is not None:
-            login(request, usuario)
-
-            response.content = armar_response_content(usuario.datosusuario)
-            response.status_code = 200
-            return response
+        if (KEY_USUARIO and KEY_CONTRASENIA) in datos:
+            if (datos[KEY_USUARIO] == '' or datos[KEY_CONTRASENIA] == ''):
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            nombre_usuario = datos[KEY_USUARIO]
+            contrasenia = datos[KEY_CONTRASENIA]
+            usuario = authenticate(username=nombre_usuario, password=contrasenia)
+            if usuario is not None:
+                login(request, usuario)
+                response.content = armar_response_content(usuario.datosusuario)
+                response.status_code = 200
+                return response
+            else:
+                raise ValueError(ERROR_CREDENCIALES_INCORRECTAS, "Usuario o contrasenia incorrecta")
         else:
             raise ValueError(ERROR_CREDENCIALES_INCORRECTAS, "Usuario o contrasenia incorrecta")
 
@@ -161,6 +163,7 @@ def iniciar_sesion(request):
             return build_internal_server_error(response, err.args[0], err.args[1])
         else:
             return build_internal_server_error(response, ERROR_DE_SISTEMA, DETALLE_ERROR_DESCONOCIDO)
+
 
 
 @transaction.atomic()

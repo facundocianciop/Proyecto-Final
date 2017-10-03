@@ -5,7 +5,11 @@ from views import views_modulo_finca
 from views import views_configuracion_finca
 from views import views_configuracion_sectores
 from views import views_modulo_sensores
+
+from views import views_obtencion_informacion_externa
+
 from views import views_modulo_configuracion_riego
+
 
 
 urlpatterns = [
@@ -56,9 +60,13 @@ urlpatterns = [
     url(r'^mostrarCultivoSectorHistorico/$', views_configuracion_sectores.mostrar_cultivo_sector_historico,
         name='mostrarCultivoSectorHistorico'),
 
+    url(r'^asignarComponenteSensor/$', views_configuracion_sectores.asignar_componente_sensor, name='asignarComponenteSensor'),
+    url(r'^desasignarComponenteSensor/$', views_configuracion_sectores.desasignar_componente_sensor,
+        name='desasignarComponenteSensor'),
 
-    url(r'^mostrarMecanismosRiegoFinca/$', views_configuracion_finca.mostrarMecanismosRiegoFinca,
-        name='mostrarMecanismosRiegoFinca'),
+    url(r'^mostrarMecanismosRiegoFinca/$', views_configuracion_finca.mostrarMecanismosRiegoFinca, name='mostrarMecanismosRiegoFinca'),
+
+
     url(r'^mostrarMecanismosNuevos/$', views_configuracion_finca.mostrar_mecanismos_nuevos,
         name='mostrarMecanismosNuevos'),
     url(r'^agregarMecanismoRiegoFinca/$', views_configuracion_finca.agregar_mecanismo_riego_finca,
@@ -68,11 +76,29 @@ urlpatterns = [
     url(r'^habilitarMecanismoRiegoFinca/$', views_configuracion_finca.habilitar_mecanismo_riego_finca,
         name='habilitarMecanismoRiegoFinca'),
 
-    url(r'^crearSensor/$', views_modulo_sensores.crear_sector, name='crearSensor'),
+    url(r'^crearSensor/$', views_modulo_sensores.crear_sensor, name='crearSensor'),
     url(r'^deshabilitarSensor/$', views_modulo_sensores.deshabilitar_sensor, name='deshabilitarSensor'),
+    url(r'^modificarSensor/$', views_modulo_sensores.modificar_sensor, name='modificarSensor'),
+    url(r'^buscarSensoresNoAsignados/$', views_modulo_sensores.buscar_sensores_no_asignados, name='buscarSensoresNoAsignados'),
+
+    url(r'^crearComponenteSensor/$', views_modulo_sensores.crear_componente_sensor, name='crearComponenteSensor'),
+    url(r'^modificarComponenteSensor/$', views_modulo_sensores.modificar_componente_sensor,
+        name='modificarComponenteSensor'),
+    url(r'^habilitarComponenteSensor/$', views_modulo_sensores.habilitar_componente_sensor, name='habilitarComponenteSensor'),
+    url(r'^deshabilitarComponenteSensor/$', views_modulo_sensores.deshabilitar_componente_sensor, name='deshabilitarComponenteSensor'),
+    url(r'^asignarSensorAComponenteSensor/$', views_modulo_sensores.asignar_sensor_a_componente_sensor, name='asignarSensorAComponenteSensor'),
+    url(r'^desasignarSensorDeComponenteSensor/$', views_modulo_sensores.desasignar_sensor_de_componente_sensor, name='desasignarSensorDeComponenteSensor'),
+    url(r'^mostrarComponentesSensorFinca/$', views_modulo_sensores.mostrar_componentes_sensor_finca, name='mostrarComponentesSensorFinca'),
+    url(r'^mostrarComponentesSensorFincaHabilitados/$', views_modulo_sensores.mostrar_componentes_sensor_finca_habilitados, name='mostrarComponentesSensorFincaHabilitados'),
+    url(r'^mostrarComponentesSensorFincaNoAsignados/$', views_modulo_sensores.mostrar_componentes_sensor_finca_no_asignados, name='mostrarComponentesSensorFincaNoAsignados'),
 
     url(r'^mostrarTipoMedicion/$', views_modulo_sensores.mostrar_tipo_medicion, name='mostrarTipoMedicion'),
     url(r'^mostrarSensoresFinca/$', views_modulo_sensores.mostrar_sensores_finca, name='mostrarSensoresFinca'),
+
+    url(r'^obtenerProveedorFinca/$', views_obtencion_informacion_externa.obtener_proveedor_finca, name='obtenerProveedorFinca'),
+    url(r'^modificarProveedorFinca/$', views_obtencion_informacion_externa.modificar_proveedor_finca, name='modificarProveedorFinca'),
+    url(r'^deshabilitarProveedorFinca/$', views_obtencion_informacion_externa.deshabilitar_proveedor_finca, name='deshabilitarProveedorFinca'),
+    url(r'^cambiarProveedorFinca/$', views_obtencion_informacion_externa.cambiar_proveedor_finca, name='cambiarProveedorFinca'),
 
     url(r'^registrarse/$', views_modulo_seguridad.registrar_usuario, name='registrarse'),
     url(r'^iniciarSesion/$', views_modulo_seguridad.iniciar_sesion, name='iniciarSesion'),
