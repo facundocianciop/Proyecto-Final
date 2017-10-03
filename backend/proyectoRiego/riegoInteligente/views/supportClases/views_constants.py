@@ -63,9 +63,7 @@ KEY_SUPERFICIE_SECTOR = 'superficieSector'
 KEY_ID_SECTOR = 'idSector'
 
 # Subtipo Cultivos
-
 KEY_NOMBRE_SUBTIPO_CULTIVO = "nombreSubtipoCultivo"
-
 
 # Cultivo
 KEY_NOMBRE_CULTIVO = 'nombreCultivo'
@@ -73,19 +71,7 @@ KEY_DESCRIPCION_CULTIVO = 'descripcionCultivo'
 KEY_FECHA_PLANTACION = 'fechaPlantacion'
 KEY_ID_CULTIVO = 'idCultivo'
 
-
-
-
-# Roles
-ROL_ENCARGADO = 'encargado'
-ROL_STAKEHOLDER = 'stakeholder'
-
-# Mecanismos
-KEY_NOMBRE_TIPO_MECANISMO = 'nombreTipoMecanismo'
-
-
 # Sensores
-
 KEY_ID_TIPO_MEDICION = 'idTipoMedicion'
 KEY_MODELO_SENSOR = 'modeloSensor'
 KEY_ID_SENSOR = 'idSensor'
@@ -105,15 +91,16 @@ KEY_ID_TIPO_CONFIGURACION_RIEGO = 'idTipoConfiguracionRiego'
 KEY_ID_CRITERIO_RIEGO = 'idCriterioRiego'
 KEY_NOMBRE_CRITERIO_RIEGO = 'nombreCriterioRiego'
 KEY_DESCRIPCION_CRITERIO_RIEGO = 'descripcionCriterioRiego'
-KEY_TIPO_CRITERIO_RIEGO = 'tipoCriterioRiego'
+KEY_TIPO_CRITERIO_RIEGO = 'tipoCriterioRiego'  # TIPO_CONFIGURACION_RIEGO_PROGRAMADO/TIPO_CONFIGURACION_RIEGO_AUTOMATICO
 KEY_VALOR_MEDICION_CRITERIO_RIEGO = 'valorMedicionCriterioRiego'
 KEY_VOLUMEN_AGUA_CRITERIO_RIEGO = 'volumenAguaCriterioRiego'
 KEY_HORA_INICIO_CRITERIO_RIEGO = 'horaInicioCriterioRiego'
 KEY_DIA_INICIO_CRITERIO_RIEGO = 'diaInicioCriterioRiego'
 
-
-
+# Obtencion informacion externa
 KEY_FRECUENCIA = 'frecuencia'
+
+
 # Estados
 
 ESTADO_ACTIVADO = 'activado'
@@ -138,7 +125,6 @@ ESTADO_PAUSADO = 'pausado'
 DETALLE_OPERACION_VACIA = "no_hay_datos"
 
 # Detalle operacion riego
-
 DETALLE_RIEGO_EJECUCION_EN_PROCESO = "riego_ya_se_esta_ejecutando"
 DETALLE_RIEGO_YA_PAUSADO = "riego_ya_esta_pausado"
 DETALLE_RIEGO_INICIADO = "riego_iniciado_correctamente"
@@ -147,14 +133,17 @@ DETALLE_RIEGO_REANUDADO = "riego_reanudado_correctamente"
 DETALLE_RIEGO_CANCELADO = "riego_cancelado_correctamente"
 DETALLE_RIEGO_NO_ACTIVO = "riego_no_hay_riego_activo"
 
+# Detalle criterio riego
+DETALLE_CRITERIO_RIEGO_CREADO = 'criterio_riego_creado'
+DETALLE_CRITERIO_RIEGO_MODIFICADO = 'criterio_riego_modificado'
+DETALLE_CRITERIO_RIEGO_ELIMINADO = 'criterio_riego_eliminado'
+
 
 # Tipos configuracion riego
-
 TIPO_CONFIGURACION_RIEGO_PROGRAMADO = 'programado'
 TIPO_CONFIGURACION_RIEGO_AUTOMATICO = 'automatico'
 
 # Tipos de criterio riego
-
 TIPO_CRITERIO_RIEGO_MEDICION = "criterio_riego_medicion"
 TIPO_CRITERIO_RIEGO_VOLUMEN_AGUA = "criterio_riego_volumen_agua"
 TIPO_CRITERIO_RIEGO_HORA = "criterio_riego_hora"
