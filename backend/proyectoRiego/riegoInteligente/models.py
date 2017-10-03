@@ -235,6 +235,8 @@ class EstadoFinca(models.Model):
     descripcionEstadoFinca=models.CharField(max_length=100)
     nombreEstadoFinca=models.CharField(max_length=50)
 
+    def __str__(self):
+        return "Finca %s"%(self.nombreEstadoFinca)
 
 class HistoricoEstadoFinca(models.Model):
     OIDHistoricoEstadoFinca = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
