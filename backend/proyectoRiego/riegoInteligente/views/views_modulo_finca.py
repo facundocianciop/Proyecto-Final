@@ -47,40 +47,48 @@ def crear_finca(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_NOMBRE_FINCA and KEY_DIRECCION_LEGAL and KEY_UBICACION and KEY_TAMANIO) in datos:
+        if (KEY_NOMBRE_FINCA in datos) and (KEY_DIRECCION_LEGAL in datos) and (KEY_UBICACION in datos) and \
+                (KEY_TAMANIO in datos) and (KEY_NOMBRE_PROVEEDOR in datos) and (KEY_FRECUENCIA in datos):
             if datos[KEY_NOMBRE_FINCA] == '' or datos[KEY_DIRECCION_LEGAL] == '' or datos[KEY_UBICACION] == '' \
-                    or datos[KEY_TAMANIO] == '':
+                    or datos[KEY_TAMANIO] == '' or datos[KEY_NOMBRE_PROVEEDOR] == '' or datos[KEY_FRECUENCIA] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             if Finca.objects.filter(nombre=datos[KEY_NOMBRE_FINCA], direccionLegal=datos[KEY_DIRECCION_LEGAL]).__len__()\
-                    == 0:
-                finca = Finca(nombre=datos[KEY_NOMBRE_FINCA], direccionLegal=datos[KEY_DIRECCION_LEGAL],
+                    != 0:
+                raise ValueError(ERROR_FINCA_YA_EXISTENTE, "Ya existe una finca con ese nombre")
+            if ProveedorInformacionClimatica.objects.filter(nombreProveedor=datos[KEY_NOMBRE_PROVEEDOR]).__len__() == 0:
+                raise ValueError(ERROR_PROVEEDOR_NO_ENCONTRADO, "No se encontro el proveedor seleccionado")
+            proveedorSeleccionado = ProveedorInformacionClimatica.objects.get(
+                nombreProveedor=datos[KEY_NOMBRE_PROVEEDOR])
+            if int(datos[KEY_FRECUENCIA]) > proveedorSeleccionado.frecuenciaMaxPosible:
+                raise ValueError(ERROR_FRECUENCIA_MAXIMA_SUPERADA,
+                                 "No se puede colocar esa frecuencia, ya que es mayor a la permitida por el proveedor")
+            finca_creada = Finca(nombre=datos[KEY_NOMBRE_FINCA], direccionLegal=datos[KEY_DIRECCION_LEGAL],
                               ubicacion=datos[KEY_UBICACION],
                               tamanio=datos[KEY_TAMANIO])
-                finca.save()
-                response.content = armar_response_content(finca)
-                response.status_code = 200
-                return response
-            else:
-                raise ValueError(ERROR_FINCA_YA_EXISTENTE,"Ya existe una finca con ese nombre")
+            proveedorInformacionClimaticaFinca = ProveedorInformacionClimaticaFinca(
+                proveedorInformacionClimatica=proveedorSeleccionado, finca=finca_creada)
+            proveedorInformacionClimaticaFinca.fechaAltaProveedorInfoClimaticaFinca = datetime.now()
+            proveedorInformacionClimaticaFinca.save()
+            estadoFinca = EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_PENDIENTE_APROBACION)
+            historicoCreado = HistoricoEstadoFinca(fechaInicioEstadoFinca=datetime.now(), estadoFinca=estadoFinca)
+            historicoCreado.finca = finca_creada
+            historicoCreado.save()
+            print historicoCreado.fechaInicioEstadoFinca
+            finca_creada.historicoEstadoFincaList.add(historicoCreado)
+            user = request.user
+            usuario = user.datosusuario
+            usuarioFinca = UsuarioFinca(usuario=usuario, finca=finca_creada)
+            usuarioFinca.fechaAltaUsuarioFinca = datetime.now()
+            usuarioFinca.save()
+            finca_creada.save()
+            response.content=armar_response_content(None)
+            response.status_code = 200
+            return response
         else:
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
     except ValueError as err:
         print err.args
         return build_bad_request_error(response, err.args[0],err.args[1])
-
-
-@transaction.atomic()
-@login_requerido
-@metodos_requeridos([METHOD_GET])
-def buscar_proveedores_informacion(request):
-    response=HttpResponse()
-    try:
-        proveedores = ProveedorInformacionClimatica.objects.filter(habilitado=True)
-        response.content=armar_response_list_content(proveedores)
-        response.status_code=200
-        return response
-    except (IntegrityError, TypeError, KeyError):
-        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 
 @transaction.atomic()
@@ -98,7 +106,7 @@ def elegir_proveedor_informacion(request):
             if ProveedorInformacionClimatica.objects.filter(nombreProveedor=datos[KEY_NOMBRE_PROVEEDOR]).__len__() == 1:
                 proveedorSeleccionado = ProveedorInformacionClimatica.objects.get(nombreProveedor=datos[KEY_NOMBRE_PROVEEDOR])
                 fincaCreada = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
-                if datos[KEY_FRECUENCIA] > proveedorSeleccionado.frecuenciaMaxPosible:
+                if int(datos[KEY_FRECUENCIA]) > proveedorSeleccionado.frecuenciaMaxPosible:
                     raise ValueError(ERROR_FRECUENCIA_MAXIMA_SUPERADA,
                                      "No se puede colocar esa frecuencia, ya que es mayor a la permitida por el proveedor")
                 proveedorInformacionClimaticaFinca = ProveedorInformacionClimaticaFinca(
@@ -128,6 +136,23 @@ def elegir_proveedor_informacion(request):
             return build_bad_request_error(response, err.args[0], err.args[1])
     except (IntegrityError, TypeError, KeyError):
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_GET])
+def buscar_proveedores_informacion(request):
+    response=HttpResponse()
+    try:
+        proveedores = ProveedorInformacionClimatica.objects.filter(habilitado=True)
+        response.content=armar_response_list_content(proveedores)
+        response.status_code=200
+        return response
+    except (IntegrityError, TypeError, KeyError):
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+
 
 
 @transaction.atomic()

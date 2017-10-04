@@ -620,7 +620,7 @@ class EstadoEjecucionRiego(models.Model):
 
 
 class MecanismoRiegoFincaSector(models.Model):
-    OIDMecanismoRiegoFincaSector = models.UUIDField(default=uuid.uuid4(), primary_key=True, editable=False)
+    OIDMecanismoRiegoFincaSector = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     idMecanismoRiegoFincaSector = models.IntegerField(default=1, unique=True)
     caudal = models.FloatField()
     presion = models.FloatField()
