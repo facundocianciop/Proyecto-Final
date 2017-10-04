@@ -37,118 +37,108 @@ def obtener_fincas_por_usuario(request):
         print err.args
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
-
+#permite que la llamada rest sea atómica
 @transaction.atomic()
+#para poder realizar este método es necesario haber inicado sesión
 @login_requerido
+#este método sólo acepta una petición del tipo PUT
 @metodos_requeridos([METHOD_PUT])
 def crear_finca(request):
+    #se crea un objeto HttpResponse
     response = HttpResponse()
+    #se llama a un método que convierte los datos de la petición en un json
     datos = obtener_datos_json(request)
     try:
         if datos == '':
+            #si los datos de la petición llegan vacíos retorna un error datos incompletos
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
         if (KEY_NOMBRE_FINCA in datos) and (KEY_DIRECCION_LEGAL in datos) and (KEY_UBICACION in datos) and \
                 (KEY_TAMANIO in datos) and (KEY_NOMBRE_PROVEEDOR in datos) and (KEY_FRECUENCIA in datos):
+                #si alguno de los parámetros no está presente en la petición retorna un erro de datos incompletos
             if datos[KEY_NOMBRE_FINCA] == '' or datos[KEY_DIRECCION_LEGAL] == '' or datos[KEY_UBICACION] == '' \
                     or datos[KEY_TAMANIO] == '' or datos[KEY_NOMBRE_PROVEEDOR] == '' or datos[KEY_FRECUENCIA] == '':
+                # si alguno de los datos está vacío retorna un error de datos incompletos
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-            if Finca.objects.filter(nombre=datos[KEY_NOMBRE_FINCA], direccionLegal=datos[KEY_DIRECCION_LEGAL]).__len__()\
-                    != 0:
+            if Finca.objects.filter(nombre=datos[KEY_NOMBRE_FINCA],
+                                    direccionLegal=datos[KEY_DIRECCION_LEGAL]).__len__() != 0:
+                #en caso de que exista una finca con ese nombre y con esa dirección legal se retorna un error
                 raise ValueError(ERROR_FINCA_YA_EXISTENTE, "Ya existe una finca con ese nombre")
             if ProveedorInformacionClimatica.objects.filter(nombreProveedor=datos[KEY_NOMBRE_PROVEEDOR]).__len__() == 0:
+                #en caso de que no exista un proveedor con ese nombre y con esa dirección legal se retorna un error
                 raise ValueError(ERROR_PROVEEDOR_NO_ENCONTRADO, "No se encontro el proveedor seleccionado")
             proveedorSeleccionado = ProveedorInformacionClimatica.objects.get(
                 nombreProveedor=datos[KEY_NOMBRE_PROVEEDOR])
+                #se obtiene al proveedor deseado
             if int(datos[KEY_FRECUENCIA]) > proveedorSeleccionado.frecuenciaMaxPosible:
+                #si la frecuencia de actualización es mayor a la permitida por el proveedor se retorna un error
                 raise ValueError(ERROR_FRECUENCIA_MAXIMA_SUPERADA,
                                  "No se puede colocar esa frecuencia, ya que es mayor a la permitida por el proveedor")
+            #se realiza la creación de la finca con los atributos ingresados
             finca_creada = Finca(nombre=datos[KEY_NOMBRE_FINCA], direccionLegal=datos[KEY_DIRECCION_LEGAL],
                               ubicacion=datos[KEY_UBICACION],
                               tamanio=datos[KEY_TAMANIO])
+            #se crea la instancia de proveedorInformacionClimaticaFinca relacionada al proveedor  y a la finca creada
             proveedorInformacionClimaticaFinca = ProveedorInformacionClimaticaFinca(
                 proveedorInformacionClimatica=proveedorSeleccionado, finca=finca_creada)
+            #se setea la fecha de alta con la fecha actual
             proveedorInformacionClimaticaFinca.fechaAltaProveedorInfoClimaticaFinca = datetime.now()
+            #se guarda el objeto en la base de datos
             proveedorInformacionClimaticaFinca.save()
+            #se busca la instancia de estado finca "pendienteaprobacion"
             estadoFinca = EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_PENDIENTE_APROBACION)
+            #se realiza la creación de un histórico con fecha actual y relacionado al estado encontrado
             historicoCreado = HistoricoEstadoFinca(fechaInicioEstadoFinca=datetime.now(), estadoFinca=estadoFinca)
+            #se setea la finca al histórico creado
             historicoCreado.finca = finca_creada
+            #se guarda el histórico en la base de datos
             historicoCreado.save()
-            print historicoCreado.fechaInicioEstadoFinca
+            #se agrega el historico a la lista de históricos de la finca
             finca_creada.historicoEstadoFincaList.add(historicoCreado)
+            #se obtiene el usuario de la petición actual
             user = request.user
+            #se obtienen los datos del usuario
             usuario = user.datosusuario
-            usuarioFinca = UsuarioFinca(usuario=usuario, finca=finca_creada)
-            usuarioFinca.fechaAltaUsuarioFinca = datetime.now()
-            usuarioFinca.save()
+            #se crea una instancia de UsuarioFinca, relacionada a los datos de usuario encontrado y a la finca creada
+            usuario_finca = UsuarioFinca(usuario=usuario, finca=finca_creada)
+            #se setea la fecha de alta
+            usuario_finca.fechaAltaUsuarioFinca = datetime.now()
+            #se guarda la instancia usuario_finca creada
+            usuario_finca.save()
+            # se guarda la instancia finca creada
             finca_creada.save()
+            #se llama al método armar_response_content con parámetro None, de manera de que se arma una respuesta sin
+            #contenido, indicando que como resultado True
             response.content=armar_response_content(None)
+            #se coloca a la respuesta el código 200, que significa que la llamada fue exitosa
             response.status_code = 200
             return response
         else:
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
     except ValueError as err:
         print err.args
+        #en caso de haber ocurrido algún error retornar una respuesta con el nombre del error y su descripción
         return build_bad_request_error(response, err.args[0],err.args[1])
 
 
+#permite que la llamada rest sea atómica
 @transaction.atomic()
+#para poder realizar este método es necesario haber inicado sesión
 @login_requerido
-@metodos_requeridos([METHOD_POST])
-def elegir_proveedor_informacion(request):
-    response = HttpResponse()
-    datos = obtener_datos_json(request)
-    try:
-        if datos == '':
-            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_NOMBRE_PROVEEDOR and KEY_ID_FINCA) in datos:
-            if datos[KEY_NOMBRE_PROVEEDOR] == '' or datos[KEY_ID_FINCA] == '':
-                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-            if ProveedorInformacionClimatica.objects.filter(nombreProveedor=datos[KEY_NOMBRE_PROVEEDOR]).__len__() == 1:
-                proveedorSeleccionado = ProveedorInformacionClimatica.objects.get(nombreProveedor=datos[KEY_NOMBRE_PROVEEDOR])
-                fincaCreada = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
-                if int(datos[KEY_FRECUENCIA]) > proveedorSeleccionado.frecuenciaMaxPosible:
-                    raise ValueError(ERROR_FRECUENCIA_MAXIMA_SUPERADA,
-                                     "No se puede colocar esa frecuencia, ya que es mayor a la permitida por el proveedor")
-                proveedorInformacionClimaticaFinca = ProveedorInformacionClimaticaFinca(
-                    proveedorInformacionClimatica=proveedorSeleccionado, finca=fincaCreada)
-                proveedorInformacionClimaticaFinca.fechaAltaProveedorInfoClimaticaFinca = datetime.now()
-                proveedorInformacionClimaticaFinca.save()
-                estadoFinca=EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_PENDIENTE_APROBACION)
-                historicoCreado=HistoricoEstadoFinca(fechaInicioEstadoFinca=datetime.now(), estadoFinca=estadoFinca)
-                historicoCreado.finca = fincaCreada
-                historicoCreado.save()
-                print historicoCreado.fechaInicioEstadoFinca
-                fincaCreada.historicoEstadoFincaList.add(historicoCreado)
-                user = request.user
-                usuario = user.datosusuario
-                usuarioFinca = UsuarioFinca(usuario=usuario,finca=fincaCreada)
-                usuarioFinca.fechaAltaUsuarioFinca = datetime.now()
-                usuarioFinca.save()
-                fincaCreada.save()
-                response.content=armar_response_content(None)
-                response.status_code = 200
-                return response
-            else:
-                raise ValueError(ERROR_PROVEEDOR_NO_ENCONTRADO, "No se encontro el proveedor seleccionado")
-        else:
-            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-    except ValueError as err:
-            return build_bad_request_error(response, err.args[0], err.args[1])
-    except (IntegrityError, TypeError, KeyError):
-        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
-
-
-@transaction.atomic()
-@login_requerido
+#este método sólo acepta una petición del tipo GET
 @metodos_requeridos([METHOD_GET])
 def buscar_proveedores_informacion(request):
+    # se crea un objeto HttpResponse
     response=HttpResponse()
     try:
+        #se buscan los proveedores que se encuentren habilitados
         proveedores = ProveedorInformacionClimatica.objects.filter(habilitado=True)
+        #se arma una respuesta que convierte a los proveedores en un archivo json,guardándose en el content del response
         response.content=armar_response_list_content(proveedores)
+        #se coloca a la respuesta el código 200, que significa que la llamada fue exitosa
         response.status_code=200
         return response
     except (IntegrityError, TypeError, KeyError):
+        #en caso de ocurrir un error no esperado se construye una respuesta indicando que ocurrió un error
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 
