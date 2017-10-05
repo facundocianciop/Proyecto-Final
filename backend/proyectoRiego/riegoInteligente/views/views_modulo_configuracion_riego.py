@@ -1531,7 +1531,7 @@ def agregar_criterio_final_configuracion_riego_mecanismo_riego_finca_sector(requ
 @metodos_requeridos([METHOD_POST])
 def eliminar_criterio_configuracion_riego_mecanismo_riego_finca_sector(request):
     """
-    Eliminar un criterio inicial a una configuracion de riego
+    Eliminar un criterio (inicial o final) de una configuracion de riego
     :param request: idFinca, idMecanismoRiegoFincaSector, idConfiguracionRiego, idCriterioRiego
     :return:
     """
