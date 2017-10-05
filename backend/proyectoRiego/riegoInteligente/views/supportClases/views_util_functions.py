@@ -2,6 +2,7 @@ import string
 import random
 # noinspection PyUnresolvedReferences
 from json import loads, dumps
+from datetime import datetime
 
 # noinspection PyUnresolvedReferences
 from django.core.serializers.json import DjangoJSONEncoder
@@ -76,9 +77,9 @@ def armar_response_content(objeto, *mensaje):
         return dumps(response_error_dictionary, cls=DjangoJSONEncoder)
 
 
-def armar_response_simple(objeto):
-    return dumps(objeto, cls=DjangoJSONEncoder)
-
-
 def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
+
+
+def parsear_datos_fecha(fecha_string):
+    return datetime.strptime(fecha_string, "%Y-%m-%d")

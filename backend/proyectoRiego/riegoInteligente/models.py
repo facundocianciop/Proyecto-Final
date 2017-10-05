@@ -572,7 +572,7 @@ class ConfiguracionRiego(models.Model):
         ultimo_estado_historico = HistoricoEstadoConfiguracionRiego.objects.get(
             configuracion_riego=self, fechaFinEstadoConfiguracionRiego=None)
 
-        return dict(id_configuracion_riego=self.id_configuracion_riego,
+        return dict(idConfiguracionRiego=self.id_configuracion_riego,
                     nombre=self.nombre,
                     descripcion=self.descripcion,
                     duracionMaxima=self.duracionMaxima,
