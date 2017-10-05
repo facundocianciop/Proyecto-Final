@@ -107,7 +107,8 @@ def obtener_riego_en_ejecucion_mecanismo_riego_finca_sector(request):
 @metodos_requeridos([METHOD_POST])
 def iniciar_riego_manualente(request):
     """
-    Inicia el riego para un Mecanismo Riego Finca Sector, si habia un riego anterior lo cancela
+    Inicia el riego para un Mecanismo Riego Finca Sector, si habia un riego pausado lo reinicia, 
+    si existe uno ejecucion no hace cambios y devuelve la informacion del riego en ejecucion
     :param request: idMecanismoRiegoFincaSector, idFinca
     :return:
     """
