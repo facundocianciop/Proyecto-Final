@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
 from django.db import IntegrityError, DataError, DatabaseError
-
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned
@@ -26,65 +25,106 @@ def registrar_usuario(request):
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
 
-        if User.objects.filter(username=datos[KEY_USUARIO]).__len__() >= 1:
-            raise ValueError(ERROR_USUARIO_EXISTENTE, "El usuario ya existe en el sistema")
-
+        # Comprobar que se mandaron los datos obligatorios
         if KEY_USUARIO in datos:
             username = datos[KEY_USUARIO]
         else:
-            raise ValueError(ERROR_DATOS_INCORRECTOS, "Falta ingresar usuario")
-
-        if KEY_CONTRASENIA in datos:
-            contrasenia = datos[KEY_CONTRASENIA]
-        else:
-            raise ValueError(ERROR_DATOS_INCORRECTOS, "Falta ingresar contrasenia")
+            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_USUARIO_FALTANTE)
+        if username == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_REGISTRACION_USUARIO_INCORRECTO)
 
         if KEY_EMAIL in datos:
             email = datos[KEY_EMAIL]
         else:
-            raise ValueError(ERROR_DATOS_INCORRECTOS, "Falta ingresar email")
+            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_EMAIL_FALTANTE)
+        if email == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_REGISTRACION_EMAIL_INCORRECTO)
+        if not validar_email(email):
+            raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_EMAIL_INCORRECTO)
+
+        if KEY_CONTRASENIA in datos:
+            contrasenia = datos[KEY_CONTRASENIA]
+        else:
+            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_CONTRASENIA_FALTANTE)
+        if contrasenia == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CONTRASENIA_FORMATO_INCORRECTO)
+        elif not validar_contrasenia(password=contrasenia, user=None):
+            raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CONTRASENIA_FORMATO_INCORRECTO)
 
         if KEY_NOMBRE_USUARIO in datos:
             first_name = datos[KEY_NOMBRE_USUARIO]
         else:
-            raise ValueError(ERROR_DATOS_INCORRECTOS, "Falta ingresar nombre")
+            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_NOMBRE_FALTANTE)
+        if first_name == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_REGISTRACION_NOMBRE_INCORRECTO)
 
         if KEY_APELLIDO_USUARIO in datos:
             last_name = datos[KEY_APELLIDO_USUARIO]
         else:
-            raise ValueError(ERROR_DATOS_INCORRECTOS, "Falta ingresar apellido")
+            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_APELLIDO_FALTANTE)
+        if last_name == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_REGISTRACION_APELLIDO_INCORRECTO)
 
-        estado = EstadoUsuario.objects.get(nombreEstadoUsuario=ESTADO_ACTIVADO)
-        historico = HistoricoEstadoUsuario(fechaInicioEstadoUsuario=datetime.now(), estadoUsuario=estado)
-        historico.save()
-
-        user = User.objects.create_user(username=username, password=contrasenia)
-
-        user.first_name = first_name
-        user.last_name = last_name
-        user.email = email
-
+        # Se comprueba si se mandan los datos no obligatorios
         if KEY_DNI in datos:
-            user.datosusuario.dni = int(datos[KEY_DNI])
+            dni = int(datos[KEY_DNI])
+        else:
+            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_DNI_FALTANTE)
 
         if KEY_CUIT in datos:
-            user.datosusuario.cuit = int(datos[KEY_CUIT])
+            cuit = int(datos[KEY_CUIT])
+        else:
+            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_CUIT_FALTANTE)
 
         if KEY_DOMICILIO in datos:
-            user.datosusuario.domicilio = datos[KEY_DOMICILIO]
+            domicilio = datos[KEY_DOMICILIO]
+        else:
+            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_DOMICILIO_FALTANTE)
 
         if KEY_FECHA_NACIMIENTO in datos:
-            user.datosusuario.fechaNacimiento = datos[KEY_FECHA_NACIMIENTO]
+            if datos[KEY_FECHA_NACIMIENTO] != '':
+                fecha_nacimiento = parsear_datos_fecha(datos[KEY_FECHA_NACIMIENTO])
+            else:
+                fecha_nacimiento = None
+        else:
+            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_FECHA_NACIMIENTO_FALTANTE)
 
         if KEY_IMAGEN_USUARIO in datos:
-            user.datosusuario.imagenUsuario = datos[KEY_IMAGEN_USUARIO]
+            if datos[KEY_IMAGEN_USUARIO] != '':
+                # TODO Validar tipo de archivo imagen
+                imagen_usuario = datos[KEY_IMAGEN_USUARIO]
+            else:
+                imagen_usuario = None
+        else:
+            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_IMAGEN_FALTANTE)
+
+        # Se comprueba que el usuario ingresado no exista en el sistema
+        if User.objects.filter(username=datos[KEY_USUARIO]).__len__() >= 1:
+            raise ValueError(ERROR_USUARIO_EXISTENTE, DETALLE_ERROR_REGISTRACION_USUARIO_EXISTENTE)
+
+        # Creo los objetos necesarios
+        estado = EstadoUsuario.objects.get(nombreEstadoUsuario=ESTADO_ACTIVADO)
+        historico = HistoricoEstadoUsuario(fechaInicioEstadoUsuario=datetime.now(pytz.utc), estadoUsuario=estado)
+        historico.save()
+
+        user = User.objects.create_user(username=username,
+                                        email=email,
+                                        password=contrasenia,
+                                        )
+        user.first_name = first_name
+        user.last_name = last_name
 
         user.datosusuario.historicoEstadoUsuarioList.add(historico)
+        user.datosusuario.cuit = cuit
+        user.datosusuario.dni = dni
+        user.datosusuario.domicilio = domicilio
+        user.datosusuario.fechaNacimiento = fecha_nacimiento
+        user.datosusuario.imagenUsuario = imagen_usuario
 
         user.datosusuario.save()
         user.save()
 
-        response.content = armar_response_content(None)
+        response.content = armar_response_content(None, DETALLE_REGISTRACION_USUARIO_CREADO_CORRECTAMENTE)
         response.status_code = 200
 
         return response
@@ -125,7 +165,7 @@ def iniciar_sesion(request):
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
         if (KEY_USUARIO and KEY_CONTRASENIA) in datos:
-            if (datos[KEY_USUARIO] == '' or datos[KEY_CONTRASENIA] == ''):
+            if datos[KEY_USUARIO] == '' or datos[KEY_CONTRASENIA] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             nombre_usuario = datos[KEY_USUARIO]
             contrasenia = datos[KEY_CONTRASENIA]
@@ -165,7 +205,6 @@ def iniciar_sesion(request):
             return build_internal_server_error(response, ERROR_DE_SISTEMA, DETALLE_ERROR_DESCONOCIDO)
 
 
-
 @transaction.atomic()
 @metodos_requeridos([METHOD_POST])
 def finalizar_sesion(request):
@@ -201,9 +240,8 @@ def recuperar_cuenta(request):
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
 
         email = datos[KEY_EMAIL]
-        print email
         usuario = User.objects.get(email=email)
-        print usuario.email
+
         codigo_verificacion = id_generator()
         usuario.datosusuario.codigoVerificacion = codigo_verificacion
 
@@ -215,9 +253,10 @@ def recuperar_cuenta(request):
         # FALTA MANDAR EL MAIL, CONFIGURAR LA CONTRASEÑA Y EL PUERTO
         # ACA PENSE QUE EN CASO DE RECHAZAR LA FINCA QUE EL ADMINISTRADOR ESCRIBIERA UN MENSAJE DICIENDO
         # POR QUÉ LA RECHAZÓ
+
         usuario.save()
-        response_data = {KEY_USUARIO: usuario.username}
-        response.content = armar_response_simple(response_data)
+
+        response.content = armar_response_content(None, DETALLE_RECUPERAR_CUENTA_EJECUTADA)
         response.status_code = 200
         return response
 
@@ -258,10 +297,24 @@ def cambiar_contrasenia(request):
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
 
-        usuario_a_modificar = request.user
-        username = usuario_a_modificar.get_username()
-        contrasenia_vieja = datos[KEY_CONTRASENIA_VIEJA]
-        contrasenia_nueva = datos[KEY_CONTRASENIA_NUEVA]
+        # Se comprueba que se enviaron los datos requeridos
+        if KEY_CONTRASENIA_VIEJA in datos:
+            contrasenia_vieja = datos[KEY_CONTRASENIA_VIEJA]
+        else:
+            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CAMBIAR_CONTRASENIA_VIEJA_FALTANTE)
+        if contrasenia_vieja == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CONTRASENIA_INCORRECTA)
+
+        if KEY_CONTRASENIA_NUEVA in datos:
+            contrasenia_nueva = datos[KEY_CONTRASENIA_NUEVA]
+        else:
+            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CAMBIAR_CONTRASENIA_NUEVA_FALTANTE)
+        if contrasenia_nueva == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CONTRASENIA_FORMATO_INCORRECTO)
+        elif not validar_contrasenia(password=contrasenia_nueva, user=request.user):
+            raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CONTRASENIA_FORMATO_INCORRECTO)
+
+        username = request.user.get_username()
 
         user = authenticate(username=username, password=contrasenia_vieja)
         if user is not None:
@@ -269,12 +322,12 @@ def cambiar_contrasenia(request):
             user.save()
 
             logout(request)
-            response.content = armar_response_content(None)
+            response.content = armar_response_content(None, DETALLE_CONTRASENIA_MODIFICADA_CORRECTAMENTE)
             response.status_code = 200
             return response
 
         else:
-            raise ValueError(ERROR_DATOS_INCORRECTOS, "Contrasenia incorrecta")
+            raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CONTRASENIA_INCORRECTA)
 
     except KeyError as err:
         if len(err.args) == 2:
@@ -313,6 +366,7 @@ def modificar_usuario(request):
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
 
+        # TODO validar datos como el registrarse
         usuario_a_modificar = request.user
 
         if KEY_USUARIO in datos:
@@ -455,20 +509,43 @@ def cambiar_contrasenia_recuperar_cuenta(request):
     datos = obtener_datos_json(request)
 
     try:
-        if KEY_CONTRASENIA_NUEVA not in datos:
-            raise KeyError(ERROR_DATOS_FALTANTES, "Falta el dato contrasenia")
-        contrasenia_nueva = datos[KEY_CONTRASENIA_NUEVA]
-        user = User.objects.get(username=datos[KEY_USUARIO])
+        if KEY_USUARIO in datos:
+            username = datos[KEY_USUARIO]
+        else:
+            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_USUARIO_FALTANTE)
+        if username == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_REGISTRACION_USUARIO_INCORRECTO)
+
+        user = User.objects.get(username=username)
+
+        if KEY_CONTRASENIA_NUEVA in datos:
+            contrasenia_nueva = datos[KEY_CONTRASENIA_NUEVA]
+        else:
+            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CAMBIAR_CONTRASENIA_NUEVA_FALTANTE)
+        if contrasenia_nueva == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CONTRASENIA_FORMATO_INCORRECTO)
+        elif not validar_contrasenia(password=contrasenia_nueva, user=user):
+            raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CONTRASENIA_FORMATO_INCORRECTO)
+
+        if KEY_CODIGO_VERIFICACION in datos:
+            codigo_verificacion = datos[KEY_CODIGO_VERIFICACION]
+        else:
+            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CODIGO_VERIFICACION_FALTANTE)
+        if codigo_verificacion == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CODIGO_VERIFICACION_INCORRECTO)
+
         usuario = user.datosusuario
-        if usuario.codigoVerificacion == datos[KEY_CODIGO_VERIFICACION]:
+        if usuario.codigoVerificacion == codigo_verificacion:
+
             user.set_password(contrasenia_nueva)
             user.save()
-            response_data = {KEY_RESULTADO_OPERACION: True}
-            response.content = armar_response_simple(response_data)
+
+            response.content = armar_response_content(None, DETALLE_CONTRASENIA_MODIFICADA_CORRECTAMENTE)
             response.status_code = 200
             return response
+
         else:
-            raise ValueError(ERROR_DATOS_INCORRECTOS, "No hay un usuario con esos datos")
+            raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CODIGO_VERIFICACION_INCORRECTO)
 
     except KeyError as err:
         if len(err.args) == 2:

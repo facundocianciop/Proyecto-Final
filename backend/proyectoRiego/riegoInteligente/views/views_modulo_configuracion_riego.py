@@ -1227,7 +1227,8 @@ def agregar_criterio_inicial_configuracion_riego_mecanismo_riego_finca_sector(re
                                  DETALLE_ERROR_CONFIGURACION_RIEGO_CANTIDAD_MAX_CRITERIO_INICIAL)
 
             # Comprobar que la configuracion elegida sea programada
-            tipo_configuracion_riego_programada = TipoConfiguracionRiego(nombre=TIPO_CONFIGURACION_RIEGO_PROGRAMADO)
+            tipo_configuracion_riego_programada = TipoConfiguracionRiego.objects.get(
+                nombre=TIPO_CONFIGURACION_RIEGO_PROGRAMADO)
             if not configuracion_riego_elegida.tipoConfiguracionRiego == tipo_configuracion_riego_programada:
                 raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CONFIGURACION_RIEGO_AUTOMATICA_CRITERIO)
 
@@ -1422,14 +1423,15 @@ def agregar_criterio_final_configuracion_riego_mecanismo_riego_finca_sector(requ
                 raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CONFIGURACION_RIEGO_INCORRECTA)
 
             # Comprobar que la configuracion riego no tiene maximo de criterios finales
-            criterios_riego_finales = CriterioRiego.objects.filter(
-                configuracionRiegoFinal=configuracion_riego_elegida, fecha_eliminacion_criterio=None)
-            if len(criterios_riego_finales) >= CANTIDAD_MAXIMA_CRITERIO_RIEGO_FINAL_CONFIGURACION_RIEGO:
+                cant_criterios_riego_finales = CriterioRiego.objects.filter(
+                configuracionRiegoFinal=configuracion_riego_elegida, fecha_eliminacion_criterio=None).count()
+            if cant_criterios_riego_finales >= CANTIDAD_MAXIMA_CRITERIO_RIEGO_FINAL_CONFIGURACION_RIEGO:
                 raise ValueError(ERROR_DATOS_INCORRECTOS,
                                  DETALLE_ERROR_CONFIGURACION_RIEGO_CANTIDAD_MAX_CRITERIO_FINAL)
 
             # Comprobar que la configuracion elegida sea programada
-            tipo_configuracion_riego_programada = TipoConfiguracionRiego(nombre=TIPO_CONFIGURACION_RIEGO_PROGRAMADO)
+            tipo_configuracion_riego_programada = TipoConfiguracionRiego.objects.get(
+                nombre=TIPO_CONFIGURACION_RIEGO_PROGRAMADO)
             if not configuracion_riego_elegida.tipoConfiguracionRiego == tipo_configuracion_riego_programada:
                 raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CONFIGURACION_RIEGO_AUTOMATICA_CRITERIO)
 
