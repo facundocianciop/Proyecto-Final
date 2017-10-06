@@ -918,16 +918,34 @@ class EstadoComponenteSensorSector(models.Model):
 
 
 class MedicionCabecera(models.Model):
-    OIDMedicionCabecera=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    fechaYHora=models.DateTimeField()
-    nroMedicion=models.IntegerField()
+    OIDMedicionCabecera = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    fechaYHora = models.DateTimeField()
+    nroMedicion = models.IntegerField(unique=True, default=1)
+    componenteSensorSector = models.ForeignKey("ComponenteSensorSector", db_column="OIDComponenteSensorSector",
+                                               related_name="medicionCabeceraList", null=True)
+
+
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        if MedicionCabecera.objects.all().__len__() == 0:
+            self.nroMedicion = 1
+            super(MedicionCabecera, self).save()
+        else:
+            if MedicionCabecera.objects.get(nroMedicion=self.nroMedicion) == self:
+                super(MedicionCabecera, self).save()
+            else:
+                ultimaMedicionCabecera = MedicionCabecera.objects.order_by('-nroMedicion')[0]
+                self.nroMedicion= ultimaMedicionCabecera.nroMedicion + 1
+                super(MedicionCabecera, self).save()
+
 
 
 class MedicionDetalle(models.Model):
-    OIDMedicionDetalle=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    nroRenglon=models.IntegerField()
-    valor=models.FloatField()
-    medicionCabecera=models.ForeignKey(MedicionCabecera,db_column="OIDMedicionCabecera",related_name="medicionDetalle")
+    OIDMedicionDetalle = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    nroRenglon = models.IntegerField()
+    valor = models.FloatField()
+    medicionCabecera = models.ForeignKey(MedicionCabecera,db_column="OIDMedicionCabecera", related_name="medicionDetalle")
+    tipoMedicion = models.ForeignKey("TipoMedicion", db_column="OIDTipoMedicion", null=True)
 
 
 #MODULO EVENTOS
@@ -1049,7 +1067,9 @@ class MedicionInformacionClimaticaCabecera(models.Model):
     nroMedicion=models.IntegerField(unique=True)
     fechaHora=models.DateTimeField()
 
-    proveedor_informacion_climatica_externa=models.ForeignKey(ProveedorInformacionClimaticaFinca,db_column="OIDProveedorInformacionClimaticaFinca",related_name="medicionInformacionClimaticaCabeceraList")
+    proveedor_informacion_climatica_externa=models.ForeignKey(ProveedorInformacionClimaticaFinca,
+                                                              db_column="OIDProveedorInformacionClimaticaFinca",
+                                                              related_name="medicionInformacionClimaticaCabeceraList")
 
 
 class MedicionInformacionClimaticaDetalle(models.Model):

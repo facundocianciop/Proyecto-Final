@@ -226,7 +226,7 @@ def aprobar_finca(request):
 @login_requerido
 @metodos_requeridos([METHOD_POST])
 def no_aprobar_finca(request):
-    response=HttpResponse()
+    response = HttpResponse()
     datos = obtener_datos_json(request)
     try:
         if datos == '':
@@ -236,7 +236,7 @@ def no_aprobar_finca(request):
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             if Finca.objects.filter(idFinca=datos[KEY_ID_FINCA]).__len__() == 1:
 
-                    finca_por_aprobar=Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+                    finca_por_aprobar = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
                     ultimo_historico = finca_por_aprobar.historicoEstadoFincaList.get(fechaFinEstadoFinca__isnull=True)
                     if ultimo_historico.estadoFinca.nombreEstadoFinca == ESTADO_NO_APROBADO:
                         raise ValueError(ERROR_FINCA_YA_DESAPROBADA, "Esta finca ya esta desaprobada")
