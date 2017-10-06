@@ -16,7 +16,7 @@ from views import views_modulo_configuracion_riego
 
 urlpatterns = [
 
-    url(r'^getName/$', views_administrador.get_name, name='getName'),
+    
 
     url(r'^crearFinca/$', views_modulo_finca.crear_finca, name='crearFinca'),
     url(r'^obtenerFincasEstadoPendiente/$', views_modulo_finca.obtener_fincas_estado_pendiente,
