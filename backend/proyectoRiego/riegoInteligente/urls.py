@@ -8,12 +8,16 @@ from views import views_modulo_sensores
 
 from views import views_obtencion_informacion_externa
 from views import views_modulo_interfaz_sensores
+from views import views_administrador
 
-
+from views import forms
 from views import views_modulo_configuracion_riego
 
 
 urlpatterns = [
+
+    url(r'^getName/$', views_administrador.get_name, name='getName'),
+
     url(r'^crearFinca/$', views_modulo_finca.crear_finca, name='crearFinca'),
     url(r'^obtenerFincasEstadoPendiente/$', views_modulo_finca.obtener_fincas_estado_pendiente,
         name='obtenerFincasEstadoPendiente'),
