@@ -156,3 +156,7 @@ TIPO_CONFIGURACION_RIEGO_AUTOMATICO = 'automatico'
 TIPO_CRITERIO_RIEGO_MEDICION = "criterio_riego_medicion"
 TIPO_CRITERIO_RIEGO_VOLUMEN_AGUA = "criterio_riego_volumen_agua"
 TIPO_CRITERIO_RIEGO_HORA = "criterio_riego_hora"
+
+
+KEY_LISTA_MEDICIONES = "listaMediciones"
+KEY_VALOR_MEDICION_SENSOR = "valorMedicion"
