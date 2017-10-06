@@ -31,8 +31,10 @@ def obtener_proveedor_finca(request):
             for tipo_medicion in lista_tipo_medicion:
                 lista_tipo_medicion_json.append(tipo_medicion.as_json())
             dto_proveedor_finca = DtoProveedorFinca(nombre_proveedor=proveedor.nombreProveedor,
-                                                    fecha_alta_proveedor_finca=proveedor_finca.fechaAltaProveedorInfoClimaticaFinca,
-                                                    lista_tipo_medicion=lista_tipo_medicion_json, url_api=proveedor.urlAPI,
+                                                    fecha_alta_proveedor_finca
+                                                    =proveedor_finca.fechaAltaProveedorInfoClimaticaFinca,
+                                                    lista_tipo_medicion=lista_tipo_medicion_json,
+                                                    url_api=proveedor.urlAPI,
                                                     frecuencia_maxima_posible=proveedor.frecuenciaMaxPosible,
                                                     frecuencia_actual=proveedor_finca.frecuencia)
             dto_proveedor_finca.lista_tipo_medicion = lista_tipo_medicion_json
