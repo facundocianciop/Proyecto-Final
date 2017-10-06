@@ -467,7 +467,8 @@ def obtener_configuraciones_riego_mecanismo_riego_finca_sector(request):
 @metodos_requeridos([METHOD_POST])
 def obtener_criterios_iniciales_configuracion_riego_mecanismo_riego_finca_sector(request):
     """
-    Obtener los criterios iniciales de una configuracion de riego
+    Obtener los criterios iniciales de una configuracion de riego (solo las 
+    configuraciones programadas tienen criterios, las automaticas no)
     :param request: idFinca, idMecanismoRiegoFincaSector, idConfiguracionRiego
     :return:
     """
@@ -545,7 +546,8 @@ def obtener_criterios_iniciales_configuracion_riego_mecanismo_riego_finca_sector
 @metodos_requeridos([METHOD_POST])
 def obtener_criterios_finales_configuracion_riego_mecanismo_riego_finca_sector(request):
     """
-    Obtener los criterios finales de una configuracion de riego
+    Obtener los criterios finales de una configuracion de riego (solo las 
+    configuraciones programadas tienen criterios, las automaticas no)
     :param request: idFinca, idMecanismoRiegoFincaSector, idConfiguracionRiego
     :return:
     """
@@ -1124,7 +1126,8 @@ def eliminar_configuracion_riego_mecanismo_riego_finca_sector(request):
 @metodos_requeridos([METHOD_POST])
 def agregar_criterio_inicial_configuracion_riego_mecanismo_riego_finca_sector(request):
     """
-    Agregar un criterio inicial a una configuracion de riego
+    Agregar un criterio inicial a una configuracion de riego (solo las 
+    configuraciones programadas tienen criterios, las automaticas no)
     :param request: idFinca, idMecanismoRiegoFincaSector, idConfiguracionRiego, tipoCriterioRiego, nombreCriterioRiego,
     descripcionCriterioRiego, (criterio medicion)idTipoMedicion, (criterio medicion) valorMedicionCriterioRiego,
     (criterio hora)horaInicioCriterioRiego, (criterio hora)diaInicioCriterioRiego
@@ -1316,7 +1319,8 @@ def agregar_criterio_inicial_configuracion_riego_mecanismo_riego_finca_sector(re
 @metodos_requeridos([METHOD_POST])
 def agregar_criterio_final_configuracion_riego_mecanismo_riego_finca_sector(request):
     """
-    Agregar un criterio final a una configuracion de riego
+    Agregar un criterio final a una configuracion de riego (solo las 
+    configuraciones programadas tienen criterios, las automaticas no)
     :param request: idFinca, idMecanismoRiegoFincaSector, idConfiguracionRiego, tipoCriterioRiego, nombreCriterioRiego,
     descripcionCriterioRiego, (criterio medicion)idTipoMedicion, (criterio medicion) valorMedicionCriterioRiego,
     (criterio volumen) volumenAguaCriterioRiego, (criterio hora)horaInicioCriterioRiego,
@@ -1531,7 +1535,8 @@ def agregar_criterio_final_configuracion_riego_mecanismo_riego_finca_sector(requ
 @metodos_requeridos([METHOD_POST])
 def eliminar_criterio_configuracion_riego_mecanismo_riego_finca_sector(request):
     """
-    Eliminar un criterio inicial a una configuracion de riego
+    Eliminar un criterio (inicial o final) de una configuracion de riego (solo las 
+    configuraciones programadas tienen criterios, las automaticas no)
     :param request: idFinca, idMecanismoRiegoFincaSector, idConfiguracionRiego, idCriterioRiego
     :return:
     """
@@ -1644,7 +1649,8 @@ def eliminar_criterio_configuracion_riego_mecanismo_riego_finca_sector(request):
 @metodos_requeridos([METHOD_POST])
 def modificar_criterio_configuracion_riego_mecanismo_riego_finca_sector(request):
     """
-    Modificar un criterio final a una configuracion de riego
+    Modificar un criterio (inicial o final) de una configuracion de riego (solo las 
+    configuraciones programadas tienen criterios, las automaticas no)
     :param request: idFinca, idMecanismoRiegoFincaSector, idConfiguracionRiego, tipoCriterioRiego, idCriterioRiego,
     nombreCriterioRiego, descripcionCriterioRiego, (criterio medicion)idTipoMedicion,
     (criterio medicion)valorMedicionCriterioRiego, (criterio volumen)volumenAguaCriterioRiego,
