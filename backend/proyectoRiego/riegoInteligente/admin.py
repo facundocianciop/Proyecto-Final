@@ -14,6 +14,7 @@ admin.site.register(TipoMecanismoRiego)
 admin.site.register(TipoMedicion)
 admin.site.register(ProveedorInformacionClimatica)
 admin.site.register(TipoMedicionClimatica)
+admin.site.register(TipoConfiguracionRiego)
 admin.site.register(Rol)
 
 
