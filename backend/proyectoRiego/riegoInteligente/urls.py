@@ -8,15 +8,15 @@ from views import views_modulo_sensores
 
 from views import views_obtencion_informacion_externa
 from views import views_modulo_interfaz_sensores
-from views import views_administrador
+# from views import views_administrador
 
-from views import forms
+# from views import forms
 from views import views_modulo_configuracion_riego
 
 
 urlpatterns = [
 
-    
+
 
     url(r'^crearFinca/$', views_modulo_finca.crear_finca, name='crearFinca'),
     url(r'^obtenerFincasEstadoPendiente/$', views_modulo_finca.obtener_fincas_estado_pendiente,
@@ -142,43 +142,41 @@ urlpatterns = [
 
     url(r'^obtenerConfiguracionesRiegoMecanismoRiegoFincaSector/$',
         views_modulo_configuracion_riego.obtener_configuraciones_riego_mecanismo_riego_finca_sector,
-        name='cancelarRiegoManualmente'),
+        name='obtenerConfiguracionesRiegoMecanismoRiegoFincaSector'),
     url(r'^obtenerCriteriosInicialesConfiguracionRiegoMecanismoRiegoFincaSector/$',
         views_modulo_configuracion_riego.obtener_criterios_iniciales_configuracion_riego_mecanismo_riego_finca_sector,
-        name='cancelarRiegoManualmente'),
+        name='obtenerCriteriosInicialesConfiguracionRiegoMecanismoRiegoFincaSector'),
     url(r'^obtenerCriteriosFinalesConfiguracionRiegoMecanismoRiegoFincaSector/$',
         views_modulo_configuracion_riego.obtener_criterios_finales_configuracion_riego_mecanismo_riego_finca_sector,
-        name='cancelarRiegoManualmente'),
+        name='obtenerCriteriosFinalesConfiguracionRiegoMecanismoRiegoFincaSector'),
     url(r'^crearConfiguracionRiegoAutomaticoMecanismoRiegoFincaSector/$',
         views_modulo_configuracion_riego.crear_configuracion_riego_automatico_mecanismo_riego_finca_sector,
-        name='cancelarRiegoManualmente'),
+        name='crearConfiguracionRiegoAutomaticoMecanismoRiegoFincaSector'),
     url(r'^crearConfiguracionRiegoManualMecanismoRiegoFincaSector/$',
         views_modulo_configuracion_riego.crear_configuracion_riego_manual_mecanismo_riego_finca_sector,
-        name='cancelarRiegoManualmente'),
+        name='crearConfiguracionRiegoManualMecanismoRiegoFincaSector'),
     url(r'^cambiarEstadoConfiguracionRiegoMecanismoRiegoFincaSector/$',
         views_modulo_configuracion_riego.cambiar_estado_configuracion_riego_mecanismo_riego_finca_sector,
-        name='cancelarRiegoManualmente'),
+        name='cambiarEstadoConfiguracionRiegoMecanismoRiegoFincaSector'),
     url(r'^modificarConfiguracionRiegoMecanismoRiegoFincaSector/$',
         views_modulo_configuracion_riego.modificar_configuracion_riego_mecanismo_riego_finca_sector,
-        name='cancelarRiegoManualmente'),
+        name='modificarConfiguracionRiegoMecanismoRiegoFincaSector'),
     url(r'^eliminarConfiguracionRiegoMecanismoRiegoFincaSector/$',
         views_modulo_configuracion_riego.eliminar_configuracion_riego_mecanismo_riego_finca_sector,
-        name='cancelarRiegoManualmente'),
+        name='eliminarConfiguracionRiegoMecanismoRiegoFincaSector'),
     url(r'^agregarCriterioInicialConfiguracionRiegoMecanismoRiegoFincaSector/$',
         views_modulo_configuracion_riego.agregar_criterio_inicial_configuracion_riego_mecanismo_riego_finca_sector,
-        name='cancelarRiegoManualmente'),
+        name='agregarCriterioInicialConfiguracionRiegoMecanismoRiegoFincaSector'),
     url(r'^agregarCriterioFinalConfiguracionRiegoMecanismoRiegoFincaSector/$',
         views_modulo_configuracion_riego.agregar_criterio_final_configuracion_riego_mecanismo_riego_finca_sector,
-        name='cancelarRiegoManualmente'),
+        name='agregarCriterioFinalConfiguracionRiegoMecanismoRiegoFincaSector'),
     url(r'^eliminarCriterioConfiguracionRiegoMecanismoRiegoFincaSector/$',
         views_modulo_configuracion_riego.eliminar_criterio_configuracion_riego_mecanismo_riego_finca_sector,
-        name='cancelarRiegoManualmente'),
+        name='eliminarCriterioConfiguracionRiegoMecanismoRiegoFincaSector'),
     url(r'^modificarCriterioConfiguracionRiegoMecanismoRiegoFincaSector/$',
         views_modulo_configuracion_riego.modificar_criterio_configuracion_riego_mecanismo_riego_finca_sector,
-        name='cancelarRiegoManualmente'),
+        name='modificarCriterioConfiguracionRiegoMecanismoRiegoFincaSector'),
 
     url(r'^recibirMedicion/$', views_modulo_interfaz_sensores.recibir_medicion,
         name='recibirMedicion')
-
-
 ]

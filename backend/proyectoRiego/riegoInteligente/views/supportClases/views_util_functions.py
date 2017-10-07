@@ -1,5 +1,7 @@
 import string
 import random
+import re
+
 # noinspection PyUnresolvedReferences
 from json import loads, dumps
 from datetime import datetime
@@ -83,3 +85,14 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
 
 def parsear_datos_fecha(fecha_string):
     return datetime.strptime(fecha_string, "%Y-%m-%d")
+
+
+def validate_regex(expresion_a_evaluar, pattern, detalle_error):
+    try:
+        pattern = re.compile(pattern=pattern)
+        pattern.match(expresion_a_evaluar)
+        if pattern.match(expresion_a_evaluar) is None:
+            raise ValueError(ERROR_VALIDACION_DATOS, detalle_error)
+
+    except re.error:
+        raise ValueError(ERROR_VALIDACION_DATOS, detalle_error)

@@ -11,6 +11,7 @@ ERROR_LOGOUT_FALLIDO = 'ERROR_LOGOUT_FALLIDO'
 ERROR_DE_SISTEMA = 'ERROR_DE_SISTEMA'
 ERROR_METODO_INCORRECTO = 'ERROR_METODO_INCORRECTO'
 ERROR_DATOS_INCORRECTOS = 'ERROR_DATOS_INCORRECTOS'
+ERROR_VALIDACION_DATOS = 'ERROR_VALIDACION_DATOS'
 ERROR_DATOS_FALTANTES = 'ERROR_DATOS_FALTANTES'
 ERROR_CREDENCIALES_INCORRECTAS = 'ERROR_CREDENCIALES_INCORRECTAS'
 
@@ -67,14 +68,14 @@ ERROR_EJECUCION_RIEGO = "ERROR_EJECUCION_RIEGO"
 
 # Detalle errores
 
-DETALLE_ERROR_DESCONOCIDO = "error_desconocido"
-DETALLE_ERROR_DATOS_INCOMPLETOS = "faltan_ingresar_datos"
-DETALLE_ERROR_DATOS_INCORRECTOS = "datos_incorrectos"
-DETALLE_ERROR_SISTEMA = "error_procesando_llamada"
+DETALLE_ERROR_DESCONOCIDO = "Error desconocido"
+DETALLE_ERROR_DATOS_INCOMPLETOS = "Faltan ingresar datos"
+DETALLE_ERROR_DATOS_INCORRECTOS = "Datos incorrectos"
+DETALLE_ERROR_SISTEMA = "Error procesando llamada"
 
 # Modulo seguridad
-DETALLE_ERROR_LOG_OUT_FALLIDO = 'log_out_fallo'
-DETALLE_ERROR_TIPO_SESION_DATOS_FALTANTES = 'faltan datos de tipo de sesion'
+DETALLE_ERROR_LOG_OUT_FALLIDO = 'Log out fallo'
+DETALLE_ERROR_TIPO_SESION_DATOS_FALTANTES = 'Faltan datos de tipo de sesion'
 
 DETALLE_ERROR_REGISTRACION_USUARIO_EXISTENTE = 'Usuario ya existe en el sistema'
 DETALLE_ERROR_REGISTRACION_USUARIO_FALTANTE = 'Falta ingresar usuario'
@@ -102,24 +103,26 @@ DETALLE_ERROR_CONTRASENIA_FORMATO_INCORRECTO = 'Formato contraseña incorrecto: 
                                                     ' no puede ser solo numérica'
 
 DETALLE_ERROR_CAMBIAR_CONTRASENIA_VIEJA_FALTANTE = 'Falta ingresar contraseña actual'
-DETALLE_ERROR_CAMBIAR_CONTRASENIA_NUEVA_FALTANTE = 'Falta ingresar contraseña vieja'
+DETALLE_ERROR_CAMBIAR_CONTRASENIA_NUEVA_FALTANTE = 'Falta ingresar contraseña nueva'
 
 DETALLE_ERROR_CODIGO_VERIFICACION_FALTANTE = 'Falta ingresar codigo de verificacion'
 DETALLE_ERROR_CODIGO_VERIFICACION_INCORRECTO = 'Codigo de verificacion incorrecto'
 
 # Modulo configuracion riego
-DETALLE_ERROR_EJECUION_RIEGO = "fallo_ejecucion_riego"
-DETALLE_ERROR_DETENCION_RIEGO = "fallo_detencion_riego"
+DETALLE_ERROR_EJECUION_RIEGO = "Ejecucion de riego fallo"
+DETALLE_ERROR_DETENCION_RIEGO = "Detencion de riego fallo"
 
-DETALLE_ERROR_MODIFICACION_CONFIGURACION_RIEGO = 'configuracion_riego_ya_fue_eliminada'
-DETALLE_ERROR_CONFIGURACION_RIEGO_INCORRECTA = 'configuracion_riego_incorrecta'
-DETALLE_ERROR_RELACION_CONFIGURACION_RIEGO_CRITERIO = 'criterio_riego_no_se_corresponde_con_configuracion'
-DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INCORRECTO = 'tipo_criterio_riego_incorrecto'
-DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INICIAL_INCORRECTO = 'tipo_criterio_riego_no_valido_como_criterio_inicial'
-DETALLE_ERROR_TIPO_CRITERIO_RIEGO_FINAL_INCORRECTO = 'tipo_criterio_riego_no_valido_como_criterio_final'
-DETALLE_ERROR_CONFIGURACION_RIEGO_AUTOMATICA_CRITERIO = 'a_configuracion_automatica_no_se_le_pueden_asignar_criterios'
-DETALLE_ERROR_CONFIGURACION_RIEGO_CANTIDAD_MAX_CRITERIO_INICIAL = 'cantidad_maxima_criterios_iniciales_alcanzada'
-DETALLE_ERROR_CONFIGURACION_RIEGO_CANTIDAD_MAX_CRITERIO_FINAL = 'cantidad_maxima_criterios_finales_alcanzada'
+DETALLE_ERROR_MODIFICACION_CONFIGURACION_RIEGO = 'La configuracion de riego ya fue eliminada'
+DETALLE_ERROR_CONFIGURACION_RIEGO_INCORRECTA = 'La configuracion de riego es incorrecta'
+DETALLE_ERROR_RELACION_CONFIGURACION_RIEGO_CRITERIO = 'El criterio de riego no se corresponde con la configuracion'
+DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INCORRECTO = 'El tipo de criterio riego es incorrecto'
+DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INICIAL_INCORRECTO = 'El tipo de criterio riego no es valido como criterio inicial'
+DETALLE_ERROR_TIPO_CRITERIO_RIEGO_FINAL_INCORRECTO = 'El tipo de criterio riego no es valido como criterio final'
+DETALLE_ERROR_CONFIGURACION_RIEGO_AUTOMATICA_CRITERIO = 'A una configuracion de riego automatica no se le pueden' \
+                                                        'asignar criterios'
+DETALLE_ERROR_CONFIGURACION_RIEGO_CANTIDAD_MAX_CRITERIO_INICIAL = 'La cantidad maxima de criterios iniciales fue ' \
+                                                                  'alcanzada'
+DETALLE_ERROR_CONFIGURACION_RIEGO_CANTIDAD_MAX_CRITERIO_FINAL = 'La cantidad maxima de criterios finales fue alcanzada'
 
 
 # Constantes Keys

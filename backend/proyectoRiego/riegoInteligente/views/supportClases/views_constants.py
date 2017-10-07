@@ -102,6 +102,42 @@ KEY_DIA_INICIO_CRITERIO_RIEGO = 'diaInicioCriterioRiego'
 # Obtencion informacion externa
 KEY_FRECUENCIA = 'frecuencia'
 
+# Mediciones
+KEY_LISTA_MEDICIONES = "listaMediciones"
+KEY_VALOR_MEDICION_SENSOR = "valorMedicion"
+
+
+# Detalle operaciones
+
+DETALLE_OPERACION_VACIA = "no_hay_datos"
+
+# Detalle operacion seguridad
+DETALLE_REGISTRACION_USUARIO_CREADO_CORRECTAMENTE = "Usuario creado correctamente"
+DETALLE_REGISTRACION_USUARIO_MODIFICADO_CORRECTAMENTE = "Usuario modificado correctamente"
+
+DETALLE_CONTRASENIA_MODIFICADA_CORRECTAMENTE = 'Contraseña modificada correctamente'
+
+DETALLE_RECUPERAR_CUENTA_EJECUTADA = "Recuperar cuenta se ejecuto correctamente"
+
+# Detalle operacion riego
+DETALLE_RIEGO_EJECUCION_EN_PROCESO = "El riego ya se esta ejecutando"
+DETALLE_RIEGO_YA_PAUSADO = "El riego ya esta pausado"
+DETALLE_RIEGO_INICIADO = "El riego fue iniciado correctamente"
+DETALLE_RIEGO_PAUSADO = "El riego fue pausado correctamente"
+DETALLE_RIEGO_REANUDADO = "El riego fue reanudado correctamente"
+DETALLE_RIEGO_CANCELADO = "El riego fue cancelado correctamente"
+DETALLE_RIEGO_NO_ACTIVO = "No hay riego activo"
+
+# Detalle criterio riego
+DETALLE_CRITERIO_RIEGO_CREADO = 'El criterio de riego fue creado'
+DETALLE_CRITERIO_RIEGO_MODIFICADO = 'El criterio de riego fue modificado'
+DETALLE_CRITERIO_RIEGO_ELIMINADO = 'El criterio de riego fue eliminado'
+
+
+# Expresiones regulares
+
+REGEX_CUIT = '/^\d{2}\-\d{8}\-\d{1}$/'
+
 
 # Estados
 
@@ -122,41 +158,13 @@ ESTADO_CANCELADO = 'cancelado'
 ESTADO_PAUSADO = 'pausado'
 
 
-# Detalle operaciones
-
-DETALLE_OPERACION_VACIA = "no_hay_datos"
-
-# Detalle operacion seguridad
-DETALLE_REGISTRACION_USUARIO_CREADO_CORRECTAMENTE = "Usuario creado correctamente"
-
-DETALLE_CONTRASENIA_MODIFICADA_CORRECTAMENTE = 'Contraseña modificada correctamente'
-
-DETALLE_RECUPERAR_CUENTA_EJECUTADA = "Recuperar cuenta se ejecuto correctamente"
-
-# Detalle operacion riego
-DETALLE_RIEGO_EJECUCION_EN_PROCESO = "riego_ya_se_esta_ejecutando"
-DETALLE_RIEGO_YA_PAUSADO = "riego_ya_esta_pausado"
-DETALLE_RIEGO_INICIADO = "riego_iniciado_correctamente"
-DETALLE_RIEGO_PAUSADO = "riego_pausado_correctamente"
-DETALLE_RIEGO_REANUDADO = "riego_reanudado_correctamente"
-DETALLE_RIEGO_CANCELADO = "riego_cancelado_correctamente"
-DETALLE_RIEGO_NO_ACTIVO = "riego_no_hay_riego_activo"
-
-# Detalle criterio riego
-DETALLE_CRITERIO_RIEGO_CREADO = 'criterio_riego_creado'
-DETALLE_CRITERIO_RIEGO_MODIFICADO = 'criterio_riego_modificado'
-DETALLE_CRITERIO_RIEGO_ELIMINADO = 'criterio_riego_eliminado'
-
-
 # Tipos configuracion riego
+
 TIPO_CONFIGURACION_RIEGO_PROGRAMADO = 'programado'
 TIPO_CONFIGURACION_RIEGO_AUTOMATICO = 'automatico'
 
 # Tipos de criterio riego
+
 TIPO_CRITERIO_RIEGO_MEDICION = "criterio_riego_medicion"
 TIPO_CRITERIO_RIEGO_VOLUMEN_AGUA = "criterio_riego_volumen_agua"
 TIPO_CRITERIO_RIEGO_HORA = "criterio_riego_hora"
-
-
-KEY_LISTA_MEDICIONES = "listaMediciones"
-KEY_VALOR_MEDICION_SENSOR = "valorMedicion"

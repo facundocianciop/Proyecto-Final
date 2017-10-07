@@ -21,11 +21,8 @@ def user_logged_in_handler(sender, request, user, **kwargs):
 
     if user.is_staff:
         # Definir tiempo de sesion para administrador
-        request.session.set_expiry(SESSION_EXPIRATION_TIME)
-    else:
-        # Definir tipo de sesion para otros usuarios
         request.session.set_expiry(ADMIN_USER_SESSION_EXPIRATION_TIME)
-
+    else:
         # Controlar que se envie el tipo de sesion
         if KEY_TIPO_SESION in datos:
             id_tipo_sesion = datos[KEY_TIPO_SESION]
@@ -36,6 +33,16 @@ def user_logged_in_handler(sender, request, user, **kwargs):
 
         try:
             tipo_sesion = TipoSesion.objects.get(idTipo=id_tipo_sesion)
+
+            if tipo_sesion.idTipo == 0:
+                # Definir tipo de sesion para otros usuarios movil
+                request.session.set_expiry(SESSION_EXPIRATION_TIME_MOVIL)
+            elif tipo_sesion.idTipo == 1:
+                # Definir tipo de sesion para otros usuarios web
+                request.session.set_expiry(SESSION_EXPIRATION_TIME_WEB)
+            else:
+                request.session.set_expiry(SESSION_EXPIRATION_TIME_DEFAULT)
+
         except TipoSesion.DoesNotExist:
             raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_TIPO_SESION_DATOS_FALTANTES)
 

@@ -66,37 +66,33 @@ def registrar_usuario(request):
             raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_REGISTRACION_APELLIDO_INCORRECTO)
 
         # Se comprueba si se mandan los datos no obligatorios
+        dni = None
         if KEY_DNI in datos:
-            dni = int(datos[KEY_DNI])
-        else:
-            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_DNI_FALTANTE)
+            dni = datos[KEY_DNI]
+            if dni.isdigit():
+                dni = int(dni)
+            else:
+                raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_DNI_INCORRECTO)
 
+        cuit = None
         if KEY_CUIT in datos:
-            cuit = int(datos[KEY_CUIT])
-        else:
-            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_CUIT_FALTANTE)
+            cuit = str(datos[KEY_CUIT])
+            validate_regex(cuit, REGEX_CUIT, DETALLE_ERROR_REGISTRACION_CUIT_INCORRECTO)
 
+        domicilio = None
         if KEY_DOMICILIO in datos:
             domicilio = datos[KEY_DOMICILIO]
-        else:
-            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_DOMICILIO_FALTANTE)
 
+        fecha_nacimiento = None
         if KEY_FECHA_NACIMIENTO in datos:
             if datos[KEY_FECHA_NACIMIENTO] != '':
                 fecha_nacimiento = parsear_datos_fecha(datos[KEY_FECHA_NACIMIENTO])
-            else:
-                fecha_nacimiento = None
-        else:
-            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_FECHA_NACIMIENTO_FALTANTE)
 
+        imagen_usuario = None
         if KEY_IMAGEN_USUARIO in datos:
             if datos[KEY_IMAGEN_USUARIO] != '':
                 # TODO Validar tipo de archivo imagen
                 imagen_usuario = datos[KEY_IMAGEN_USUARIO]
-            else:
-                imagen_usuario = None
-        else:
-            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_IMAGEN_FALTANTE)
 
         # Se comprueba que el usuario ingresado no exista en el sistema
         if User.objects.filter(username=datos[KEY_USUARIO]).__len__() >= 1:
@@ -115,11 +111,16 @@ def registrar_usuario(request):
         user.last_name = last_name
 
         user.datosusuario.historicoEstadoUsuarioList.add(historico)
-        user.datosusuario.cuit = cuit
-        user.datosusuario.dni = dni
-        user.datosusuario.domicilio = domicilio
-        user.datosusuario.fechaNacimiento = fecha_nacimiento
-        user.datosusuario.imagenUsuario = imagen_usuario
+        if cuit:
+            user.datosusuario.cuit = cuit
+        if dni:
+            user.datosusuario.dni = dni
+        if domicilio:
+            user.datosusuario.domicilio = domicilio
+        if fecha_nacimiento:
+            user.datosusuario.fechaNacimiento = fecha_nacimiento
+        if imagen_usuario:
+            user.datosusuario.imagenUsuario = imagen_usuario
 
         user.datosusuario.save()
         user.save()
@@ -366,48 +367,84 @@ def modificar_usuario(request):
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
 
-        # TODO validar datos como el registrarse
-        usuario_a_modificar = request.user
-
-        if KEY_USUARIO in datos:
-            usuario_a_modificar.username = datos[KEY_USUARIO]
-        else:
-            raise ValueError(ERROR_DATOS_INCORRECTOS, "Falta ingresar usuario")
-
+        # Comprobar que se mandaron los datos obligatorios
         if KEY_EMAIL in datos:
-            usuario_a_modificar.email = datos[KEY_EMAIL]
+            email = datos[KEY_EMAIL]
         else:
-            raise ValueError(ERROR_DATOS_INCORRECTOS, "Falta ingresar email")
+            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_EMAIL_FALTANTE)
+        if email == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_REGISTRACION_EMAIL_INCORRECTO)
+        if not validar_email(email):
+            raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_EMAIL_INCORRECTO)
+
+        if KEY_CONTRASENIA in datos:
+            contrasenia = datos[KEY_CONTRASENIA]
+        else:
+            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_CONTRASENIA_FALTANTE)
+        if contrasenia == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CONTRASENIA_FORMATO_INCORRECTO)
+        elif not validar_contrasenia(password=contrasenia, user=None):
+            raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CONTRASENIA_FORMATO_INCORRECTO)
 
         if KEY_NOMBRE_USUARIO in datos:
-            usuario_a_modificar.first_name = datos[KEY_NOMBRE_USUARIO]
+            first_name = datos[KEY_NOMBRE_USUARIO]
         else:
-            raise ValueError(ERROR_DATOS_INCORRECTOS, "Falta ingresar nombre")
+            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_NOMBRE_FALTANTE)
+        if first_name == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_REGISTRACION_NOMBRE_INCORRECTO)
 
         if KEY_APELLIDO_USUARIO in datos:
-            usuario_a_modificar.last_name = datos[KEY_APELLIDO_USUARIO]
+            last_name = datos[KEY_APELLIDO_USUARIO]
         else:
-            raise ValueError(ERROR_DATOS_INCORRECTOS, "Falta ingresar apellido")
+            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_APELLIDO_FALTANTE)
+        if last_name == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_REGISTRACION_APELLIDO_INCORRECTO)
 
+        # Se comprueba si se mandan los datos no obligatorios
+        dni = None
         if KEY_DNI in datos:
-            usuario_a_modificar.datosusuario.dni = int(datos[KEY_DNI])
+            dni = int(datos[KEY_DNI])
 
+        cuit = None
         if KEY_CUIT in datos:
-            usuario_a_modificar.datosusuario.cuit = int(datos[KEY_CUIT])
+            cuit = int(datos[KEY_CUIT])
 
+        domicilio = None
         if KEY_DOMICILIO in datos:
-            usuario_a_modificar.datosusuario.domicilio = datos[KEY_DOMICILIO]
+            domicilio = datos[KEY_DOMICILIO]
 
+        fecha_nacimiento = None
         if KEY_FECHA_NACIMIENTO in datos:
-            usuario_a_modificar.datosusuario.fechaNacimiento = datos[KEY_FECHA_NACIMIENTO]
+            if datos[KEY_FECHA_NACIMIENTO] != '':
+                fecha_nacimiento = parsear_datos_fecha(datos[KEY_FECHA_NACIMIENTO])
 
+        imagen_usuario = None
         if KEY_IMAGEN_USUARIO in datos:
-            usuario_a_modificar.datosusuario.imagenUsuario = datos[KEY_IMAGEN_USUARIO]
+            if datos[KEY_IMAGEN_USUARIO] != '':
+                # TODO Validar tipo de archivo imagen
+                imagen_usuario = datos[KEY_IMAGEN_USUARIO]
+
+        usuario_a_modificar = request.user
+
+        usuario_a_modificar.email = datos[KEY_EMAIL]
+        usuario_a_modificar.first_name = datos[KEY_NOMBRE_USUARIO]
+        usuario_a_modificar.last_name = datos[KEY_APELLIDO_USUARIO]
+
+        if cuit:
+            usuario_a_modificar.datosusuario.cuit = cuit
+        if dni:
+            usuario_a_modificar.datosusuario.dni = dni
+        if domicilio:
+            usuario_a_modificar.datosusuario.domicilio = domicilio
+        if fecha_nacimiento:
+            usuario_a_modificar.datosusuario.fechaNacimiento = fecha_nacimiento
+        if imagen_usuario:
+            usuario_a_modificar.datosusuario.imagenUsuario = imagen_usuario
 
         usuario_a_modificar.datosusuario.save()
         usuario_a_modificar.save()
 
-        response.content = armar_response_content(None)
+        response.content = armar_response_content(usuario_a_modificar, )
         response.status_code = 200
 
         return response
