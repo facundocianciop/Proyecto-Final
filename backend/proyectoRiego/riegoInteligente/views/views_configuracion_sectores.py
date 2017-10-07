@@ -597,6 +597,45 @@ def mostrar_cultivo_sector_historico(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+def mostrar_componente_sensor_sector(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if (KEY_ID_SECTOR in datos):
+            if datos[KEY_ID_SECTOR] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
+                raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encuentra un sector con ese id")
+            estado_sector_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
+            sector_seleccionado = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
+            if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_sector_habilitado,
+                                                    fechaFinEstadoSector__isnull=True).__len__() != 1:
+                raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
+            if sector_seleccionado.componentesensorsector_set.filter(habilitado=True).__len__() == 0:
+                response.content = armar_response_content(None)
+                response.status_code = 200
+                return response
+            componente_sensor_sector = sector_seleccionado.componentesensorsector_set.get(habilitado=True)
+            componente_sensor = componente_sensor_sector.componente_sensor
+            response.content = armar_response_content(componente_sensor)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except ValueError as err:
+        print err.args
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
 def asignar_componente_sensor(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)

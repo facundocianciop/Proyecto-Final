@@ -958,7 +958,9 @@ class MedicionEvento(models.Model):
     #     ordering = ['valorMinimo']
     #     abstract = True# CON ESTO HACEMOS Q LA CLASE SEA ABSTRACTA
 
-    configuracionEventoPersonalizado=models.ForeignKey('EventoPersonalizado',db_column="OIDConfiguracionEventoPersonalizado",related_name="medicionEventoList")
+    configuracionEventoPersonalizado = models.ForeignKey('ConfiguracionEventoPersonalizado',
+                                                         db_column="OIDConfiguracionEventoPersonalizado",
+                                                         related_name="medicionEventoList")
 
 
 class MedicionFuenteInterna(MedicionEvento):
@@ -968,18 +970,40 @@ class MedicionFuenteInterna(MedicionEvento):
     tipoMedicion = models.ForeignKey('TipoMedicion',db_column="OIDTipoMedicion")
 
 
+    def as_json(self):
+        return dict(valor_maximo=self.valorMaximo,
+                    valor_minimo=self.valorMinimo,
+                    tipo_medicion=self.tipoMedicion.nombreTipoMedicion)
+
 class ConfiguracionEventoPersonalizado(models.Model):
     OIDConfiguracionEventoPersonalizado = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    idConfiguracion = models.IntegerField(unique=True)
+    idConfiguracion = models.IntegerField(unique=True, default=1)
     nombre = models.CharField(max_length=20)
     descripcion = models.CharField(max_length=100)
     notificacionActivada = models.BooleanField()
     fechaAltaConfiguracionEventoPersonalizado = models.DateTimeField()
     fechaBajaConfiguracionEventoPersonalizado = models.DateTimeField(null=True)
     fechaHoraCreacion = models.DateTimeField()
+    activado = models.BooleanField(default=False)
 
+    sector = models.ForeignKey(Sector, db_column="OIDSector", related_name="configuracionEventoList", null=True)
     usuario_finca = models.ForeignKey(UsuarioFinca, db_column="OIDUsuarioFinca",
-                                              related_name="usuarioFinca")
+                                              related_name="configuracionEventoList")
+
+
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        if ConfiguracionEventoPersonalizado.objects.all().__len__() == 0:
+            self.idConfiguracion = 1
+            super(ConfiguracionEventoPersonalizado, self).save()
+        else:
+            if ConfiguracionEventoPersonalizado.objects.get(idConfiguracion=self.idConfiguracion) == self:
+                super(ConfiguracionEventoPersonalizado, self).save()
+            else:
+                ultimaConfiguracionEventoPersonalizado = ConfiguracionEventoPersonalizado.objects.order_by('-idConfiguracion')[0]
+                self.idConfiguracion = ultimaConfiguracionEventoPersonalizado.idConfiguracion + 1
+                super(ConfiguracionEventoPersonalizado, self).save()
+
 
 
 class EventoPersonalizado(models.Model):
@@ -1056,9 +1080,15 @@ class ProveedorInformacionClimatica(models.Model):
 
 class MedicionEstadoExterno(MedicionEvento):
     #HERENCIA
-    tipo_medicion_climatica=models.ForeignKey(TipoMedicionClimatica,db_column="OIDTipoMedicionClimatica")
+    tipoMedicion = models.ForeignKey(TipoMedicionClimatica,db_column="OIDTipoMedicionClimatica")
     # class Meta(MedicionEvento.Meta):
     #     db_table = "MedicionEstadoExterno"
+
+
+    def as_json(self):
+        return dict(valor_maximo=self.valorMaximo,
+                    valor_minimo=self.valorMinimo,
+                    tipo_medicion=self.tipoMedicion.nombreTipoMedicionClimatica)
 
 
 
