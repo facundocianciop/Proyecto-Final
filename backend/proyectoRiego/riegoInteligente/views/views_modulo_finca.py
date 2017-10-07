@@ -171,17 +171,19 @@ def obtener_fincas_estado_pendiente(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
-def aprobar_finca(request):
+def aprobar_finca(request, idFinca):
     response=HttpResponse()
     datos = obtener_datos_json(request)
+    if request.user.is_staff == False:
+        raise ValueError(ERROR_NO_TIENE_PERMISOS, "El usuario no tiene permisos para acceder a esta pagina")
     try:
-        if datos == '':
-            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_ID_FINCA) in datos:
-            if datos[KEY_ID_FINCA] == '':
-                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-            if Finca.objects.filter(idFinca=datos[KEY_ID_FINCA]).__len__() == 1:
-                    finca_por_aprobar = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+        # if datos == '':
+        #     raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        # if (KEY_ID_FINCA) in datos:
+        #     if datos[KEY_ID_FINCA] == '':
+        #         raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if Finca.objects.filter(idFinca=idFinca).__len__() == 1:
+                    finca_por_aprobar = Finca.objects.get(idFinca=idFinca)
                     ultimo_historico = finca_por_aprobar.historicoEstadoFincaList.get(fechaFinEstadoFinca__isnull=True)
                     if ultimo_historico.estadoFinca.nombreEstadoFinca == ESTADO_HABILITADO:
                         raise ValueError(ERROR_FINCA_YA_APROBADA, "Esta finca ya esta aprobada")
@@ -214,29 +216,23 @@ def aprobar_finca(request):
                     return response
             else:
                 raise ValueError(ERROR_FINCA_NO_ENCONTRADA, "No se encontro la finca seleccionada")
-        else:
-            raise ValueError(ERROR_DATOS_FALTANTES,"Datos incompletos")
     except ValueError as err:
         return build_bad_request_error(response, err.args[0], err.args[1])
-    except (IntegrityError, TypeError, KeyError):
+    except (IntegrityError, TypeError, KeyError)as err:
+        print err.args
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
-def no_aprobar_finca(request):
+def no_aprobar_finca(request, idFinca):
     response = HttpResponse()
-    datos = obtener_datos_json(request)
+    if request.user.is_staff == False:
+        raise ValueError(ERROR_NO_TIENE_PERMISOS, "El usuario no tiene permisos para acceder a esta pagina")
     try:
-        if datos == '':
-            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_ID_FINCA) in datos:
-            if datos[KEY_ID_FINCA] == '':
-                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-            if Finca.objects.filter(idFinca=datos[KEY_ID_FINCA]).__len__() == 1:
-
-                    finca_por_aprobar = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+            if Finca.objects.filter(idFinca=idFinca).__len__() == 1:
+                    finca_por_aprobar = Finca.objects.get(idFinca=idFinca)
                     ultimo_historico = finca_por_aprobar.historicoEstadoFincaList.get(fechaFinEstadoFinca__isnull=True)
                     if ultimo_historico.estadoFinca.nombreEstadoFinca == ESTADO_NO_APROBADO:
                         raise ValueError(ERROR_FINCA_YA_DESAPROBADA, "Esta finca ya esta desaprobada")
@@ -247,9 +243,11 @@ def no_aprobar_finca(request):
                     historico_viejo.fechaFinEstadoFinca = datetime.now()
                     historico_viejo.save()
                     historico_nuevo=HistoricoEstadoFinca(estadoFinca=estado_no_aprobada,finca=finca_por_aprobar,
-                                                         fechaInicioEstadoFinca=datetime.now())
-                    finca_por_aprobar.historicoEstadoFincaList.add(historico_nuevo)
+                                                fechaInicioEstadoFinca=datetime.now())
+                    historico_nuevo.save()
                     finca_por_aprobar.save()
+                    #finca_por_aprobar.historicoEstadoFincaList.add(historico_nuevo)
+
                     usuario_finca = UsuarioFinca.objects.get(finca=finca_por_aprobar)
                     # with mail.get_connection() as connection:
                     #     mail.EmailMessage('SmartFarming: Estado de Aprobación de su finca',body=datos['mail'],from1='facundocianciop',
@@ -261,9 +259,8 @@ def no_aprobar_finca(request):
                     return response
             else:
                 raise ValueError(ERROR_FINCA_NO_ENCONTRADA, "No se encontro la finca seleccionada")
-        else:
-            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
     except ValueError as err:
+        print err.args
         return build_bad_request_error(response, err.args[0], err.args[1])
     except (IntegrityError, TypeError, KeyError):
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
