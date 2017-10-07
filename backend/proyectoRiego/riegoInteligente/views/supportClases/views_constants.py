@@ -1,3 +1,5 @@
+# coding=utf-8
+
 # Constantes Metodos
 
 METHOD_PUT = 'PUT'
@@ -8,7 +10,7 @@ METHOD_DELETE = 'DELETE'
 
 # Constantes Dictionary Keys
 
-KEY_TIPO_SESION = 'tipoSesion'
+KEY_TIPO_SESION = 'idTipoSesion'
 
 KEY_RESULTADO_OPERACION = 'resultado'
 KEY_DETALLE_OPERACION = 'detalle_operacion'
@@ -124,6 +126,13 @@ ESTADO_PAUSADO = 'pausado'
 
 DETALLE_OPERACION_VACIA = "no_hay_datos"
 
+# Detalle operacion seguridad
+DETALLE_REGISTRACION_USUARIO_CREADO_CORRECTAMENTE = "Usuario creado correctamente"
+
+DETALLE_CONTRASENIA_MODIFICADA_CORRECTAMENTE = 'Contraseña modificada correctamente'
+
+DETALLE_RECUPERAR_CUENTA_EJECUTADA = "Recuperar cuenta se ejecuto correctamente"
+
 # Detalle operacion riego
 DETALLE_RIEGO_EJECUCION_EN_PROCESO = "riego_ya_se_esta_ejecutando"
 DETALLE_RIEGO_YA_PAUSADO = "riego_ya_esta_pausado"
@@ -147,3 +156,7 @@ TIPO_CONFIGURACION_RIEGO_AUTOMATICO = 'automatico'
 TIPO_CRITERIO_RIEGO_MEDICION = "criterio_riego_medicion"
 TIPO_CRITERIO_RIEGO_VOLUMEN_AGUA = "criterio_riego_volumen_agua"
 TIPO_CRITERIO_RIEGO_HORA = "criterio_riego_hora"
+
+
+KEY_LISTA_MEDICIONES = "listaMediciones"
+KEY_VALOR_MEDICION_SENSOR = "valorMedicion"

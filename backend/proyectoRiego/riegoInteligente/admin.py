@@ -21,6 +21,7 @@ admin.site.register(Rol)
 # ABM de Estados: no estan como CU. Decidir si dejarlos. Los estados deberian ser fijos
 admin.site.register(EstadoUsuario)
 admin.site.register(EstadoFinca)
+admin.site.register(HistoricoEstadoFinca)
 admin.site.register(EstadoMecanismoRiegoFinca)
 admin.site.register(EstadoSector)
 admin.site.register(EstadoMecanismoRiegoFincaSector)

@@ -7,16 +7,20 @@ from views import views_configuracion_sectores
 from views import views_modulo_sensores
 
 from views import views_obtencion_informacion_externa
+from views import views_modulo_interfaz_sensores
+from views import views_administrador
 
+from views import forms
 from views import views_modulo_configuracion_riego
 
 
 urlpatterns = [
+
+    
+
     url(r'^crearFinca/$', views_modulo_finca.crear_finca, name='crearFinca'),
     url(r'^obtenerFincasEstadoPendiente/$', views_modulo_finca.obtener_fincas_estado_pendiente,
         name='obtenerFincasEstadoPendiente'),
-    url(r'^elegirProveedorInformacion/$', views_modulo_finca.elegir_proveedor_informacion,
-        name='elegirProveedorInformacion'),
     url(r'^buscarProveedoresInformacion/$', views_modulo_finca.buscar_proveedores_informacion,
         name='buscarProveedoresInformacion'),
     url(r'^obtenerFincasPorUsuario/$', views_modulo_finca.obtener_fincas_por_usuario,
@@ -171,5 +175,10 @@ urlpatterns = [
         name='cancelarRiegoManualmente'),
     url(r'^modificarCriterioConfiguracionRiegoMecanismoRiegoFincaSector/$',
         views_modulo_configuracion_riego.modificar_criterio_configuracion_riego_mecanismo_riego_finca_sector,
-        name='cancelarRiegoManualmente')
+        name='cancelarRiegoManualmente'),
+
+    url(r'^recibirMedicion/$', views_modulo_interfaz_sensores.recibir_medicion,
+        name='recibirMedicion')
+
+
 ]
