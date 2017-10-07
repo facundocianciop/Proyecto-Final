@@ -46,7 +46,7 @@ KEY_UBICACION = 'ubicacion'
 KEY_TAMANIO = 'tamanio'
 KEY_LOGO = 'logo'
 KEY_ESTADO_FINCA = 'estadoFinca'
-KEY_ID_USUARIO_FINCA = 'usuarioFincaId'
+KEY_ID_USUARIO_FINCA = 'idUsuarioFinca'
 KEY_NOMBRE_ROL = 'nombreRol'
 
 # Mecanismo riego
@@ -105,6 +105,18 @@ KEY_FRECUENCIA = 'frecuencia'
 # Mediciones
 KEY_LISTA_MEDICIONES = "listaMediciones"
 KEY_VALOR_MEDICION_SENSOR = "valorMedicion"
+
+# Evento personalizado
+KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO = "idConfiguracionEvento"
+KEY_CONFIGURACION_MEDICION_INTERNA = "configuracionMedicionInterna"
+KEY_CONFIGURACION_MEDICION_EXTERNA = "configuracionMedicionExterna"
+KEY_VALOR_MAXIMO = "valorMaximo"
+KEY_VALOR_MINIMO = "valorMinimo"
+KEY_ID_TIPO_MEDICION_CLIMATICA = "idTipoMedicionClimatica"
+KEY_NOMBRE_CONFIGURACION_EVENTO = "nombreConfiguracionEvento"
+KEY_NOTIFICACION_ACTIVADA = "notificacionActivada"
+KEY_CONFIGURACION_ACTIVADA = "configuracionActivada"
+KEY_DESCRIPCION_CONFIGURACION_EVENTO = "descripcionConfiguracionEvento"
 
 
 # Detalle operaciones

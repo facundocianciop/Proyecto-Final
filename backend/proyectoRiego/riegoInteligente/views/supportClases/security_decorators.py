@@ -39,7 +39,7 @@ def metodos_requeridos(request_method_list):
         def inner(request, *args, **kwargs):
             if request.method not in request_method_list:
                 return build_method_not_allowed_error(HttpResponse(), ERROR_METODO_INCORRECTO,
-                                                      'Metodo/s requeridod: ' + ', '.join(request_method_list))
+                                                      'Metodo/s requeridos: ' + ', '.join(request_method_list))
             return func(request, *args, **kwargs)
         return inner
     return decorator

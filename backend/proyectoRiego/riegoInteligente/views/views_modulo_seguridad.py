@@ -213,7 +213,7 @@ def finalizar_sesion(request):
     response = HttpResponse()
 
     try:
-        if request.user is None:
+        if request.user is not None:
             logout(request)
             response.content = armar_response_content(None)
             response.status_code = 200

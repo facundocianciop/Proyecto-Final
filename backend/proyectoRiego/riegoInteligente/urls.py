@@ -5,18 +5,18 @@ from views import views_modulo_finca
 from views import views_configuracion_finca
 from views import views_configuracion_sectores
 from views import views_modulo_sensores
+from views import views_modulo_reportes
 
 from views import views_obtencion_informacion_externa
 from views import views_modulo_interfaz_sensores
-# from views import views_administrador
+from views import views_administrador
 
-# from views import forms
 from views import views_modulo_configuracion_riego
 
 
 urlpatterns = [
 
-
+    url(r'^fincasPorAprobar/$', views_administrador.fincas_por_aprobar, name='fincasPorAprobar'),
 
     url(r'^crearFinca/$', views_modulo_finca.crear_finca, name='crearFinca'),
     url(r'^obtenerFincasEstadoPendiente/$', views_modulo_finca.obtener_fincas_estado_pendiente,
@@ -25,8 +25,8 @@ urlpatterns = [
         name='buscarProveedoresInformacion'),
     url(r'^obtenerFincasPorUsuario/$', views_modulo_finca.obtener_fincas_por_usuario,
         name='obtenerFincasPorUsuario'),
-    url(r'^aprobarFinca/$', views_modulo_finca.aprobar_finca, name='aprobarFinca'),
-    url(r'^noAprobarFinca/$', views_modulo_finca.no_aprobar_finca, name='noAprobarFinca'),
+    url(r'^aprobarFinca/(?P<idFinca>[0-9]+)/$', views_modulo_finca.aprobar_finca, name='aprobarFinca'),
+    url(r'^noAprobarFinca/(?P<idFinca>[0-9]+)/$', views_modulo_finca.no_aprobar_finca, name='noAprobarFinca'),
     url(r'^mostrarFincasEncargado/$', views_modulo_finca.mostrar_fincas_encargado, name='mostrarFincasEncargado'),
     url(r'^buscarUsuariosNoEncargado/$', views_modulo_finca.buscar_usuarios_no_encargado,
         name='buscarUsuariosNoEncargado'),
@@ -46,6 +46,8 @@ urlpatterns = [
         name='asignarMecanismoASector'),
     url(r'^mostrarMecanismoRiegoSector/$', views_configuracion_sectores.mostrar_mecanismo_riego_sector,
         name='mostrarMecanismoRiegoSector'),
+    url(r'^mostrarComponenteSensorSector/$', views_configuracion_sectores.mostrar_componente_sensor_sector,
+        name='mostrarComponenteSensorSector'),
     url(r'^modificarSector/$', views_configuracion_sectores.modificar_sector, name='modificarSector'),
     url(r'^eliminarSector/$', views_configuracion_sectores.eliminar_sector, name='eliminarSector'),
     url(r'^deshabilitarMecanismoRiegoSector/$', views_configuracion_sectores.deshabilitar_mecanismo_riego_sector,
@@ -178,5 +180,30 @@ urlpatterns = [
         name='modificarCriterioConfiguracionRiegoMecanismoRiegoFincaSector'),
 
     url(r'^recibirMedicion/$', views_modulo_interfaz_sensores.recibir_medicion,
-        name='recibirMedicion')
+        name='recibirMedicion'),
+
+    url(r'^buscarConfiguracionesEventosPersonalizados/$',
+        views_modulo_reportes.buscar_configuraciones_eventos_personalizados,
+        name='buscarConfiguracionesEventosPersonalizados'),
+    url(r'^mostrarConfiguracionEventoPersonalizado/$',
+        views_modulo_reportes.mostrar_configuracion_evento_personalizado,
+        name='mostrarConfiguracionEventoPersonalizado'),
+    url(r'^mostrarTipoMedicionInternaFinca/$',
+        views_modulo_reportes.mostrar_tipo_medicion_interna_finca,
+        name='mostrarTipoMedicionInternaFinca'),
+    url(r'^mostrarTipoMedicionClimaticaFinca/$',
+        views_modulo_reportes.mostrar_tipo_medicion_climatica_finca,
+        name='mostrarTipoMedicionClimaticaFinca'),
+    url(r'^crearConfiguracionEventoPersonalizado/$',
+        views_modulo_reportes.crear_configuracion_evento_personalizado,
+        name='crearConfiguracionEventoPersonalizado'),
+    url(r'^modificarConfiguracionEventoPersonalizado/$',
+        views_modulo_reportes.modificar_configuracion_evento_personalizado,
+        name='modifcarConfiguracionEventoPersonalizado'),
+    url(r'^desactivarConfiguracionEventoPersonalizado/$',
+        views_modulo_reportes.desactivar_configuracion_evento_personalizado,
+        name='desactivarConfiguracionEventoPersonalizado'),
+    url(r'^activarConfiguracionEventoPersonalizado/$',
+        views_modulo_reportes.activar_configuracion_evento_personalizado,
+        name='activarConfiguracionEventoPersonalizado')
 ]
