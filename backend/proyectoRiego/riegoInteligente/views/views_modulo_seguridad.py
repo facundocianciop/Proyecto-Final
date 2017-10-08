@@ -70,7 +70,7 @@ def registrar_usuario(request):
 
         # Se comprueba si se mandan los datos no obligatorios
         dni = None
-        if KEY_DNI in datos:
+        if KEY_DNI in datos and datos[KEY_DNI] is not None:
             dni = datos[KEY_DNI]
             if dni.isdigit() and len(str(dni)) == 8:
                 dni = int(dni)
@@ -78,21 +78,21 @@ def registrar_usuario(request):
                 raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_DNI_INCORRECTO)
 
         cuit = None
-        if KEY_CUIT in datos:
+        if KEY_CUIT in datos and datos[KEY_CUIT] is not None:
             cuit = str(datos[KEY_CUIT])
             validate_regex(cuit, REGEX_CUIT, DETALLE_ERROR_REGISTRACION_CUIT_INCORRECTO)
 
         domicilio = None
-        if KEY_DOMICILIO in datos:
+        if KEY_DOMICILIO in datos and datos[KEY_DOMICILIO] is not None:
             domicilio = datos[KEY_DOMICILIO]
 
         fecha_nacimiento = None
-        if KEY_FECHA_NACIMIENTO in datos:
+        if KEY_FECHA_NACIMIENTO in datos and datos[KEY_FECHA_NACIMIENTO] is not None:
             if datos[KEY_FECHA_NACIMIENTO] != '':
                 fecha_nacimiento = parsear_datos_fecha(datos[KEY_FECHA_NACIMIENTO])
 
         imagen_usuario = None
-        if KEY_IMAGEN_USUARIO in datos:
+        if KEY_IMAGEN_USUARIO in datos and datos[KEY_IMAGEN_USUARIO] is not None:
             if datos[KEY_IMAGEN_USUARIO] != '':
                 # TODO Validar tipo de archivo imagen
                 imagen_usuario = datos[KEY_IMAGEN_USUARIO]
@@ -412,7 +412,7 @@ def modificar_usuario(request):
 
         # Se comprueba si se mandan los datos no obligatorios
         dni = None
-        if KEY_DNI in datos:
+        if KEY_DNI in datos and datos[KEY_DNI] is not None:
             dni = datos[KEY_DNI]
             if dni.isdigit() and len(str(dni)) == 8:
                 dni = int(dni)
@@ -420,21 +420,21 @@ def modificar_usuario(request):
                 raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_DNI_INCORRECTO)
 
         cuit = None
-        if KEY_CUIT in datos:
+        if KEY_CUIT in datos and datos[KEY_CUIT] is not None:
             cuit = str(datos[KEY_CUIT])
             validate_regex(cuit, REGEX_CUIT, DETALLE_ERROR_REGISTRACION_CUIT_INCORRECTO)
 
         domicilio = None
-        if KEY_DOMICILIO in datos:
+        if KEY_DOMICILIO in datos and datos[KEY_DOMICILIO] is not None:
             domicilio = datos[KEY_DOMICILIO]
 
         fecha_nacimiento = None
-        if KEY_FECHA_NACIMIENTO in datos:
+        if KEY_FECHA_NACIMIENTO in datos and datos[KEY_FECHA_NACIMIENTO] is not None:
             if datos[KEY_FECHA_NACIMIENTO] != '':
                 fecha_nacimiento = parsear_datos_fecha(datos[KEY_FECHA_NACIMIENTO])
 
         imagen_usuario = None
-        if KEY_IMAGEN_USUARIO in datos:
+        if KEY_IMAGEN_USUARIO in datos and datos[KEY_IMAGEN_USUARIO] is not None:
             if datos[KEY_IMAGEN_USUARIO] != '':
                 # TODO Validar tipo de archivo imagen
                 imagen_usuario = datos[KEY_IMAGEN_USUARIO]
@@ -582,15 +582,6 @@ def recuperar_cuenta(request):
 
         codigo_verificacion = id_generator()
         usuario.datosusuario.codigoVerificacion = codigo_verificacion
-
-        # TODO mandar mail
-        # with mail.get_connection() as connection:
-        # mail.EmailMessage('SmartFarming: Recuperacion de cueta ',body="Su nueva contraseña es
-        # %s"%contrasenia_aleatoria,from1='facundocianciop',
-        #                       to1='facundocianciop',connection=connection).send()
-        # FALTA MANDAR EL MAIL, CONFIGURAR LA CONTRASEÑA Y EL PUERTO
-        # ACA PENSE QUE EN CASO DE RECHAZAR LA FINCA QUE EL ADMINISTRADOR ESCRIBIERA UN MENSAJE DICIENDO
-        # POR QUÉ LA RECHAZÓ
 
         titulo_email = "Recuperar cuenta Smart Farming"
         cuerpo_email = "Codigo de verificacion: " + codigo_verificacion
