@@ -11,6 +11,7 @@ ERROR_NO_TIENE_PERMISOS = 'ERROR_NO_TIENE_PERMISOS'
 ERROR_DE_SISTEMA = 'ERROR_DE_SISTEMA'
 ERROR_METODO_INCORRECTO = 'ERROR_METODO_INCORRECTO'
 ERROR_DATOS_INCORRECTOS = 'ERROR_DATOS_INCORRECTOS'
+ERROR_VALIDACION_DATOS = 'ERROR_VALIDACION_DATOS'
 ERROR_DATOS_FALTANTES = 'ERROR_DATOS_FALTANTES'
 ERROR_CREDENCIALES_INCORRECTAS = 'ERROR_CREDENCIALES_INCORRECTAS'
 
@@ -18,6 +19,7 @@ ERROR_USUARIO_YA_TIENE_ESE_ROL = 'ERROR_USUARIO_YA_TIENE_ESE_ROL'
 ERROR_USUARIO_NO_ENCONTRADO = 'ERROR_USUARIO_NO_ENCONTRADO'
 ERROR_USUARIO_NO_ENCARGADO = 'ERROR_USUARIO_NO_ENCARGADO'
 ERROR_USUARIO_EXISTENTE = 'ERROR_USUARIO_EXISTENTE'
+ERROR_EMAIL_EXISTENTE = 'ERROR_EMAIL_EXISTENTE'
 ERROR_USUARIO_FINCA_NO_ENCONTRADO = 'ERROR_USUARIO_FINCA_NO_ENCONTRADO'
 ERROR_USUARIO_NO_HABILITADO_EN_FINCA = 'ERROR_USUARIO_NO_HABILITADO_EN_FINCA'
 ERROR_FINCA_YA_EXISTENTE = 'ERROR_FINCA_YA_EXISTENTE'
@@ -74,20 +76,19 @@ ERROR_CONFIGURACION_EVENTO_YA_ACTIVADA = 'ERROR_CONFIGURACION_EVENTO_YA_ACTIVADA
 
 # Detalle errores
 
-DETALLE_ERROR_DESCONOCIDO = "error_desconocido"
-DETALLE_ERROR_DATOS_INCOMPLETOS = "faltan_ingresar_datos"
-DETALLE_ERROR_DATOS_INCORRECTOS = "datos_incorrectos"
-DETALLE_ERROR_SISTEMA = "error_procesando_llamada"
+DETALLE_ERROR_DESCONOCIDO = "Error desconocido"
+DETALLE_ERROR_DATOS_INCOMPLETOS = "Faltan ingresar datos"
+DETALLE_ERROR_DATOS_INCORRECTOS = "Datos incorrectos"
+DETALLE_ERROR_SISTEMA = "Error procesando llamada"
 
 # Modulo seguridad
-DETALLE_ERROR_LOG_OUT_FALLIDO = 'log_out_fallo'
-DETALLE_ERROR_TIPO_SESION_DATOS_FALTANTES = 'faltan datos de tipo de sesion'
+DETALLE_ERROR_LOG_IN_FALLIDO = 'Usuario o contraseña incorrectos'
+DETALLE_ERROR_LOG_OUT_FALLIDO = 'Log out fallo'
+DETALLE_ERROR_TIPO_SESION_DATOS_FALTANTES = 'Faltan datos de tipo de sesion'
 
 DETALLE_ERROR_REGISTRACION_USUARIO_EXISTENTE = 'Usuario ya existe en el sistema'
 DETALLE_ERROR_REGISTRACION_USUARIO_FALTANTE = 'Falta ingresar usuario'
 DETALLE_ERROR_REGISTRACION_USUARIO_INCORRECTO = 'Usuario incorrecto'
-DETALLE_ERROR_REGISTRACION_EMAIL_FALTANTE = 'Falta ingresar email'
-DETALLE_ERROR_REGISTRACION_EMAIL_INCORRECTO = 'Formato email incorrecto'
 DETALLE_ERROR_REGISTRACION_CONTRASENIA_FALTANTE = 'Falta ingresar contrasena'
 DETALLE_ERROR_REGISTRACION_NOMBRE_FALTANTE = 'Falta ingresar nombre'
 DETALLE_ERROR_REGISTRACION_NOMBRE_INCORRECTO = 'Nombre incorrecto'
@@ -104,29 +105,36 @@ DETALLE_ERROR_REGISTRACION_FECHA_NACIMIENTO_INCORRECTO = 'Formato de fecha de na
 DETALLE_ERROR_REGISTRACION_IMAGEN_FALTANTE = 'Falta ingresar imagen'
 DETALLE_ERROR_REGISTRACION_IMAGEN_INCORRECTA = 'Formato imagen de ingresada es incorrecto'
 
+DETALLE_ERROR_EMAIL_EXISTENTE = 'Ya existe un usuario con ese email'
+DETALLE_ERROR_EMAIL_FALTANTE = 'Falta ingresar email'
+DETALLE_ERROR_EMAIL_INCORRECTO = 'Formato email incorrecto'
+
 DETALLE_ERROR_CONTRASENIA_INCORRECTA = 'Contraseña incorrecta'
 DETALLE_ERROR_CONTRASENIA_FORMATO_INCORRECTO = 'Formato contraseña incorrecto: debe tener mas de 8 caracteres y' \
                                                     ' no puede ser solo numérica'
 
+DETALLE_ERROR_CONTRASENIA_VIEJA_INCORRECTA = 'La contraseña actual ingresada es incorrecta'
 DETALLE_ERROR_CAMBIAR_CONTRASENIA_VIEJA_FALTANTE = 'Falta ingresar contraseña actual'
-DETALLE_ERROR_CAMBIAR_CONTRASENIA_NUEVA_FALTANTE = 'Falta ingresar contraseña vieja'
+DETALLE_ERROR_CAMBIAR_CONTRASENIA_NUEVA_FALTANTE = 'Falta ingresar contraseña nueva'
 
 DETALLE_ERROR_CODIGO_VERIFICACION_FALTANTE = 'Falta ingresar codigo de verificacion'
 DETALLE_ERROR_CODIGO_VERIFICACION_INCORRECTO = 'Codigo de verificacion incorrecto'
 
 # Modulo configuracion riego
-DETALLE_ERROR_EJECUION_RIEGO = "fallo_ejecucion_riego"
-DETALLE_ERROR_DETENCION_RIEGO = "fallo_detencion_riego"
+DETALLE_ERROR_EJECUION_RIEGO = "Ejecucion de riego fallo"
+DETALLE_ERROR_DETENCION_RIEGO = "Detencion de riego fallo"
 
-DETALLE_ERROR_MODIFICACION_CONFIGURACION_RIEGO = 'configuracion_riego_ya_fue_eliminada'
-DETALLE_ERROR_CONFIGURACION_RIEGO_INCORRECTA = 'configuracion_riego_incorrecta'
-DETALLE_ERROR_RELACION_CONFIGURACION_RIEGO_CRITERIO = 'criterio_riego_no_se_corresponde_con_configuracion'
-DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INCORRECTO = 'tipo_criterio_riego_incorrecto'
-DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INICIAL_INCORRECTO = 'tipo_criterio_riego_no_valido_como_criterio_inicial'
-DETALLE_ERROR_TIPO_CRITERIO_RIEGO_FINAL_INCORRECTO = 'tipo_criterio_riego_no_valido_como_criterio_final'
-DETALLE_ERROR_CONFIGURACION_RIEGO_AUTOMATICA_CRITERIO = 'a_configuracion_automatica_no_se_le_pueden_asignar_criterios'
-DETALLE_ERROR_CONFIGURACION_RIEGO_CANTIDAD_MAX_CRITERIO_INICIAL = 'cantidad_maxima_criterios_iniciales_alcanzada'
-DETALLE_ERROR_CONFIGURACION_RIEGO_CANTIDAD_MAX_CRITERIO_FINAL = 'cantidad_maxima_criterios_finales_alcanzada'
+DETALLE_ERROR_MODIFICACION_CONFIGURACION_RIEGO = 'La configuracion de riego ya fue eliminada'
+DETALLE_ERROR_CONFIGURACION_RIEGO_INCORRECTA = 'La configuracion de riego es incorrecta'
+DETALLE_ERROR_RELACION_CONFIGURACION_RIEGO_CRITERIO = 'El criterio de riego no se corresponde con la configuracion'
+DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INCORRECTO = 'El tipo de criterio riego es incorrecto'
+DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INICIAL_INCORRECTO = 'El tipo de criterio riego no es valido como criterio inicial'
+DETALLE_ERROR_TIPO_CRITERIO_RIEGO_FINAL_INCORRECTO = 'El tipo de criterio riego no es valido como criterio final'
+DETALLE_ERROR_CONFIGURACION_RIEGO_AUTOMATICA_CRITERIO = 'A una configuracion de riego automatica no se le pueden' \
+                                                        'asignar criterios'
+DETALLE_ERROR_CONFIGURACION_RIEGO_CANTIDAD_MAX_CRITERIO_INICIAL = 'La cantidad maxima de criterios iniciales fue ' \
+                                                                  'alcanzada'
+DETALLE_ERROR_CONFIGURACION_RIEGO_CANTIDAD_MAX_CRITERIO_FINAL = 'La cantidad maxima de criterios finales fue alcanzada'
 
 
 # Constantes Keys
