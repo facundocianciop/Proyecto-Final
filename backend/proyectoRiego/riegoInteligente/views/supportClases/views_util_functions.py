@@ -1,5 +1,9 @@
 import string
 import random
+import re
+from django.core.mail import EmailMessage
+
+
 # noinspection PyUnresolvedReferences
 from json import loads, dumps
 from datetime import datetime
@@ -83,3 +87,19 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
 
 def parsear_datos_fecha(fecha_string):
     return datetime.strptime(fecha_string, "%Y-%m-%d")
+
+
+def validate_regex(expresion_a_evaluar, pattern, detalle_error):
+    try:
+        pattern = re.compile(pattern=pattern)
+        if pattern.match(expresion_a_evaluar) is None:
+            raise ValueError(ERROR_VALIDACION_DATOS, detalle_error)
+
+    except re.error:
+        raise ValueError(ERROR_VALIDACION_DATOS, detalle_error)
+
+
+def enviar_email(titulo, mensaje, destino):
+
+    email = EmailMessage(subject=titulo, body=mensaje, to=[destino])
+    email.send()
