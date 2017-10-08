@@ -72,7 +72,12 @@ def registrar_usuario(request):
         dni = None
         if KEY_DNI in datos and datos[KEY_DNI] is not None:
             dni = datos[KEY_DNI]
-            if dni.isdigit() and len(str(dni)) == 8:
+            if isinstance(dni, int):
+                if len(str(dni)) == 8 and dni > 0:
+                    dni = dni
+                else:
+                    raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_DNI_INCORRECTO)
+            elif dni.isdigit() and len(str(dni)) == 8:
                 dni = int(dni)
             else:
                 raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_DNI_INCORRECTO)
@@ -354,7 +359,12 @@ def modificar_usuario(request):
         dni = None
         if KEY_DNI in datos and datos[KEY_DNI] is not None:
             dni = datos[KEY_DNI]
-            if dni.isdigit() and len(str(dni)) == 8:
+            if isinstance(dni, int):
+                if len(str(dni)) == 8 and dni > 0:
+                    dni = dni
+                else:
+                    raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_DNI_INCORRECTO)
+            elif dni.isdigit() and len(str(dni)) == 8:
                 dni = int(dni)
             else:
                 raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_DNI_INCORRECTO)
