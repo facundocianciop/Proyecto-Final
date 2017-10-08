@@ -1,6 +1,8 @@
 import string
 import random
 import re
+from django.core.mail import EmailMessage
+
 
 # noinspection PyUnresolvedReferences
 from json import loads, dumps
@@ -95,3 +97,9 @@ def validate_regex(expresion_a_evaluar, pattern, detalle_error):
 
     except re.error:
         raise ValueError(ERROR_VALIDACION_DATOS, detalle_error)
+
+
+def enviar_email(titulo, mensaje, destino):
+
+    email = EmailMessage(subject=titulo, body=mensaje, to=[destino])
+    email.send()

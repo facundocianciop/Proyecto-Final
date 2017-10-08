@@ -80,6 +80,7 @@ DETALLE_ERROR_DESCONOCIDO = "Error desconocido"
 DETALLE_ERROR_DATOS_INCOMPLETOS = "Faltan ingresar datos"
 DETALLE_ERROR_DATOS_INCORRECTOS = "Datos incorrectos"
 DETALLE_ERROR_SISTEMA = "Error procesando llamada"
+DETALLE_ERROR_ENVIO_EMAIL = "Error enviando email"
 
 # Modulo seguridad
 DETALLE_ERROR_LOG_IN_FALLIDO = 'Usuario o contraseña incorrectos'

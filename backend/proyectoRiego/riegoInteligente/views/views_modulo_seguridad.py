@@ -1,4 +1,6 @@
 # -*- coding: UTF-8 -*-
+from smtplib import SMTPException
+
 from django.db import IntegrityError, DataError, DatabaseError
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -530,6 +532,12 @@ def recuperar_cuenta(request):
         # ACA PENSE QUE EN CASO DE RECHAZAR LA FINCA QUE EL ADMINISTRADOR ESCRIBIERA UN MENSAJE DICIENDO
         # POR QUÉ LA RECHAZÓ
 
+        titulo_email = "Recuperar cuenta Smart Farming"
+        cuerpo_email = "Codigo de verificacion: " + codigo_verificacion
+        destino = email
+
+        enviar_email(titulo=titulo_email, mensaje=cuerpo_email, destino=destino)
+
         usuario.save()
 
         dto_usuario = DtoRecuperarCuentaUsuario(usuario=usuario.username, email=usuario.email)
@@ -555,6 +563,9 @@ def recuperar_cuenta(request):
             return build_bad_request_error(response, err.args[0], err.args[1])
         else:
             return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
+
+    except SMTPException:
+        return build_internal_server_error(response, ERROR_DE_SISTEMA, DETALLE_ERROR_ENVIO_EMAIL)
 
     except (SystemError, RuntimeError) as err:
         if len(err.args) == 2:
