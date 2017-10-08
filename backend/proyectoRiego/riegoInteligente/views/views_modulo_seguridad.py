@@ -12,6 +12,7 @@ from supportClases.security_decorators import *
 from supportClases.views_util_functions import *
 from supportClases.views_constants import *
 from supportClases.error_handler import *
+from supportClases.dto_modulo_seguridad import *
 
 
 @transaction.atomic()
@@ -23,7 +24,7 @@ def registrar_usuario(request):
 
     try:
         if datos == '':
-            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCOMPLETOS)
 
         # Comprobar que se mandaron los datos obligatorios
         if KEY_USUARIO in datos:
@@ -36,11 +37,11 @@ def registrar_usuario(request):
         if KEY_EMAIL in datos:
             email = datos[KEY_EMAIL]
         else:
-            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_EMAIL_FALTANTE)
+            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_EMAIL_FALTANTE)
         if email == '':
-            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_REGISTRACION_EMAIL_INCORRECTO)
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_EMAIL_INCORRECTO)
         if not validar_email(email):
-            raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_EMAIL_INCORRECTO)
+            raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_EMAIL_INCORRECTO)
 
         if KEY_CONTRASENIA in datos:
             contrasenia = datos[KEY_CONTRASENIA]
@@ -69,7 +70,7 @@ def registrar_usuario(request):
         dni = None
         if KEY_DNI in datos:
             dni = datos[KEY_DNI]
-            if dni.isdigit():
+            if dni.isdigit() and len(str(dni)) == 8:
                 dni = int(dni)
             else:
                 raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_DNI_INCORRECTO)
@@ -97,6 +98,10 @@ def registrar_usuario(request):
         # Se comprueba que el usuario ingresado no exista en el sistema
         if User.objects.filter(username=datos[KEY_USUARIO]).__len__() >= 1:
             raise ValueError(ERROR_USUARIO_EXISTENTE, DETALLE_ERROR_REGISTRACION_USUARIO_EXISTENTE)
+
+        # Se comprueba que el email ingresado no exista en el sistema
+        if User.objects.filter(email=datos[KEY_EMAIL]).__len__() >= 1:
+            raise ValueError(ERROR_EMAIL_EXISTENTE, DETALLE_ERROR_EMAIL_EXISTENTE)
 
         # Creo los objetos necesarios
         estado = EstadoUsuario.objects.get(nombreEstadoUsuario=ESTADO_ACTIVADO)
@@ -164,10 +169,10 @@ def iniciar_sesion(request):
 
     try:
         if datos == '':
-            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_USUARIO and KEY_CONTRASENIA) in datos:
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCOMPLETOS)
+        if KEY_USUARIO in datos and KEY_CONTRASENIA in datos:
             if datos[KEY_USUARIO] == '' or datos[KEY_CONTRASENIA] == '':
-                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_LOG_IN_FALLIDO)
             nombre_usuario = datos[KEY_USUARIO]
             contrasenia = datos[KEY_CONTRASENIA]
             usuario = authenticate(username=nombre_usuario, password=contrasenia)
@@ -177,9 +182,9 @@ def iniciar_sesion(request):
                 response.status_code = 200
                 return response
             else:
-                raise ValueError(ERROR_CREDENCIALES_INCORRECTAS, "Usuario o contrasenia incorrecta")
+                raise ValueError(ERROR_CREDENCIALES_INCORRECTAS, DETALLE_ERROR_LOG_IN_FALLIDO)
         else:
-            raise ValueError(ERROR_CREDENCIALES_INCORRECTAS, "Usuario o contrasenia incorrecta")
+            raise ValueError(ERROR_CREDENCIALES_INCORRECTAS, DETALLE_ERROR_LOG_IN_FALLIDO)
 
     except KeyError as err:
         if len(err.args) == 2:
@@ -230,63 +235,6 @@ def finalizar_sesion(request):
 
 
 @transaction.atomic()
-@metodos_requeridos([METHOD_POST])
-def recuperar_cuenta(request):
-
-    datos = obtener_datos_json(request)
-    response = HttpResponse()
-
-    try:
-        if datos == '':
-            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-
-        email = datos[KEY_EMAIL]
-        usuario = User.objects.get(email=email)
-
-        codigo_verificacion = id_generator()
-        usuario.datosusuario.codigoVerificacion = codigo_verificacion
-
-        # TODO mandar mail
-        # with mail.get_connection() as connection:
-        # mail.EmailMessage('SmartFarming: Recuperacion de cueta ',body="Su nueva contraseña es
-        # %s"%contrasenia_aleatoria,from1='facundocianciop',
-        #                       to1='facundocianciop',connection=connection).send()
-        # FALTA MANDAR EL MAIL, CONFIGURAR LA CONTRASEÑA Y EL PUERTO
-        # ACA PENSE QUE EN CASO DE RECHAZAR LA FINCA QUE EL ADMINISTRADOR ESCRIBIERA UN MENSAJE DICIENDO
-        # POR QUÉ LA RECHAZÓ
-
-        usuario.save()
-
-        response.content = armar_response_content(None, DETALLE_RECUPERAR_CUENTA_EJECUTADA)
-        response.status_code = 200
-        return response
-
-    except KeyError as err:
-        if len(err.args) == 2:
-            return build_bad_request_error(response, err.args[0], err.args[1])
-        else:
-            return build_bad_request_error(response, ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCOMPLETOS)
-
-    except (ValueError, TypeError, AttributeError, DataError, IntegrityError) as err:
-        if len(err.args) == 2:
-            return build_bad_request_error(response, err.args[0], err.args[1])
-        else:
-            return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
-
-    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError) as err:
-        if len(err.args) == 2:
-            return build_bad_request_error(response, err.args[0], err.args[1])
-        else:
-            return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
-
-    except (SystemError, RuntimeError) as err:
-        if len(err.args) == 2:
-            return build_internal_server_error(response, err.args[0], err.args[1])
-        else:
-            return build_internal_server_error(response, ERROR_DE_SISTEMA, DETALLE_ERROR_DESCONOCIDO)
-
-
-@transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
 def cambiar_contrasenia(request):
@@ -296,7 +244,7 @@ def cambiar_contrasenia(request):
 
     try:
         if datos == '':
-            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCOMPLETOS)
 
         # Se comprueba que se enviaron los datos requeridos
         if KEY_CONTRASENIA_VIEJA in datos:
@@ -304,7 +252,7 @@ def cambiar_contrasenia(request):
         else:
             raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CAMBIAR_CONTRASENIA_VIEJA_FALTANTE)
         if contrasenia_vieja == '':
-            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CONTRASENIA_INCORRECTA)
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CAMBIAR_CONTRASENIA_VIEJA_FALTANTE)
 
         if KEY_CONTRASENIA_NUEVA in datos:
             contrasenia_nueva = datos[KEY_CONTRASENIA_NUEVA]
@@ -328,7 +276,7 @@ def cambiar_contrasenia(request):
             return response
 
         else:
-            raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CONTRASENIA_INCORRECTA)
+            raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CONTRASENIA_VIEJA_INCORRECTA)
 
     except KeyError as err:
         if len(err.args) == 2:
@@ -365,17 +313,17 @@ def modificar_usuario(request):
 
     try:
         if datos == '':
-            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCOMPLETOS)
 
         # Comprobar que se mandaron los datos obligatorios
         if KEY_EMAIL in datos:
             email = datos[KEY_EMAIL]
         else:
-            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_EMAIL_FALTANTE)
+            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_EMAIL_FALTANTE)
         if email == '':
-            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_REGISTRACION_EMAIL_INCORRECTO)
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_EMAIL_INCORRECTO)
         if not validar_email(email):
-            raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_EMAIL_INCORRECTO)
+            raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_EMAIL_INCORRECTO)
 
         if KEY_CONTRASENIA in datos:
             contrasenia = datos[KEY_CONTRASENIA]
@@ -403,11 +351,16 @@ def modificar_usuario(request):
         # Se comprueba si se mandan los datos no obligatorios
         dni = None
         if KEY_DNI in datos:
-            dni = int(datos[KEY_DNI])
+            dni = datos[KEY_DNI]
+            if dni.isdigit() and len(str(dni)) == 8:
+                dni = int(dni)
+            else:
+                raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_REGISTRACION_DNI_INCORRECTO)
 
         cuit = None
         if KEY_CUIT in datos:
-            cuit = int(datos[KEY_CUIT])
+            cuit = str(datos[KEY_CUIT])
+            validate_regex(cuit, REGEX_CUIT, DETALLE_ERROR_REGISTRACION_CUIT_INCORRECTO)
 
         domicilio = None
         if KEY_DOMICILIO in datos:
@@ -423,6 +376,10 @@ def modificar_usuario(request):
             if datos[KEY_IMAGEN_USUARIO] != '':
                 # TODO Validar tipo de archivo imagen
                 imagen_usuario = datos[KEY_IMAGEN_USUARIO]
+
+        # Se comprueba que el email ingresado no exista en el sistema
+            if User.objects.filter(email=datos[KEY_EMAIL]).__len__() >= 1:
+                raise ValueError(ERROR_EMAIL_EXISTENTE, DETALLE_ERROR_EMAIL_EXISTENTE)
 
         usuario_a_modificar = request.user
 
@@ -536,6 +493,74 @@ def mostrar_usuario(request):
             return build_internal_server_error(response, err.args[0], err.args[1])
         else:
             return build_internal_server_error(response, ERROR_DE_SISTEMA, DETALLE_ERROR_SISTEMA)
+
+
+@transaction.atomic()
+@metodos_requeridos([METHOD_POST])
+def recuperar_cuenta(request):
+
+    datos = obtener_datos_json(request)
+    response = HttpResponse()
+
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCOMPLETOS)
+
+        if KEY_EMAIL in datos:
+            email = datos[KEY_EMAIL]
+        else:
+            raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_EMAIL_FALTANTE)
+        if email == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_EMAIL_INCORRECTO)
+        if not validar_email(email):
+            raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_EMAIL_INCORRECTO)
+
+        email = datos[KEY_EMAIL]
+        usuario = User.objects.get(email=email)
+
+        codigo_verificacion = id_generator()
+        usuario.datosusuario.codigoVerificacion = codigo_verificacion
+
+        # TODO mandar mail
+        # with mail.get_connection() as connection:
+        # mail.EmailMessage('SmartFarming: Recuperacion de cueta ',body="Su nueva contraseña es
+        # %s"%contrasenia_aleatoria,from1='facundocianciop',
+        #                       to1='facundocianciop',connection=connection).send()
+        # FALTA MANDAR EL MAIL, CONFIGURAR LA CONTRASEÑA Y EL PUERTO
+        # ACA PENSE QUE EN CASO DE RECHAZAR LA FINCA QUE EL ADMINISTRADOR ESCRIBIERA UN MENSAJE DICIENDO
+        # POR QUÉ LA RECHAZÓ
+
+        usuario.save()
+
+        dto_usuario = DtoRecuperarCuentaUsuario(usuario=usuario.username, email=usuario.email)
+
+        response.content = armar_response_content(dto_usuario, DETALLE_RECUPERAR_CUENTA_EJECUTADA)
+        response.status_code = 200
+        return response
+
+    except KeyError as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCOMPLETOS)
+
+    except (ValueError, TypeError, AttributeError, DataError, IntegrityError) as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
+
+    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError) as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
+
+    except (SystemError, RuntimeError) as err:
+        if len(err.args) == 2:
+            return build_internal_server_error(response, err.args[0], err.args[1])
+        else:
+            return build_internal_server_error(response, ERROR_DE_SISTEMA, DETALLE_ERROR_DESCONOCIDO)
 
 
 @transaction.atomic()

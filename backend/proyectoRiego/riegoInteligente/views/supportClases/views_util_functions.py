@@ -90,7 +90,6 @@ def parsear_datos_fecha(fecha_string):
 def validate_regex(expresion_a_evaluar, pattern, detalle_error):
     try:
         pattern = re.compile(pattern=pattern)
-        pattern.match(expresion_a_evaluar)
         if pattern.match(expresion_a_evaluar) is None:
             raise ValueError(ERROR_VALIDACION_DATOS, detalle_error)
 

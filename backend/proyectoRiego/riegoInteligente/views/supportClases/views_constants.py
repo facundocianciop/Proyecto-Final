@@ -121,7 +121,7 @@ KEY_DESCRIPCION_CONFIGURACION_EVENTO = "descripcionConfiguracionEvento"
 
 # Detalle operaciones
 
-DETALLE_OPERACION_VACIA = "no_hay_datos"
+DETALLE_OPERACION_VACIA = "No hay datos"
 
 # Detalle operacion seguridad
 DETALLE_REGISTRACION_USUARIO_CREADO_CORRECTAMENTE = "Usuario creado correctamente"
@@ -148,7 +148,7 @@ DETALLE_CRITERIO_RIEGO_ELIMINADO = 'El criterio de riego fue eliminado'
 
 # Expresiones regulares
 
-REGEX_CUIT = '/^\d{2}\-\d{8}\-\d{1}$/'
+REGEX_CUIT = '^\d{2}\-\d{8}\-\d{1}$'
 
 
 # Estados
