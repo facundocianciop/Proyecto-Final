@@ -504,14 +504,14 @@ def recuperar_cuenta(request):
 
     try:
         if datos == '':
-            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCOMPLETOS)
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_EMAIL_FALTANTE)
 
         if KEY_EMAIL in datos:
             email = datos[KEY_EMAIL]
         else:
             raise KeyError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_EMAIL_FALTANTE)
         if email == '':
-            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_EMAIL_INCORRECTO)
+            raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_EMAIL_FALTANTE)
         if not validar_email(email):
             raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_EMAIL_INCORRECTO)
 
