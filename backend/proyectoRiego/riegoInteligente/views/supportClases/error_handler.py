@@ -87,6 +87,8 @@ DETALLE_ERROR_LOG_IN_FALLIDO = 'Usuario o contraseña incorrectos'
 DETALLE_ERROR_LOG_OUT_FALLIDO = 'Log out fallo'
 DETALLE_ERROR_TIPO_SESION_DATOS_FALTANTES = 'Faltan datos de tipo de sesion'
 
+DETALLE_ERROR_NO_TIENE_PERMISOS = 'Usuario no tiene permisos para ejecutar esta operacion'
+
 DETALLE_ERROR_REGISTRACION_USUARIO_EXISTENTE = 'Usuario ya existe en el sistema'
 DETALLE_ERROR_REGISTRACION_USUARIO_FALTANTE = 'Falta ingresar usuario'
 DETALLE_ERROR_REGISTRACION_USUARIO_INCORRECTO = 'Usuario incorrecto'
@@ -120,6 +122,9 @@ DETALLE_ERROR_CAMBIAR_CONTRASENIA_NUEVA_FALTANTE = 'Falta ingresar contraseña n
 
 DETALLE_ERROR_CODIGO_VERIFICACION_FALTANTE = 'Falta ingresar codigo de verificacion'
 DETALLE_ERROR_CODIGO_VERIFICACION_INCORRECTO = 'Codigo de verificacion incorrecto'
+
+# Finca
+DETALLE_ERROR_FINCA_DATOS_FALTANTES = "Falta ingresar datos de finca"
 
 # Modulo configuracion riego
 DETALLE_ERROR_EJECUION_RIEGO = "Ejecucion de riego fallo"

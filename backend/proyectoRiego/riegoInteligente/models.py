@@ -53,6 +53,9 @@ class DatosUsuario(models.Model):
     def guardarDatosUsuario(sender,instance,**kwargs):
         instance.datosusuario.save()
 
+    def __str__(self):
+        return "Datos usuario: " + self.user.username
+
     def as_json(self):
         return dict(usuario=self.user.username,
                     nombre=self.user.first_name,
@@ -89,19 +92,25 @@ class HistoricoEstadoUsuario(models.Model):
 
 class Rol(models.Model):
     OIDRol = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    nombreRol=models.CharField(max_length=30)
-    fechaAltaRol=models.DateTimeField()
-    fechaBajaRol=models.DateTimeField(null=True)
+    nombreRol = models.CharField(max_length=30)
+    fechaAltaRol = models.DateTimeField()
+    fechaBajaRol = models.DateTimeField(null=True)
+
+    def __str__(self):
+        return self.nombreRol
 
 
 class UsuarioFinca(models.Model):
-    OIDUsuarioFinca=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
+    OIDUsuarioFinca = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     idUsuarioFinca = models.IntegerField(default=1, unique=True)
-    fechaAltaUsuarioFinca=models.DateTimeField()
-    fechaBajaUsuarioFinca=models.DateTimeField(null=True)
+    fechaAltaUsuarioFinca = models.DateTimeField()
+    fechaBajaUsuarioFinca = models.DateTimeField(null=True)
 
-    finca=models.ForeignKey('Finca',db_column="OIDFinca")
-    usuario=models.ForeignKey(DatosUsuario,db_column="OIDUsuario", related_name='usuarioFincaList')
+    finca = models.ForeignKey('Finca',db_column="OIDFinca")
+    usuario = models.ForeignKey(DatosUsuario,db_column="OIDUsuario", related_name='usuarioFincaList')
+
+    def __str__(self):
+        return "Usuario: " + str(self.usuario.user.username) + " de finca: " + str(self.finca.idFinca)
 
     def save(self):
         "Get last value of Code and Number from database, and increment before save"
@@ -118,13 +127,16 @@ class UsuarioFinca(models.Model):
 
 
 class RolUsuarioFinca(models.Model):
-    OIDRolUsuarioFinca=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
-    fechaAltaRolUsuarioFinca=models.DateTimeField()
-    fechaBajaRolUsuarioFinca=models.DateTimeField(null=True)
+    OIDRolUsuarioFinca = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
+    fechaAltaRolUsuarioFinca = models.DateTimeField()
+    fechaBajaRolUsuarioFinca = models.DateTimeField(null=True)
 
-    rol=models.ForeignKey(Rol,db_column="OIDRol")
-    usuarioFinca=models.ForeignKey(UsuarioFinca,db_column="OIDUsuarioFinca",related_name="rolUsuarioFincaList",
-                                   null=True)
+    rol = models.ForeignKey(Rol,db_column="OIDRol")
+    usuarioFinca = models.ForeignKey(UsuarioFinca,db_column="OIDUsuarioFinca",related_name="rolUsuarioFincaList",
+                                     null=True)
+
+    def __str__(self):
+        return "Rol: " + self.rol.nombreRol + " usuario finca: " + str(self.usuarioFinca.idUsuarioFinca)
 
 
 class ConjuntoPermisos (models.Model):
@@ -155,6 +167,9 @@ class ConjuntoPermisos (models.Model):
     puedeModificarConfiguracionRiego= models.BooleanField()
 
     rol = models.ForeignKey(Rol, db_column="OIDRol", related_name="conjuntoPermisos")
+
+    def __str__(self):
+        return "Conjunto permisos de " + self.rol.nombreRol
 
     def as_json(self):
         return dict(
@@ -651,7 +666,8 @@ class MecanismoRiegoFincaSector(models.Model):
                     caudal=self.caudal,
                     presion=self.presion,
                     sector=self.sector.numeroSector,
-                    mecanismoRiegoFinca=self.mecanismoRiegoFinca.idMecanismoRiegoFinca)
+                    mecanismoRiegoFinca=self.mecanismoRiegoFinca.idMecanismoRiegoFinca,
+                    idFinca=self.mecanismoRiegoFinca.finca.idFinca)
 
 
 class EjecucionRiego(models.Model):
