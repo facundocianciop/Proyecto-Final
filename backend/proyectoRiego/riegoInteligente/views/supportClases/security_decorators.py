@@ -1,17 +1,27 @@
+# noinspection PyUnresolvedReferences
 from datetime import datetime
 import pytz
 from functools import wraps
+from smtplib import SMTPException
 
 from django.http import HttpResponse
 from django.utils.decorators import available_attrs
+from django.db import IntegrityError, DataError, DatabaseError
+from django.core.exceptions import ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned
 
-from ...models import SesionUsuario
-from error_handler import *
+# noinspection PyUnresolvedReferences
+from ...models import DatosUsuario, EstadoUsuario, HistoricoEstadoUsuario, Rol, ConjuntoPermisos, \
+    SesionUsuario, UsuarioFinca, ConjuntoPermisos, Finca
+
+from views_util_functions import *
 
 
-# Controla si el usuario haciendo una llamada esta loggeado
 def login_requerido(funcion):
-
+    """
+    Controla si el usuario haciendo una llamada esta loggeado
+    :param funcion:
+    :return:
+    """
     def wrap(request, *args, **kwargs):
         # verificar que el usuario haciendo la llamada este autenticado
         if request.user.is_authenticated:
@@ -32,8 +42,12 @@ def login_requerido(funcion):
     return wrap
 
 
-# Controla si el metodo enviado es correcto
 def metodos_requeridos(request_method_list):
+    """
+    Controla si el metodo enviado es correcto
+    :param request_method_list:
+    :return:
+    """
     def decorator(func):
         @wraps(func, assigned=available_attrs(func))
         def inner(request, *args, **kwargs):
@@ -45,25 +59,187 @@ def metodos_requeridos(request_method_list):
     return decorator
 
 
-# TODO arreglar metodo roles
-def permisos_rol_requeridos(permisos_rol_list):
+def manejar_errores():
+    """
+    Maneja errores en la operacion
+    :return:
+    """
     def decorator(func):
         @wraps(func, assigned=available_attrs(func))
         def inner(request, *args, **kwargs):
-            """
-            Controlar permisos: pasar a un metodo comun
-            usuario_finca = mecanismo_riego_finca_sector_seleccionado.mecanismoRiegoFinca.finca.usuariofinca_set.get(
-            usuario=request.user.datosusuario
-            )
 
-            rol_usuario_finca = usuario_finca.rolUsuarioFincaList.order_by('-fechaAltaRol').first()
-            permiso_obtener_riego_en_ejecucion = \
-            rol_usuario_finca.conjuntoPermisos.puedeIniciarODetenerRiegoManualmente
-            """
+            response = HttpResponse()
+            try:
 
-            if request.method not in permisos_rol_list:
-                return build_method_not_allowed_error(HttpResponse(), ERROR_METODO_INCORRECTO,
-                                                      'Metodo/s requeridod: ' + ', '.join(permisos_rol_list))
-            return func(request, *args, **kwargs)
+                return func(request, *args, **kwargs)
+
+            except KeyError as err:
+                if len(err.args) == 2:
+                    return build_bad_request_error(response, err.args[0], err.args[1])
+                else:
+                    return build_bad_request_error(response, ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCOMPLETOS)
+
+            except (ValueError, TypeError, AttributeError, DataError, IntegrityError) as err:
+                if len(err.args) == 2:
+                    return build_bad_request_error(response, err.args[0], err.args[1])
+                else:
+                    return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
+
+            except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError) as err:
+                if len(err.args) == 2:
+                    return build_bad_request_error(response, err.args[0], err.args[1])
+                else:
+                    return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
+
+            except SMTPException:
+                return build_internal_server_error(response, ERROR_DE_SISTEMA, DETALLE_ERROR_ENVIO_EMAIL)
+
+            except (SystemError, RuntimeError) as err:
+                if len(err.args) == 2:
+                    return build_internal_server_error(response, err.args[0], err.args[1])
+                else:
+                    return build_internal_server_error(response, ERROR_DE_SISTEMA, DETALLE_ERROR_DESCONOCIDO)
+        return inner
+    return decorator
+
+
+def permisos_rol_requeridos(permisos_rol_list):
+    """
+    Permite ejecutar funcion si el usuario cumple con por lo menos 1 de los permisos que se envian
+    :param permisos_rol_list:
+    :return:
+    """
+    def decorator(func):
+        @wraps(func, assigned=available_attrs(func))
+        def inner(request, *args, **kwargs):
+
+            response = HttpResponse()
+
+            datos = obtener_datos_json(request)
+
+            if KEY_ID_FINCA not in datos or datos[KEY_ID_FINCA] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_FINCA_DATOS_FALTANTES)
+
+            finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+            datos_usuario = request.user.datosusuario
+
+            usuario_finca = None
+            if finca is not None and datos_usuario is not None:
+                usuario_finca = UsuarioFinca.objects.get(finca=finca, usuario=datos_usuario,
+                                                         fechaBajaUsuarioFinca=None)
+
+            if usuario_finca is None:
+                return build_unauthorized_error(response, ERROR_NO_TIENE_PERMISOS, DETALLE_ERROR_NO_TIENE_PERMISOS)
+
+            rol_usuario_finca = usuario_finca.rolUsuarioFincaList.order_by('-fechaAltaRolUsuarioFinca').first()
+            if rol_usuario_finca is not None:
+                conjunto_permisos_rol = ConjuntoPermisos.objects.get(rol=rol_usuario_finca.rol)
+
+                acceso_permitido = False
+                for permiso in permisos_rol_list:
+
+                    if permiso == PERMISO_PUEDEASIGNARCOMPONENTESENSOR:
+                        acceso_permitido = conjunto_permisos_rol.puedeAsignarComponenteSensor
+                        break
+
+                    if permiso == PERMISO_PUEDEASIGNARCULTIVO:
+                        acceso_permitido = conjunto_permisos_rol.puedeAsignarCultivo
+                        break
+
+                    if permiso == PERMISO_PUEDEASIGNARMECRIEGOAFINCA:
+                        acceso_permitido = conjunto_permisos_rol.puedeAsignarMecRiegoAFinca
+                        break
+
+                    if permiso == PERMISO_PUEDEASIGNARMECRIEGOASECTOR:
+                        acceso_permitido = conjunto_permisos_rol.puedeAsignarMecRiegoASector
+                        break
+
+                    if permiso == PERMISO_PUEDECONFIGURAROBTENCIONINFOEXTERNA:
+                        acceso_permitido = conjunto_permisos_rol.puedeConfigurarObtencionInfoExterna
+                        break
+
+                    if permiso == PERMISO_PUEDECREARCOMPONENTESENSOR:
+                        acceso_permitido = conjunto_permisos_rol.puedeCrearComponenteSensor
+                        break
+
+                    if permiso == PERMISO_PUEDECREARCONFIGURACIONRIEGO:
+                        acceso_permitido = conjunto_permisos_rol.puedeCrearConfiguracionRiego
+                        break
+
+                    if permiso == PERMISO_PUEDECREARSECTOR:
+                        acceso_permitido = conjunto_permisos_rol.puedeCrearSector
+                        break
+
+                    if permiso == PERMISO_PUEDEGENERARINFORMECRUZADORIEGOMEDICION:
+                        acceso_permitido = conjunto_permisos_rol.puedeGenerarInformeCruzadoRiegoMedicion
+                        break
+
+                    if permiso == PERMISO_PUEDEGENERARINFORMEESTADOACTUALSECTORES:
+                        acceso_permitido = conjunto_permisos_rol.puedeGenerarInformeEstadoActualSectores
+                        break
+
+                    if permiso == PERMISO_PUEDEGENERARINFORMEESTADOHISTORICOSECTORESFINCA:
+                        acceso_permitido = conjunto_permisos_rol.puedeGenerarInformeEstadoHistoricoSectoresFinca
+                        break
+
+                    if permiso == PERMISO_PUEDEGENERARINFORMEEVENTOPERSONALIZADO:
+                        acceso_permitido = conjunto_permisos_rol.puedeGenerarInformeEventoPersonalizado
+                        break
+
+                    if permiso == PERMISO_PUEDEGENERARINFORMEHELADASHISTORICO:
+                        acceso_permitido = conjunto_permisos_rol.puedeGenerarInformeHeladasHistorico
+                        break
+
+                    if permiso == PERMISO_PUEDEGENERARINFORMERIEGOENEJECUCION:
+                        acceso_permitido = conjunto_permisos_rol.puedeGenerarInformeRiegoEnEjecucion
+                        break
+
+                    if permiso == PERMISO_PUEDEGENERARINFORMERIEGOPORSECTORESHISTORICO:
+                        acceso_permitido = conjunto_permisos_rol.puedeGenerarInformeRiegoPorSectoresHistorico
+                        break
+
+                    if permiso == PERMISO_PUEDEGESTIONARCOMPONENTESENSOR:
+                        acceso_permitido = conjunto_permisos_rol.puedeGestionarComponenteSensor
+                        break
+
+                    if permiso == PERMISO_PUEDEGESTIONARCULTIVOSECTOR:
+                        acceso_permitido = conjunto_permisos_rol.puedeGestionarCultivoSector
+                        break
+
+                    if permiso == PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO:
+                        acceso_permitido = conjunto_permisos_rol.puedeGestionarEventoPersonalizado
+                        break
+
+                    if permiso == PERMISO_PUEDEGESTIONARFINCA:
+                        acceso_permitido = conjunto_permisos_rol.puedeGestionarFinca
+                        break
+
+                    if permiso == PERMISO_PUEDEGESTIONARSECTOR:
+                        acceso_permitido = conjunto_permisos_rol.puedeGestionarSector
+                        break
+
+                    if permiso == PERMISO_PUEDEGESTIONARSENSORES:
+                        acceso_permitido = conjunto_permisos_rol.puedeGestionarSensores
+                        break
+
+                    if permiso == PERMISO_PUEDEGESTIONARUSUARIOSFINCA:
+                        acceso_permitido = conjunto_permisos_rol.puedeGestionarUsuariosFinca
+                        break
+
+                    if permiso == PERMISO_PUEDEINICIARODETENERRIEGOMANUALMENTE:
+                        acceso_permitido = conjunto_permisos_rol.puedeIniciarODetenerRiegoManualmente
+                        break
+
+                    if permiso == PERMISO_PUEDEMODIFICARCONFIGURACIONRIEGO:
+                        acceso_permitido = conjunto_permisos_rol.puedeModificarConfiguracionRiego
+                        break
+
+                if acceso_permitido:
+                    return func(request, *args, **kwargs)
+                else:
+                    return build_unauthorized_error(response, ERROR_NO_TIENE_PERMISOS,
+                                                    DETALLE_ERROR_NO_TIENE_PERMISOS)
+            else:
+                return build_unauthorized_error(response, ERROR_NO_TIENE_PERMISOS, DETALLE_ERROR_NO_TIENE_PERMISOS)
         return inner
     return decorator

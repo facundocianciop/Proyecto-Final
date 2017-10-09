@@ -25,6 +25,7 @@ admin.site.register(ProveedorInformacionClimatica)
 admin.site.register(TipoMedicionClimatica)
 admin.site.register(TipoConfiguracionRiego)
 admin.site.register(Rol)
+admin.site.register(ConjuntoPermisos)
 
 
 # ABM de Estados: no estan como CU. Decidir si dejarlos. Los estados deberian ser fijos
