@@ -133,7 +133,7 @@ def registrar_usuario(request):
     user.datosusuario.save()
     user.save()
 
-    response.content = armar_response_content(None, DETALLE_REGISTRACION_USUARIO_CREADO_CORRECTAMENTE)
+    response.content = armar_response_content(None, DETALLE_USUARIO_CREADO_CORRECTAMENTE)
     response.status_code = 200
 
     return response
@@ -306,8 +306,9 @@ def modificar_usuario(request):
             imagen_usuario = datos[KEY_IMAGEN_USUARIO]
 
     # Se comprueba que el email ingresado no exista en el sistema
-    if User.objects.filter(email=datos[KEY_EMAIL]).__len__() >= 1:
-        raise ValueError(ERROR_EMAIL_EXISTENTE, DETALLE_ERROR_EMAIL_EXISTENTE)
+    if datos[KEY_EMAIL] != request.user.email:
+        if User.objects.filter(email=datos[KEY_EMAIL]).__len__() >= 1:
+            raise ValueError(ERROR_EMAIL_EXISTENTE, DETALLE_ERROR_EMAIL_EXISTENTE)
 
     usuario_a_modificar = request.user
 
@@ -329,7 +330,8 @@ def modificar_usuario(request):
     usuario_a_modificar.datosusuario.save()
     usuario_a_modificar.save()
 
-    response.content = armar_response_content(usuario_a_modificar, )
+    response.content = armar_response_content(usuario_a_modificar.datosusuario,
+                                              DETALLE_USUARIO_MODIFICADO_CORRECTAMENTE)
     response.status_code = 200
 
     return response
@@ -363,7 +365,7 @@ def eliminar_usuario(request):
         usuario_a_desactivar.is_active = False
         usuario_a_desactivar.save()
 
-        response.content = armar_response_content(None)
+        response.content = armar_response_content(None, DETALLE_USUARIO_ELIMINADO_CORRECTAMENTE)
         response.status_code = 200
 
         return response
