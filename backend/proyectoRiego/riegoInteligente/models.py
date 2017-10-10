@@ -64,7 +64,7 @@ class DatosUsuario(models.Model):
                     cuit=self.cuit,
                     dni=self.dni,
                     domicilio=self.domicilio,
-                    fechaNacimiento=self.fechaNacimiento)
+                    fechaNacimiento=self.fechaNacimiento.date())
                     #imagenUsuario=self.imagenUsuario)
 
 
