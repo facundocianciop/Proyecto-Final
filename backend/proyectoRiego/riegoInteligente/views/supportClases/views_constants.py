@@ -151,8 +151,9 @@ KEY_DESCRIPCION_CONFIGURACION_EVENTO = "descripcionConfiguracionEvento"
 DETALLE_OPERACION_VACIA = "No hay datos"
 
 # Detalle operacion seguridad
-DETALLE_REGISTRACION_USUARIO_CREADO_CORRECTAMENTE = "Usuario creado correctamente"
-DETALLE_REGISTRACION_USUARIO_MODIFICADO_CORRECTAMENTE = "Usuario modificado correctamente"
+DETALLE_USUARIO_CREADO_CORRECTAMENTE = "Usuario creado correctamente"
+DETALLE_USUARIO_MODIFICADO_CORRECTAMENTE = "Usuario modificado correctamente"
+DETALLE_USUARIO_ELIMINADO_CORRECTAMENTE = "Usuario eliminado correctamente"
 
 DETALLE_CONTRASENIA_MODIFICADA_CORRECTAMENTE = 'Contraseña modificada correctamente'
 
