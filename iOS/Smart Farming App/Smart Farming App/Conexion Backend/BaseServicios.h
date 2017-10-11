@@ -1,13 +1,23 @@
 //
 //  BaseServicios.h
-//  proyectoRIego2017
+//  Smart Farming App
 //
 //  Created by Facundo José Palma on 9/21/17.
-//  Copyright © 2017 Facundo José Palma. All rights reserved.
+//  Copyright © 2017 Smart Farming. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import "HTTPConector.h"
+
+#import "ErrorServicioBase.h"
+#import "SolicitudServicioBase.h"
+#import "RespuestaServicioBase.h"
+
+#pragma mark - Definicion de bloques
+
+typedef void(^WorkBlock)(void);
+typedef void(^FailureBlock)(ErrorServicioBase *error);
+typedef void(^SuccessBlock)(RespuestaServicioBase *respuesta);
 
 #pragma mark - Keys Diccionarios
 
