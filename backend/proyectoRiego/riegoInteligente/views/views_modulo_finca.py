@@ -457,34 +457,31 @@ def eliminar_usuario_finca(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def buscar_usuarios_no_finca(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
-    try:
-        if datos == '':
+
+    if datos == '':
+        raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    if (KEY_ID_FINCA) in datos:
+        if datos[KEY_ID_FINCA] == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_ID_FINCA) in datos:
-            if datos[KEY_ID_FINCA] == '':
-                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-            usuarios_todos = DatosUsuario.objects.all()
-            user = request.user
-            usuario_logueado = user.datosusuario
-            usuarios = []
-            finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
-            for usuario in usuarios_todos:
-                if ((UsuarioFinca.objects.filter(usuario=usuario, finca= finca,
-                                                         fechaBajaUsuarioFinca__isnull=True).__len__() == 0) and
-                        ((usuario == usuario_logueado)==False)) and usuario.user.is_staff == False:
-                    usuarios.append(usuario)
-            response.content=armar_response_list_content(usuarios)
-            response.status_code = 200
-            return response
-        else:
-            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-    except IntegrityError as err:
-        print err.args
-        response.status_code=401
+        usuarios_todos = DatosUsuario.objects.all()
+        user = request.user
+        usuario_logueado = user.datosusuario
+        usuarios = []
+        finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+        for usuario in usuarios_todos:
+            if ((UsuarioFinca.objects.filter(usuario=usuario, finca= finca,
+                                             fechaBajaUsuarioFinca__isnull=True).__len__() == 0) and
+                    ((usuario == usuario_logueado)==False)) and usuario.user.is_staff == False:
+                usuarios.append(usuario)
+        response.content=armar_response_list_content(usuarios)
+        response.status_code = 200
         return response
+    else:
+        raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
 
 
 @transaction.atomic()

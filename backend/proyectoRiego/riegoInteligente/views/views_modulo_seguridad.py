@@ -488,7 +488,7 @@ def recuperar_cuenta(request):
     usuario.datosusuario.codigoVerificacion = codigo_verificacion
 
     titulo_email = "Recuperación de cuenta de Smart Farming"
-    cuerpo_email = "Código de verificación: " + codigo_verificacion
+    cuerpo_email = u"Código de verificación: " + codigo_verificacion
     destino = email
 
     enviar_email(titulo=titulo_email, mensaje=cuerpo_email, destino=destino)

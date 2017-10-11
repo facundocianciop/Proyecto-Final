@@ -57,6 +57,11 @@ class DatosUsuario(models.Model):
         return "Datos usuario: " + self.user.username
 
     def as_json(self):
+
+        fecha_nacimiento = None
+        if self.fechaNacimiento is not None:
+            fecha_nacimiento = self.fechaNacimiento.date()
+
         return dict(usuario=self.user.username,
                     nombre=self.user.first_name,
                     apellido=self.user.last_name,
@@ -64,8 +69,9 @@ class DatosUsuario(models.Model):
                     cuit=self.cuit,
                     dni=self.dni,
                     domicilio=self.domicilio,
-                    fechaNacimiento=self.fechaNacimiento.date())
-                    #imagenUsuario=self.imagenUsuario)
+                    fechaNacimiento=fecha_nacimiento
+                    # imagenUsuario=self.imagenUsuario
+                    )
 
 
 class EstadoUsuario(models.Model):
