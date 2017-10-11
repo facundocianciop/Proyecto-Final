@@ -191,6 +191,66 @@ def finalizar_sesion(request):
 
 
 @transaction.atomic()
+@metodos_requeridos([METHOD_POST])
+def recuperar_cuenta(request):
+
+    datos = obtener_datos_json(request)
+    response = HttpResponse()
+
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+
+        email = datos[KEY_EMAIL]
+        usuario = User.objects.get(email=email)
+
+        codigo_verificacion = id_generator()
+        usuario.datosusuario.codigoVerificacion = codigo_verificacion
+
+
+
+        # TODO mandar mail
+
+        # with mail.get_connection() as connection:
+        # mail.EmailMessage('SmartFarming: Recuperacion de cueta ',body="Su nueva contraseña es
+        # %s"%contrasenia_aleatoria,from1='facundocianciop',
+        #                       to1='facundocianciop',connection=connection).send()
+        # FALTA MANDAR EL MAIL, CONFIGURAR LA CONTRASEÑA Y EL PUERTO
+        # ACA PENSE QUE EN CASO DE RECHAZAR LA FINCA QUE EL ADMINISTRADOR ESCRIBIERA UN MENSAJE DICIENDO
+        # POR QUÉ LA RECHAZÓ
+
+        usuario.save()
+
+        response.content = armar_response_content(None, DETALLE_RECUPERAR_CUENTA_EJECUTADA)
+        response.status_code = 200
+        return response
+
+    except KeyError as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCOMPLETOS)
+
+    except (ValueError, TypeError, AttributeError, DataError, IntegrityError) as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
+
+    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError) as err:
+        if len(err.args) == 2:
+            return build_bad_request_error(response, err.args[0], err.args[1])
+        else:
+            return build_bad_request_error(response, ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_DATOS_INCORRECTOS)
+
+    except (SystemError, RuntimeError) as err:
+        if len(err.args) == 2:
+            return build_internal_server_error(response, err.args[0], err.args[1])
+        else:
+            return build_internal_server_error(response, ERROR_DE_SISTEMA, DETALLE_ERROR_DESCONOCIDO)
+
+
+@transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
 @manejar_errores()
