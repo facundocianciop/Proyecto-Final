@@ -8,10 +8,17 @@
 
 #import <Foundation/Foundation.h>
 #import "BaseServicios.h"
+#import "SolicitudInicioSesion.h"
 
 @interface ServiciosModuloSeguridad : BaseServicios
 
 #pragma mark - Public
+
++(void) iniciarSesion:(SolicitudInicioSesion*)SolicitudInicioSesion
+      completionBlock:(SuccessBlock)completionBlock
+         failureBlock:(FailureBlock)failureBlock;
+
+
 
 +(void)authenticate:(NSString *)username
            password:(NSString *)password

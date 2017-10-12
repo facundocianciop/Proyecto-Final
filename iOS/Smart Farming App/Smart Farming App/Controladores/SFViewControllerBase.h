@@ -11,6 +11,7 @@
 
 #import "SFUtils.h"
 #import "SFConstantesComunes.h"
+#import "IdentificadoresSegue.h"
 
 @interface SFViewControllerBase : UIViewController
 

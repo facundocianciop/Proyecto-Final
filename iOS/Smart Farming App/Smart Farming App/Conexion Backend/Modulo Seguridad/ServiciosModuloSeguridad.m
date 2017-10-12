@@ -33,8 +33,22 @@
 
 #pragma mark - Public
 
++(void) iniciarSesion:(SolicitudInicioSesion*)SolicitudInicioSesion
+      completionBlock:(SuccessBlock)completionBlock
+         failureBlock:(FailureBlock)failureBlock {
+    
+    NSMutableDictionary *parametrosLlamada = [NSMutableDictionary new];
+    [parametrosLlamada setObject:SolicitudInicioSesion.usuario forKey:KEY_USUARIO];
+    [parametrosLlamada setObject:SolicitudInicioSesion.contrasenia forKey:KEY_CONTRASENIA];
+    
+    [[HTTPConector instance] httpOperation:OPERATION_INICIAR_SESION method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSArray *responseObject) {
+        
+    } failureBlock:^(NSError *error) {
+        
+    }];
+}
 
-
+/*
 +(void)authenticate:(NSString *)username
            password:(NSString *)password
     completionBlock:(HTTPOperationCompletionBlock)completionBlock
@@ -132,5 +146,5 @@
         failureBlock(error);
     }];
 }
-
+*/
 @end
