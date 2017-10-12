@@ -133,8 +133,8 @@ def cambiar_proveedor_finca(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_NOMBRE_PROVEEDOR and KEY_ID_FINCA) in datos:
-            if datos[KEY_NOMBRE_PROVEEDOR] == '' or datos[KEY_ID_FINCA] == '':
+        if (KEY_NOMBRE_PROVEEDOR in datos)and(KEY_ID_FINCA in datos) and (KEY_FRECUENCIA in datos):
+            if datos[KEY_NOMBRE_PROVEEDOR] == '' or datos[KEY_ID_FINCA] == '' or datos[KEY_FRECUENCIA] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             if ProveedorInformacionClimatica.objects.filter(nombreProveedor=datos[KEY_NOMBRE_PROVEEDOR]).__len__() == 1:
                 proveedorSeleccionado = ProveedorInformacionClimatica.objects.get(nombreProveedor=datos[KEY_NOMBRE_PROVEEDOR])
@@ -143,7 +143,12 @@ def cambiar_proveedor_finca(request):
                 finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
                 if finca.proveedorinformacionclimaticafinca_set.filter(fechaBajaProveedorInfoClimaticaFinca__isnull=True):
                     raise ValueError(ERROR_FINCA_TIENE_UN_PROVEEDOR_HABILITADO, "La finca todavia tiene un proveedor habilitado, deshabilitelo")
+                if int(datos[KEY_FRECUENCIA]) > proveedorSeleccionado.frecuenciaMaxPosible:
+                    # si la frecuencia de actualizacion es mayor a la permitida por el proveedor se retorna un error
+                    raise ValueError(ERROR_FRECUENCIA_MAXIMA_SUPERADA,
+                                     "No se puede colocar esa frecuencia, ya que es mayor a la permitida por el proveedor")
                 proveedorInformacionClimaticaFinca = ProveedorInformacionClimaticaFinca(
+                    frecuencia=datos[KEY_FRECUENCIA],
                     proveedorInformacionClimatica=proveedorSeleccionado, finca=finca,
                     fechaAltaProveedorInfoClimaticaFinca=datetime.now())
                 proveedorInformacionClimaticaFinca.save()

@@ -77,8 +77,9 @@ def crear_finca(request):
             finca_creada = Finca(nombre=datos[KEY_NOMBRE_FINCA], direccionLegal=datos[KEY_DIRECCION_LEGAL],
                               ubicacion=datos[KEY_UBICACION],
                               tamanio=datos[KEY_TAMANIO])
-            #se crea la instancia de proveedorInformacionClimaticaFinca relacionada al proveedor  y a la finca creada
-            proveedorInformacionClimaticaFinca = ProveedorInformacionClimaticaFinca(
+            #se crea la instancia de proveedorInformacionClimaticaFinca relacionada al proveedor, la finca creada y
+            # la frecuencia ingresada
+            proveedorInformacionClimaticaFinca = ProveedorInformacionClimaticaFinca(frecuencia=datos[KEY_FRECUENCIA],
                 proveedorInformacionClimatica=proveedorSeleccionado, finca=finca_creada)
             #se setea la fecha de alta con la fecha actual
             proveedorInformacionClimaticaFinca.fechaAltaProveedorInfoClimaticaFinca = datetime.now()
@@ -331,6 +332,23 @@ def modificar_finca(request):
     except ValueError as err:
         return build_bad_request_error(response, err.args[0], err.args[1])
     except (IntegrityError, TypeError, KeyError):
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_GET])
+def buscar_roles(request):
+    response = HttpResponse()
+    try:
+        roles = Rol.objects.filter(fechaBajaRol__isnull=True)
+        response.content = armar_response_list_content(roles)
+        response.status_code = 200
+        return response
+    except ValueError as err:
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 
