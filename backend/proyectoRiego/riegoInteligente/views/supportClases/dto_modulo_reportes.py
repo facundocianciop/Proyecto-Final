@@ -1,6 +1,6 @@
-class DtoConfiguracionEventoPersonalizado():
-    def __init__(self, idConfiguracionEvento, nombre, descripcion, fechaHoraCreacion, activado, numeroSector, idSector, notificacionActivada,
-                 listaMedicionesExternas, listaMedicionesInterna):
+class DtoConfiguracionEventoPersonalizado:
+    def __init__(self, idConfiguracionEvento, nombre, descripcion, fechaHoraCreacion, activado, numeroSector, idSector,
+                 notificacionActivada, listaMedicionesExternas, listaMedicionesInterna):
         self.id_configuracion_evento = idConfiguracionEvento
         self.nombre = nombre
         self.descripcion = descripcion
@@ -9,9 +9,8 @@ class DtoConfiguracionEventoPersonalizado():
         self.numero_sector = numeroSector
         self.id_sector = idSector
         self.notificacion_activada = notificacionActivada
-        self.lista_mediciones_externas = listaMedicionesExternas,
+        self.lista_mediciones_externas = listaMedicionesExternas
         self.lista_mediciones_internas = listaMedicionesInterna
-
 
     def as_json(self):
         return dict(
@@ -25,3 +24,24 @@ class DtoConfiguracionEventoPersonalizado():
             notificacion_activada=self.notificacion_activada,
             lista_mediciones_externas=self.lista_mediciones_externas,
             lista_mediciones_internas=self.lista_mediciones_internas)
+
+
+class DtoEstadoActualSector:
+    def __init__(self, idSector, numeroSector, superficieSector, descripcionSector, componenteSector, mecanismoSector,
+                 ultimaMedicion):
+        self.id_sector = idSector
+        self.numero_sector = numeroSector
+        self.superficie_sector = superficieSector
+        self.descripcion_sector = descripcionSector
+        self.componente_sector = componenteSector
+        self.mecanismo_sector = mecanismoSector
+        self.ultima_medicion = ultimaMedicion
+
+    def as_json(self):
+        return dict(id_sector=self.id_sector,
+                    numero_sector=self.numero_sector,
+                    superficie_sector=self.superficie_sector,
+                    descripcion_sector=self.descripcion_sector,
+                    componente_sector=self.componente_sector,
+                    mecanismo_sector=self.mecanismo_sector,
+                    ultima_medicion=self.ultima_medicion)

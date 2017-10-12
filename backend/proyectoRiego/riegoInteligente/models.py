@@ -106,6 +106,12 @@ class Rol(models.Model):
         return self.nombreRol
 
 
+    def as_json(self):
+        return dict(nombreRol=self.nombreRol,
+                    fechaAltaRol=self.fechaAltaRol,
+                    fechaBajaRol=self.fechaBajaRol)
+
+
 class UsuarioFinca(models.Model):
     OIDUsuarioFinca = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     idUsuarioFinca = models.IntegerField(default=1, unique=True)
@@ -961,15 +967,22 @@ class MedicionCabecera(models.Model):
                 super(MedicionCabecera, self).save()
 
 
+    def as_json(self):
+        return dict(nro_medicion=self.nroMedicion,
+                    fecha_y_hora=self.fechaYHora,
+                    lista_mediciones_detalle=[medicion.as_json() for medicion in self.medicionDetalleList.all()])
 
 class MedicionDetalle(models.Model):
     OIDMedicionDetalle = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nroRenglon = models.IntegerField()
     valor = models.FloatField()
-    medicionCabecera = models.ForeignKey(MedicionCabecera,db_column="OIDMedicionCabecera", related_name="medicionDetalle")
+    medicionCabecera = models.ForeignKey(MedicionCabecera,db_column="OIDMedicionCabecera", related_name="medicionDetalleList")
     tipoMedicion = models.ForeignKey("TipoMedicion", db_column="OIDTipoMedicion", null=True)
 
-
+    def as_json(self):
+        return dict(nro_renglon=self.nroRenglon,
+                    valor=self.valor,
+                    tipo_medicion=self.tipoMedicion.nombreTipoMedicion)
 #MODULO EVENTOS
 
 class MedicionEvento(models.Model):
