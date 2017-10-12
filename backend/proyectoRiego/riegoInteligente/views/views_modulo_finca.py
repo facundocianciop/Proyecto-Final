@@ -77,8 +77,9 @@ def crear_finca(request):
             finca_creada = Finca(nombre=datos[KEY_NOMBRE_FINCA], direccionLegal=datos[KEY_DIRECCION_LEGAL],
                               ubicacion=datos[KEY_UBICACION],
                               tamanio=datos[KEY_TAMANIO])
-            #se crea la instancia de proveedorInformacionClimaticaFinca relacionada al proveedor  y a la finca creada
-            proveedorInformacionClimaticaFinca = ProveedorInformacionClimaticaFinca(
+            #se crea la instancia de proveedorInformacionClimaticaFinca relacionada al proveedor, la finca creada y
+            # la frecuencia ingresada
+            proveedorInformacionClimaticaFinca = ProveedorInformacionClimaticaFinca(frecuencia=datos[KEY_FRECUENCIA],
                 proveedorInformacionClimatica=proveedorSeleccionado, finca=finca_creada)
             #se setea la fecha de alta con la fecha actual
             proveedorInformacionClimaticaFinca.fechaAltaProveedorInfoClimaticaFinca = datetime.now()
