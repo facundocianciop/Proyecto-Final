@@ -336,6 +336,23 @@ def modificar_finca(request):
 
 @transaction.atomic()
 @login_requerido
+@metodos_requeridos([METHOD_GET])
+def buscar_roles(request):
+    response = HttpResponse()
+    try:
+        roles = Rol.objects.filter(fechaBajaRol__isnull=True)
+        response.content = armar_response_list_content(roles)
+        response.status_code = 200
+        return response
+    except ValueError as err:
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+@transaction.atomic()
+@login_requerido
 @metodos_requeridos([METHOD_POST])
 def eliminar_finca(request):
     response = HttpResponse()
