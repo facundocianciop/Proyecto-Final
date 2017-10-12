@@ -11,6 +11,7 @@
 
 @interface SFInicioSesionViewController ()
 
+@property (strong, nonatomic) IBOutlet UIScrollView *signInScrollView;
 @property (weak, nonatomic) IBOutlet UITextField *usuarioTextField;
 @property (weak, nonatomic) IBOutlet UITextField *contraseniaTextField;
 
@@ -21,7 +22,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    self.viewScrollView = self.signInScrollView;
 }
 
 - (void)didReceiveMemoryWarning {

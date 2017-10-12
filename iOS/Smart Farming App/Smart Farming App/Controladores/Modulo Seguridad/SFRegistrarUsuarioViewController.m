@@ -1,18 +1,18 @@
 //
-//  SFFormularioBaseViewController.m
+//  SFRegistrarUsuarioViewController.m
 //  Smart Farming App
 //
 //  Created by Facundo José Palma on 10/12/17.
 //  Copyright © 2017 Smart Farming. All rights reserved.
 //
 
-#import "SFFormularioBaseViewController.h"
+#import "SFRegistrarUsuarioViewController.h"
 
-@interface SFFormularioBaseViewController ()
+@interface SFRegistrarUsuarioViewController ()
 
 @end
 
-@implementation SFFormularioBaseViewController
+@implementation SFRegistrarUsuarioViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

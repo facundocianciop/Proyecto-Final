@@ -1,18 +1,18 @@
 //
-//  SFFormularioBaseViewController.m
+//  SFRecuperarCuentaViewController.m
 //  Smart Farming App
 //
 //  Created by Facundo José Palma on 10/12/17.
 //  Copyright © 2017 Smart Farming. All rights reserved.
 //
 
-#import "SFFormularioBaseViewController.h"
+#import "SFRecuperarCuentaViewController.h"
 
-@interface SFFormularioBaseViewController ()
+@interface SFRecuperarCuentaViewController ()
 
 @end
 
-@implementation SFFormularioBaseViewController
+@implementation SFRecuperarCuentaViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

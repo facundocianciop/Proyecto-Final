@@ -6,8 +6,8 @@
 //  Copyright © 2017 Smart Farming. All rights reserved.
 //
 
-#import "SFViewControllerBase.h"
+#import "SFTextInputBaseViewController.h"
 
-@interface SFInicioSesionViewController : SFViewControllerBase
+@interface SFInicioSesionViewController : SFTextInputBaseViewController
 
 @end
