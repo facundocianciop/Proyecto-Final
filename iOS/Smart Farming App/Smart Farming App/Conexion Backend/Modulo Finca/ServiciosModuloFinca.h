@@ -11,7 +11,7 @@
 
 @interface ServiciosModuloFinca : BaseServicios
 
-+(void)clientPaymentTypes:(HTTPOperationCompletionBlock)completionBlock
-             failureBlock:(HTTPOperationFailureBlock)failureBlock;
++(void) mostrarFincasEncargadoWithCompletionBlock:(SuccessBlock)completionBlock
+         failureBlock:(FailureBlock)failureBlock;
 
 @end

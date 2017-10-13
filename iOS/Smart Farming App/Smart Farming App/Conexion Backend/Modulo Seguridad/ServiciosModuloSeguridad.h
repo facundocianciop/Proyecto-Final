@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "BaseServicios.h"
+
 #import "SolicitudInicioSesion.h"
+#import "RespuestaInicioSesion.h"
 
 @interface ServiciosModuloSeguridad : BaseServicios
 
@@ -17,30 +19,5 @@
 +(void) iniciarSesion:(SolicitudInicioSesion*)SolicitudInicioSesion
       completionBlock:(SuccessBlock)completionBlock
          failureBlock:(FailureBlock)failureBlock;
-
-
-
-+(void)authenticate:(NSString *)username
-           password:(NSString *)password
-    completionBlock:(HTTPOperationCompletionBlock)completionBlock
-       failureBlock:(HTTPOperationFailureBlock)failureBlock;
-
-+(void)signOut:(HTTPOperationCompletionBlock)completionBlock
-  failureBlock:(HTTPOperationFailureBlock)failureBlock;
-
-+(void)     signUp:(NSString *)razonSocial
-              cuit:(NSString*)cuit
-          contacto:(NSString *)contacto
-             email:(NSString *)email
-          telefono:(NSString *)telefono
-   completionBlock:(HTTPOperationCompletionBlock)completionBlock
-      failureBlock:(HTTPOperationFailureBlock)failureBlock;
-
-
-+(void)forgotUserCredentials:(NSString *)razonSocial
-                        cuit:(NSString *)cuit
-                       email:(NSString *)email
-             completionBlock:(HTTPOperationCompletionBlock)completionBlock
-                failureBlock:(HTTPOperationFailureBlock)failureBlock;
 
 @end

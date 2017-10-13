@@ -133,4 +133,6 @@ typedef void(^SuccessBlock)(RespuestaServicioBase *respuesta);
 
 @interface BaseServicios : NSObject
 
++(ErrorServicioBase*)armarErrorServicio:(NSError*)error;
+
 @end

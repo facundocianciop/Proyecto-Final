@@ -9,6 +9,8 @@
 #import "SFInicioSesionViewController.h"
 #import "ServiciosModuloSeguridad.h"
 
+#import "ServiciosModuloFinca.h"
+
 @interface SFInicioSesionViewController ()
 
 @property (strong, nonatomic) IBOutlet UIScrollView *signInScrollView;
@@ -43,14 +45,20 @@
     
     [self showActivityIndicator];
     [ServiciosModuloSeguridad iniciarSesion:solicitud completionBlock:^(RespuestaServicioBase *respuesta) {
-        [self hideActivityIndicator];
+        [weakSelf hideActivityIndicator];
         
-        [weakSelf performSegueWithIdentifier:kSFNavegarEstadoAutenticadoSegue sender:self];
+        [ServiciosModuloFinca mostrarFincasEncargadoWithCompletionBlock:^(RespuestaServicioBase *respuesta) {
+            
+        } failureBlock:^(ErrorServicioBase *error) {
+            
+        }];
+        
+        //[weakSelf performSegueWithIdentifier:kSFNavegarEstadoAutenticadoSegue sender:self];
         
     } failureBlock:^(ErrorServicioBase *error) {
-        [self hideActivityIndicator];
+        [weakSelf hideActivityIndicator];
         
-        
+        [self handleErrorWithPromptTitle:@"Error de inicio de sesión" message: error.detalleError];
     }];
 }
 

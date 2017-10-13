@@ -23,6 +23,9 @@
 		1116BA861F8C6B7D005C9AFF /* SFActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116BA851F8C6B7D005C9AFF /* SFActivityIndicator.m */; };
 		1116BA8B1F8C6D09005C9AFF /* SFViewControllerBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116BA8A1F8C6D09005C9AFF /* SFViewControllerBase.m */; };
 		1116BA931F8C7490005C9AFF /* SFUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116BA921F8C7490005C9AFF /* SFUtils.m */; };
+		1116DA961F906A370057A048 /* RespuestaInicioSesion.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116DA951F906A370057A048 /* RespuestaInicioSesion.m */; };
+		1116DA9B1F906F8C0057A048 /* RespuestaMostrarFincasEncargado.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116DA9A1F906F8C0057A048 /* RespuestaMostrarFincasEncargado.m */; };
+		1116DA9F1F90726C0057A048 /* ServiciosModuloRiego.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116DA9E1F90726C0057A048 /* ServiciosModuloRiego.m */; };
 		11CD00901F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CD008F1F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.m */; };
 		11CD00941F8F178D00C58C49 /* SolicitudInicioSesion.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CD00931F8F178D00C58C49 /* SolicitudInicioSesion.m */; };
 		11CD00971F8F1B7700C58C49 /* IdentificadoresSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CD00961F8F1B7700C58C49 /* IdentificadoresSegue.m */; };
@@ -93,6 +96,12 @@
 		1116BA8E1F8C6DA0005C9AFF /* SFConstantesComunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFConstantesComunes.h; sourceTree = "<group>"; };
 		1116BA911F8C7490005C9AFF /* SFUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFUtils.h; sourceTree = "<group>"; };
 		1116BA921F8C7490005C9AFF /* SFUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFUtils.m; sourceTree = "<group>"; };
+		1116DA941F906A370057A048 /* RespuestaInicioSesion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RespuestaInicioSesion.h; sourceTree = "<group>"; };
+		1116DA951F906A370057A048 /* RespuestaInicioSesion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RespuestaInicioSesion.m; sourceTree = "<group>"; };
+		1116DA991F906F8C0057A048 /* RespuestaMostrarFincasEncargado.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RespuestaMostrarFincasEncargado.h; sourceTree = "<group>"; };
+		1116DA9A1F906F8C0057A048 /* RespuestaMostrarFincasEncargado.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RespuestaMostrarFincasEncargado.m; sourceTree = "<group>"; };
+		1116DA9D1F90726C0057A048 /* ServiciosModuloRiego.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServiciosModuloRiego.h; sourceTree = "<group>"; };
+		1116DA9E1F90726C0057A048 /* ServiciosModuloRiego.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServiciosModuloRiego.m; sourceTree = "<group>"; };
 		11CD008E1F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFNavegarEstadoAutenticadoSegue.h; sourceTree = "<group>"; };
 		11CD008F1F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFNavegarEstadoAutenticadoSegue.m; sourceTree = "<group>"; };
 		11CD00921F8F178D00C58C49 /* SolicitudInicioSesion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SolicitudInicioSesion.h; sourceTree = "<group>"; };
@@ -219,18 +228,12 @@
 		1116BA621F8C59B4005C9AFF /* Conexion Backend */ = {
 			isa = PBXGroup;
 			children = (
-				1116BA6F1F8C5A2C005C9AFF /* BaseServicios.h */,
-				1116BA751F8C5A2C005C9AFF /* BaseServicios.m */,
-				A1AE0B901F8E9011009B4494 /* SolicitudServicioBase.h */,
-				A1AE0B911F8E9011009B4494 /* SolicitudServicioBase.m */,
-				A1AE0B8A1F8E8E1F009B4494 /* SolicitudServicioFincaBase.h */,
-				A1AE0B8B1F8E8E1F009B4494 /* SolicitudServicioFincaBase.m */,
-				A1AE0B871F8E8CFD009B4494 /* RespuestaServicioBase.h */,
-				A1AE0B881F8E8CFD009B4494 /* RespuestaServicioBase.m */,
-				A1AE0B8D1F8E8F0B009B4494 /* ErrorServicioBase.h */,
-				A1AE0B8E1F8E8F0B009B4494 /* ErrorServicioBase.m */,
+				1116BA6C1F8C5A2C005C9AFF /* ContextoUsuario.h */,
+				1116BA671F8C5A2B005C9AFF /* ContextoUsuario.m */,
+				1116DA8F1F904B6E0057A048 /* General */,
 				1116BA8F1F8C6E95005C9AFF /* Modulo Seguridad */,
 				1116BA901F8C6EA2005C9AFF /* Modulo Finca */,
+				1116DA9C1F9072120057A048 /* Modulo Riego */,
 				1116BA821F8C6AE9005C9AFF /* Configuracion Servicio */,
 			);
 			path = "Conexion Backend";
@@ -280,8 +283,6 @@
 		1116BA821F8C6AE9005C9AFF /* Configuracion Servicio */ = {
 			isa = PBXGroup;
 			children = (
-				1116BA6C1F8C5A2C005C9AFF /* ContextoUsuario.h */,
-				1116BA671F8C5A2B005C9AFF /* ContextoUsuario.m */,
 				1116BA761F8C5A2C005C9AFF /* HTTPConector.h */,
 				1116BA711F8C5A2C005C9AFF /* HTTPConector.m */,
 			);
@@ -302,7 +303,8 @@
 		1116BA8F1F8C6E95005C9AFF /* Modulo Seguridad */ = {
 			isa = PBXGroup;
 			children = (
-				11CD00911F8F176800C58C49 /* Solicitud */,
+				1116DA971F906A3F0057A048 /* Respuestas */,
+				11CD00911F8F176800C58C49 /* Solicitudes */,
 				1116BA741F8C5A2C005C9AFF /* ServiciosModuloSeguridad.h */,
 				1116BA6B1F8C5A2C005C9AFF /* ServiciosModuloSeguridad.m */,
 			);
@@ -312,10 +314,55 @@
 		1116BA901F8C6EA2005C9AFF /* Modulo Finca */ = {
 			isa = PBXGroup;
 			children = (
+				1116DA981F906F570057A048 /* Respuestas */,
 				1116BA701F8C5A2C005C9AFF /* ServiciosModuloFinca.h */,
 				1116BA731F8C5A2C005C9AFF /* ServiciosModuloFinca.m */,
 			);
 			path = "Modulo Finca";
+			sourceTree = "<group>";
+		};
+		1116DA8F1F904B6E0057A048 /* General */ = {
+			isa = PBXGroup;
+			children = (
+				1116BA6F1F8C5A2C005C9AFF /* BaseServicios.h */,
+				1116BA751F8C5A2C005C9AFF /* BaseServicios.m */,
+				A1AE0B901F8E9011009B4494 /* SolicitudServicioBase.h */,
+				A1AE0B911F8E9011009B4494 /* SolicitudServicioBase.m */,
+				A1AE0B8A1F8E8E1F009B4494 /* SolicitudServicioFincaBase.h */,
+				A1AE0B8B1F8E8E1F009B4494 /* SolicitudServicioFincaBase.m */,
+				A1AE0B871F8E8CFD009B4494 /* RespuestaServicioBase.h */,
+				A1AE0B881F8E8CFD009B4494 /* RespuestaServicioBase.m */,
+				A1AE0B8D1F8E8F0B009B4494 /* ErrorServicioBase.h */,
+				A1AE0B8E1F8E8F0B009B4494 /* ErrorServicioBase.m */,
+			);
+			path = General;
+			sourceTree = "<group>";
+		};
+		1116DA971F906A3F0057A048 /* Respuestas */ = {
+			isa = PBXGroup;
+			children = (
+				1116DA941F906A370057A048 /* RespuestaInicioSesion.h */,
+				1116DA951F906A370057A048 /* RespuestaInicioSesion.m */,
+			);
+			path = Respuestas;
+			sourceTree = "<group>";
+		};
+		1116DA981F906F570057A048 /* Respuestas */ = {
+			isa = PBXGroup;
+			children = (
+				1116DA991F906F8C0057A048 /* RespuestaMostrarFincasEncargado.h */,
+				1116DA9A1F906F8C0057A048 /* RespuestaMostrarFincasEncargado.m */,
+			);
+			path = Respuestas;
+			sourceTree = "<group>";
+		};
+		1116DA9C1F9072120057A048 /* Modulo Riego */ = {
+			isa = PBXGroup;
+			children = (
+				1116DA9D1F90726C0057A048 /* ServiciosModuloRiego.h */,
+				1116DA9E1F90726C0057A048 /* ServiciosModuloRiego.m */,
+			);
+			path = "Modulo Riego";
 			sourceTree = "<group>";
 		};
 		11CD008D1F8F12AD00C58C49 /* Navegacion */ = {
@@ -329,13 +376,13 @@
 			path = Navegacion;
 			sourceTree = "<group>";
 		};
-		11CD00911F8F176800C58C49 /* Solicitud */ = {
+		11CD00911F8F176800C58C49 /* Solicitudes */ = {
 			isa = PBXGroup;
 			children = (
 				11CD00921F8F178D00C58C49 /* SolicitudInicioSesion.h */,
 				11CD00931F8F178D00C58C49 /* SolicitudInicioSesion.m */,
 			);
-			path = Solicitud;
+			path = Solicitudes;
 			sourceTree = "<group>";
 		};
 		3E57AC0AC837ED7758E66663 /* Frameworks */ = {
@@ -678,14 +725,17 @@
 				A1AE0B891F8E8CFD009B4494 /* RespuestaServicioBase.m in Sources */,
 				1116BA771F8C5A2C005C9AFF /* ContextoUsuario.m in Sources */,
 				11F020811F8F078D00DBC1DC /* SFTextInputBaseViewController.m in Sources */,
+				1116DA9B1F906F8C0057A048 /* RespuestaMostrarFincasEncargado.m in Sources */,
 				1116BA7A1F8C5A2C005C9AFF /* ServiciosModuloSeguridad.m in Sources */,
 				1116BA7E1F8C5A2C005C9AFF /* ServiciosModuloFinca.m in Sources */,
+				1116DA961F906A370057A048 /* RespuestaInicioSesion.m in Sources */,
 				A101571D1F90041F00179ED7 /* SFRecuperarCuentaViewController.m in Sources */,
 				11CD00971F8F1B7700C58C49 /* IdentificadoresSegue.m in Sources */,
 				A101571A1F9003E600179ED7 /* SFRegistrarUsuarioViewController.m in Sources */,
 				1116BA7D1F8C5A2C005C9AFF /* HTTPConector.m in Sources */,
 				1116BA401F8C5866005C9AFF /* main.m in Sources */,
 				1116BA7B1F8C5A2C005C9AFF /* SFConstantesComunes.m in Sources */,
+				1116DA9F1F90726C0057A048 /* ServiciosModuloRiego.m in Sources */,
 				11F020841F8F083F00DBC1DC /* SFTextField.m in Sources */,
 				A1AE0B8C1F8E8E1F009B4494 /* SolicitudServicioFincaBase.m in Sources */,
 				1116BA931F8C7490005C9AFF /* SFUtils.m in Sources */,

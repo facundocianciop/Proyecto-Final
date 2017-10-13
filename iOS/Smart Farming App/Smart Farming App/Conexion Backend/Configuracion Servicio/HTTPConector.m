@@ -11,9 +11,11 @@
 #import <AFNetworking.h>
 #import <AFHTTPSessionManager.h>
 
+#import "ErrorServicioBase.h"
+
 #define BASE_URL    @"http://127.0.0.1:8000/riegoInteligente/"
+
 #define TEXT_HTML   @"text/html"
-#define APPLICATION_JSON   @"application/json"
 
 @interface HTTPConector ()
 
@@ -70,12 +72,14 @@
 
 -(void)configureSessionManager {
     self.sessionManager = [AFHTTPSessionManager manager];
-    self.sessionManager.responseSerializer.acceptableContentTypes = [self.sessionManager.responseSerializer.acceptableContentTypes setByAddingObject:APPLICATION_JSON];
+    self.sessionManager.requestSerializer = [AFJSONRequestSerializer serializer];
+    self.sessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
+    self.sessionManager.responseSerializer.acceptableContentTypes = [self.sessionManager.responseSerializer.acceptableContentTypes setByAddingObject:TEXT_HTML];
 }
 
 -(void)GET:(NSString *)URL withParameters:(NSDictionary *)parameters completionBlock:(HTTPOperationCompletionBlock)completionBlock failureBlock:(HTTPOperationFailureBlock)failureBlock {
     
-    [self.sessionManager POST:URL parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject){
+    [self.sessionManager GET:URL parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         completionBlock(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         [self handleServiceError:task error:error completionBlock:completionBlock failureBlock:failureBlock];
@@ -102,19 +106,25 @@
 
 -(void)handleServiceError:(NSURLSessionDataTask *) task error:(NSError *)error completionBlock:(HTTPOperationCompletionBlock)completionBlock failureBlock:(HTTPOperationFailureBlock)failureBlock {
     
-    // Algunas llamadas pueden fallar y entrar por el success block. Controlar codigo de respuesta.
-    // Example: cerrar_sesion
+    NSHTTPURLResponse* response = (NSHTTPURLResponse*)task.response;
     
+    NSData *errorData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+    NSDictionary *serializedData = [NSJSONSerialization JSONObjectWithData: errorData options:kNilOptions error:nil];
+    
+    ErrorServicioBase *errorServicio = [[ErrorServicioBase alloc] initWithDomain:error.domain code:response.statusCode userInfo:serializedData];
+    errorServicio.codigoError = serializedData[KEY_ERROR_CODE];
+    errorServicio.detalleError = serializedData[KEY_ERROR_DESCRIPTION];
+    
+    // Algunas llamadas pueden fallar y entrar por el success block. Controlar codigo de respuesta.
+    // Ejemplo: cerrar_sesion
     if (!task){
-        failureBlock(error);
+        failureBlock(errorServicio);
         return;
     }
-    
-    NSHTTPURLResponse* response = (NSHTTPURLResponse*)task.response;
     if (response.statusCode == 200){
         completionBlock(nil);
     }else{
-        failureBlock(error);
+        failureBlock(errorServicio);
     }
 }
 

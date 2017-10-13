@@ -40,11 +40,16 @@
     NSMutableDictionary *parametrosLlamada = [NSMutableDictionary new];
     [parametrosLlamada setObject:SolicitudInicioSesion.usuario forKey:KEY_USUARIO];
     [parametrosLlamada setObject:SolicitudInicioSesion.contrasenia forKey:KEY_CONTRASENIA];
+    [parametrosLlamada setObject:@0 forKey:KEY_TIPO_SESION];
     
     [[HTTPConector instance] httpOperation:OPERATION_INICIAR_SESION method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSArray *responseObject) {
         
-    } failureBlock:^(NSError *error) {
+        RespuestaInicioSesion *respuesta = [RespuestaInicioSesion new];
         
+        completionBlock(respuesta);
+        
+    } failureBlock:^(NSError *error) {
+        failureBlock([BaseServicios armarErrorServicio:error]);
     }];
 }
 
