@@ -271,10 +271,14 @@ def no_aprobar_finca(request, idFinca):
 @login_requerido
 @metodos_requeridos([METHOD_GET])
 def mostrar_fincas_encargado(request):
-    response=HttpResponse()
+    response = HttpResponse()
     try:
         user = request.user
         usuario = user.datosusuario
+        if UsuarioFinca.objects.filter(usuario=usuario, fechaBajaUsuarioFinca__isnull=True).__len__() == 0:
+            response.status_code = 200
+            response.content = armar_response_content(None)
+            return response
         usuario_finca_lista = UsuarioFinca.objects.filter(usuario=usuario, fechaBajaUsuarioFinca__isnull=True)
         fincas_encargado = []
         for usuario_finca in usuario_finca_lista:
@@ -283,7 +287,6 @@ def mostrar_fincas_encargado(request):
                 if rol.nombreRol == ROL_ENCARGADO:
                     fincas_encargado.append(usuario_finca.finca)
         response.content = armar_response_list_content(fincas_encargado)
-        response.content_type = "application/json"
         response.status_code = 200
         return response
     except (IntegrityError, TypeError, KeyError):

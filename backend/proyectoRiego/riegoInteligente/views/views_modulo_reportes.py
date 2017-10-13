@@ -408,11 +408,23 @@ def obtener_estado_actual_sector(request):
             estado_mecanismo_sector_habilitado = EstadoMecanismoRiegoFincaSector.objects.get(nombreEstadoMecanismoRiegoFincaSector=ESTADO_HABILITADO)
             mecanismo_sector_lista = sector_seleccionado.mecanismoRiegoFincaSector.all()
             mecanismo_sector = ""
+            ejecucion_riego = ""
+            configuracion_riego = ""
             for mecanismo in mecanismo_sector_lista:
                 if mecanismo.historicoMecanismoRiegoFincaSector.filter(
                         estado_mecanismo_riego_finca_sector= estado_mecanismo_sector_habilitado,
                         fechaFinEstadoMecanismoRiegoFincaSector__isnull=True).__len__() == 1:
                     mecanismo_sector = mecanismo.as_json()
+                    estado_riego_en_ejecucion = EstadoEjecucionRiego.objects.get(
+                        nombreEstadoEjecucionRiego=ESTADO_EN_EJECUCION)
+                    if mecanismo.ejecucionRiegoList.filter(estado_ejecucion_riego=estado_riego_en_ejecucion
+                                                           ).__len__() == 1:
+                        ejecucion = mecanismo.ejecucionRiegoList.get(
+                            estado_ejecucion_riego=estado_riego_en_ejecucion)
+                        ejecucion_riego = mecanismo.ejecucionRiegoList.get(
+                            estado_ejecucion_riego=estado_riego_en_ejecucion).as_json()
+                        configuracion_riego = ejecucion.configuracion_riego.as_json()
+
             componente_sensor = ""
             ultima_medicion = ""
             if sector_seleccionado.componentesensorsector_set.filter(habilitado=True).__len__() == 1:
@@ -426,7 +438,9 @@ def obtener_estado_actual_sector(request):
                                                              descripcionSector=sector_seleccionado.descripcionSector,
                                                              mecanismoSector=mecanismo_sector,
                                                              componenteSector=componente_sensor,
-                                                             ultimaMedicion=ultima_medicion.as_json())
+                                                             ultimaMedicion=ultima_medicion.as_json(),
+                                                             ejecucionRiego=ejecucion_riego,
+                                                             configuracionRiego=configuracion_riego)
             response.content = armar_response_content(dto_estado_actual_sector)
             response.status_code = 200
             return response
