@@ -28,7 +28,7 @@ class DtoConfiguracionEventoPersonalizado:
 
 class DtoEstadoActualSector:
     def __init__(self, idSector, numeroSector, superficieSector, descripcionSector, componenteSector, mecanismoSector,
-                 ultimaMedicion):
+                 ultimaMedicion, ejecucionRiego, configuracionRiego):
         self.id_sector = idSector
         self.numero_sector = numeroSector
         self.superficie_sector = superficieSector
@@ -36,6 +36,8 @@ class DtoEstadoActualSector:
         self.componente_sector = componenteSector
         self.mecanismo_sector = mecanismoSector
         self.ultima_medicion = ultimaMedicion
+        self.ejecucion_riego = ejecucionRiego
+        self.configuracion_riego = configuracionRiego
 
     def as_json(self):
         return dict(id_sector=self.id_sector,
@@ -44,4 +46,21 @@ class DtoEstadoActualSector:
                     descripcion_sector=self.descripcion_sector,
                     componente_sector=self.componente_sector,
                     mecanismo_sector=self.mecanismo_sector,
-                    ultima_medicion=self.ultima_medicion)
+                    ultima_medicion=self.ultima_medicion,
+                    ejecucion_riego=self.ejecucion_riego,
+                    configuracion_riego=self.configuracion_riego)
+
+class DtoRiegoEjecucionSector:
+    def __init__(self, idSector, numeroSector, mecanismoSector, ejecucionRiego, configuracionRiego):
+        self.id_sector = idSector
+        self.numero_sector = numeroSector
+        self.mecanismo_sector = mecanismoSector
+        self.ejecucion_riego = ejecucionRiego
+        self.configuracion_riego = configuracionRiego
+
+    def as_json(self):
+        return dict(id_sector=self.id_sector,
+                    numero_sector=self.numero_sector,
+                    mecanismo_sector=self.mecanismo_sector,
+                    ejecucion_riego=self.ejecucion_riego,
+                    configuracion_riego=self.configuracion_riego)

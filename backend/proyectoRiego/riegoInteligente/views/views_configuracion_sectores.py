@@ -302,7 +302,7 @@ def asignar_mecanismo_a_sector(request):
                 fechaFinEstadoSector__isnull=True)
             if historico_sector_seleccionado_actual.estado_sector.nombreEstadoSector != ESTADO_HABILITADO:
                 raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no se encuentra habilitado")
-            mecanismo_riego_sector = MecanismoRiegoFincaSector(mecanismo_riego_finca=mecanismo_riego_finca_seleccionado,
+            mecanismo_riego_sector = MecanismoRiegoFincaSector(mecanismoRiegoFinca=mecanismo_riego_finca_seleccionado,
                                                                sector=sector_seleccionado)
             if KEY_MECANISMO_RIEGO_CAUDAL in datos:
                 mecanismo_riego_sector.caudal = datos[KEY_MECANISMO_RIEGO_CAUDAL]
