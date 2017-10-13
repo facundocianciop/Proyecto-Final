@@ -72,7 +72,7 @@ def modificar_proveedor_finca(request):
             proveedorInformacionClimaticaFinca = ProveedorInformacionClimaticaFinca.objects.get(
                     proveedorInformacionClimatica=proveedorSeleccionado, finca=finca,
                 fechaBajaProveedorInfoClimaticaFinca__isnull=True)
-            if int(datos[KEY_FRECUENCIA]) > proveedorSeleccionado.frecuenciaMaxPosible:
+            if int(datos[KEY_FRECUENCIA]) < proveedorSeleccionado.frecuenciaMaxPosible:
                 raise ValueError(ERROR_FRECUENCIA_MAXIMA_SUPERADA, "No se puede colocar esa frecuencia, ya que es mayor a la permitida por el proveedor")
             proveedorInformacionClimaticaFinca.frecuencia = datos[KEY_FRECUENCIA]
             proveedorInformacionClimaticaFinca.save()
@@ -143,7 +143,7 @@ def cambiar_proveedor_finca(request):
                 finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
                 if finca.proveedorinformacionclimaticafinca_set.filter(fechaBajaProveedorInfoClimaticaFinca__isnull=True):
                     raise ValueError(ERROR_FINCA_TIENE_UN_PROVEEDOR_HABILITADO, "La finca todavia tiene un proveedor habilitado, deshabilitelo")
-                if int(datos[KEY_FRECUENCIA]) > proveedorSeleccionado.frecuenciaMaxPosible:
+                if int(datos[KEY_FRECUENCIA]) < proveedorSeleccionado.frecuenciaMaxPosible:
                     # si la frecuencia de actualizacion es mayor a la permitida por el proveedor se retorna un error
                     raise ValueError(ERROR_FRECUENCIA_MAXIMA_SUPERADA,
                                      "No se puede colocar esa frecuencia, ya que es mayor a la permitida por el proveedor")

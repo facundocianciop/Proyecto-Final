@@ -212,5 +212,8 @@ urlpatterns = [
         name='activarConfiguracionEventoPersonalizado'),
     url(r'^obtenerEstadoActualSector/$',
         views_modulo_reportes.obtener_estado_actual_sector,
-        name='obtenerEstadoActualSector')
+        name='obtenerEstadoActualSector'),
+    url(r'^obtenerInformeRiegoEjecucionSector/$',
+        views_modulo_reportes.obtener_informe_riego_ejecucion_sector,
+        name='obtenerInformeRiegoEjecucionSector')
 ]
