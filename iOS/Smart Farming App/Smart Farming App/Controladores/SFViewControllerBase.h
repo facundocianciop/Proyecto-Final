@@ -11,6 +11,7 @@
 
 #import "SFUtils.h"
 #import "SFConstantesComunes.h"
+#import "IdentificadoresSegue.h"
 
 @interface SFViewControllerBase : UIViewController
 
@@ -31,7 +32,7 @@
 
 // Handle error with custom message
 
--(void)handleErrorWithPrompt:(NSString *)message;
+-(void)handleErrorWithPromptTitle:(NSString *)title message:(NSString *)message;
 
 // Show custom information message
 
