@@ -1,9 +1,9 @@
 //
 //  ModuloSeguridad.m
-//  proyectoRIego2017
+//  Smart Farming App
 //
 //  Created by Facundo José Palma on 9/21/17.
-//  Copyright © 2017 Facundo José Palma. All rights reserved.
+//  Copyright © 2017 Smart Farming. All rights reserved.
 //
 
 #import "ServiciosModuloSeguridad.h"
@@ -33,8 +33,27 @@
 
 #pragma mark - Public
 
++(void) iniciarSesion:(SolicitudInicioSesion*)SolicitudInicioSesion
+      completionBlock:(SuccessBlock)completionBlock
+         failureBlock:(FailureBlock)failureBlock {
+    
+    NSMutableDictionary *parametrosLlamada = [NSMutableDictionary new];
+    [parametrosLlamada setObject:SolicitudInicioSesion.usuario forKey:KEY_USUARIO];
+    [parametrosLlamada setObject:SolicitudInicioSesion.contrasenia forKey:KEY_CONTRASENIA];
+    [parametrosLlamada setObject:@0 forKey:KEY_TIPO_SESION];
+    
+    [[HTTPConector instance] httpOperation:OPERATION_INICIAR_SESION method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSArray *responseObject) {
+        
+        RespuestaInicioSesion *respuesta = [RespuestaInicioSesion new];
+        
+        completionBlock(respuesta);
+        
+    } failureBlock:^(NSError *error) {
+        failureBlock([BaseServicios armarErrorServicio:error]);
+    }];
+}
 
-
+/*
 +(void)authenticate:(NSString *)username
            password:(NSString *)password
     completionBlock:(HTTPOperationCompletionBlock)completionBlock
@@ -132,5 +151,5 @@
         failureBlock(error);
     }];
 }
-
+*/
 @end

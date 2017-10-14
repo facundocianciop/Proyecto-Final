@@ -64,3 +64,14 @@ class DtoRiegoEjecucionSector:
                     mecanismo_sector=self.mecanismo_sector,
                     ejecucion_riego=self.ejecucion_riego,
                     configuracion_riego=self.configuracion_riego)
+
+class DtoComponenteMedicion:
+            def __init__(self, componente, medicion_cabecera):
+                self.componente = componente
+                self.medicion_cabecera = medicion_cabecera
+
+            def as_json(self):
+                return dict(
+                    componente=self.componente,
+                    medicionCabecera=self.medicion_cabecera
+                )

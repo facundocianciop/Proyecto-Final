@@ -145,6 +145,9 @@ KEY_NOTIFICACION_ACTIVADA = "notificacionActivada"
 KEY_CONFIGURACION_ACTIVADA = "configuracionActivada"
 KEY_DESCRIPCION_CONFIGURACION_EVENTO = "descripcionConfiguracionEvento"
 
+# Reportes
+KEY_FECHA_INICIO_SECTOR = "fechaInicioSector"
+KEY_FECHA_FIN_SECTOR = "fechaFinSector"
 
 # Detalle operaciones
 

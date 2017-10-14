@@ -98,8 +98,9 @@ NSString *const kBCNoItemsError             = @"No se encontraron resultados par
 }
 
 // Manejar error con mensaje
--(void)handleErrorWithPrompt:(NSString *)message {
-    self.userPrompt = [UIAlertController alertControllerWithTitle:@"" message:message preferredStyle:UIAlertControllerStyleAlert];
+-(void)handleErrorWithPromptTitle:(NSString *)title message:(NSString *)message {
+    
+    self.userPrompt = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     
     __weak SFViewControllerBase *weakSelf = self;
     self.primaryAction = [UIAlertAction actionWithTitle:kBCDefaultPrimaryAction style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
