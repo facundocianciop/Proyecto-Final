@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^buscarUsuariosNoEncargado/$', views_modulo_finca.buscar_usuarios_no_encargado,
         name='buscarUsuariosNoEncargado'),
     url(r'^eliminarUsuarioFinca/$', views_modulo_finca.eliminar_usuario_finca, name='eliminarUsuarioFinca'),
+    url(r'^buscarUsuariosFinca/$', views_modulo_finca.buscar_usuarios_finca, name='buscarUsuariosFinca'),
     url(r'^buscarUsuariosNoFinca/$', views_modulo_finca.buscar_usuarios_no_finca, name='buscarUsuariosNoFinca'),
     url(r'^agregarUsuarioFinca/$', views_modulo_finca.agregar_usuario_finca, name='agregarUsuarioFinca'),
     url(r'^modificarRolUsuario/$', views_modulo_finca.modificar_rol_usuario, name='modificarRolUsuario'),
