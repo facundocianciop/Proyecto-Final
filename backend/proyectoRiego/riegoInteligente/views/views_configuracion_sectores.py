@@ -30,7 +30,7 @@ def crear_sector(request):
                                                            estado_sector=estado_habilitado).__len__() == 1:
                     raise ValueError(ERROR_SECTOR_YA_EXISTENTE,"Ya existe un sector con ese numero")
             if Sector.objects.filter(nombreSector=datos[KEY_NOMBRE_SECTOR], finca=finca_actual).__len__() == 1:
-                sector = Sector.objects.get(numeroSector=datos[KEY_NOMBRE_SECTOR], finca=finca_actual)
+                sector = Sector.objects.get(nombreSector=datos[KEY_NOMBRE_SECTOR], finca=finca_actual)
                 if sector.historicoEstadoSectorList.filter(fechaFinEstadoSector__isnull=True,
                                                            estado_sector=estado_habilitado).__len__() ==1:
                     raise ValueError(ERROR_SECTOR_YA_EXISTENTE, "Ya existe un sector con ese nombre")
@@ -49,6 +49,7 @@ def crear_sector(request):
         else:
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
     except ValueError as err:
+        print err.args
         return build_bad_request_error(response, err.args[0], err.args[1])
     except (IntegrityError, TypeError, KeyError) as err:
         print err.args
