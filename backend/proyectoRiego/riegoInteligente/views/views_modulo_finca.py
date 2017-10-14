@@ -580,16 +580,14 @@ def modificar_rol_usuario(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_ID_FINCA and KEY_USUARIO and KEY_NOMBRE_ROL) in datos:
-            if datos[KEY_ID_FINCA] == '' or datos[KEY_USUARIO] == '' or datos[KEY_NOMBRE_ROL] == '':
+        if (KEY_ID_FINCA in datos) and (KEY_NOMBRE_ROL in datos) and \
+                (KEY_ID_USUARIO_FINCA in datos):
+            if datos[KEY_ID_FINCA] == '' or datos[KEY_ID_USUARIO_FINCA] == '' or datos[KEY_NOMBRE_ROL] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-            user = User.objects.get(username=datos[KEY_USUARIO])
-            usuario_ingresado = user.datosusuario
-            finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
             rol_ingresado = Rol.objects.get(nombreRol=datos[KEY_NOMBRE_ROL])
-
-            usuario_finca = UsuarioFinca.objects.get(usuario=usuario_ingresado,finca=finca,
-                                                     fechaBajaUsuarioFinca__isnull=True)
+            if UsuarioFinca.objects.filter(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA]).__len__() == 0:
+                raise ValueError(ERROR_USUARIO_FINCA_NO_ENCONTRADO, "No se encuentra un usuario finca con ese id")
+            usuario_finca = UsuarioFinca.objects.get(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA])
 
             rol_usuario_finca_viejo=RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,
                                                                 fechaBajaRolUsuarioFinca__isnull=True)
