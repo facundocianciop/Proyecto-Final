@@ -29,7 +29,7 @@ def obtener_fincas_por_usuario(request):
                                                                 fechaBajaRolUsuarioFinca__isnull=True)
                 nombre_rol = rol_usuario_finca.rol.nombreRol
                 lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre, nombreRol=nombre_rol,
-                                                       idFinca= finca.idFinca))
+                                                       idFinca= finca.idFinca, ubicacion=finca.ubicacion))
         response.content = armar_response_list_content(lista_dto_finca_rol)
         response.status_code = 200
         return response
@@ -77,8 +77,9 @@ def crear_finca(request):
             finca_creada = Finca(nombre=datos[KEY_NOMBRE_FINCA], direccionLegal=datos[KEY_DIRECCION_LEGAL],
                               ubicacion=datos[KEY_UBICACION],
                               tamanio=datos[KEY_TAMANIO])
-            #se crea la instancia de proveedorInformacionClimaticaFinca relacionada al proveedor  y a la finca creada
-            proveedorInformacionClimaticaFinca = ProveedorInformacionClimaticaFinca(
+            #se crea la instancia de proveedorInformacionClimaticaFinca relacionada al proveedor, la finca creada y
+            # la frecuencia ingresada
+            proveedorInformacionClimaticaFinca = ProveedorInformacionClimaticaFinca(frecuencia=datos[KEY_FRECUENCIA],
                 proveedorInformacionClimatica=proveedorSeleccionado, finca=finca_creada)
             #se setea la fecha de alta con la fecha actual
             proveedorInformacionClimaticaFinca.fechaAltaProveedorInfoClimaticaFinca = datetime.now()
@@ -270,10 +271,14 @@ def no_aprobar_finca(request, idFinca):
 @login_requerido
 @metodos_requeridos([METHOD_GET])
 def mostrar_fincas_encargado(request):
-    response=HttpResponse()
+    response = HttpResponse()
     try:
         user = request.user
         usuario = user.datosusuario
+        if UsuarioFinca.objects.filter(usuario=usuario, fechaBajaUsuarioFinca__isnull=True).__len__() == 0:
+            response.status_code = 200
+            response.content = armar_response_content(None)
+            return response
         usuario_finca_lista = UsuarioFinca.objects.filter(usuario=usuario, fechaBajaUsuarioFinca__isnull=True)
         fincas_encargado = []
         for usuario_finca in usuario_finca_lista:
@@ -282,7 +287,6 @@ def mostrar_fincas_encargado(request):
                 if rol.nombreRol == ROL_ENCARGADO:
                     fincas_encargado.append(usuario_finca.finca)
         response.content = armar_response_list_content(fincas_encargado)
-        response.content_type = "application/json"
         response.status_code = 200
         return response
     except (IntegrityError, TypeError, KeyError):
@@ -331,6 +335,23 @@ def modificar_finca(request):
     except ValueError as err:
         return build_bad_request_error(response, err.args[0], err.args[1])
     except (IntegrityError, TypeError, KeyError):
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_GET])
+def buscar_roles(request):
+    response = HttpResponse()
+    try:
+        roles = Rol.objects.filter(fechaBajaRol__isnull=True)
+        response.content = armar_response_list_content(roles)
+        response.status_code = 200
+        return response
+    except ValueError as err:
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 
@@ -419,6 +440,42 @@ def buscar_usuarios_no_encargado(request):
                                                                   rol= rol_actual.rol.nombreRol))
 
                     #SI EXISTE SIGNIFICA QUE ES UN USUARIO DE ESA FINCA CON EL ROL STAKEHOLDER Y LO AGREGO A LA LISTA
+            response.content = armar_response_list_content(dto_usuario_finca_list)
+            response.status_code=200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except (IntegrityError, TypeError, KeyError):
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+def buscar_usuarios_finca(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if (KEY_ID_FINCA) in datos:
+            if datos[KEY_ID_FINCA] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+            usuarios_finca = UsuarioFinca.objects.filter(finca=finca, fechaBajaUsuarioFinca__isnull=True)
+            dto_usuario_finca_list = []
+            for usuario_finca in usuarios_finca:
+
+                rol_actual = RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,
+                                                            fechaBajaRolUsuarioFinca__isnull=True)
+
+                dto_usuario_finca_list.append(DtoUsuarioFinca(idUsuarioFinca=usuario_finca.idUsuarioFinca,
+                                                                  usuario=usuario_finca.usuario.user.username,
+                                                                  nombreUsuario=usuario_finca.usuario.user.first_name,
+                                                                  apellidoUsuario=usuario_finca.usuario.user.last_name,
+                                                                  email=usuario_finca.usuario.user.email,
+                                                                  imagenUsuario=usuario_finca.usuario.imagenUsuario,
+                                                                  rol= rol_actual.rol.nombreRol))
             response.content = armar_response_list_content(dto_usuario_finca_list)
             response.status_code=200
             return response

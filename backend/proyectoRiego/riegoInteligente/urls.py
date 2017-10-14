@@ -17,6 +17,8 @@ from views import views_modulo_configuracion_riego
 urlpatterns = [
 
     url(r'^fincasPorAprobar/$', views_administrador.fincas_por_aprobar, name='fincasPorAprobar'),
+    url(r'^buscarRoles/$', views_modulo_finca.buscar_roles,
+        name='buscarRoles'),
 
     url(r'^crearFinca/$', views_modulo_finca.crear_finca, name='crearFinca'),
     url(r'^obtenerFincasEstadoPendiente/$', views_modulo_finca.obtener_fincas_estado_pendiente,
@@ -31,6 +33,7 @@ urlpatterns = [
     url(r'^buscarUsuariosNoEncargado/$', views_modulo_finca.buscar_usuarios_no_encargado,
         name='buscarUsuariosNoEncargado'),
     url(r'^eliminarUsuarioFinca/$', views_modulo_finca.eliminar_usuario_finca, name='eliminarUsuarioFinca'),
+    url(r'^buscarUsuariosFinca/$', views_modulo_finca.buscar_usuarios_finca, name='buscarUsuariosFinca'),
     url(r'^buscarUsuariosNoFinca/$', views_modulo_finca.buscar_usuarios_no_finca, name='buscarUsuariosNoFinca'),
     url(r'^agregarUsuarioFinca/$', views_modulo_finca.agregar_usuario_finca, name='agregarUsuarioFinca'),
     url(r'^modificarRolUsuario/$', views_modulo_finca.modificar_rol_usuario, name='modificarRolUsuario'),
@@ -42,6 +45,8 @@ urlpatterns = [
 
     url(r'^crearSector/$', views_configuracion_sectores.crear_sector, name='crearSector'),
     url(r'^mostrarSectores/$', views_configuracion_sectores.mostrar_sectores, name='mostrarSectores'),
+    url(r'^buscarSectorId/$', views_configuracion_sectores.buscar_sector_id, name='buscarSectorId'),
+
     url(r'^asignarMecanismoASector/$', views_configuracion_sectores.asignar_mecanismo_a_sector,
         name='asignarMecanismoASector'),
     url(r'^mostrarMecanismoRiegoSector/$', views_configuracion_sectores.mostrar_mecanismo_riego_sector,
@@ -205,5 +210,11 @@ urlpatterns = [
         name='desactivarConfiguracionEventoPersonalizado'),
     url(r'^activarConfiguracionEventoPersonalizado/$',
         views_modulo_reportes.activar_configuracion_evento_personalizado,
-        name='activarConfiguracionEventoPersonalizado')
+        name='activarConfiguracionEventoPersonalizado'),
+    url(r'^obtenerEstadoActualSector/$',
+        views_modulo_reportes.obtener_estado_actual_sector,
+        name='obtenerEstadoActualSector'),
+    url(r'^obtenerInformeRiegoEjecucionSector/$',
+        views_modulo_reportes.obtener_informe_riego_ejecucion_sector,
+        name='obtenerInformeRiegoEjecucionSector')
 ]

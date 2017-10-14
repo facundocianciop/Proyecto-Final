@@ -16,7 +16,7 @@ def buscar_configuraciones_eventos_personalizados(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_ID_USUARIO_FINCA in datos):
+        if(KEY_ID_USUARIO_FINCA in datos):
             if  datos[KEY_ID_USUARIO_FINCA] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             if UsuarioFinca.objects.filter(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA]).__len__() == 0:
@@ -384,3 +384,133 @@ def activar_configuracion_evento_personalizado(request):
         print err.args
         response.status_code = 401
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+def obtener_estado_actual_sector(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if (KEY_ID_SECTOR in datos):
+            if datos[KEY_ID_SECTOR] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
+                raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encuentra un sector con ese id")
+            estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
+            sector_seleccionado = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
+            if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
+                                                    fechaFinEstadoSector__isnull=True).__len__() != 1:
+                raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
+            estado_mecanismo_sector_habilitado = EstadoMecanismoRiegoFincaSector.objects.get(nombreEstadoMecanismoRiegoFincaSector=ESTADO_HABILITADO)
+            mecanismo_sector_lista = sector_seleccionado.mecanismoRiegoFincaSector.all()
+            mecanismo_sector = ""
+            ejecucion_riego = ""
+            configuracion_riego = ""
+            for mecanismo in mecanismo_sector_lista:
+                if mecanismo.historicoMecanismoRiegoFincaSector.filter(
+                        estado_mecanismo_riego_finca_sector= estado_mecanismo_sector_habilitado,
+                        fechaFinEstadoMecanismoRiegoFincaSector__isnull=True).__len__() == 1:
+                    mecanismo_sector = mecanismo.as_json()
+                    estado_riego_en_ejecucion = EstadoEjecucionRiego.objects.get(
+                        nombreEstadoEjecucionRiego=ESTADO_EN_EJECUCION)
+                    if mecanismo.ejecucionRiegoList.filter(estado_ejecucion_riego=estado_riego_en_ejecucion
+                                                           ).__len__() == 1:
+                        ejecucion = mecanismo.ejecucionRiegoList.get(
+                            estado_ejecucion_riego=estado_riego_en_ejecucion)
+                        ejecucion_riego = mecanismo.ejecucionRiegoList.get(
+                            estado_ejecucion_riego=estado_riego_en_ejecucion).as_json()
+                        configuracion_riego = ejecucion.configuracion_riego.as_json()
+
+            componente_sensor = ""
+            ultima_medicion = ""
+            if sector_seleccionado.componentesensorsector_set.filter(habilitado=True).__len__() == 1:
+                componente_sensor_sector = sector_seleccionado.componentesensorsector_set.get(habilitado=True)
+                componente_sensor = componente_sensor_sector.componente_sensor.as_json()
+                ultima_medicion = componente_sensor_sector.medicionCabeceraList.all().order_by('-nroMedicion')[0]
+
+            dto_estado_actual_sector = DtoEstadoActualSector(numeroSector=sector_seleccionado.numeroSector,
+                                                             idSector=sector_seleccionado.idSector,
+                                                             superficieSector=sector_seleccionado.superficie,
+                                                             descripcionSector=sector_seleccionado.descripcionSector,
+                                                             mecanismoSector=mecanismo_sector,
+                                                             componenteSector=componente_sensor,
+                                                             ultimaMedicion=ultima_medicion.as_json(),
+                                                             ejecucionRiego=ejecucion_riego,
+                                                             configuracionRiego=configuracion_riego)
+            response.content = armar_response_content(dto_estado_actual_sector)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except ValueError as err:
+        print err.args
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+def obtener_informe_riego_ejecucion_sector(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if (KEY_ID_SECTOR in datos):
+            if datos[KEY_ID_SECTOR] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
+                raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encuentra un sector con ese id")
+            estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
+            sector_seleccionado = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
+            if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
+                                                    fechaFinEstadoSector__isnull=True).__len__() != 1:
+                raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
+            estado_mecanismo_sector_habilitado = EstadoMecanismoRiegoFincaSector.objects.get(nombreEstadoMecanismoRiegoFincaSector=ESTADO_HABILITADO)
+            mecanismo_sector_lista = sector_seleccionado.mecanismoRiegoFincaSector.all()
+            mecanismo_sector = ""
+            ejecucion_riego = ""
+            configuracion_riego = ""
+            for mecanismo in mecanismo_sector_lista:
+                if mecanismo.historicoMecanismoRiegoFincaSector.filter(
+                        estado_mecanismo_riego_finca_sector= estado_mecanismo_sector_habilitado,
+                        fechaFinEstadoMecanismoRiegoFincaSector__isnull=True).__len__() == 1:
+                    mecanismo_sector = mecanismo.as_json()
+                    estado_riego_en_ejecucion = EstadoEjecucionRiego.objects.get(
+                        nombreEstadoEjecucionRiego=ESTADO_EN_EJECUCION)
+                    if mecanismo.ejecucionRiegoList.filter(estado_ejecucion_riego=estado_riego_en_ejecucion).__len__()\
+                            == 1:
+                        ejecucion = mecanismo.ejecucionRiegoList.get(estado_ejecucion_riego=estado_riego_en_ejecucion)
+                        ejecucion_riego = mecanismo.ejecucionRiegoList.get(
+                            estado_ejecucion_riego=estado_riego_en_ejecucion).as_json()
+                        configuracion_riego = ejecucion.configuracion_riego.as_json()
+
+                    dto_riego_ejecucion_sector = DtoRiegoEjecucionSector(numeroSector=sector_seleccionado.numeroSector,
+                                                                     idSector=sector_seleccionado.idSector,
+                                                                     mecanismoSector=mecanismo_sector,
+                                                                     ejecucionRiego=ejecucion_riego,
+                                                                     configuracionRiego=configuracion_riego)
+                    response.content = armar_response_content(dto_riego_ejecucion_sector)
+                    response.status_code = 200
+                    return response
+            response.content = armar_response_content(None)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except ValueError as err:
+        print err.args
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+

@@ -24,16 +24,18 @@ def crear_sector(request):
             finca_actual = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
             estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
 
-            if Sector.objects.filter(numeroSector=datos[KEY_NUMERO_SECTOR], finca=finca_actual).__len__() == 1:
-                sector = Sector.objects.get(numeroSector=datos[KEY_NUMERO_SECTOR], finca=finca_actual)
-                if sector.historicoEstadoSectorList.filter(fechaFinEstadoSector__isnull=True,
-                                                           estado_sector=estado_habilitado).__len__() == 1:
-                    raise ValueError(ERROR_SECTOR_YA_EXISTENTE,"Ya existe un sector con ese numero")
-            if Sector.objects.filter(nombreSector=datos[KEY_NOMBRE_SECTOR], finca=finca_actual).__len__() == 1:
-                sector = Sector.objects.get(numeroSector=datos[KEY_NOMBRE_SECTOR], finca=finca_actual)
-                if sector.historicoEstadoSectorList.filter(fechaFinEstadoSector__isnull=True,
-                                                           estado_sector=estado_habilitado).__len__() ==1:
-                    raise ValueError(ERROR_SECTOR_YA_EXISTENTE, "Ya existe un sector con ese nombre")
+            if Sector.objects.filter(numeroSector=datos[KEY_NUMERO_SECTOR], finca=finca_actual).__len__() != 0:
+                sectores = Sector.objects.filter(numeroSector=datos[KEY_NUMERO_SECTOR], finca=finca_actual)
+                for sector in sectores:
+                    if sector.historicoEstadoSectorList.filter(fechaFinEstadoSector__isnull=True,
+                                                               estado_sector=estado_habilitado).__len__() == 1:
+                        raise ValueError(ERROR_SECTOR_YA_EXISTENTE,"Ya existe un sector con ese numero")
+            if Sector.objects.filter(nombreSector=datos[KEY_NOMBRE_SECTOR], finca=finca_actual).__len__() != 0:
+                sectores = Sector.objects.filter(nombreSector=datos[KEY_NOMBRE_SECTOR], finca=finca_actual)
+                for sector in sectores:
+                    if sector.historicoEstadoSectorList.filter(fechaFinEstadoSector__isnull=True,
+                                                               estado_sector=estado_habilitado).__len__() ==1:
+                        raise ValueError(ERROR_SECTOR_YA_EXISTENTE, "Ya existe un sector con ese nombre")
             sector_nuevo = Sector(numeroSector=datos[KEY_NUMERO_SECTOR], nombreSector=datos[KEY_NOMBRE_SECTOR],
                                   descripcionSector=datos[KEY_DESCRIPCION_SECTOR], superficie=datos[KEY_SUPERFICIE_SECTOR],
                                   finca=finca_actual
@@ -49,6 +51,7 @@ def crear_sector(request):
         else:
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
     except ValueError as err:
+        print err.args
         return build_bad_request_error(response, err.args[0], err.args[1])
     except (IntegrityError, TypeError, KeyError) as err:
         print err.args
@@ -186,7 +189,7 @@ def mostrar_sectores(request):
             sectores_habilitados = []
             for sector in lista_sectores:
                 if HistoricoEstadoSector.objects.filter(sector=sector, fechaFinEstadoSector__isnull=True,
-                                                                         estado_sector=estado_habilitado).__len__() ==1:
+                                                        estado_sector=estado_habilitado).__len__() == 1:
                         sectores_habilitados.append(sector)
 
             response.content = armar_response_list_content(sectores_habilitados)
@@ -201,6 +204,29 @@ def mostrar_sectores(request):
         response.status_code = 401
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+def buscar_sector_id(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if (KEY_ID_SECTOR) in datos:
+            if datos[KEY_ID_SECTOR] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
+                raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encontro a un sector con ese id")
+            sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
+            response.content = armar_response_content(sector)
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except (ValueError,IntegrityError) as err:
+        print err.args
+        response.content=err.args
+
 
 @transaction.atomic()
 @login_requerido
@@ -214,6 +240,8 @@ def mostrar_mecanismo_riego_sector(request):
         if (KEY_ID_SECTOR in datos):
             if datos[KEY_ID_SECTOR] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
+                raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encuentra un sector con ese id")
             estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
             sector_seleccionado = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
             if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
@@ -228,7 +256,7 @@ def mostrar_mecanismo_riego_sector(request):
                     response.content = armar_response_content(mecanismo)
                     response.status_code = 200
                     return response
-            response.content = "[]"
+            response.content = armar_response_content(None)
             response.status_code = 200
             return response
         else:
@@ -277,7 +305,7 @@ def asignar_mecanismo_a_sector(request):
                 fechaFinEstadoSector__isnull=True)
             if historico_sector_seleccionado_actual.estado_sector.nombreEstadoSector != ESTADO_HABILITADO:
                 raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no se encuentra habilitado")
-            mecanismo_riego_sector = MecanismoRiegoFincaSector(mecanismo_riego_finca=mecanismo_riego_finca_seleccionado,
+            mecanismo_riego_sector = MecanismoRiegoFincaSector(mecanismoRiegoFinca=mecanismo_riego_finca_seleccionado,
                                                                sector=sector_seleccionado)
             if KEY_MECANISMO_RIEGO_CAUDAL in datos:
                 mecanismo_riego_sector.caudal = datos[KEY_MECANISMO_RIEGO_CAUDAL]
@@ -652,6 +680,9 @@ def asignar_componente_sensor(request):
             if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_sector_habilitado,
                                                     fechaFinEstadoSector__isnull=True).__len__() != 1:
                 raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
+            if sector_seleccionado.componentesensorsector_set.filter(habilitado=True).__len__() != 0:
+                raise ValueError(ERROR_SECTOR_YA_TIENE_COMPONENTE_HABILITADO,
+                                 "El sector ya tiene un componente asignado")
             if Finca.objects.filter(idFinca=datos[KEY_ID_FINCA]).__len__() != 1:
                 raise ValueError(ERROR_FINCA_NO_ENCONTRADA, "No existe la finca ingresada")
             finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
