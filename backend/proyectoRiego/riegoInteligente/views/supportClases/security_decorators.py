@@ -11,7 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist, EmptyResultSet, MultipleO
 
 # noinspection PyUnresolvedReferences
 from ...models import DatosUsuario, EstadoUsuario, HistoricoEstadoUsuario, Rol, ConjuntoPermisos, \
-    SesionUsuario, UsuarioFinca, ConjuntoPermisos, Finca
+    SesionUsuario, UsuarioFinca, ConjuntoPermisos, Finca, Sector, MecanismoRiegoFinca, MecanismoRiegoFincaSector
 
 from views_util_functions import *
 
@@ -130,6 +130,44 @@ def permisos_rol_requeridos(permisos_rol_list):
 
             if usuario_finca is None:
                 return build_unauthorized_error(response, ERROR_NO_TIENE_PERMISOS, DETALLE_ERROR_NO_TIENE_PERMISOS)
+
+            if KEY_ID_SECTOR in datos:
+                sector_pertenece_a_finca = False
+                if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 1:
+                    sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
+                    if finca.sectorList.filter(OIDSector=sector.OIDSector).__len__() == 1:
+                            sector_pertenece_a_finca = True
+                    if sector_pertenece_a_finca == False:
+                        print "NO PERTENECE"
+                        return build_unauthorized_error(response, ERROR_NO_TIENE_PERMISOS,
+                                                        DETALLE_ERROR_NO_TIENE_PERMISOS)
+            if KEY_ID_MECANISMO_RIEGO_FINCA in datos:
+                mecanismo_pertenece_a_finca = False
+                if MecanismoRiegoFinca.objects.filter(
+                        idMecanismoRiegoFinca=datos[KEY_ID_MECANISMO_RIEGO_FINCA]).__len__() == 1:
+                    mecanismo_finca = MecanismoRiegoFinca.objects.get(
+                        idMecanismoRiegoFinca=datos[KEY_ID_MECANISMO_RIEGO_FINCA])
+                    if finca.mecanismoriegofinca_set.filter(
+                            OIDMecanismoRiegoFinca=mecanismo_finca.OIDMecanismoRiegoFinca).__len__() == 1:
+                        mecanismo_pertenece_a_finca = True
+                    if mecanismo_pertenece_a_finca == False:
+                        return build_unauthorized_error(response, ERROR_NO_TIENE_PERMISOS,
+                                                        DETALLE_ERROR_NO_TIENE_PERMISOS)
+            if KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR in datos:
+                mecanismo_sector_pertenece_a_finca = False
+                if MecanismoRiegoFincaSector.objects.filter(
+                        idMecanismoRiegoFincaSector=datos[KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR]).__len__() == 1:
+                    mecanismo_finca_sector = MecanismoRiegoFincaSector.objects.get(
+                        idMecanismoRiegoFincaSector=datos[KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR])
+                    mecanismos_finca = finca.mecanismoriegofinca_set.all()
+                    for mecanismo_finca in mecanismos_finca:
+                        if mecanismo_finca.mecanismoRiegoSectorList.filter(
+                                OIDMecanismoRiegoFincaSector=mecanismo_finca_sector.OIDMecanismoRiegoFincaSector)\
+                                .__len__() == 1:
+                            mecanismo_sector_pertenece_a_finca = True
+                    if mecanismo_sector_pertenece_a_finca == False:
+                        return build_unauthorized_error(response, ERROR_NO_TIENE_PERMISOS,
+                                                        DETALLE_ERROR_NO_TIENE_PERMISOS)
 
             rol_usuario_finca = usuario_finca.rolUsuarioFincaList.order_by('-fechaAltaRolUsuarioFinca').first()
             if rol_usuario_finca is not None:

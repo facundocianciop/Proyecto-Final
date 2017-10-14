@@ -465,17 +465,18 @@ def buscar_usuarios_finca(request):
             usuarios_finca = UsuarioFinca.objects.filter(finca=finca, fechaBajaUsuarioFinca__isnull=True)
             dto_usuario_finca_list = []
             for usuario_finca in usuarios_finca:
+                if usuario_finca.usuario != request.user.datosusuario:
 
-                rol_actual = RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,
-                                                            fechaBajaRolUsuarioFinca__isnull=True)
+                    rol_actual = RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,
+                                                                fechaBajaRolUsuarioFinca__isnull=True)
 
-                dto_usuario_finca_list.append(DtoUsuarioFinca(idUsuarioFinca=usuario_finca.idUsuarioFinca,
-                                                                  usuario=usuario_finca.usuario.user.username,
-                                                                  nombreUsuario=usuario_finca.usuario.user.first_name,
-                                                                  apellidoUsuario=usuario_finca.usuario.user.last_name,
-                                                                  email=usuario_finca.usuario.user.email,
-                                                                  imagenUsuario=usuario_finca.usuario.imagenUsuario,
-                                                                  rol= rol_actual.rol.nombreRol))
+                    dto_usuario_finca_list.append(DtoUsuarioFinca(idUsuarioFinca=usuario_finca.idUsuarioFinca,
+                                                                      usuario=usuario_finca.usuario.user.username,
+                                                                      nombreUsuario=usuario_finca.usuario.user.first_name,
+                                                                      apellidoUsuario=usuario_finca.usuario.user.last_name,
+                                                                      email=usuario_finca.usuario.user.email,
+                                                                      imagenUsuario=usuario_finca.usuario.imagenUsuario,
+                                                                      rol= rol_actual.rol.nombreRol))
             response.content = armar_response_list_content(dto_usuario_finca_list)
             response.status_code=200
             return response

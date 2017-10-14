@@ -540,12 +540,10 @@ def obtener_informe_historico_sector(request):
             #     sector_pertenece_a_finca = False
             #     if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 1:
             #         sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
-            #         lista_usuario_finca = finca.usuariofinca_set.all()
-            #         for usr_finca in lista_usuario_finca:
-            #             fin = usr_finca.finca
-            #             if fin.sectorList.filter(OIDSector=sector.OIDSector).__len__() == 1:
-            #                 sector_pertenece_a_finca = True
+            #         if finca.sectorList.filter(OIDSector=sector.OIDSector).__len__() == 1:
+            #             sector_pertenece_a_finca = True
             #         if sector_pertenece_a_finca == False:
+            #             print "NO PERTENECE"
             #             return build_unauthorized_error(response, ERROR_NO_TIENE_PERMISOS,
             #                                             DETALLE_ERROR_NO_TIENE_PERMISOS)
             fecha_inicio_sector = parsear_datos_fecha(datos[KEY_FECHA_INICIO_SECTOR])
