@@ -463,7 +463,6 @@ def buscar_usuarios_finca(request):
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
             usuarios_finca = UsuarioFinca.objects.filter(finca=finca, fechaBajaUsuarioFinca__isnull=True)
-            rol_encargado = Rol.objects.get(nombreRol=ROL_ENCARGADO)
             dto_usuario_finca_list = []
             for usuario_finca in usuarios_finca:
 
