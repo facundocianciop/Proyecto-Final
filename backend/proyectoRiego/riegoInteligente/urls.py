@@ -216,5 +216,8 @@ urlpatterns = [
         name='obtenerEstadoActualSector'),
     url(r'^obtenerInformeRiegoEjecucionSector/$',
         views_modulo_reportes.obtener_informe_riego_ejecucion_sector,
-        name='obtenerInformeRiegoEjecucionSector')
+        name='obtenerInformeRiegoEjecucionSector'),
+    url(r'^obtenerInformeHistoricoSector/$',
+        views_modulo_reportes.obtener_informe_historico_sector,
+        name='obtenerInformeHistoricoSector')
 ]
