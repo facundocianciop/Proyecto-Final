@@ -34,9 +34,13 @@ def obtener_fincas_por_usuario(request):
                 lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre, nombreRol="",
                                                        idFinca=finca.idFinca, ubicacion=finca.ubicacion,
                                                        estadoFinca=ESTADO_PENDIENTE_APROBACION))
-            elif ultimo_historico.estadoFinca.nombreEstadoFinca == (ESTADO_DESHABILITADO) :
-                nombre_rol = rol_usuario_finca.rol.nombreRol
-                lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre, nombreRol="",
+            elif ultimo_historico.estadoFinca.nombreEstadoFinca == ESTADO_DESHABILITADO:
+                nombre_rol = ""
+                lista_roles = usuarioFinca.rolUsuarioFincaList.all()
+                for rolusuario in lista_roles:
+                    if rolusuario.rol.nombreRol == ROL_ENCARGADO:
+                         nombre_rol = ROL_ENCARGADO
+                lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre, nombreRol=nombre_rol,
                                                        idFinca= finca.idFinca, ubicacion=finca.ubicacion,
                                                        estadoFinca=ESTADO_DESHABILITADO))
             else:
