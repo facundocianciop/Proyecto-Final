@@ -109,7 +109,7 @@ def deshabilitar_proveedor_finca(request):
                 proveedorInformacionClimaticaFinca = ProveedorInformacionClimaticaFinca.objects.get(
                     proveedorInformacionClimatica=proveedorSeleccionado, finca=finca,
                     fechaBajaProveedorInfoClimaticaFinca__isnull=True)
-                proveedorInformacionClimaticaFinca.fechaBajaProveedorInfoClimaticaFinca = datetime.now()
+                proveedorInformacionClimaticaFinca.fechaBajaProveedorInfoClimaticaFinca = datetime.now(pytz.utc)
                 proveedorInformacionClimaticaFinca.save()
                 response.content=armar_response_content(None)
                 response.status_code = 200
@@ -150,7 +150,7 @@ def cambiar_proveedor_finca(request):
                 proveedorInformacionClimaticaFinca = ProveedorInformacionClimaticaFinca(
                     frecuencia=datos[KEY_FRECUENCIA],
                     proveedorInformacionClimatica=proveedorSeleccionado, finca=finca,
-                    fechaAltaProveedorInfoClimaticaFinca=datetime.now())
+                    fechaAltaProveedorInfoClimaticaFinca=datetime.now(pytz.utc))
                 proveedorInformacionClimaticaFinca.save()
                 response.content=armar_response_content(None)
                 response.status_code = 200

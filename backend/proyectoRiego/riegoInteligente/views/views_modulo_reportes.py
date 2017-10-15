@@ -207,9 +207,9 @@ def crear_configuracion_evento_personalizado(request):
             configuracion_evento = ConfiguracionEventoPersonalizado(nombre=datos[KEY_NOMBRE_CONFIGURACION_EVENTO],
                                                                     notificacionActivada=datos[KEY_NOTIFICACION_ACTIVADA],
                                                                     activado=datos[KEY_CONFIGURACION_ACTIVADA],
-                                                                    sector=sector, fechaHoraCreacion=datetime.now(),
+                                                                    sector=sector, fechaHoraCreacion=datetime.now(pytz.utc),
                                                                     descripcion=datos[KEY_DESCRIPCION_CONFIGURACION_EVENTO],
-                                                                fechaAltaConfiguracionEventoPersonalizado=datetime.now(),
+                                                                fechaAltaConfiguracionEventoPersonalizado=datetime.now(pytz.utc),
                                                                     usuario_finca=usuario_finca
                                                                     )
             configuracion_evento.save()

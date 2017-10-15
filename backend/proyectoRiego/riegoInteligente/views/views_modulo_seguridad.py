@@ -409,12 +409,12 @@ def eliminar_usuario(request):
 
         ultimo_historico = HistoricoEstadoUsuario.objects.get(usuario=usuario_a_desactivar.datosusuario,
                                                               fechaFinEstadoUsuario__isnull=True)
-        ultimo_historico.fechaFinEstadoUsuario = datetime.now()
+        ultimo_historico.fechaFinEstadoUsuario = datetime.now(pytz.utc)
         ultimo_historico.save()
 
         estado_desactivado = EstadoUsuario.objects.get(nombreEstadoUsuario=ESTADO_DESACTIVADO)
         nuevo_historico = HistoricoEstadoUsuario(estadoUsuario=estado_desactivado,
-                                                 fechaInicioEstadoUsuario=datetime.now(),
+                                                 fechaInicioEstadoUsuario=datetime.now(pytz.utc),
                                                  usuario=usuario_a_desactivar.datosusuario)
         nuevo_historico.save()
 
