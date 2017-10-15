@@ -88,7 +88,7 @@ def mostrar_mecanismos_nuevos(request):
 @login_requerido
 @metodos_requeridos([METHOD_POST])
 def habilitar_mecanismo_riego_finca(request):
-    response=HttpResponse()
+    response = HttpResponse()
     datos = obtener_datos_json(request)
     try:
         if datos == '':
@@ -101,6 +101,7 @@ def habilitar_mecanismo_riego_finca(request):
             ultimo_historico = mecanismo_riego_finca.historicoMecanismoRiegoFincaList.get(
                 fechaFinEstadoMecanismoRiegoFinca__isnull=True)
             ultimo_historico.fechaFinEstadoMecanismoRiegoFinca = datetime.now()
+            ultimo_historico.save()
             estado_mecanismo_finca_habilitado = EstadoMecanismoRiegoFinca.objects.get(
                 nombreEstadoMecanismoRiegoFinca=ESTADO_HABILITADO)
             nuevo_historico = HistoricoMecanismoRiegoFinca(mecanismo_riego_finca=mecanismo_riego_finca,
@@ -132,7 +133,7 @@ def agregar_mecanismo_riego_finca(request):
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
         if (KEY_NOMBRE_TIPO_MECANISMO in datos) and (KEY_ID_FINCA in datos) and (KEY_DIRECCION_IP in datos):
-            if datos[KEY_NOMBRE_TIPO_MECANISMO] == '' or datos[KEY_ID_FINCA] == '' or KEY_DIRECCION_IP == '':
+            if datos[KEY_NOMBRE_TIPO_MECANISMO] == '' or datos[KEY_ID_FINCA] == '' or datos[KEY_DIRECCION_IP] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             tipo_mecanismo = TipoMecanismoRiego.objects.get(nombreMecanismo=datos[KEY_NOMBRE_TIPO_MECANISMO])
             estado_habilitado = EstadoMecanismoRiegoFinca.objects.get(nombreEstadoMecanismoRiegoFinca=ESTADO_HABILITADO)

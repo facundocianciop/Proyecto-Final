@@ -24,12 +24,29 @@ def obtener_fincas_por_usuario(request):
         for usuarioFinca in usuario.usuarioFincaList.all():
             finca = usuarioFinca.finca
             ultimo_historico = HistoricoEstadoFinca.objects.get(finca=finca, fechaFinEstadoFinca__isnull=True)
-            if ultimo_historico.estadoFinca.nombreEstadoFinca == ESTADO_HABILITADO:
+            if ultimo_historico.estadoFinca.nombreEstadoFinca == (ESTADO_HABILITADO):
                 rol_usuario_finca = RolUsuarioFinca.objects.get(usuarioFinca=usuarioFinca,
                                                                 fechaBajaRolUsuarioFinca__isnull=True)
                 nombre_rol = rol_usuario_finca.rol.nombreRol
                 lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre, nombreRol=nombre_rol,
-                                                       idFinca= finca.idFinca, ubicacion=finca.ubicacion))
+                                                       idFinca=finca.idFinca, ubicacion=finca.ubicacion,
+                                                       estadoFinca=ESTADO_HABILITADO))
+                lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre, nombreRol="",
+                                                       idFinca=finca.idFinca, ubicacion=finca.ubicacion,
+                                                       estadoFinca=ESTADO_PENDIENTE_APROBACION))
+            elif ultimo_historico.estadoFinca.nombreEstadoFinca == ESTADO_DESHABILITADO:
+                nombre_rol = ""
+                lista_roles = usuarioFinca.rolUsuarioFincaList.all()
+                for rolusuario in lista_roles:
+                    if rolusuario.rol.nombreRol == ROL_ENCARGADO:
+                         nombre_rol = ROL_ENCARGADO
+                lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre, nombreRol=nombre_rol,
+                                                       idFinca= finca.idFinca, ubicacion=finca.ubicacion,
+                                                       estadoFinca=ESTADO_DESHABILITADO))
+            else:
+                lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre, nombreRol="",
+                                                       idFinca=finca.idFinca, ubicacion=finca.ubicacion,
+                                                       estadoFinca=ultimo_historico.estadoFinca.nombreEstadoFinca))
         response.content = armar_response_list_content(lista_dto_finca_rol)
         response.status_code = 200
         return response
@@ -519,27 +536,30 @@ def eliminar_usuario_finca(request):
 def buscar_usuarios_no_finca(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
-
-    if datos == '':
-        raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-    if (KEY_ID_FINCA) in datos:
-        if datos[KEY_ID_FINCA] == '':
+    try:
+        if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        usuarios_todos = DatosUsuario.objects.all()
-        user = request.user
-        usuario_logueado = user.datosusuario
-        usuarios = []
-        finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
-        for usuario in usuarios_todos:
-            if ((UsuarioFinca.objects.filter(usuario=usuario, finca= finca,
-                                             fechaBajaUsuarioFinca__isnull=True).__len__() == 0) and
-                    ((usuario == usuario_logueado)==False)) and usuario.user.is_staff == False:
-                usuarios.append(usuario)
-        response.content=armar_response_list_content(usuarios)
-        response.status_code = 200
-        return response
-    else:
-        raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if (KEY_ID_FINCA) in datos:
+            if datos[KEY_ID_FINCA] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            usuarios_todos = DatosUsuario.objects.all()
+            user = request.user
+            usuario_logueado = user.datosusuario
+            usuarios = []
+            finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+            for usuario in usuarios_todos:
+                if ((UsuarioFinca.objects.filter(usuario=usuario, finca= finca,
+                                                 fechaBajaUsuarioFinca__isnull=True).__len__() == 0) and
+                        ((usuario == usuario_logueado)==False)) and usuario.user.is_staff == False:
+                    usuarios.append(usuario)
+            response.content=armar_response_list_content(usuarios)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 
 @transaction.atomic()
@@ -549,16 +569,22 @@ def agregar_usuario_finca(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
     try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if (KEY_ID_FINCA in datos) and (KEY_NOMBRE_ROL in datos):
+            if datos[KEY_ID_FINCA] == '' or datos[KEY_NOMBRE_ROL] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
         if User.objects.filter(username=datos[KEY_USUARIO]).__len__() == 0:
             raise ValueError(ERROR_USUARIO_NO_ENCONTRADO, "No se encuentra al usuario")
         user = User.objects.get(username=datos[KEY_USUARIO])
         usuario_ingresado = user.datosusuario
         finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+        if usuario_ingresado.usuarioFincaList.filter(finca=finca, fechaBajaUsuarioFinca__isnull=True).__len__() !=0:
+            raise ValueError(ERROR_USUARIO_YA_TIENE_ROL_EN_FINCA, "El usuario ya tiene un rol en la finca, deshabilitarlo")
         rol_ingresado = Rol.objects.get(nombreRol=datos[KEY_NOMBRE_ROL])
         rol_usuario_finca = RolUsuarioFinca(rol=rol_ingresado, fechaAltaRolUsuarioFinca=datetime.now())
         usuario_finca_nuevo = UsuarioFinca(usuario=usuario_ingresado, finca=finca, fechaAltaUsuarioFinca=datetime.now())
         usuario_finca_nuevo.save()
-        print "joya"
         rol_usuario_finca.usuarioFinca = usuario_finca_nuevo
         usuario_finca_nuevo.rolUsuarioFincaList.add(rol_usuario_finca,bulk=False)
         response.content=armar_response_content(None)
