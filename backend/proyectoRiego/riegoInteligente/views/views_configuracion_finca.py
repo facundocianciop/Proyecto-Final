@@ -131,8 +131,8 @@ def agregar_mecanismo_riego_finca(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_NOMBRE_TIPO_MECANISMO and KEY_ID_FINCA) in datos:
-            if datos[KEY_NOMBRE_TIPO_MECANISMO] == '' or datos[KEY_ID_FINCA] == '':
+        if (KEY_NOMBRE_TIPO_MECANISMO in datos) and (KEY_ID_FINCA in datos) and (KEY_DIRECCION_IP in datos):
+            if datos[KEY_NOMBRE_TIPO_MECANISMO] == '' or datos[KEY_ID_FINCA] == '' or KEY_DIRECCION_IP == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             tipo_mecanismo = TipoMecanismoRiego.objects.get(nombreMecanismo=datos[KEY_NOMBRE_TIPO_MECANISMO])
             estado_habilitado = EstadoMecanismoRiegoFinca.objects.get(nombreEstadoMecanismoRiegoFinca=ESTADO_HABILITADO)
@@ -140,10 +140,16 @@ def agregar_mecanismo_riego_finca(request):
                                                          estado_mecanismo_riego_finca=estado_habilitado)
             finca_actual = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
             if MecanismoRiegoFinca.objects.filter(finca=finca_actual, tipoMecanismoRiego=tipo_mecanismo).__len__() != 0:
-                raise ValueError (ERROR_MECANISMO_RIEGO_FINCA_YA_EXISTE, "La finca ya dispone de este mecanismo, en caso de que no este habilitado elija la opcion habilitar")
+                raise ValueError (ERROR_MECANISMO_RIEGO_FINCA_YA_EXISTE,
+                                  "La finca ya dispone de este mecanismo, en caso de "
+                                  "que no este habilitado elija la opcion habilitar")
+            if MecanismoRiegoFinca.objects.filter(direccionIP=datos[KEY_DIRECCION_IP],finca=finca_actual,
+                                                  tipoMecanismoRiego=tipo_mecanismo).__len__() != 0:
+                raise ValueError(ERROR_IP_YA_USADA, "Ya existe un mecanismo con esa IP")
 
             mecanismo_riego_finca = MecanismoRiegoFinca(finca=finca_actual, tipoMecanismoRiego=tipo_mecanismo,
-                                                      fechaInstalacion=datetime.now())
+                                                      fechaInstalacion=datetime.now(),
+                                                        direccionIP=datos[KEY_DIRECCION_IP])
             mecanismo_riego_finca.save()
             historico_nuevo.mecanismo_riego_finca = mecanismo_riego_finca
             mecanismo_riego_finca.historicoMecanismoRiegoFincaList.add(historico_nuevo, bulk=False)
