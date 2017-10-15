@@ -41,7 +41,7 @@ def recibir_medicion(request):
                     raise ValueError(ERROR_COMPONENTE_SENSOR_NO_ASIGNADO_A_SECTOR,
                                      "El componente no esta asignado a un sector")
                 componente_sensor_sector = componente_sensor.componenteSensorSectorList.get(habilitado=True)
-                medicion_cabecera = MedicionCabecera(fechaYHora=datetime.now(),
+                medicion_cabecera = MedicionCabecera(fechaYHora=datetime.now(pytz.utc),
                                                      componenteSensorSector=componente_sensor_sector)
                 medicion_cabecera.save()
                 lista_medicion = datos[KEY_LISTA_MEDICIONES]
