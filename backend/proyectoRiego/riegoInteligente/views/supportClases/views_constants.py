@@ -78,6 +78,7 @@ KEY_NOMBRE_ROL = 'nombreRol'
 
 # Mecanismo riego
 KEY_NOMBRE_TIPO_MECANISMO = 'nombreTipoMecanismo'
+KEY_DIRECCION_IP = 'direccionIP'
 KEY_ID_MECANISMO_RIEGO_FINCA = 'idMecanismoRiegoFinca'
 KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR = 'idMecanismoRiegoFincaSector'
 KEY_NOMBRE_PROVEEDOR = 'nombreProveedor'
