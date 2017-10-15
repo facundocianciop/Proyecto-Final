@@ -28,7 +28,7 @@ def crear_sensor(request):
             if Finca.objects.filter(idFinca=datos[KEY_ID_FINCA]).__len__() != 1:
                 raise ValueError(ERROR_FINCA_NO_ENCONTRADA, "No existe la finca ingresada")
             finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
-            sensor = Sensor(modelo=datos[KEY_MODELO_SENSOR], fechaAltaSensor=datetime.now(),
+            sensor = Sensor(modelo=datos[KEY_MODELO_SENSOR], fechaAltaSensor=datetime.now(pytz.utc),
                             tipoMedicion=tipo_medicion, finca=finca, habilitado=True)
             sensor.save()
             response.content = armar_response_content(None)
@@ -62,7 +62,7 @@ def deshabilitar_sensor(request):
                 raise ValueError(ERROR_SENSOR_NO_EXISTENTE, "No existe el sensor con ese id")
             sensor = Sensor.objects.get(idSensor=datos[KEY_ID_SENSOR])
             sensor.habilitado = False
-            sensor.fechaBajaSensor = datetime.now()
+            sensor.fechaBajaSensor = datetime.now(pytz.utc)
             sensor.save()
             response.content = armar_response_content(None)
             response.status_code = 200
@@ -190,7 +190,7 @@ def crear_componente_sensor(request):
             estado_habilitado = EstadoComponenteSensor.objects.get(nombreEstado=ESTADO_HABILITADO)
             historico_nuevo = HistoricoEstadoComponenteSensor(componenteSensor=componente,
                                                               estadoComponenteSensor=estado_habilitado,
-                                                              fechaInicioEstadoComponenteSensor=datetime.now())
+                                                              fechaInicioEstadoComponenteSensor=datetime.now(pytz.utc))
             componente.save()
             historico_nuevo.save()
             response.content = armar_response_content(None)
@@ -274,12 +274,12 @@ def habilitar_componente_sensor(request):
             ultimo_historico = componente.historico_estado_componente_sensor_list.get(fechaFinEstadoComponenteSensor__isnull=True)
             if ultimo_historico.estadoComponenteSensor.nombreEstado == ESTADO_HABILITADO:
                 raise ValueError(ERROR_COMPONENTE_SENSOR_YA_HABILITADO, "El componente sensor ya esta habilitado")
-            ultimo_historico.fechaFinEstadoComponenteSensor = datetime.now()
+            ultimo_historico.fechaFinEstadoComponenteSensor = datetime.now(pytz.utc)
             ultimo_historico.save()
             estado_habilitado = EstadoComponenteSensor.objects.get(nombreEstado=ESTADO_HABILITADO)
             nuevo_historico = HistoricoEstadoComponenteSensor(estadoComponenteSensor=estado_habilitado,
                                                               componenteSensor=componente,
-                                                              fechaInicioEstadoComponenteSensor=datetime.now())
+                                                              fechaInicioEstadoComponenteSensor=datetime.now(pytz.utc))
             nuevo_historico.save()
             componente.save()
             response.content = armar_response_content(None)
@@ -320,26 +320,26 @@ def deshabilitar_componente_sensor(request):
             componente = ComponenteSensor.objects.get(idComponenteSensor=datos[KEY_ID_COMPONENTE_SENSOR])
             ultimo_historico = componente.historico_estado_componente_sensor_list.get(
                 fechaFinEstadoComponenteSensor__isnull=True)
-            ultimo_historico.fechaFinEstadoComponenteSensor = datetime.now()
+            ultimo_historico.fechaFinEstadoComponenteSensor = datetime.now(pytz.utc)
             ultimo_historico.save()
             estado_deshabilitado = EstadoComponenteSensor.objects.get(nombreEstado=ESTADO_DESHABILITADO)
             historico_nuevo = HistoricoEstadoComponenteSensor(componenteSensor=componente,
                                                               estadoComponenteSensor=estado_deshabilitado,
-                                                              fechaInicioEstadoComponenteSensor=datetime.now())
+                                                              fechaInicioEstadoComponenteSensor=datetime.now(pytz.utc))
             asignaciones_actuales = AsignacionSensorComponente.objects.filter(componenteSensor=componente,
                                                                               fechaBaja__isnull=True)
             for asignacion in asignaciones_actuales:
-                asignacion.fechaBaja = datetime.now()
+                asignacion.fechaBaja = datetime.now(pytz.utc)
                 asignacion.save()
                 componente.cantidadSensoresAsignados-=1
             if componente.componenteSensorSectorList.filter(habilitado=True).__len__() != 0:
                 componente_sensor_sector =componente.componenteSensorSectorList.get(habilitado=True)
                 ultimo_historico_componente_sensor_sector = componente_sensor_sector.historicoEstadoComponenteSensorSector.get(fechaBajaComponenteSensorSector__isnull=True)
                 estado_componente_sensor_sector_deshabilitado = EstadoComponenteSensorSector.objects.get(nombreEstadoComponenteSensorSector=ESTADO_DESHABILITADO)
-                ultimo_historico_componente_sensor_sector.fechaBajaComponenteSensorSector = datetime.now()
+                ultimo_historico_componente_sensor_sector.fechaBajaComponenteSensorSector = datetime.now(pytz.utc)
                 ultimo_historico_componente_sensor_sector.save()
                 nuevo_historico_componente_sensor_sector = HistoricoEstadoComponenteSensorSector(estadoComponenteSensorSector=estado_componente_sensor_sector_deshabilitado,
-                                                                                                 fechaAltaComponenteSensorSector=datetime.now(),
+                                                                                                 fechaAltaComponenteSensorSector=datetime.now(pytz.utc),
                                                                                                  componenteSensorSector=componente_sensor_sector)
                 nuevo_historico_componente_sensor_sector.save()
                 componente_sensor_sector.habilitado = False
@@ -396,7 +396,7 @@ def asignar_sensor_a_componente_sensor(request):
             if componente.cantidadSensoresAsignados == componente.cantidadMaximaSensores:
                 raise ValueError(ERROR_COMPONENTE_NO_ACEPTA_MAS_SENSORES, "El componente supero su limite de sensores")
             asignacion_nueva = AsignacionSensorComponente(sensor=sensor, componenteSensor=componente,
-                                                          fechaAsignacion=datetime.now())
+                                                          fechaAsignacion=datetime.now(pytz.utc))
             asignacion_nueva.save()
             componente.cantidadSensoresAsignados +=1
             componente.save()
@@ -448,7 +448,7 @@ def desasignar_sensor_de_componente_sensor(request):
             else:
                 asignacion_actual = AsignacionSensorComponente.objects.get(sensor=sensor, componenteSensor=componente,
                                                          fechaBaja__isnull=True)
-                asignacion_actual.fechaBaja = datetime.now()
+                asignacion_actual.fechaBaja = datetime.now(pytz.utc)
                 asignacion_actual.save()
                 componente.cantidadSensoresAsignados -=1
                 componente.save()
