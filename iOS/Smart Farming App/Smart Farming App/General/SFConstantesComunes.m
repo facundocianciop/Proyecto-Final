@@ -10,6 +10,21 @@
 
 @implementation SFConstantesComunes
 
+#pragma mark - UIItems
+
 NSString *const kSFNavigationBarBackButtonText = @"Volver";
+NSString *const kSFDefaultPrimaryAction     = @"Aceptar";
+NSString *const kSFDefaultSecondaryAction   = @"Cancelar";
+
+#pragma mark - Colores
+
+NSString *const kColorCeleste = @"Celeste";
+NSString *const kColorCelesteHex = @"#41B6E6";
+NSString *const kColorVerde = @"Verde";
+NSString *const kColorVerdeHex = @"#43B02A";
+NSString *const kColorVerdeClaro = @"VerdeClaro";
+NSString *const kColorVerdeClaroHex = @"#97D700";
+NSString *const kColorVerdeMasClaro = @"VerdeMasClaro";
+NSString *const kColorVerdeMasClaroHex = @"#C5E86C";
 
 @end

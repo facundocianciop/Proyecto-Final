@@ -9,8 +9,6 @@
 #import "ServiciosModuloFinca.h"
 #import "ContextoUsuario.h"
 
-#import "RespuestaMostrarFincasEncargado.h"
-
 #pragma mark - operaciones
 
 #define OPERATION_BUSCAR_FINCA_ID                    @"buscarFincaId"
@@ -39,10 +37,69 @@
 +(void) mostrarFincasEncargadoWithCompletionBlock:(SuccessBlock)completionBlock
                                      failureBlock:(FailureBlock)failureBlock {
     
-    [[HTTPConector instance] httpOperation:OPERATION_MOSTRAR_FINCAS_ENCARGADO method:METHOD_GET withParameters:nil completionBlock:^(NSArray *responseObject) {
-        RespuestaMostrarFincasEncargado *respuestaMostrarFinca = [RespuestaMostrarFincasEncargado new];
+    [[HTTPConector instance] httpOperation:OPERATION_MOSTRAR_FINCAS_ENCARGADO method:METHOD_GET withParameters:nil completionBlock:^(NSDictionary *responseObject) {
         
-        completionBlock(respuestaMostrarFinca);
+        RespuestaMostrarFincas *respuesta = [RespuestaMostrarFincas new];
+        
+        NSDictionary *datosOperacion = [ServiciosModuloFinca armarRespuestaServicio:respuesta withResponseObject:responseObject];
+        
+        if (respuesta.resultado && datosOperacion) {
+            
+            NSMutableArray *fincas = [NSMutableArray new];
+            
+            for (NSDictionary *datos in datosOperacion) {
+                
+                SFFinca *finca = [SFFinca new];
+                
+                finca.idFinca = [[datos objectForKey:KEY_ID_FINCA] longLongValue];
+                finca.nombre = [datos objectForKey:KEY_NOMBRE_FINCA_RESPUESTA];
+                
+                finca.tamanio = [[datos objectForKey:KEY_TAMANIO] integerValue];
+                finca.ubicacion = [datos objectForKey:KEY_UBICACION];
+                finca.direccionLegal = [datos objectForKey:KEY_DIRECCION_LEGAL];
+                
+                [fincas addObject:finca];
+            }
+            respuesta.fincas = fincas;
+        }
+        
+        completionBlock(respuesta);
+        
+    } failureBlock:^(NSError *error) {
+        failureBlock([BaseServicios armarErrorServicio:error]);
+    }];
+}
+
++(void) obtenerFincasEstadoPendiente:(SuccessBlock)completionBlock
+                        failureBlock:(FailureBlock)failureBlock {
+    
+    [[HTTPConector instance] httpOperation:OPERATION_OBTENER_FINCAS_ESTADO_PENDIENTE method:METHOD_GET withParameters:nil completionBlock:^(NSDictionary *responseObject) {
+        
+        RespuestaMostrarFincas *respuesta = [RespuestaMostrarFincas new];
+        
+        NSDictionary *datosOperacion = [ServiciosModuloFinca armarRespuestaServicio:respuesta withResponseObject:responseObject];
+        
+        if (respuesta.resultado && datosOperacion) {
+            
+            NSMutableArray *fincas = [NSMutableArray new];
+            
+            for (NSDictionary *datos in datosOperacion) {
+                
+                SFFinca *finca = [SFFinca new];
+                
+                finca.idFinca = [[datos objectForKey:KEY_ID_FINCA] longLongValue];
+                finca.nombre = [datos objectForKey:KEY_NOMBRE_FINCA_RESPUESTA];
+                
+                finca.tamanio = [[datos objectForKey:KEY_TAMANIO] integerValue];
+                finca.ubicacion = [datos objectForKey:KEY_UBICACION];
+                finca.direccionLegal = [datos objectForKey:KEY_DIRECCION_LEGAL];
+                
+                [fincas addObject:finca];
+            }
+            respuesta.fincas = fincas;
+        }
+        
+        completionBlock(respuesta);
         
     } failureBlock:^(NSError *error) {
         failureBlock([BaseServicios armarErrorServicio:error]);

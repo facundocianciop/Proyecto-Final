@@ -21,10 +21,6 @@
 
 @end
 
-NSString *const kBCDefaultPrimaryAction     = @"Aceptar";
-NSString *const kBCDefaultSecondaryAction   = @"Cancelar";
-NSString *const kBCNoItemsError             = @"No se encontraron resultados para esta solicitud.";
-
 @implementation SFViewControllerBase
 
 - (instancetype)initWithCoder:(NSCoder *)coder
@@ -61,24 +57,6 @@ NSString *const kBCNoItemsError             = @"No se encontraron resultados par
     });
 }
 
-// Manejar servicios sin respuesta
--(void)handleNoRecords {
-    
-    self.userPrompt = [UIAlertController alertControllerWithTitle:@"" message:kBCNoItemsError preferredStyle:UIAlertControllerStyleAlert];
-    
-    __weak SFViewControllerBase *weakSelf = self;
-    self.primaryAction = [UIAlertAction actionWithTitle:kBCDefaultPrimaryAction style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        weakSelf.promptDisplayed = NO;
-        weakSelf.userPrompt = nil;
-        weakSelf.primaryAction = nil;
-    }];
-    
-    [self.userPrompt addAction:self.primaryAction];
-    
-    [self showPrompt];
-    
-}
-
 // Manejar errores
 -(void)handleError:(NSError *)error {
     NSString *errorDescription = [error localizedDescription];
@@ -86,7 +64,7 @@ NSString *const kBCNoItemsError             = @"No se encontraron resultados par
     self.userPrompt = [UIAlertController alertControllerWithTitle:@"Error" message:errorDescription preferredStyle:UIAlertControllerStyleAlert];
     
     __weak SFViewControllerBase *weakSelf = self;
-    self.primaryAction = [UIAlertAction actionWithTitle:kBCDefaultPrimaryAction style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    self.primaryAction = [UIAlertAction actionWithTitle:kSFDefaultPrimaryAction style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         weakSelf.promptDisplayed = NO;
         weakSelf.userPrompt = nil;
         weakSelf.primaryAction = nil;
@@ -103,7 +81,7 @@ NSString *const kBCNoItemsError             = @"No se encontraron resultados par
     self.userPrompt = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     
     __weak SFViewControllerBase *weakSelf = self;
-    self.primaryAction = [UIAlertAction actionWithTitle:kBCDefaultPrimaryAction style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    self.primaryAction = [UIAlertAction actionWithTitle:kSFDefaultPrimaryAction style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         weakSelf.promptDisplayed = NO;
         weakSelf.userPrompt = nil;
         weakSelf.primaryAction = nil;
@@ -119,7 +97,7 @@ NSString *const kBCNoItemsError             = @"No se encontraron resultados par
     self.userPrompt = [UIAlertController alertControllerWithTitle:@"" message:message preferredStyle:UIAlertControllerStyleAlert];
     
     __weak SFViewControllerBase *weakSelf = self;
-    self.primaryAction = [UIAlertAction actionWithTitle:kBCDefaultPrimaryAction style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    self.primaryAction = [UIAlertAction actionWithTitle:kSFDefaultPrimaryAction style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         weakSelf.promptDisplayed = NO;
         weakSelf.userPrompt = nil;
         weakSelf.primaryAction = nil;
@@ -130,7 +108,7 @@ NSString *const kBCNoItemsError             = @"No se encontraron resultados par
     [self showPrompt];
 }
 
-#pragma mark - Interal
+#pragma mark - internal
 
 -(void)showPrompt {
     
@@ -141,7 +119,6 @@ NSString *const kBCNoItemsError             = @"No se encontraron resultados par
             weakSelf.promptDisplayed = YES;
         }];
     }
-    
 }
 
 @end

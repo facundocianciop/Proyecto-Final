@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,7 +18,11 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="T8d-Aj-gwZ">
                         <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" name="VerdeClaro"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" name="Verde"/>
+                        </textAttributes>
                     </navigationBar>
                     <connections>
                         <segue destination="j6B-G6-NNc" kind="relationship" relationship="rootViewController" id="hBM-fE-Vp6"/>
@@ -57,6 +62,7 @@
                                                     <constraint firstAttribute="height" constant="30" id="nQS-hD-R8d"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                <color key="tintColor" name="Verde"/>
                                                 <state key="normal" title="Iniciar Sesión"/>
                                                 <connections>
                                                     <action selector="iniciarSesionAction:" destination="j6B-G6-NNc" eventType="touchUpInside" id="L0h-Vu-ZdP"/>
@@ -116,12 +122,12 @@
                         <viewLayoutGuide key="safeArea" id="BM5-Ru-3Dn"/>
                     </view>
                     <navigationItem key="navigationItem" id="ry2-L4-2mC">
-                        <barButtonItem key="leftBarButtonItem" title="Registrarse" id="HJy-z0-CxD">
+                        <barButtonItem key="leftBarButtonItem" image="AgregarUsuarioIcon" id="HJy-z0-CxD">
                             <connections>
                                 <segue destination="LT7-Xx-DPo" kind="show" id="Q2i-eL-wlD"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Recuperar" width="7" style="plain" id="sXh-sY-ZHy">
+                        <barButtonItem key="rightBarButtonItem" image="RecuperarCuentaIcon" width="7" id="sXh-sY-ZHy">
                             <connections>
                                 <segue destination="hWW-eR-oQg" kind="show" id="sen-DB-q51"/>
                             </connections>
@@ -131,7 +137,7 @@
                         <outlet property="contraseniaTextField" destination="3dE-kU-0ec" id="Ha1-9N-I8Z"/>
                         <outlet property="signInScrollView" destination="JAt-UJ-eXy" id="cRZ-L2-xHd"/>
                         <outlet property="usuarioTextField" destination="gKm-53-AtR" id="U7r-ws-GTg"/>
-                        <segue destination="3Kv-CR-BZh" kind="show" identifier="SFNavegarEstadoAutenticadoSegue" customClass="SFNavegarEstadoAutenticadoSegue" id="6wU-yF-BKE"/>
+                        <segue destination="3Kv-CR-BZh" kind="show" identifier="SFNavegarEstadoAutenticadoSegue" id="pXs-Zz-IEb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mO5-fK-kq8" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -168,71 +174,222 @@
             </objects>
             <point key="canvasLocation" x="353" y="836"/>
         </scene>
-        <!--Otras Fincas-->
+        <!--Otros Roles-->
         <scene sceneID="re8-WV-wD4">
             <objects>
-                <viewController id="7eK-yU-N16" sceneMemberID="viewController">
+                <viewController id="7eK-yU-N16" customClass="SFFincasOtrosRolesViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8ho-TW-bJz">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No tiene fincas para el rol seleccionado" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FxA-0N-qjX" userLabel="EmptyTableMessage">
+                                <rect key="frame" x="0.0" y="155" width="320" height="364"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aMl-st-SfD">
+                                <rect key="frame" x="0.0" y="64" width="320" height="85"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="85" id="Ifw-yQ-8zd"/>
+                                </constraints>
+                            </pickerView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gZK-Fu-7RP">
+                                <rect key="frame" x="0.0" y="155" width="320" height="364"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pe2-Rv-Wvp">
+                                <rect key="frame" x="0.0" y="149" width="320" height="6"/>
+                                <color key="backgroundColor" name="VerdeClaro"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="6" id="Ijd-By-d1p"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="FxA-0N-qjX" firstAttribute="top" secondItem="Pe2-Rv-Wvp" secondAttribute="bottom" id="2vp-0Y-bRc"/>
+                            <constraint firstItem="FxA-0N-qjX" firstAttribute="leading" secondItem="D6M-sL-8q4" secondAttribute="leading" id="9C6-KV-hWr"/>
+                            <constraint firstItem="gZK-Fu-7RP" firstAttribute="leading" secondItem="D6M-sL-8q4" secondAttribute="leading" id="Bbm-Z7-C19"/>
+                            <constraint firstItem="FxA-0N-qjX" firstAttribute="bottom" secondItem="D6M-sL-8q4" secondAttribute="bottom" id="C61-TY-o1f"/>
+                            <constraint firstItem="aMl-st-SfD" firstAttribute="trailing" secondItem="D6M-sL-8q4" secondAttribute="trailing" id="DFd-P6-M4l"/>
+                            <constraint firstItem="Pe2-Rv-Wvp" firstAttribute="trailing" secondItem="D6M-sL-8q4" secondAttribute="trailing" id="FOt-Ya-180"/>
+                            <constraint firstItem="aMl-st-SfD" firstAttribute="top" secondItem="D6M-sL-8q4" secondAttribute="top" id="Hij-RV-dRb"/>
+                            <constraint firstItem="gZK-Fu-7RP" firstAttribute="trailing" secondItem="D6M-sL-8q4" secondAttribute="trailing" id="PLP-8H-SRi"/>
+                            <constraint firstItem="Pe2-Rv-Wvp" firstAttribute="leading" secondItem="D6M-sL-8q4" secondAttribute="leading" id="Uhc-SJ-qWE"/>
+                            <constraint firstItem="FxA-0N-qjX" firstAttribute="trailing" secondItem="D6M-sL-8q4" secondAttribute="trailing" id="WNu-2H-Y77"/>
+                            <constraint firstItem="gZK-Fu-7RP" firstAttribute="bottom" secondItem="D6M-sL-8q4" secondAttribute="bottom" id="c16-x7-us2"/>
+                            <constraint firstItem="Pe2-Rv-Wvp" firstAttribute="top" secondItem="aMl-st-SfD" secondAttribute="bottom" id="dQs-2N-XPG"/>
+                            <constraint firstItem="gZK-Fu-7RP" firstAttribute="trailing" secondItem="D6M-sL-8q4" secondAttribute="trailing" id="eNg-Um-eLV"/>
+                            <constraint firstItem="aMl-st-SfD" firstAttribute="leading" secondItem="D6M-sL-8q4" secondAttribute="leading" id="hl1-sb-eMp"/>
+                            <constraint firstItem="gZK-Fu-7RP" firstAttribute="leading" secondItem="D6M-sL-8q4" secondAttribute="leading" id="iN0-Ec-kQz"/>
+                            <constraint firstItem="gZK-Fu-7RP" firstAttribute="bottom" secondItem="D6M-sL-8q4" secondAttribute="bottom" id="t6T-wf-7ca"/>
+                            <constraint firstItem="gZK-Fu-7RP" firstAttribute="top" secondItem="Pe2-Rv-Wvp" secondAttribute="bottom" id="tJj-Xz-Dyg"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="D6M-sL-8q4"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Otras Fincas" id="QrC-IY-Q5r"/>
+                    <tabBarItem key="tabBarItem" title="Otros Roles" image="OtrosRolesFincaIcon" id="QrC-IY-Q5r">
+                        <color key="badgeColor" name="VerdeClaro"/>
+                    </tabBarItem>
+                    <connections>
+                        <outlet property="emptyFincasTVMessage" destination="FxA-0N-qjX" id="MFb-fU-gBc"/>
+                        <outlet property="otrosRolesFincasTableView" destination="gZK-Fu-7RP" id="Nu3-fX-YAf"/>
+                        <outlet property="rolPicker" destination="aMl-st-SfD" id="Ri9-Iv-zUa"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cK5-oP-kgf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1988" y="430"/>
+            <point key="canvasLocation" x="2632.5" y="31.690140845070424"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Fincas-->
         <scene sceneID="U4O-kV-Y1y">
             <objects>
                 <tabBarController id="3Kv-CR-BZh" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" title="Fincas" id="odV-z3-UHL">
+                        <barButtonItem key="leftBarButtonItem" title="Perfil" id="DEV-W0-8RS">
+                            <color key="tintColor" name="VerdeClaro"/>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="TLF-cO-tMA"/>
+                    </navigationItem>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="l8i-Wh-nED">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="selectedImageTintColor" name="VerdeClaro"/>
                     </tabBar>
                     <connections>
-                        <segue destination="UZ2-E7-Gjm" kind="relationship" relationship="viewControllers" id="9rf-3m-rdv"/>
+                        <segue destination="wlJ-IF-iew" kind="relationship" relationship="viewControllers" id="8ou-CI-4DX"/>
                         <segue destination="7eK-yU-N16" kind="relationship" relationship="viewControllers" id="ESm-ZK-l8n"/>
+                        <segue destination="MR9-us-hxn" kind="relationship" relationship="viewControllers" id="XEk-SR-rZ9"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="luz-ak-6Oy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1172" y="33"/>
+            <point key="canvasLocation" x="1097" y="32"/>
         </scene>
-        <!--Fincas Encargado-->
-        <scene sceneID="iYE-gL-iKi">
+        <!--Aprobacion Pendiente-->
+        <scene sceneID="3pW-Um-XXh">
             <objects>
-                <tableViewController id="UZ2-E7-Gjm" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="I9m-V2-jTf">
+                <viewController id="MR9-us-hxn" customClass="SFFincasPendientesViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3Zt-Vx-VWG">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tdy-5U-Pt0">
+                                <rect key="frame" x="0.0" y="64" width="320" height="6"/>
+                                <color key="backgroundColor" name="VerdeMasClaro"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="6" id="N45-rD-RWb"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No hay fincas pendientes de aprobación" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xFo-PP-OX4" userLabel="EmptyTableMessage">
+                                <rect key="frame" x="0.0" y="70" width="320" height="449"/>
+                                <fontDescription key="fontDescription" name=".SFNSDisplay" family=".SF NS Display" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Px0-6s-XVJ">
+                                <rect key="frame" x="0.0" y="70" width="320" height="449"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="bp9-QQ-XyX">
-                                <rect key="frame" x="0.0" y="28" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bp9-QQ-XyX" id="gV0-8n-yzT">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="UZ2-E7-Gjm" id="qMr-Yd-eKc"/>
-                            <outlet property="delegate" destination="UZ2-E7-Gjm" id="Ih4-qP-RIR"/>
-                        </connections>
-                    </tableView>
-                    <tabBarItem key="tabBarItem" title="Fincas Encargado" id="OrZ-Wj-qBS"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tgB-gl-Glo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                        <constraints>
+                            <constraint firstItem="Px0-6s-XVJ" firstAttribute="bottom" secondItem="9qC-MK-i3z" secondAttribute="bottom" id="1Vx-xZ-CwJ"/>
+                            <constraint firstItem="Px0-6s-XVJ" firstAttribute="top" secondItem="tdy-5U-Pt0" secondAttribute="bottom" id="DVJ-Yi-DqG"/>
+                            <constraint firstItem="Px0-6s-XVJ" firstAttribute="leading" secondItem="9qC-MK-i3z" secondAttribute="leading" id="Dni-ul-jyz"/>
+                            <constraint firstItem="xFo-PP-OX4" firstAttribute="top" secondItem="tdy-5U-Pt0" secondAttribute="bottom" id="HUN-Kc-94s"/>
+                            <constraint firstItem="tdy-5U-Pt0" firstAttribute="trailing" secondItem="9qC-MK-i3z" secondAttribute="trailing" id="Ip6-5k-IhR"/>
+                            <constraint firstItem="xFo-PP-OX4" firstAttribute="leading" secondItem="9qC-MK-i3z" secondAttribute="leading" id="N7w-Gc-1kd"/>
+                            <constraint firstItem="Px0-6s-XVJ" firstAttribute="trailing" secondItem="9qC-MK-i3z" secondAttribute="trailing" id="PAp-sc-H3Z"/>
+                            <constraint firstItem="tdy-5U-Pt0" firstAttribute="leading" secondItem="9qC-MK-i3z" secondAttribute="leading" id="aFi-dU-RR7"/>
+                            <constraint firstItem="xFo-PP-OX4" firstAttribute="trailing" secondItem="9qC-MK-i3z" secondAttribute="trailing" id="aXT-qg-eN2"/>
+                            <constraint firstItem="xFo-PP-OX4" firstAttribute="bottom" secondItem="9qC-MK-i3z" secondAttribute="bottom" id="f9K-FA-ilH"/>
+                            <constraint firstItem="tdy-5U-Pt0" firstAttribute="top" secondItem="9qC-MK-i3z" secondAttribute="top" id="qan-l9-JaS"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="9qC-MK-i3z"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Aprobacion Pendiente" image="FincasPendientes" id="g2M-oN-tSh"/>
+                    <connections>
+                        <outlet property="emptyFincasTVMessage" destination="xFo-PP-OX4" id="FVw-hh-AUb"/>
+                        <outlet property="fincasPendientesTableView" destination="Px0-6s-XVJ" id="6dx-ux-X6S"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7pO-Un-IEK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1988" y="-248"/>
+            <point key="canvasLocation" x="1912.5" y="576.76056338028172"/>
+        </scene>
+        <!--Encargado-->
+        <scene sceneID="mhq-3p-9Ho">
+            <objects>
+                <viewController id="wlJ-IF-iew" customClass="SFFincasEncargadoViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="c78-Am-e7X">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No es encargado de ninguna finca" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VE7-jH-J3q" userLabel="EmptyTableMessage">
+                                <rect key="frame" x="0.0" y="70" width="320" height="405"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d5y-Yz-psV">
+                                <rect key="frame" x="0.0" y="64" width="320" height="6"/>
+                                <color key="backgroundColor" name="VerdeClaro"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="6" id="oJd-ks-7N0"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DLb-Ic-2tr">
+                                <rect key="frame" x="0.0" y="70" width="320" height="405"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="VE7-jH-J3q" firstAttribute="bottom" secondItem="Wg2-Mb-X8K" secondAttribute="bottom" id="1CO-7k-ueE"/>
+                            <constraint firstItem="VE7-jH-J3q" firstAttribute="leading" secondItem="Wg2-Mb-X8K" secondAttribute="leading" id="4Af-6n-ks0"/>
+                            <constraint firstItem="VE7-jH-J3q" firstAttribute="top" secondItem="d5y-Yz-psV" secondAttribute="bottom" id="71V-u4-EDy"/>
+                            <constraint firstItem="DLb-Ic-2tr" firstAttribute="leading" secondItem="Wg2-Mb-X8K" secondAttribute="leading" id="9Lh-OW-s2o"/>
+                            <constraint firstItem="VE7-jH-J3q" firstAttribute="trailing" secondItem="Wg2-Mb-X8K" secondAttribute="trailing" id="Bs2-kW-GXm"/>
+                            <constraint firstItem="DLb-Ic-2tr" firstAttribute="trailing" secondItem="Wg2-Mb-X8K" secondAttribute="trailing" id="II8-0T-uaL"/>
+                            <constraint firstItem="DLb-Ic-2tr" firstAttribute="bottom" secondItem="Wg2-Mb-X8K" secondAttribute="bottom" id="MeU-H3-TMe"/>
+                            <constraint firstItem="DLb-Ic-2tr" firstAttribute="top" secondItem="d5y-Yz-psV" secondAttribute="bottom" id="Nhi-IS-FSl"/>
+                            <constraint firstItem="d5y-Yz-psV" firstAttribute="trailing" secondItem="Wg2-Mb-X8K" secondAttribute="trailing" id="hwc-y5-Qdc"/>
+                            <constraint firstItem="d5y-Yz-psV" firstAttribute="top" secondItem="Wg2-Mb-X8K" secondAttribute="top" id="pzk-TB-udf"/>
+                            <constraint firstItem="d5y-Yz-psV" firstAttribute="leading" secondItem="Wg2-Mb-X8K" secondAttribute="leading" id="qxG-bs-NEf"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Wg2-Mb-X8K"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Encargado" image="EncargadoFincaIcon" id="Quy-4X-V2Z"/>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="emptyFincasTVMessage" destination="VE7-jH-J3q" id="dAO-oe-aDN"/>
+                        <outlet property="fincasEncargadoTableView" destination="DLb-Ic-2tr" id="Z3m-YH-kwk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mjS-97-zTb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1912.5" y="-522.88732394366195"/>
         </scene>
     </scenes>
     <resources>
+        <image name="AgregarUsuarioIcon" width="22" height="22"/>
+        <image name="EncargadoFincaIcon" width="25" height="25"/>
+        <image name="FincasPendientes" width="25" height="25"/>
         <image name="Imagen logo" width="406" height="318"/>
+        <image name="OtrosRolesFincaIcon" width="25" height="25"/>
+        <image name="RecuperarCuentaIcon" width="22" height="22"/>
+        <namedColor name="Verde">
+            <color red="0.2627450980392157" green="0.69019607843137254" blue="0.16470588235294117" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="VerdeClaro">
+            <color red="0.59215686274509804" green="0.84313725490196079" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="VerdeMasClaro">
+            <color red="0.77254901960784317" green="0.90980392156862744" blue="0.42352941176470588" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
     </resources>
 </document>

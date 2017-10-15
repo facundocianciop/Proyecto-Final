@@ -22,10 +22,6 @@
 -(void)showActivityIndicator;
 -(void)hideActivityIndicator;
 
-// Handle services returning no records
-
--(void)handleNoRecords;
-
 // Handle errors
 
 -(void)handleError:(NSError *)error;

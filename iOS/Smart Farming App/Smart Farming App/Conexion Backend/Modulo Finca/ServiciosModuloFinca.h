@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "BaseServicios.h"
 
+#import "RespuestaMostrarFincas.h"
+
 @interface ServiciosModuloFinca : BaseServicios
 
 +(void) mostrarFincasEncargadoWithCompletionBlock:(SuccessBlock)completionBlock

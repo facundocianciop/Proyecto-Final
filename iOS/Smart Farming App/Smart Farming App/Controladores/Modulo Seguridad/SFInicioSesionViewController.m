@@ -47,13 +47,9 @@
     [ServiciosModuloSeguridad iniciarSesion:solicitud completionBlock:^(RespuestaServicioBase *respuesta) {
         [weakSelf hideActivityIndicator];
         
-        [ServiciosModuloFinca mostrarFincasEncargadoWithCompletionBlock:^(RespuestaServicioBase *respuesta) {
-            
-        } failureBlock:^(ErrorServicioBase *error) {
-            
-        }];
-        
-        //[weakSelf performSegueWithIdentifier:kSFNavegarEstadoAutenticadoSegue sender:self];
+        if (respuesta.resultado) {
+            [weakSelf performSegueWithIdentifier:kSFNavegarEstadoAutenticadoSegue sender:self];
+        }
         
     } failureBlock:^(ErrorServicioBase *error) {
         [weakSelf hideActivityIndicator];
