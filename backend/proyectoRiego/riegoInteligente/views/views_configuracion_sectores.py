@@ -421,8 +421,8 @@ def asignar_cultivo_a_sector(request):
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
         if (KEY_ID_SECTOR) in datos and (KEY_DESCRIPCION_CULTIVO in datos) and (KEY_FECHA_PLANTACION in datos) and\
                 (KEY_NOMBRE_SUBTIPO_CULTIVO in datos) and (KEY_NOMBRE_CULTIVO in datos):
-            if datos[KEY_ID_CULTIVO] == '' or datos[KEY_DESCRIPCION_CULTIVO] == '' or datos[KEY_FECHA_PLANTACION] == ''\
-                    or datos[KEY_NOMBRE_CULTIVO] == '' or datos[KEY_ID_SECTOR] == '':
+            if datos[KEY_ID_SECTOR] == '' or datos[KEY_DESCRIPCION_CULTIVO] == '' or datos[KEY_FECHA_PLANTACION] == ''\
+                    or datos[KEY_NOMBRE_CULTIVO] == '' or datos[KEY_NOMBRE_SUBTIPO_CULTIVO] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             sector_seleccionado = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
             if sector_seleccionado.cultivo_set.filter(habilitado=True).__len__() !=0:
@@ -439,8 +439,11 @@ def asignar_cultivo_a_sector(request):
             subtipo_seleccionado = SubtipoCultivo.objects.get(nombreSubtipo=datos[KEY_NOMBRE_SUBTIPO_CULTIVO])
             if subtipo_seleccionado.tipo_cultivo.habilitado != True:
                 raise ValueError(ERROR_TIPO_CULTIVO_NO_HABILITADO, "Este tipo de cultivo no esta habilitado")
-            cultivo = Cultivo(nombre=datos[KEY_NOMBRE_CULTIVO], descripcion=datos[KEY_DESCRIPCION_CULTIVO], habilitado=True,
-                              sector=sector_seleccionado, fechaPlantacion=datos[KEY_FECHA_PLANTACION],
+            fecha_parseada = parsear_datos_fecha(datos[KEY_FECHA_PLANTACION])
+            cultivo = Cultivo(nombre=datos[KEY_NOMBRE_CULTIVO], descripcion=datos[KEY_DESCRIPCION_CULTIVO],
+                              habilitado=True,
+                              sector=sector_seleccionado,
+                              fechaPlantacion=fecha_parseada,
                               subtipo_cultivo=subtipo_seleccionado)
             cultivo.save()
             response.content = armar_response_content(None)
@@ -467,7 +470,8 @@ def modificar_cultivo_sector(request):
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
         if (KEY_ID_CULTIVO & KEY_DESCRIPCION_CULTIVO and KEY_FECHA_PLANTACION & KEY_NOMBRE_CULTIVO)  in datos:
-            if datos[KEY_ID_CULTIVO] == '' or datos[KEY_DESCRIPCION_CULTIVO] == '' or datos[KEY_FECHA_PLANTACION] == '' or datos[KEY_NOMBRE_CULTIVO] == '':
+            if datos[KEY_ID_CULTIVO] == '' or datos[KEY_DESCRIPCION_CULTIVO] == '' or\
+                            datos[KEY_FECHA_PLANTACION] == '' or datos[KEY_NOMBRE_CULTIVO] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO]).__len__() == 0:
                 raise ValueError(ERROR_CULTIVO_NO_EXISTENTE, "El id del cultivo no es correcto")
