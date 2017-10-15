@@ -78,6 +78,7 @@ KEY_NOMBRE_ROL = 'nombreRol'
 
 # Mecanismo riego
 KEY_NOMBRE_TIPO_MECANISMO = 'nombreTipoMecanismo'
+KEY_DIRECCION_IP = 'direccionIP'
 KEY_ID_MECANISMO_RIEGO_FINCA = 'idMecanismoRiegoFinca'
 KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR = 'idMecanismoRiegoFincaSector'
 KEY_NOMBRE_PROVEEDOR = 'nombreProveedor'
@@ -145,6 +146,9 @@ KEY_NOTIFICACION_ACTIVADA = "notificacionActivada"
 KEY_CONFIGURACION_ACTIVADA = "configuracionActivada"
 KEY_DESCRIPCION_CONFIGURACION_EVENTO = "descripcionConfiguracionEvento"
 
+# Reportes
+KEY_FECHA_INICIO_SECTOR = "fechaInicioSector"
+KEY_FECHA_FIN_SECTOR = "fechaFinSector"
 
 # Detalle operaciones
 

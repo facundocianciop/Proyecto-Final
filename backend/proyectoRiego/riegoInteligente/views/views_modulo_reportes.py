@@ -514,3 +514,63 @@ def obtener_informe_riego_ejecucion_sector(request):
         response.status_code = 401
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+def obtener_informe_historico_sector(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if (KEY_ID_SECTOR in datos) and (KEY_FECHA_INICIO_SECTOR in datos) and (KEY_FECHA_FIN_SECTOR in datos):
+            if datos[KEY_ID_SECTOR] == '' or datos[KEY_FECHA_INICIO_SECTOR] == '' or datos[KEY_FECHA_FIN_SECTOR] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
+                raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encuentra un sector con ese id")
+            estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
+            sector_seleccionado = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
+            if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
+                                                    fechaFinEstadoSector__isnull=True).__len__() != 1:
+                raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
+            # if KEY_ID_SECTOR in datos:
+            #     finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+            #     sector_pertenece_a_finca = False
+            #     if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 1:
+            #         sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
+            #         if finca.sectorList.filter(OIDSector=sector.OIDSector).__len__() == 1:
+            #             sector_pertenece_a_finca = True
+            #         if sector_pertenece_a_finca == False:
+            #             print "NO PERTENECE"
+            #             return build_unauthorized_error(response, ERROR_NO_TIENE_PERMISOS,
+            #                                             DETALLE_ERROR_NO_TIENE_PERMISOS)
+            fecha_inicio_sector = parsear_datos_fecha(datos[KEY_FECHA_INICIO_SECTOR])
+            fecha_fin_sector = parsear_datos_fecha(datos[KEY_FECHA_FIN_SECTOR])
+            lista_dto_componente_medicion = []
+            componentes = sector_seleccionado.componentesensorsector_set.all()
+            for componente in componentes:
+                mediciones = componente.medicionCabeceraList.filter(fechaYHora__gte=fecha_inicio_sector,
+                                                                    fechaYHora__lte=fecha_fin_sector)
+                for medicion in mediciones:
+                    dto_componente_medicion = DtoComponenteMedicion(medicion_cabecera=medicion.as_json(),
+                                                                    componente=componente.componente_sensor.as_json())
+                    lista_dto_componente_medicion.append(dto_componente_medicion)
+            if lista_dto_componente_medicion.__len__() == 0 :
+                response.content = armar_response_content(None)
+                response.status_code = 200
+                return response
+            response.content = armar_response_list_content(lista_dto_componente_medicion)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except ValueError as err:
+        print err.args
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
