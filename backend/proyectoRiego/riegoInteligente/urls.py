@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^buscarProveedoresInformacion/$', views_modulo_finca.buscar_proveedores_informacion,
         name='buscarProveedoresInformacion'),
     url(r'^obtenerFincasPorUsuario/$', views_modulo_finca.obtener_fincas_por_usuario,
-        name='obtenerFincasHabilitadasPorUsuario'),
+        name='obtenerFincasPorUsuario'),
     url(r'^aprobarFinca/(?P<idFinca>[0-9]+)/$', views_modulo_finca.aprobar_finca, name='aprobarFinca'),
     url(r'^noAprobarFinca/(?P<idFinca>[0-9]+)/$', views_modulo_finca.no_aprobar_finca, name='noAprobarFinca'),
     url(r'^mostrarFincasEncargado/$', views_modulo_finca.mostrar_fincas_encargado, name='mostrarFincasEncargado'),
