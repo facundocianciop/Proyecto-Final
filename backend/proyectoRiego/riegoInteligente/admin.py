@@ -5,13 +5,6 @@ from django.contrib import admin
 from models import *
 
 
-class FincaAdmin(admin.ModelAdmin):
-    list_display = ('fincas_pendientes',)
-    def fincas_pendientes(self):
-        return '<a href="%s">%s</a>' %('http://127.0.0.1:8000/riegoInteligente/aprobarFinca/',
-                                       'Fincas en estado Pendiente')
-    fincas_pendientes.allow_tags = True
-
 
 admin.site.register(DatosUsuario)
 admin.site.register(SesionUsuario)
