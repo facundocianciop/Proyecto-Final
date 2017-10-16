@@ -9,6 +9,8 @@
 #import "SFFincasPendientesViewController.h"
 #import "ServiciosModuloFinca.h"
 
+#import "SFFincaTableViewCell.h"
+
 @interface SFFincasPendientesViewController ()
 
 @property (weak, nonatomic) IBOutlet UITableView *fincasPendientesTableView;
@@ -22,6 +24,8 @@
     [super viewDidLoad];
     
     [self configurarTabla];
+    
+    [self cargaInicialDatos];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -45,27 +49,43 @@
 }
 */
 
-
 #pragma mark - obtener datos
+
+-(void)cargaInicialDatos {
+    [self showActivityIndicator];
+    [self obtenerFincas];
+}
 
 -(void)obtenerFincas {
     
-    
-    
-//    [ServiciosModuloFinca mostrarFincasEncargadoWithCompletionBlock:^(RespuestaServicioBase *respuesta) {
-//        
-//        if ([respuesta isKindOfClass:[RespuestaMostrarFincas class]]) {
-//            
-//            RespuestaMostrarFincas *respuestaMostrarFincas = (RespuestaMostrarFincas *)respuesta;
-//            
-//            if (respuestaMostrarFincas.resultado) {
-//                self.fincas = respuestaMostrarFincas.fincas;
-//                [self.tableView reloadData];
-//            }
-//        }
-//    } failureBlock:^(ErrorServicioBase *error) {
-//        [self handleErrorWithPromptTitle:@"Error obteniendo fincas" message: error.detalleError];
-//    }];
+    __weak typeof(self) weakSelf = self;
+    [ServiciosModuloFinca obtenerFincasEstadoPendiente:^(RespuestaServicioBase *respuesta) {
+        if ([respuesta isKindOfClass:[RespuestaMostrarFincas class]]) {
+            [weakSelf hideActivityIndicator];
+            
+            RespuestaMostrarFincas *respuestaMostrarFincas = (RespuestaMostrarFincas *)respuesta;
+            
+            if (respuestaMostrarFincas.resultado) {
+                weakSelf.tableViewItemsArray = respuestaMostrarFincas.fincas;
+                [weakSelf loadingTableViewDataDidEnd];
+            } else {
+                [weakSelf loadingTableViewDataFailed];
+                [weakSelf handleErrorWithPromptTitle:kErrorObteniendoFincas message:kErrorDesconocido withCompletion:^{
+                }];
+            }
+        }
+    } failureBlock:^(ErrorServicioBase *error) {
+        [weakSelf hideActivityIndicator];
+        [weakSelf handleErrorWithPromptTitle:kErrorObteniendoFincas message:error.detalleError withCompletion:^{
+            [weakSelf loadingTableViewDataFailed];
+        }];
+    }];
+}
+
+#pragma mark - Acciones
+
+-(void)refreshAction {
+    [self obtenerFincas];
 }
 
 #pragma mark - Configurar vistas
@@ -89,6 +109,7 @@
     
     SFFinca *finca = self.tableViewItemsArray[indexPath.row];
     cell.textLabel.text = finca.nombre;
+    cell.detailTextLabel.text = finca.ubicacion;
     
     return cell;
 }

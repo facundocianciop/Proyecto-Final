@@ -76,7 +76,7 @@
 }
 
 // Manejar error con mensaje
--(void)handleErrorWithPromptTitle:(NSString *)title message:(NSString *)message {
+-(void)handleErrorWithPromptTitle:(NSString *)title message:(NSString *)message withCompletion:(void(^)(void))completionblock {
     
     self.userPrompt = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     
@@ -85,6 +85,7 @@
         weakSelf.promptDisplayed = NO;
         weakSelf.userPrompt = nil;
         weakSelf.primaryAction = nil;
+        completionblock();
     }];
     
     [self.userPrompt addAction:self.primaryAction];

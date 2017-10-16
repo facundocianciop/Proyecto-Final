@@ -24,6 +24,8 @@
 		1116BA8B1F8C6D09005C9AFF /* SFViewControllerBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116BA8A1F8C6D09005C9AFF /* SFViewControllerBase.m */; };
 		1116BA931F8C7490005C9AFF /* SFUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116BA921F8C7490005C9AFF /* SFUtils.m */; };
 		1116D6C01F9390DE0088D61B /* SFFincasPendientesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116D6BF1F9390DE0088D61B /* SFFincasPendientesViewController.m */; };
+		1116D6C41F940E310088D61B /* RespuestaBuscarRoles.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116D6C31F940E310088D61B /* RespuestaBuscarRoles.m */; };
+		1116D6C81F9433020088D61B /* SFFincaTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116D6C71F9433020088D61B /* SFFincaTableViewCell.m */; };
 		1116DA961F906A370057A048 /* RespuestaInicioSesion.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116DA951F906A370057A048 /* RespuestaInicioSesion.m */; };
 		1116DA9B1F906F8C0057A048 /* RespuestaMostrarFincas.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116DA9A1F906F8C0057A048 /* RespuestaMostrarFincas.m */; };
 		1116DA9F1F90726C0057A048 /* ServiciosModuloRiego.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116DA9E1F90726C0057A048 /* ServiciosModuloRiego.m */; };
@@ -104,6 +106,10 @@
 		1116BA921F8C7490005C9AFF /* SFUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFUtils.m; sourceTree = "<group>"; };
 		1116D6BE1F9390DE0088D61B /* SFFincasPendientesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFFincasPendientesViewController.h; sourceTree = "<group>"; };
 		1116D6BF1F9390DE0088D61B /* SFFincasPendientesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFFincasPendientesViewController.m; sourceTree = "<group>"; };
+		1116D6C21F940E310088D61B /* RespuestaBuscarRoles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RespuestaBuscarRoles.h; sourceTree = "<group>"; };
+		1116D6C31F940E310088D61B /* RespuestaBuscarRoles.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RespuestaBuscarRoles.m; sourceTree = "<group>"; };
+		1116D6C61F9433020088D61B /* SFFincaTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFFincaTableViewCell.h; sourceTree = "<group>"; };
+		1116D6C71F9433020088D61B /* SFFincaTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFFincaTableViewCell.m; sourceTree = "<group>"; };
 		1116DA941F906A370057A048 /* RespuestaInicioSesion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RespuestaInicioSesion.h; sourceTree = "<group>"; };
 		1116DA951F906A370057A048 /* RespuestaInicioSesion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RespuestaInicioSesion.m; sourceTree = "<group>"; };
 		1116DA991F906F8C0057A048 /* RespuestaMostrarFincas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RespuestaMostrarFincas.h; sourceTree = "<group>"; };
@@ -212,6 +218,7 @@
 				1116BA801F8C5A42005C9AFF /* Utils */,
 				111D1DC41F92F48F00E3A168 /* Clases */,
 				1116BA641F8C59D5005C9AFF /* Vistas */,
+				1116D6C51F9432D00088D61B /* Modulo Finca */,
 				1116BA631F8C59CE005C9AFF /* Controladores */,
 				11CD008D1F8F12AD00C58C49 /* Navegacion */,
 				1116BA621F8C59B4005C9AFF /* Conexion Backend */,
@@ -261,14 +268,7 @@
 		1116BA631F8C59CE005C9AFF /* Controladores */ = {
 			isa = PBXGroup;
 			children = (
-				1116BA891F8C6D09005C9AFF /* SFViewControllerBase.h */,
-				1116BA8A1F8C6D09005C9AFF /* SFViewControllerBase.m */,
-				111D1DC11F92E01100E3A168 /* SFTableViewControllerBase.h */,
-				111D1DC21F92E01100E3A168 /* SFTableViewControllerBase.m */,
-				11F0207F1F8F078D00DBC1DC /* SFTextInputBaseViewController.h */,
-				11F020801F8F078D00DBC1DC /* SFTextInputBaseViewController.m */,
-				A10157151F9003BE00179ED7 /* SFFormularioBaseViewController.h */,
-				A10157161F9003BE00179ED7 /* SFFormularioBaseViewController.m */,
+				1116D6C11F940C490088D61B /* General */,
 				A1AE0B811F8E8BDF009B4494 /* Modulo Seguridad */,
 				A1AE0B821F8E8BF1009B4494 /* Modulo Finca */,
 			);
@@ -342,6 +342,30 @@
 			path = "Modulo Finca";
 			sourceTree = "<group>";
 		};
+		1116D6C11F940C490088D61B /* General */ = {
+			isa = PBXGroup;
+			children = (
+				1116BA891F8C6D09005C9AFF /* SFViewControllerBase.h */,
+				1116BA8A1F8C6D09005C9AFF /* SFViewControllerBase.m */,
+				111D1DC11F92E01100E3A168 /* SFTableViewControllerBase.h */,
+				111D1DC21F92E01100E3A168 /* SFTableViewControllerBase.m */,
+				11F0207F1F8F078D00DBC1DC /* SFTextInputBaseViewController.h */,
+				11F020801F8F078D00DBC1DC /* SFTextInputBaseViewController.m */,
+				A10157151F9003BE00179ED7 /* SFFormularioBaseViewController.h */,
+				A10157161F9003BE00179ED7 /* SFFormularioBaseViewController.m */,
+			);
+			path = General;
+			sourceTree = "<group>";
+		};
+		1116D6C51F9432D00088D61B /* Modulo Finca */ = {
+			isa = PBXGroup;
+			children = (
+				1116D6C61F9433020088D61B /* SFFincaTableViewCell.h */,
+				1116D6C71F9433020088D61B /* SFFincaTableViewCell.m */,
+			);
+			path = "Modulo Finca";
+			sourceTree = "<group>";
+		};
 		1116DA8F1F904B6E0057A048 /* General */ = {
 			isa = PBXGroup;
 			children = (
@@ -373,6 +397,8 @@
 			children = (
 				1116DA991F906F8C0057A048 /* RespuestaMostrarFincas.h */,
 				1116DA9A1F906F8C0057A048 /* RespuestaMostrarFincas.m */,
+				1116D6C21F940E310088D61B /* RespuestaBuscarRoles.h */,
+				1116D6C31F940E310088D61B /* RespuestaBuscarRoles.m */,
 			);
 			path = Respuestas;
 			sourceTree = "<group>";
@@ -759,6 +785,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1116BA7F1F8C5A2C005C9AFF /* BaseServicios.m in Sources */,
+				1116D6C81F9433020088D61B /* SFFincaTableViewCell.m in Sources */,
 				1116D6C01F9390DE0088D61B /* SFFincasPendientesViewController.m in Sources */,
 				1116BA8B1F8C6D09005C9AFF /* SFViewControllerBase.m in Sources */,
 				A1AE0B891F8E8CFD009B4494 /* RespuestaServicioBase.m in Sources */,
@@ -780,6 +807,7 @@
 				111D1DC31F92E01100E3A168 /* SFTableViewControllerBase.m in Sources */,
 				11F020841F8F083F00DBC1DC /* SFTextField.m in Sources */,
 				A1AE0B8C1F8E8E1F009B4494 /* SolicitudServicioFincaBase.m in Sources */,
+				1116D6C41F940E310088D61B /* RespuestaBuscarRoles.m in Sources */,
 				1116BA931F8C7490005C9AFF /* SFUtils.m in Sources */,
 				A10157171F9003BE00179ED7 /* SFFormularioBaseViewController.m in Sources */,
 				1116BA861F8C6B7D005C9AFF /* SFActivityIndicator.m in Sources */,

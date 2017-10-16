@@ -9,6 +9,8 @@
 #import "SFFincasOtrosRolesViewController.h"
 #import "ServiciosModuloFinca.h"
 
+#import "SFFincaTableViewCell.h"
+
 @interface SFFincasOtrosRolesViewController ()
 
 @property (weak, nonatomic) IBOutlet UIPickerView *rolPicker;
@@ -27,13 +29,8 @@
     // Configurar vistas
     [self configurarPicker];
     [self configurarTabla];
-}
-
--(void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
     
-    self.rolesArray = [self obtenerRoles];
-    self.tableViewItemsArray = [self obtenerFincas];
+    [self cargaInicialDatos];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -53,18 +50,82 @@
 
 #pragma mark - obtener datos
 
--(NSArray *)obtenerRoles {
-    
-    NSMutableArray *roles = [NSMutableArray arrayWithObjects:@"Stakeholder",@"Otro Rol",nil];
- 
-    return roles;
+-(void)cargaInicialDatos {
+    [self showActivityIndicator];
+    [self obtenerRoles];
 }
 
--(NSArray *)obtenerFincas {
+-(void)obtenerRoles {
+    __weak typeof(self) weakSelf = self;
+    [ServiciosModuloFinca buscarRoles:^(RespuestaServicioBase *respuesta) {
+        
+        if ([respuesta isKindOfClass:[RespuestaBuscarRoles class]]) {
+            [weakSelf hideActivityIndicator];
+            
+            RespuestaBuscarRoles *respuestaBuscarRoles = (RespuestaBuscarRoles *)respuesta;
+            
+            if (respuestaBuscarRoles.resultado) {
+                NSMutableArray *roles = [NSMutableArray new];
+                for (NSString *rol in respuestaBuscarRoles.nombreRoles) {
+                    if (![rol isEqualToString:kRolEncargado]) {
+                        [roles addObject:rol];
+                    }
+                }
+                weakSelf.rolesArray = roles;
+                [weakSelf.rolPicker reloadAllComponents];
+                [weakSelf beginTableViewDataLoading];
+                [weakSelf obtenerFincas];
+            } else {
+                [weakSelf handleErrorWithPromptTitle:kErrorObteniendoRoles message:kErrorDesconocido withCompletion:^{
+                }];
+            }
+        }
+    } failureBlock:^(ErrorServicioBase *error) {
+        [weakSelf hideActivityIndicator];
+        [weakSelf handleErrorWithPromptTitle:kErrorObteniendoRoles message:error.detalleError withCompletion:^{
+        }];
+    }];
+}
+
+-(void)obtenerFincas {
     
-    NSMutableArray *fincas = [NSMutableArray new];
-    
-    return fincas;
+    __weak typeof(self) weakSelf = self;
+    [ServiciosModuloFinca obtenerFincasPorUsuario:^(RespuestaServicioBase *respuesta) {
+        if ([respuesta isKindOfClass:[RespuestaMostrarFincas class]]) {
+            [weakSelf hideActivityIndicator];
+            
+            RespuestaMostrarFincas *respuestaMostrarFincas = (RespuestaMostrarFincas *)respuesta;
+            
+            if (respuestaMostrarFincas.resultado) {
+                
+                NSString *rolElegido = [weakSelf.rolPicker.delegate pickerView:weakSelf.rolPicker titleForRow:[weakSelf.rolPicker selectedRowInComponent:0] forComponent:0];
+                
+                NSMutableArray *fincasConRol = [NSMutableArray new];
+                for (SFFinca *finca in respuestaMostrarFincas.fincas) {
+                    if ([finca.rolUsuario isEqualToString:rolElegido]) {
+                        [fincasConRol addObject:finca];
+                    }
+                }
+                weakSelf.tableViewItemsArray = fincasConRol;
+                [weakSelf loadingTableViewDataDidEnd];
+            } else {
+                [weakSelf loadingTableViewDataFailed];
+                [weakSelf handleErrorWithPromptTitle:kErrorObteniendoFincas message:kErrorDesconocido withCompletion:^{
+                }];
+            }
+        }
+    } failureBlock:^(ErrorServicioBase *error) {
+        [weakSelf hideActivityIndicator];
+        [weakSelf handleErrorWithPromptTitle:kErrorObteniendoFincas message:error.detalleError withCompletion:^{
+            [weakSelf loadingTableViewDataFailed];
+        }];
+    }];
+}
+
+#pragma mark - Acciones
+
+-(void)refreshAction {
+    [self obtenerFincas];
 }
 
 #pragma mark - Configurar vistas
@@ -99,15 +160,19 @@
     return self.rolesArray[row];
 }
 
-- (void)didUpdateFocusInContext:(nonnull UIFocusUpdateContext *)context withAnimationCoordinator:(nonnull UIFocusAnimationCoordinator *)coordinator {
-    
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    [self beginTableViewDataLoading];
+    [self obtenerFincas];
 }
 
 #pragma mark - Table View Configuration
 
-
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    UITableViewCell *cell = [UITableViewCell new];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kTableViewCellIdentifier forIndexPath:indexPath];
+    
+    SFFinca *finca = self.tableViewItemsArray[indexPath.row];
+    cell.textLabel.text = finca.nombre;
+    cell.detailTextLabel.text = finca.ubicacion;
     
     return cell;
 }

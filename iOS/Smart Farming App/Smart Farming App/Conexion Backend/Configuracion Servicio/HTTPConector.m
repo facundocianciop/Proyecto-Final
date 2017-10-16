@@ -111,11 +111,22 @@
     
     NSData *errorData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
     if (errorData) {
-        NSDictionary *serializedData = [NSJSONSerialization JSONObjectWithData: errorData options:kNilOptions error:nil];
-        
-        errorServicio = [[ErrorServicioBase alloc] initWithDomain:error.domain code:response.statusCode userInfo:serializedData];
-        errorServicio.codigoError = serializedData[KEY_ERROR_CODE];
-        errorServicio.detalleError = serializedData[KEY_ERROR_DESCRIPTION];
+        @try {
+            NSDictionary *serializedData = [NSJSONSerialization JSONObjectWithData: errorData options:kNilOptions error:nil];
+            
+            errorServicio = [[ErrorServicioBase alloc] initWithDomain:error.domain code:response.statusCode userInfo:serializedData];
+            errorServicio.codigoError = serializedData[KEY_ERROR_CODE];
+            errorServicio.detalleError = serializedData[KEY_ERROR_DESCRIPTION];
+        } @catch (NSException *exception) {
+            errorServicio = [[ErrorServicioBase alloc] initWithDomain:error.domain code:error.code userInfo:error.userInfo];
+            errorServicio.codigoError = [NSString stringWithFormat:@"%li", error.code];
+            
+            if ([error.domain isEqualToString:NSURLErrorDomain]) {
+                errorServicio.detalleError = @"Error de comunicación con el servidor";
+            } else {
+                errorServicio.detalleError = error.userInfo[NSLocalizedDescriptionKey];
+            }
+        }
     } else {
         errorServicio = [[ErrorServicioBase alloc] initWithDomain:error.domain code:error.code userInfo:error.userInfo];
         errorServicio.codigoError = [NSString stringWithFormat:@"%li", error.code];

@@ -17,4 +17,6 @@
 @property (strong, nonatomic) NSString *ubicacion;
 @property (strong, nonatomic) NSString *direccionLegal;
 
+@property (strong, nonatomic) NSString *rolUsuario;
+
 @end

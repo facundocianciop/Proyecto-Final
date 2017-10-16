@@ -27,4 +27,15 @@ NSString *const kColorVerdeClaroHex = @"#97D700";
 NSString *const kColorVerdeMasClaro = @"VerdeMasClaro";
 NSString *const kColorVerdeMasClaroHex = @"#C5E86C";
 
+#pragma mark - Mensajes Roles/Estados
+
+NSString *const kRolEncargado = @"encargado";
+
+#pragma mark - Mensajes errores
+
+NSString *const kErrorDesconocido = @"Error desconocido";
+NSString *const kErrorInicioSesion = @"Error de inicio de sesión";
+NSString *const kErrorObteniendoRoles = @"Error obteniendo roles";
+NSString *const kErrorObteniendoFincas = @"Error obteniendo fincas";
+
 @end

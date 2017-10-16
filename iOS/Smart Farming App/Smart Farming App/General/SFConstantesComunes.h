@@ -27,4 +27,15 @@ extern NSString *const kColorVerdeClaroHex;
 extern NSString *const kColorVerdeMasClaro;
 extern NSString *const kColorVerdeMasClaroHex;
 
+#pragma mark - Mensajes Roles/Estados
+
+extern NSString *const kRolEncargado;
+
+#pragma mark - Mensajes errores
+
+extern NSString *const kErrorDesconocido;
+extern NSString *const kErrorInicioSesion;
+extern NSString *const kErrorObteniendoRoles;
+extern NSString *const kErrorObteniendoFincas;
+
 @end

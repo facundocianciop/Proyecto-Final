@@ -13,6 +13,7 @@
 
 #define OPERATION_BUSCAR_FINCA_ID                    @"buscarFincaId"
 #define OPERATION_DEVOLVER_PERMISOS                  @"devolverPermisos"
+#define OPERATION_BUSCAR_ROLES                       @"buscarRoles"
 
 #define OPERATION_CREAR_FINCA                        @"crearFinca"
 #define OPERATION_MODIFICAR_FINCA                    @"modificarFinca"
@@ -98,9 +99,72 @@
             }
             respuesta.fincas = fincas;
         }
-        
         completionBlock(respuesta);
+    } failureBlock:^(NSError *error) {
+        failureBlock([BaseServicios armarErrorServicio:error]);
+    }];
+}
+
++(void) obtenerFincasPorUsuario:(SuccessBlock)completionBlock
+                        failureBlock:(FailureBlock)failureBlock {
+    
+    [[HTTPConector instance] httpOperation:OPERATION_OBTENER_FINCAS_POR_USUARIO method:METHOD_GET withParameters:nil completionBlock:^(NSDictionary *responseObject) {
         
+        RespuestaMostrarFincas *respuesta = [RespuestaMostrarFincas new];
+        
+        NSDictionary *datosOperacion = [ServiciosModuloFinca armarRespuestaServicio:respuesta withResponseObject:responseObject];
+        
+        if (respuesta.resultado && datosOperacion) {
+            
+            NSMutableArray *fincas = [NSMutableArray new];
+            
+            for (NSDictionary *datos in datosOperacion) {
+                
+                SFFinca *finca = [SFFinca new];
+                
+                finca.idFinca = [[datos objectForKey:KEY_ID_FINCA] longLongValue];
+                finca.nombre = [datos objectForKey:KEY_NOMBRE_FINCA];
+                
+                finca.tamanio = [[datos objectForKey:KEY_TAMANIO] integerValue];
+                finca.ubicacion = [datos objectForKey:KEY_UBICACION];
+                finca.direccionLegal = [datos objectForKey:KEY_DIRECCION_LEGAL];
+                
+                finca.rolUsuario = [datos objectForKey:KEY_NOMBRE_ROL];
+                
+                [fincas addObject:finca];
+            }
+            respuesta.fincas = fincas;
+        }
+        completionBlock(respuesta);
+    } failureBlock:^(NSError *error) {
+        failureBlock([BaseServicios armarErrorServicio:error]);
+    }];
+}
+
++(void) buscarRoles:(SuccessBlock)completionBlock
+       failureBlock:(FailureBlock)failureBlock {
+    
+    [[HTTPConector instance] httpOperation:OPERATION_BUSCAR_ROLES method:METHOD_GET withParameters:nil completionBlock:^(NSDictionary *responseObject) {
+        
+        RespuestaBuscarRoles *respuesta = [RespuestaBuscarRoles new];
+        
+        NSDictionary *datosOperacion = [ServiciosModuloFinca armarRespuestaServicio:respuesta withResponseObject:responseObject];
+        
+        if (respuesta.resultado && datosOperacion) {
+            
+            NSMutableArray *roles = [NSMutableArray new];
+            
+            for (NSDictionary *datos in datosOperacion) {
+                
+                NSString *rol = [datos objectForKey:KEY_NOMBRE_ROL];
+                
+                if ([rol isKindOfClass:[NSString class]] && ![rol isEqualToString:@""]) {
+                    [roles addObject:rol];
+                }
+            }
+            respuesta.nombreRoles = roles;
+        }
+        completionBlock(respuesta);
     } failureBlock:^(NSError *error) {
         failureBlock([BaseServicios armarErrorServicio:error]);
     }];

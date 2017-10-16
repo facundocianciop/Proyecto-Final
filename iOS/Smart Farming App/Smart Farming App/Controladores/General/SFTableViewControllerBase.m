@@ -29,11 +29,21 @@
     NSLog(@"No hay accion definida");
 }
 
--(void)loadingDataEnded {
+-(void)beginTableViewDataLoading {
+    [self.tableView setContentOffset:CGPointMake(0, -self.refreshControl.frame.size.height) animated:YES];
+    [self.refreshControl beginRefreshing];
+}
+
+-(void)loadingTableViewDataDidEnd {
     [self.tableView reloadData];
     if (self.refreshControl) {
         [self.refreshControl endRefreshing];
     }
+}
+
+-(void)loadingTableViewDataFailed {
+    self.tableViewItemsArray = nil;
+    [self loadingTableViewDataDidEnd];
 }
 
 #pragma mark - Configurar tabla
@@ -49,7 +59,6 @@
     self.tableView.refreshControl = self.refreshControl;
     
     self.tableView.backgroundView = self.emptyTableViewMessageLabel;
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kTableViewCellIdentifier];
 }
 
 #pragma mark - Table view data source/delegate

@@ -21,6 +21,8 @@ static NSString *kTableViewCellIdentifier = @"Cell";
 
 -(void)configurarTabla;
 -(void)refreshAction;
--(void)loadingDataEnded;
+-(void)beginTableViewDataLoading;
+-(void)loadingTableViewDataDidEnd;
+-(void)loadingTableViewDataFailed;
 
 @end

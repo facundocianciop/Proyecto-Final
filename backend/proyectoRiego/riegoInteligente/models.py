@@ -100,7 +100,12 @@ class Rol(models.Model):
     OIDRol = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     nombreRol = models.CharField(max_length=30)
     fechaAltaRol = models.DateTimeField()
-    fechaBajaRol = models.DateTimeField(null=True)
+    fechaBajaRol = models.DateTimeField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.fechaBajaRol:
+            self.fechaBajaRol = None
+        super(Rol, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.nombreRol

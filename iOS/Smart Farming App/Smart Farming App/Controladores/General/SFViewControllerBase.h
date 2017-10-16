@@ -28,7 +28,7 @@
 
 // Handle error with custom message
 
--(void)handleErrorWithPromptTitle:(NSString *)title message:(NSString *)message;
+-(void)handleErrorWithPromptTitle:(NSString *)title message:(NSString *)message withCompletion:(void(^)(void))completionblock;
 
 // Show custom information message
 
