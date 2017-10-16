@@ -700,6 +700,7 @@ class MecanismoRiegoFincaSector(models.Model):
                     presion=self.presion,
                     sector=self.sector.numeroSector,
                     mecanismoRiegoFinca=self.mecanismoRiegoFinca.idMecanismoRiegoFinca,
+                    nombreTipoMecanismo=self.mecanismoRiegoFinca.tipoMecanismoRiego.nombreMecanismo,
                     idFinca=self.mecanismoRiegoFinca.finca.idFinca)
 
 
