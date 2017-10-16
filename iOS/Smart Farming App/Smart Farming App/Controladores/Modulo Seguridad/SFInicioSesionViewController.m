@@ -47,18 +47,17 @@
     [ServiciosModuloSeguridad iniciarSesion:solicitud completionBlock:^(RespuestaServicioBase *respuesta) {
         [weakSelf hideActivityIndicator];
         
-        [ServiciosModuloFinca mostrarFincasEncargadoWithCompletionBlock:^(RespuestaServicioBase *respuesta) {
-            
-        } failureBlock:^(ErrorServicioBase *error) {
-            
-        }];
-        
-        //[weakSelf performSegueWithIdentifier:kSFNavegarEstadoAutenticadoSegue sender:self];
+        if (respuesta.resultado) {
+            [weakSelf performSegueWithIdentifier:kSFNavegarEstadoAutenticadoSegue sender:self];
+        } else {
+            [weakSelf handleErrorWithPromptTitle:kErrorInicioSesion message:kErrorDesconocido withCompletion:^{
+            }];
+        }
         
     } failureBlock:^(ErrorServicioBase *error) {
         [weakSelf hideActivityIndicator];
-        
-        [self handleErrorWithPromptTitle:@"Error de inicio de sesión" message: error.detalleError];
+        [weakSelf handleErrorWithPromptTitle:kErrorInicioSesion message:error.detalleError withCompletion:^{
+        }];
     }];
 }
 

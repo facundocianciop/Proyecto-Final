@@ -9,9 +9,17 @@
 #import <Foundation/Foundation.h>
 #import "BaseServicios.h"
 
+#import "RespuestaMostrarFincas.h"
+#import "RespuestaBuscarRoles.h"
+
 @interface ServiciosModuloFinca : BaseServicios
 
-+(void) mostrarFincasEncargadoWithCompletionBlock:(SuccessBlock)completionBlock
-         failureBlock:(FailureBlock)failureBlock;
++(void) mostrarFincasEncargadoWithCompletionBlock:(SuccessBlock)completionBlock failureBlock:(FailureBlock)failureBlock;
+
++(void) obtenerFincasEstadoPendiente:(SuccessBlock)completionBlock failureBlock:(FailureBlock)failureBlock;
+
++(void) obtenerFincasPorUsuario:(SuccessBlock)completionBlock failureBlock:(FailureBlock)failureBlock;
+
++(void) buscarRoles:(SuccessBlock)completionBlock failureBlock:(FailureBlock)failureBlock;
 
 @end

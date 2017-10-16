@@ -1,5 +1,5 @@
 //
-//  RespuestaMostrarFincasEncargado.h
+//  RespuestaMostrarFincas.h
 //  Smart Farming App
 //
 //  Created by Facundo Palma on 10/13/17.
@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "RespuestaServicioBase.h"
+#import "SFFinca.h"
 
-@interface RespuestaMostrarFincasEncargado : RespuestaServicioBase
+@interface RespuestaMostrarFincas : RespuestaServicioBase
+
+@property (strong, nonatomic) NSArray<SFFinca*> *fincas;
 
 @end
