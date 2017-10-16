@@ -1,17 +1,18 @@
 class DtoFincaRol():
-    def __init__(self, nombreFinca, nombreRol, idFinca, ubicacion, estadoFinca):
+    def __init__(self, nombreFinca, nombreRol, idFinca, ubicacion, estadoFinca, tamanio):
         self.nombreFinca = nombreFinca
         self.nombreRol = nombreRol
         self.idFinca = idFinca
         self.ubicacion = ubicacion
         self.estadoFinca = estadoFinca
-
+        self.tamanio = tamanio
     def as_json(self):
         return dict(
             nombreFinca=self.nombreFinca,
             ubicacion=self.ubicacion,
             idFinca=self.idFinca,
             nombreRol=self.nombreRol,
+            tamanio=self.tamanio,
             estadoFinca=self.estadoFinca)
 
 

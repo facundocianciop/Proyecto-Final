@@ -10,16 +10,16 @@
     {% for finca in fincas %}
         <form>
     <div class="form-group">
-        <li>Nombre Finca: {{ finca.nombreFinca }}</li>
+        <li><b>Nombre Finca: </b>{{ finca.nombre }}</li>
          </div>
         <div class="form-group">
-        <li>Id Finca:{{ finca.idFinca }}</li></div>
+            <li><b>Id Finca:</b>{{ finca.idFinca }}</li></div>
         <div class="form-group">
-         <li>Superficie Finca:{{ finca.superficie }}</li></div>
+            <li><b>Superficie Finca:</b>{{ finca.superficie }}</li></div>
         <div class="form-group">
-         <li>Ubicacion Finca:{{ finca.ubicacion }}</li></div>
+            <li><b>Ubicacion Finca:</b>{{ finca.ubicacion }}</li></div>
         <div class="form-group">
-         <li>Direccion Legal:{{ finca.direccionLegal }}</li></div>
+            <li><b>Direccion Legal:</b>{{ finca.direccionLegal }}</li></div>
 
 
         <button class="btn btn-success" type="submit" formmethod="post" formaction="http://127.0.0.1:8000/riegoInteligente/aprobarFinca/{{ finca.idFinca }}/"
