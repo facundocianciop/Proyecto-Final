@@ -20,7 +20,6 @@
          <li>Ubicacion Finca:{{ finca.ubicacion }}</li></div>
         <div class="form-group">
          <li>Direccion Legal:{{ finca.direccionLegal }}</li></div>
-            <input type="submit" value="Submit">
 
 
         <button class="btn btn-success" type="submit" formmethod="post" formaction="http://127.0.0.1:8000/riegoInteligente/aprobarFinca/{{ finca.idFinca }}/"
@@ -36,3 +35,7 @@
         </div>
     </body>
 </html>
+
+
+
+{#  <tr><a href="localhost:8000/riegoInteligente/fincasPorAprobar">Fincas Pendientes</a></tr>#}

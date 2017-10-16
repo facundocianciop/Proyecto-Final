@@ -12,19 +12,16 @@
 
 #pragma mark - Initialization
 
-+(instancetype)instanceWithSessionId:(NSString *)sessionId
-                              userId:(long)userId
-                            clientId:(long)clientId
-                   clientDescription:(NSString *)clientDescription;
-
 +(instancetype)instance;
++(instancetype)instanceWithUsername:(NSString *)username;
 
 #pragma mark - Public
 
--(NSString *)currentSessionId;
--(long)currentUserId;
--(long)currentClientId;
--(NSString *)currentClientDescription;
+-(NSString *)usuarioActual;
+
+-(void)seleccionarFinca:(long)fincaId;
+-(long)fincaSeleccionada;
+
 -(void)invalidateContext;
 
 @end

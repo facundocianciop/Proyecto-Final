@@ -12,7 +12,7 @@
 #define METHOD_POST @"POST"
 #define METHOD_DELETE @"DELETE"
 
-typedef void (^HTTPOperationCompletionBlock)(NSArray *responseObject);
+typedef void (^HTTPOperationCompletionBlock)(NSDictionary *responseObject);
 typedef void (^HTTPOperationFailureBlock)(NSError *error);
 
 @interface HTTPConector : NSObject
