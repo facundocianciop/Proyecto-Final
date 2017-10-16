@@ -469,9 +469,6 @@
         <namedColor name="VerdeClaro">
             <color red="0.59215686274509804" green="0.84313725490196079" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
-        <namedColor name="VerdeClaro">
-            <color red="0.59215686274509804" green="0.84313725490196079" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
         <namedColor name="VerdeMasClaro">
             <color red="0.77254901960784317" green="0.90980392156862744" blue="0.42352941176470588" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
