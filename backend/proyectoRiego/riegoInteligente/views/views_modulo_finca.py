@@ -24,7 +24,39 @@ def obtener_fincas_por_usuario(request):
         for usuarioFinca in usuario.usuarioFincaList.all():
             finca = usuarioFinca.finca
             if UsuarioFinca.objects.filter(usuario=user.datosusuario, finca=finca). __len__() != 1:
-                if usuarioFinca.fechaBajaUsuarioFinca is None:
+                usuario_finca_lista = UsuarioFinca.objects.filter(usuario=user.datosusuario, finca=finca)
+                longitud_deseada = usuario_finca_lista.__len__()
+                longitud = 0
+                for usr in usuario_finca_lista:
+                    if usr.fechaBajaUsuarioFinca:
+                        longitud += 1
+                if longitud_deseada == longitud:
+                    ultimo_usuario = UsuarioFinca.objects.filter(usuario=user.datosusuario, finca=finca) \
+                    .order_by("-fechaAltaUsuarioFinca").last()
+                    ultimo_historico = HistoricoEstadoFinca.objects.get(finca=finca, fechaFinEstadoFinca__isnull=True)
+                    if ultimo_historico.estadoFinca.nombreEstadoFinca == (ESTADO_HABILITADO):
+                        rol_usuario_finca = RolUsuarioFinca.objects.get(usuarioFinca=usuarioFinca,
+                                                                        fechaBajaRolUsuarioFinca__isnull=True)
+                        nombre_rol = rol_usuario_finca.rol.nombreRol
+                        lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre,
+                                                               nombreRol=nombre_rol,
+                                                               tamanio=finca.tamanio,
+                                                               idFinca=finca.idFinca,
+                                                               ubicacion=finca.ubicacion,
+                                                               estadoFinca=ESTADO_HABILITADO))
+                    elif ultimo_historico.estadoFinca.nombreEstadoFinca == ESTADO_DESHABILITADO:
+                        nombre_rol = ""
+                        lista_roles = usuarioFinca.rolUsuarioFincaList.all()
+                        for rolusuario in lista_roles:
+                            if rolusuario.rol.nombreRol == ROL_ENCARGADO:
+                                nombre_rol = ROL_ENCARGADO
+                        lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre,
+                                                               nombreRol=nombre_rol,
+                                                               idFinca=finca.idFinca,
+                                                               tamanio=finca.tamanio,
+                                                               ubicacion=finca.ubicacion,
+                                                               estadoFinca=ESTADO_DESHABILITADO))
+                elif usuarioFinca.fechaBajaUsuarioFinca is None:
                     ultimo_historico = HistoricoEstadoFinca.objects.get(finca=finca, fechaFinEstadoFinca__isnull=True)
                     if ultimo_historico.estadoFinca.nombreEstadoFinca == (ESTADO_HABILITADO):
                         rol_usuario_finca = RolUsuarioFinca.objects.get(usuarioFinca=usuarioFinca,
@@ -86,6 +118,7 @@ def obtener_fincas_por_usuario(request):
                                                            ubicacion=finca.ubicacion,
                                                            tamanio=finca.tamanio,
                                                            estadoFinca=ultimo_historico.estadoFinca.nombreEstadoFinca))
+
         response.content = armar_response_list_content(lista_dto_finca_rol)
         response.status_code = 200
         return response
@@ -403,13 +436,17 @@ def eliminar_finca(request):
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             if Finca.objects.filter(idFinca=datos[KEY_ID_FINCA]).__len__() == 1:
                 finca_a_eliminar = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+                estado_finca_deshabilitado = EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_DESHABILITADO)
+                if finca_a_eliminar.historicoEstadoFincaList.filter(fechaFinEstadoFinca__isnull=True,
+                                                                    estadoFinca=estado_finca_deshabilitado):
+                    raise ValueError(ERROR_FINCA_YA_DESHABILITADA, "La finca ya esta deshabilitada")
                 user = request.user
                 usuario = user.datosusuario
                 usuario_finca = UsuarioFinca.objects.get(usuario=usuario, finca=finca_a_eliminar,
                                                          fechaBajaUsuarioFinca__isnull=True)
                 rol_usuario_finca = RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,
                                                                 fechaBajaRolUsuarioFinca__isnull=True)
-                if rol_usuario_finca.rol.nombreRol != 'encargado':
+                if rol_usuario_finca.rol.nombreRol != ROL_ENCARGADO:
                     raise ValueError(ERROR_USUARIO_NO_ENCARGADO, "Este usuario no tiene los privilegios para eliminar "
                                                                  "esta finca")
 
@@ -423,7 +460,7 @@ def eliminar_finca(request):
                                                        finca=finca_a_eliminar, estadoFinca=estado__nuevo)
                 historico_nuevo.save()
                 finca_a_eliminar.save()
-                usuario_finca_list = finca_a_eliminar.usuariofinca_set.all()
+                usuario_finca_list = finca_a_eliminar.usuariofinca_set.filter(fechaBajaUsuarioFinca__isnull=True)
                 for usuario_finca_a_eliminar in usuario_finca_list:
                     usuario_finca_a_eliminar.fechaBajaUsuarioFinca = datetime.now(pytz.utc)
                     ultimo_historico = RolUsuarioFinca.objects.get(usuarioFinca= usuario_finca_a_eliminar,
@@ -462,7 +499,8 @@ def rehabilitar_finca(request):
                 ultimo_historico = finca_a_rehabilitar.historicoEstadoFincaList.get(fechaFinEstadoFinca__isnull=True)
                 if ultimo_historico.estadoFinca.nombreEstadoFinca == ESTADO_HABILITADO:
                     raise ValueError(ERROR_FINCA_YA_HABILITADA, "Esta finca ya esta habilitada")
-                usuario_finca = UsuarioFinca.objects.get(finca=finca_a_rehabilitar, usuario=request.user.datosusuario)
+                usuario_finca = UsuarioFinca.objects.filter(finca=finca_a_rehabilitar, usuario=request.user.datosusuario)\
+                    .order_by('-fechaAltaUsuarioFinca').first()
                 es_encargado = False
                 for rol_usuario_fin in usuario_finca.rolUsuarioFincaList.all():
                     if rol_usuario_fin.rol.nombreRol == ROL_ENCARGADO:
