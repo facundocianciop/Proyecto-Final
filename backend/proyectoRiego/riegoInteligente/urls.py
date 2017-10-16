@@ -39,6 +39,8 @@ urlpatterns = [
     url(r'^modificarRolUsuario/$', views_modulo_finca.modificar_rol_usuario, name='modificarRolUsuario'),
     url(r'^modificarFinca/$', views_modulo_finca.modificar_finca, name='modificarFinca'),
     url(r'^eliminarFinca/$', views_modulo_finca.eliminar_finca, name='eliminarFinca'),
+    url(r'^rehabilitarFinca/$', views_modulo_finca.rehabilitar_finca, name='rehabilitarFinca'),
+
 
     url(r'^buscarFincaId/$', views_modulo_finca.buscar_finca_id, name='buscarFincaId'),
     url(r'^devolverPermisos/$', views_modulo_finca.devolver_permisos, name='devolverPermisos'),

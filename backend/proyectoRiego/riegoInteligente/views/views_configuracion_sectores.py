@@ -353,19 +353,19 @@ def deshabilitar_mecanismo_riego_sector(request):
                                  "El idMecanismoRiegoFincaSector no existe")
             mecanismo_riego_finca_sector = MecanismoRiegoFincaSector.objects.get(
                 idMecanismoRiegoFincaSector=datos[KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR])
-            estado_mecanismo_sector_habilitado = EstadoMecanismoRiegoFincaSector(
+            estado_mecanismo_sector_habilitado = EstadoMecanismoRiegoFincaSector.objects.get(
                 nombreEstadoMecanismoRiegoFincaSector=ESTADO_HABILITADO)
             if HistoricoMecanismoRiegoFincaSector.objects.filter(
-                mecanismo_riego_finca_sector=mecanismo_riego_finca_sector,
+                    mecanismo_riego_finca_sector=mecanismo_riego_finca_sector,
                     fechaFinEstadoMecanismoRiegoFincaSector__isnull=True,
                 estado_mecanismo_riego_finca_sector=estado_mecanismo_sector_habilitado).__len__() != 1:
                 raise ValueError (ERROR_MECANISMO_RIEGO_FINCA_SECTOR_NO_HABILITADO,
                                   "El mecanismo sector no se encuentra habilitado")
             ultimo_historico_mecanismo_finca_sector = HistoricoMecanismoRiegoFincaSector.objects.get(
                 mecanismo_riego_finca_sector=mecanismo_riego_finca_sector,
-                fechaFinEstadoMecanismoRiegoFinca__isnull=True,
+                fechaFinEstadoMecanismoRiegoFincaSector__isnull=True,
                 estado_mecanismo_riego_finca_sector=estado_mecanismo_sector_habilitado)
-            ultimo_historico_mecanismo_finca_sector.fechaFinEstadoMecanismoRiegoFinca = datetime.now(pytz.utc)
+            ultimo_historico_mecanismo_finca_sector.fechaFinEstadoMecanismoRiegoFincaSector = datetime.now(pytz.utc)
             ultimo_historico_mecanismo_finca_sector.save()
             estado_mecanismo_finca_sector_deshabilitado = EstadoMecanismoRiegoFincaSector.objects.get(
                 nombreEstadoMecanismoRiegoFincaSector=ESTADO_DESHABILITADO)
@@ -575,7 +575,7 @@ def mostrar_cultivo_sector(request):
                                                     fechaFinEstadoSector__isnull=True).__len__() != 1:
                 raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
             if sector_seleccionado.cultivo_set.filter(habilitado=True).__len__() == 0 :
-                response.content = "[]"
+                response.content = armar_response_content(None)
                 response.status_code = 200
                 return response
             cultivo_seleccionado = sector_seleccionado.cultivo_set.get(habilitado=True)
