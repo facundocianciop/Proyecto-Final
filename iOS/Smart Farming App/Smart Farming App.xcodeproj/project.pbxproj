@@ -46,6 +46,7 @@
 		111D1DC31F92E01100E3A168 /* SFTableViewControllerBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 111D1DC21F92E01100E3A168 /* SFTableViewControllerBase.m */; };
 		111D1DC71F92F4B600E3A168 /* SFFinca.m in Sources */ = {isa = PBXBuildFile; fileRef = 111D1DC61F92F4B600E3A168 /* SFFinca.m */; };
 		111D1DCA1F92FA7500E3A168 /* SFSectorFinca.m in Sources */ = {isa = PBXBuildFile; fileRef = 111D1DC91F92FA7500E3A168 /* SFSectorFinca.m */; };
+		111F7E0B1F94ED0A002615D5 /* SFPerfilUsuarioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 111F7E0A1F94ED0A002615D5 /* SFPerfilUsuarioViewController.m */; };
 		11CD00901F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CD008F1F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.m */; };
 		11CD00941F8F178D00C58C49 /* SolicitudInicioSesion.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CD00931F8F178D00C58C49 /* SolicitudInicioSesion.m */; };
 		11CD00971F8F1B7700C58C49 /* IdentificadoresSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CD00961F8F1B7700C58C49 /* IdentificadoresSegue.m */; };
@@ -162,6 +163,8 @@
 		111D1DC61F92F4B600E3A168 /* SFFinca.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFFinca.m; sourceTree = "<group>"; };
 		111D1DC81F92FA7500E3A168 /* SFSectorFinca.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFSectorFinca.h; sourceTree = "<group>"; };
 		111D1DC91F92FA7500E3A168 /* SFSectorFinca.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFSectorFinca.m; sourceTree = "<group>"; };
+		111F7E091F94ED0A002615D5 /* SFPerfilUsuarioViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFPerfilUsuarioViewController.h; sourceTree = "<group>"; };
+		111F7E0A1F94ED0A002615D5 /* SFPerfilUsuarioViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFPerfilUsuarioViewController.m; sourceTree = "<group>"; };
 		11CD008E1F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFNavegarEstadoAutenticadoSegue.h; sourceTree = "<group>"; };
 		11CD008F1F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFNavegarEstadoAutenticadoSegue.m; sourceTree = "<group>"; };
 		11CD00921F8F178D00C58C49 /* SolicitudInicioSesion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SolicitudInicioSesion.h; sourceTree = "<group>"; };
@@ -538,6 +541,8 @@
 				A10157191F9003E600179ED7 /* SFRegistrarUsuarioViewController.m */,
 				A101571B1F90041F00179ED7 /* SFRecuperarCuentaViewController.h */,
 				A101571C1F90041F00179ED7 /* SFRecuperarCuentaViewController.m */,
+				111F7E091F94ED0A002615D5 /* SFPerfilUsuarioViewController.h */,
+				111F7E0A1F94ED0A002615D5 /* SFPerfilUsuarioViewController.m */,
 			);
 			path = "Modulo Seguridad";
 			sourceTree = "<group>";
@@ -904,6 +909,7 @@
 				11F0207E1F8F057900DBC1DC /* SFInicioSesionViewController.m in Sources */,
 				A1AE0B8F1F8E8F0B009B4494 /* ErrorServicioBase.m in Sources */,
 				1116D6E21F9444890088D61B /* FincaLeftMenuTableViewController.m in Sources */,
+				111F7E0B1F94ED0A002615D5 /* SFPerfilUsuarioViewController.m in Sources */,
 				1116BA321F8C5866005C9AFF /* AppDelegate.m in Sources */,
 				111D1DC01F92DEBC00E3A168 /* SFFincasOtrosRolesViewController.m in Sources */,
 				11CD00901F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.m in Sources */,

@@ -272,7 +272,6 @@
         <!--Finca Left Menu Table View Controller-->
         <scene sceneID="fBa-6w-KfG">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="geJ-ot-ny6" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="4O0-Ku-EW5" customClass="FincaLeftMenuTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" bouncesZoom="NO" dataMode="static" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="u6D-xn-r15">
                         <rect key="frame" x="0.0" y="0.0" width="200" height="568"/>
@@ -443,13 +442,13 @@
                     </tableView>
                     <size key="freeformSize" width="200" height="568"/>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="geJ-ot-ny6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4194" y="179"/>
         </scene>
         <!--Side Menu Controller-->
         <scene sceneID="pya-2U-80d">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Q4b-bI-jCd" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="Unn-nE-UYj" customClass="LGSideMenuController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="NKk-Mr-YKo">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -480,13 +479,13 @@
                         <segue destination="adm-qy-jCX" kind="custom" identifier="right" customClass="LGSideMenuSegue" id="q8Y-nW-8RP"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Q4b-bI-jCd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4196" y="-618"/>
         </scene>
         <!--Finca Navigation Controller View Controller-->
         <scene sceneID="bbh-ts-bjT">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="UXB-vl-1j1" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController id="g2F-SW-k1F" customClass="FincaNavigationControllerViewController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="1N3-7k-YRJ">
                         <rect key="frame" x="0.0" y="20" width="320" height="44"/>
@@ -499,13 +498,13 @@
                         <segue destination="UvP-5Z-EFv" kind="relationship" relationship="rootViewController" id="n2j-qQ-Qff"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UXB-vl-1j1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5061" y="-619"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="h3I-bY-fXh">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ylz-oo-Y1B" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="UvP-5Z-EFv" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="95J-6k-QjL">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -522,13 +521,13 @@
                         </barButtonItem>
                     </navigationItem>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ylz-oo-Y1B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5996" y="-619"/>
         </scene>
         <!--Finca Right Menu Table View Controller-->
         <scene sceneID="U0x-DR-mOw">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="STB-7c-SzR" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="adm-qy-jCX" customClass="FincaRightMenuTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="G4V-Dp-3pq">
                         <rect key="frame" x="0.0" y="0.0" width="150" height="568"/>
@@ -551,6 +550,7 @@
                     </tableView>
                     <size key="freeformSize" width="150" height="568"/>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="STB-7c-SzR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3780" y="179"/>
         </scene>
@@ -659,6 +659,27 @@
             </objects>
             <point key="canvasLocation" x="1912.5" y="576.76056338028172"/>
         </scene>
+        <!--Perfil Usuario View Controller-->
+        <scene sceneID="FGB-2t-Rlf">
+            <objects>
+                <viewController id="Icg-LU-BsL" customClass="SFPerfilUsuarioViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="rBL-RA-8UV">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xEW-jA-p3Y">
+                                <rect key="frame" x="85" y="20" width="150" height="140"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="FWd-rX-NGP"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eRc-3r-usE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="578" y="-795"/>
+        </scene>
         <!--Encargado-->
         <scene sceneID="mhq-3p-9Ho">
             <objects>
@@ -753,17 +774,8 @@
         <namedColor name="Verde">
             <color red="0.2627450980392157" green="0.69019607843137254" blue="0.16470588235294117" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
-        <namedColor name="Verde">
-            <color red="0.2627450980392157" green="0.69019607843137254" blue="0.16470588235294117" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
         <namedColor name="VerdeClaro">
             <color red="0.59215686274509804" green="0.84313725490196079" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="VerdeClaro">
-            <color red="0.59215686274509804" green="0.84313725490196079" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="VerdeMasClaro">
-            <color red="0.77254901960784317" green="0.90980392156862744" blue="0.42352941176470588" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="VerdeMasClaro">
             <color red="0.77254901960784317" green="0.90980392156862744" blue="0.42352941176470588" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
