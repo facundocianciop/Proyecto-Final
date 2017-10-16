@@ -11,5 +11,6 @@
 @implementation IdentificadoresSegue
 
 NSString *const kSFNavegarEstadoAutenticadoSegue = @"SFNavegarEstadoAutenticadoSegue";
+NSString *const kSFNavegarASeccionFincaSegue = @"SFNavegarASeccionFincaSegue";
 
 @end
