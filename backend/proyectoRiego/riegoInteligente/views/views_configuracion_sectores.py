@@ -469,7 +469,8 @@ def modificar_cultivo_sector(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_ID_CULTIVO & KEY_DESCRIPCION_CULTIVO and KEY_FECHA_PLANTACION & KEY_NOMBRE_CULTIVO)  in datos:
+        if (KEY_ID_CULTIVO in datos) and (KEY_DESCRIPCION_CULTIVO in datos) and (KEY_FECHA_PLANTACION in datos)\
+                and (KEY_NOMBRE_CULTIVO in datos):
             if datos[KEY_ID_CULTIVO] == '' or datos[KEY_DESCRIPCION_CULTIVO] == '' or\
                             datos[KEY_FECHA_PLANTACION] == '' or datos[KEY_NOMBRE_CULTIVO] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
@@ -478,12 +479,9 @@ def modificar_cultivo_sector(request):
             if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO], habilitado=True).__len__() == 0:
                 raise ValueError(ERROR_CULTIVO_NO_HABILITADO, "El cultivo no está habilitado")
             cultivo_seleccionado = Cultivo.objects.get(idCultivo=datos[KEY_ID_CULTIVO])
-            if KEY_DESCRIPCION_CULTIVO in datos:
-                cultivo_seleccionado.descripcion = datos[KEY_DESCRIPCION_CULTIVO]
-            if KEY_FECHA_PLANTACION in datos:
-                cultivo_seleccionado.fechaPlantacion = datos[KEY_FECHA_PLANTACION]
-            if KEY_NOMBRE_CULTIVO in datos:
-                cultivo_seleccionado.nombre = datos[KEY_NOMBRE_CULTIVO]
+            cultivo_seleccionado.descripcion = datos[KEY_DESCRIPCION_CULTIVO]
+            cultivo_seleccionado.fechaPlantacion = datos[KEY_FECHA_PLANTACION]
+            cultivo_seleccionado.nombre = datos[KEY_NOMBRE_CULTIVO]
             cultivo_seleccionado.save()
             response.content = armar_response_content(None)
             response.status_code = 200
