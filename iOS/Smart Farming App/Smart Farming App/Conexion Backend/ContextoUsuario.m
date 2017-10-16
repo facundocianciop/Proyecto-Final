@@ -10,10 +10,8 @@
 
 @interface ContextoUsuario ()
 
-@property (nonatomic, strong) NSString  *sessionId;
-@property (nonatomic, strong) NSString  *clientDescription;       //RAZON SOCIAL
-@property (nonatomic, assign) long      userId;
-@property (nonatomic, assign) long      clientId;
+@property (strong, nonatomic) NSString  *username;
+@property (assign, nonatomic) long      fincaId;
 
 @end
 
@@ -21,59 +19,46 @@
 
 static ContextoUsuario *userContext = nil;
 
-+(instancetype)instanceWithSessionId:(NSString *)sessionId
-                              userId:(long)userId
-                            clientId:(long)clientId
-                   clientDescription:(NSString *)clientDescription {
-    
++(instancetype)instanceWithUsername:(NSString *)username {
     // No se puede usar el dispatch_once snippet
     // Si un usuario se cierra sesion y otro se logea, puede ser que
     // datos incorrectos
     
     if (!userContext){
         userContext = [ContextoUsuario new];
-        userContext.sessionId = sessionId;
-        userContext.userId = userId;
-        userContext.clientId = clientId;
-        userContext.clientDescription = clientDescription;
+        userContext.username = username;
     }
     return userContext;
 }
 
 +(instancetype)instance {
     
-    ContextoUsuario *userContext = [self instanceWithSessionId:nil userId:NSNotFound clientId:NSNotFound clientDescription:@""];
+    ContextoUsuario *userContext = [ContextoUsuario instanceWithUsername:nil];
     
-    if (!userContext.sessionId || userContext.userId == NSNotFound || userContext.clientId == NSNotFound){
-        //[NSException raise:@"BCUserContext: User context hasn't been initialized properly. Param: sessionId OR Param:userId may be uninitialized." format:@""];
-        NSLog(@"ContextoUsuario: El contexto de usario no se inicio correctamente. Param: sessionId O Param:userId puede que no esten inicializados.");
+    if (!userContext.username){
+        //[NSException raise:@"BCUserContext: User context hasn't been initialized properly. Param:userId may be uninitialized." format:@""];
+        NSLog(@"ContextoUsuario: El contexto de usario no se inicio correctamente. Param:username puede que no este inicializado.");
     }
     return  userContext;
 }
 
 #pragma mark - Public
 
--(NSString *)currentSessionId {
-    return self.sessionId;
+-(NSString *)usuarioActual {
+    return self.username;
 }
 
--(long)currentUserId {
-    return self.userId;
+-(void)seleccionarFinca:(long)fincaId {
+    self.fincaId = fincaId;
 }
 
--(long)currentClientId {
-    return self.clientId;
-}
-
--(NSString *)currentClientDescription {
-    return self.clientDescription;
+-(long)fincaSeleccionada{
+    return self.fincaId;
 }
 
 -(void)invalidateContext {
-    self.sessionId = nil;
-    self.userId = NSNotFound;
-    self.clientId = NSNotFound;
-    self.clientDescription = nil;
+    self.username = nil;
+    self.fincaId = NSNotFound;
     userContext = nil;
 }
 

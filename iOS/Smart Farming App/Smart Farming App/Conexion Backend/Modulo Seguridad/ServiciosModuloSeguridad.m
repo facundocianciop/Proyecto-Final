@@ -38,18 +38,33 @@
          failureBlock:(FailureBlock)failureBlock {
     
     NSMutableDictionary *parametrosLlamada = [NSMutableDictionary new];
-    [parametrosLlamada setObject:SolicitudInicioSesion.usuario forKey:KEY_USUARIO];
-    [parametrosLlamada setObject:SolicitudInicioSesion.contrasenia forKey:KEY_CONTRASENIA];
+    if (SolicitudInicioSesion.usuario) {
+         [parametrosLlamada setObject:SolicitudInicioSesion.usuario forKey:KEY_USUARIO];
+    }
+    if (SolicitudInicioSesion.contrasenia) {
+        [parametrosLlamada setObject:SolicitudInicioSesion.contrasenia forKey:KEY_CONTRASENIA];
+    }
     [parametrosLlamada setObject:@0 forKey:KEY_TIPO_SESION];
     
-    [[HTTPConector instance] httpOperation:OPERATION_INICIAR_SESION method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSArray *responseObject) {
+    [[HTTPConector instance] httpOperation:OPERATION_INICIAR_SESION method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
         
         RespuestaInicioSesion *respuesta = [RespuestaInicioSesion new];
+        
+        NSDictionary *datosOperacion = [ServiciosModuloSeguridad armarRespuestaServicio:respuesta withResponseObject:responseObject];
+        
+        if (respuesta.resultado && datosOperacion) {
+            
+            [ContextoUsuario instanceWithUsername:[datosOperacion objectForKey:KEY_USUARIO]];
+            
+            respuesta.username = [datosOperacion objectForKey:KEY_USUARIO];
+            respuesta.nombre = [datosOperacion objectForKey:KEY_NOMBRE_USUARIO];
+            respuesta.apellido = [datosOperacion objectForKey:KEY_APELLIDO_USUARIO];
+        }
         
         completionBlock(respuesta);
         
     } failureBlock:^(NSError *error) {
-        failureBlock([BaseServicios armarErrorServicio:error]);
+        failureBlock([ServiciosModuloSeguridad armarErrorServicio:error]);
     }];
 }
 

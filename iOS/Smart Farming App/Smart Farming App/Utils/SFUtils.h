@@ -7,13 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SFConstantesComunes.h"
 
 @interface SFUtils : NSObject
 
 #pragma mark - Color
 
-+(UIColor *)primaryColor;
++ (UIColor *)colorFromHexString:(NSString *)hexString alpha:(CGFloat)alpha;
 
++(UIColor *)primaryColor;
 +(UIColor *)secondaryColor;
 
 #pragma mark - Font

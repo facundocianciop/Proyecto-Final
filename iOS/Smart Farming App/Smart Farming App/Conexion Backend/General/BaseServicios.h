@@ -52,15 +52,16 @@ typedef void(^SuccessBlock)(RespuestaServicioBase *respuesta);
 #define KEY_IMAGEN_USUARIO      @"imagenUsuario"
 
 // Datos finca
-#define KEY_NOMBRE_FINCA        @"nombreFinca"
-#define KEY_ID_FINCA            @"idFinca"
-#define KEY_DIRECCION_LEGAL     @"direccionLegal"
-#define KEY_UBICACION           @"ubicacion"
-#define KEY_TAMANIO             @"tamanio"
-#define KEY_LOGO                @"logo"
-#define KEY_ESTADO_FINCA        @"estadoFinca"
-#define KEY_ID_USUARIO_FINCA    @"idUsuarioFinca"
-#define KEY_NOMBRE_ROL          @"nombreRol"
+#define KEY_ID_FINCA                @"idFinca"
+#define KEY_NOMBRE_FINCA            @"nombreFinca"
+#define  KEY_NOMBRE_FINCA_RESPUESTA @"nombre"
+#define KEY_DIRECCION_LEGAL         @"direccionLegal"
+#define KEY_UBICACION               @"ubicacion"
+#define KEY_TAMANIO                 @"tamanio"
+#define KEY_LOGO                    @"logo"
+#define KEY_ESTADO_FINCA            @"estadoFinca"
+#define KEY_ID_USUARIO_FINCA        @"idUsuarioFinca"
+#define KEY_NOMBRE_ROL              @"nombreRol"
 
 // Mecanismo riego
 #define KEY_NOMBRE_TIPO_MECANISMO           @"nombreTipoMecanismo"
@@ -133,6 +134,7 @@ typedef void(^SuccessBlock)(RespuestaServicioBase *respuesta);
 
 @interface BaseServicios : NSObject
 
++(id)armarRespuestaServicio:(RespuestaServicioBase *)respuesta withResponseObject:(NSDictionary *)responseObject;
 +(ErrorServicioBase*)armarErrorServicio:(NSError*)error;
 
 @end

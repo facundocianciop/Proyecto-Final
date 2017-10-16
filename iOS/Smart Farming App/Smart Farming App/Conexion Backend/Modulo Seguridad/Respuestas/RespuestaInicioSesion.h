@@ -11,4 +11,8 @@
 
 @interface RespuestaInicioSesion : RespuestaServicioBase
 
+@property (strong, nonatomic) NSString *username;
+@property (strong, nonatomic) NSString *nombre;
+@property (strong, nonatomic) NSString *apellido;
+
 @end
