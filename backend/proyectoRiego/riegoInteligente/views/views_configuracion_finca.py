@@ -88,7 +88,7 @@ def mostrar_mecanismos_nuevos(request):
 @login_requerido
 @metodos_requeridos([METHOD_POST])
 def habilitar_mecanismo_riego_finca(request):
-    response=HttpResponse()
+    response = HttpResponse()
     datos = obtener_datos_json(request)
     try:
         if datos == '':
@@ -96,16 +96,21 @@ def habilitar_mecanismo_riego_finca(request):
         if KEY_ID_MECANISMO_RIEGO_FINCA in datos:
             if datos[KEY_ID_MECANISMO_RIEGO_FINCA] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if MecanismoRiegoFinca.objects.filter(
+                idMecanismoRiegoFinca=datos[KEY_ID_MECANISMO_RIEGO_FINCA]).__len__() == 0:
+                raise ValueError(ERROR_MECANISMO_RIEGO_FINCA_NO_EXISTE, "No existe un mecanismo riego finca con ese id")
             mecanismo_riego_finca = MecanismoRiegoFinca.objects.get(
                 idMecanismoRiegoFinca=datos[KEY_ID_MECANISMO_RIEGO_FINCA])
             ultimo_historico = mecanismo_riego_finca.historicoMecanismoRiegoFincaList.get(
                 fechaFinEstadoMecanismoRiegoFinca__isnull=True)
-            ultimo_historico.fechaFinEstadoMecanismoRiegoFinca = datetime.now()
+            ultimo_historico.fechaFinEstadoMecanismoRiegoFinca = datetime.now(pytz.utc)
+            ultimo_historico.save()
             estado_mecanismo_finca_habilitado = EstadoMecanismoRiegoFinca.objects.get(
                 nombreEstadoMecanismoRiegoFinca=ESTADO_HABILITADO)
             nuevo_historico = HistoricoMecanismoRiegoFinca(mecanismo_riego_finca=mecanismo_riego_finca,
-                                                           estado_mecanismo_riego_finca= estado_mecanismo_finca_habilitado,
-                                                           fechaInicioEstadoMecanismoRiegoFinca=datetime.now())
+                                                           estado_mecanismo_riego_finca=
+                                                           estado_mecanismo_finca_habilitado,
+                                                           fechaInicioEstadoMecanismoRiegoFinca=datetime.now(pytz.utc))
             nuevo_historico.save()
             mecanismo_riego_finca.save()
             response.content = armar_response_content(None)
@@ -132,11 +137,11 @@ def agregar_mecanismo_riego_finca(request):
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
         if (KEY_NOMBRE_TIPO_MECANISMO in datos) and (KEY_ID_FINCA in datos) and (KEY_DIRECCION_IP in datos):
-            if datos[KEY_NOMBRE_TIPO_MECANISMO] == '' or datos[KEY_ID_FINCA] == '' or KEY_DIRECCION_IP == '':
+            if datos[KEY_NOMBRE_TIPO_MECANISMO] == '' or datos[KEY_ID_FINCA] == '' or datos[KEY_DIRECCION_IP] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             tipo_mecanismo = TipoMecanismoRiego.objects.get(nombreMecanismo=datos[KEY_NOMBRE_TIPO_MECANISMO])
             estado_habilitado = EstadoMecanismoRiegoFinca.objects.get(nombreEstadoMecanismoRiegoFinca=ESTADO_HABILITADO)
-            historico_nuevo = HistoricoMecanismoRiegoFinca(fechaInicioEstadoMecanismoRiegoFinca=datetime.now(),
+            historico_nuevo = HistoricoMecanismoRiegoFinca(fechaInicioEstadoMecanismoRiegoFinca=datetime.now(pytz.utc),
                                                          estado_mecanismo_riego_finca=estado_habilitado)
             finca_actual = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
             if MecanismoRiegoFinca.objects.filter(finca=finca_actual, tipoMecanismoRiego=tipo_mecanismo).__len__() != 0:
@@ -148,7 +153,7 @@ def agregar_mecanismo_riego_finca(request):
                 raise ValueError(ERROR_IP_YA_USADA, "Ya existe un mecanismo con esa IP")
 
             mecanismo_riego_finca = MecanismoRiegoFinca(finca=finca_actual, tipoMecanismoRiego=tipo_mecanismo,
-                                                      fechaInstalacion=datetime.now(),
+                                                      fechaInstalacion=datetime.now(pytz.utc),
                                                         direccionIP=datos[KEY_DIRECCION_IP])
             mecanismo_riego_finca.save()
             historico_nuevo.mecanismo_riego_finca = mecanismo_riego_finca
@@ -173,7 +178,7 @@ def agregar_mecanismo_riego_finca(request):
 @login_requerido
 @metodos_requeridos([METHOD_POST])
 def deshabilitar_mecanismo_riego_finca(request):
-    response=HttpResponse()
+    response = HttpResponse()
     datos = obtener_datos_json(request)
     try:
         if datos == '':
@@ -181,22 +186,26 @@ def deshabilitar_mecanismo_riego_finca(request):
         if KEY_ID_MECANISMO_RIEGO_FINCA in datos:
             if datos[KEY_ID_MECANISMO_RIEGO_FINCA] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if MecanismoRiegoFinca.objects.filter(
+                idMecanismoRiegoFinca=datos[KEY_ID_MECANISMO_RIEGO_FINCA]).__len__() == 0:
+                raise ValueError(ERROR_MECANISMO_RIEGO_FINCA_NO_EXISTE, "No existe un mecanismo riego finca con ese id")
             mecanismo_riego_finca = MecanismoRiegoFinca.objects.get(idMecanismoRiegoFinca=
                                                                     datos[KEY_ID_MECANISMO_RIEGO_FINCA])
             ultimo_historico_mecanismo_finca = HistoricoMecanismoRiegoFinca.objects.get(
                 mecanismo_riego_finca=mecanismo_riego_finca, fechaFinEstadoMecanismoRiegoFinca__isnull=True )
-            if ultimo_historico_mecanismo_finca.estado_mecanismo_riego_finca.nombreEstadoMecanismoRiegoFinca == ESTADO_DESHABILITADO:
+            if ultimo_historico_mecanismo_finca.estado_mecanismo_riego_finca.nombreEstadoMecanismoRiegoFinca == \
+                    ESTADO_DESHABILITADO:
                 raise ValueError(ERROR_MECANISMO_RIEGO_FINCA_NO_HABILITADO,
                                  "El mecanismo de la finca seleccionado ya se encuentra deshabilitado")
 
-            ultimo_historico_mecanismo_finca.fechaFinEstadoMecanismoRiegoFinca = datetime.now()
+            ultimo_historico_mecanismo_finca.fechaFinEstadoMecanismoRiegoFinca = datetime.now(pytz.utc)
             ultimo_historico_mecanismo_finca.save()
             estado_mecanismo_finca_deshabilitado = EstadoMecanismoRiegoFinca.objects.get(nombreEstadoMecanismoRiegoFinca=
                                                                                          ESTADO_DESHABILITADO)
             nuevo_historico_mecanismo_finca = HistoricoMecanismoRiegoFinca(estado_mecanismo_riego_finca=
                                                                            estado_mecanismo_finca_deshabilitado,
                                                                            fechaInicioEstadoMecanismoRiegoFinca=
-                                                                           datetime.now(),
+                                                                           datetime.now(pytz.utc),
                                                                            mecanismo_riego_finca=mecanismo_riego_finca)
             nuevo_historico_mecanismo_finca.save()
             mecanismo_riego_finca.save()
@@ -208,15 +217,16 @@ def deshabilitar_mecanismo_riego_finca(request):
             for mecanismo_sector in mecanismo_riego_sector_lista:
                 if HistoricoMecanismoRiegoFincaSector.objects.filter(estado_mecanismo_riego_finca_sector=
                                                                      estado_mecanismo_sector_habilitado,
-                                                                     fechaFinEstadoMecanismoRiegoFincaSector__isnull=True).__len__() == 1:
+                                                                     fechaFinEstadoMecanismoRiegoFincaSector__isnull=
+                                                                     True).__len__() == 1:
                     ultimo_historico_mecanismo_sector = HistoricoMecanismoRiegoFincaSector.objects.get(
                         estado_mecanismo_riego_finca_sector=estado_mecanismo_sector_habilitado,
                         fechaFinEstadoMecanismoRiegoFincaSector__isnull=True)
-                    ultimo_historico_mecanismo_sector.fechaFinEstadoMecanismoRiegoFincaSector = datetime.now()
+                    ultimo_historico_mecanismo_sector.fechaFinEstadoMecanismoRiegoFincaSector = datetime.now(pytz.utc)
                     ultimo_historico_mecanismo_sector.save()
                     nuevo_historico_mecanismo_sector = HistoricoMecanismoRiegoFincaSector(
                         estado_mecanismo_riego_finca_sector=estado_mecanismo_sector_deshabilitado,
-                        fechaInicioEstadoMecanismoRiegoFincaSector=datetime.now(),
+                        fechaInicioEstadoMecanismoRiegoFincaSector=datetime.now(pytz.utc),
                         mecanismo_riego_finca_sector=mecanismo_sector)
                     nuevo_historico_mecanismo_sector.save()
             mecanismo_riego_finca.save()

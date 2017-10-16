@@ -34,9 +34,13 @@ def obtener_fincas_por_usuario(request):
                 lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre, nombreRol="",
                                                        idFinca=finca.idFinca, ubicacion=finca.ubicacion,
                                                        estadoFinca=ESTADO_PENDIENTE_APROBACION))
-            elif ultimo_historico.estadoFinca.nombreEstadoFinca == (ESTADO_DESHABILITADO) :
-                nombre_rol = rol_usuario_finca.rol.nombreRol
-                lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre, nombreRol="",
+            elif ultimo_historico.estadoFinca.nombreEstadoFinca == ESTADO_DESHABILITADO:
+                nombre_rol = ""
+                lista_roles = usuarioFinca.rolUsuarioFincaList.all()
+                for rolusuario in lista_roles:
+                    if rolusuario.rol.nombreRol == ROL_ENCARGADO:
+                         nombre_rol = ROL_ENCARGADO
+                lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre, nombreRol=nombre_rol,
                                                        idFinca= finca.idFinca, ubicacion=finca.ubicacion,
                                                        estadoFinca=ESTADO_DESHABILITADO))
             else:
@@ -95,13 +99,13 @@ def crear_finca(request):
             proveedorInformacionClimaticaFinca = ProveedorInformacionClimaticaFinca(frecuencia=datos[KEY_FRECUENCIA],
                 proveedorInformacionClimatica=proveedorSeleccionado, finca=finca_creada)
             #se setea la fecha de alta con la fecha actual
-            proveedorInformacionClimaticaFinca.fechaAltaProveedorInfoClimaticaFinca = datetime.now()
+            proveedorInformacionClimaticaFinca.fechaAltaProveedorInfoClimaticaFinca = datetime.now(pytz.utc)
             #se guarda el objeto en la base de datos
             proveedorInformacionClimaticaFinca.save()
             #se busca la instancia de estado finca "pendienteaprobacion"
             estadoFinca = EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_PENDIENTE_APROBACION)
             #se realiza la creación de un histórico con fecha actual y relacionado al estado encontrado
-            historicoCreado = HistoricoEstadoFinca(fechaInicioEstadoFinca=datetime.now(), estadoFinca=estadoFinca)
+            historicoCreado = HistoricoEstadoFinca(fechaInicioEstadoFinca=datetime.now(pytz.utc), estadoFinca=estadoFinca)
             #se setea la finca al histórico creado
             historicoCreado.finca = finca_creada
             #se guarda el histórico en la base de datos
@@ -115,7 +119,7 @@ def crear_finca(request):
             #se crea una instancia de UsuarioFinca, relacionada a los datos de usuario encontrado y a la finca creada
             usuario_finca = UsuarioFinca(usuario=usuario, finca=finca_creada)
             #se setea la fecha de alta
-            usuario_finca.fechaAltaUsuarioFinca = datetime.now()
+            usuario_finca.fechaAltaUsuarioFinca = datetime.now(pytz.utc)
             #se guarda la instancia usuario_finca creada
             usuario_finca.save()
             # se guarda la instancia finca creada
@@ -206,16 +210,16 @@ def aprobar_finca(request, idFinca):
                     estado_pendiente_aprobacion = EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_PENDIENTE_APROBACION)
                     historico_viejo=HistoricoEstadoFinca.objects.get(estadoFinca=estado_pendiente_aprobacion,
                                                                      finca=finca_por_aprobar)
-                    historico_viejo.fechaFinEstadoFinca = datetime.now()
+                    historico_viejo.fechaFinEstadoFinca = datetime.now(pytz.utc)
                     historico_viejo.save()
                     historico_nuevo = HistoricoEstadoFinca(estadoFinca=estado_habilitado,finca=finca_por_aprobar,
-                                                           fechaInicioEstadoFinca=datetime.now())
+                                                           fechaInicioEstadoFinca=datetime.now(pytz.utc))
                     finca_por_aprobar.historicoEstadoFincaList.add(historico_nuevo, bulk=False)
                     finca_por_aprobar.save()
                     usuario_finca = UsuarioFinca.objects.get(finca=finca_por_aprobar)
                     rol_encargado = Rol.objects.get(nombreRol=ROL_ENCARGADO)
                     rol_usuario_finca = RolUsuarioFinca()
-                    rol_usuario_finca.fechaAltaRolUsuarioFinca = datetime.now()
+                    rol_usuario_finca.fechaAltaRolUsuarioFinca = datetime.now(pytz.utc)
                     rol_usuario_finca.rol = rol_encargado
                     rol_usuario_finca.save()
                     usuario_finca.rolUsuarioFincaList.add(rol_usuario_finca)
@@ -254,10 +258,10 @@ def no_aprobar_finca(request, idFinca):
                     estado_no_aprobada = EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_NO_APROBADO)
                     historico_viejo = HistoricoEstadoFinca.objects.get(estadoFinca=estado_pendiente_aprobacion,
                                                                        finca=finca_por_aprobar)
-                    historico_viejo.fechaFinEstadoFinca = datetime.now()
+                    historico_viejo.fechaFinEstadoFinca = datetime.now(pytz.utc)
                     historico_viejo.save()
                     historico_nuevo=HistoricoEstadoFinca(estadoFinca=estado_no_aprobada,finca=finca_por_aprobar,
-                                                fechaInicioEstadoFinca=datetime.now())
+                                                fechaInicioEstadoFinca=datetime.now(pytz.utc))
                     historico_nuevo.save()
                     finca_por_aprobar.save()
                     #finca_por_aprobar.historicoEstadoFincaList.add(historico_nuevo)
@@ -331,9 +335,9 @@ def modificar_finca(request):
 
                 if historico_actual.estadoFinca.nombreEstadoFinca != datos[KEY_ESTADO_FINCA]:
                     estado__nuevo=  EstadoFinca.objects.get(nombreEstadoFinca=datos[KEY_ESTADO_FINCA])
-                    historico_actual.fechaFinEstadoFinca = datetime.now()
+                    historico_actual.fechaFinEstadoFinca = datetime.now(pytz.utc)
                     historico_actual.save()
-                    historico_nuevo = HistoricoEstadoFinca(fechaInicioEstadoFinca=datetime.now(),
+                    historico_nuevo = HistoricoEstadoFinca(fechaInicioEstadoFinca=datetime.now(pytz.utc),
                                                            finca=finca_a_modificar, estadoFinca=estado__nuevo)
                     historico_nuevo.save()
                 finca_a_modificar.save()
@@ -396,18 +400,18 @@ def eliminar_finca(request):
                                                                     fechaFinEstadoFinca__isnull=True)
 
                 estado__nuevo = EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_DESHABILITADO)
-                historico_actual.fechaFinEstadoFinca = datetime.now()
+                historico_actual.fechaFinEstadoFinca = datetime.now(pytz.utc)
                 historico_actual.save()
-                historico_nuevo = HistoricoEstadoFinca(fechaInicioEstadoFinca=datetime.now(),
+                historico_nuevo = HistoricoEstadoFinca(fechaInicioEstadoFinca=datetime.now(pytz.utc),
                                                        finca=finca_a_eliminar, estadoFinca=estado__nuevo)
                 historico_nuevo.save()
                 finca_a_eliminar.save()
                 usuario_finca_list = finca_a_eliminar.usuariofinca_set.all()
                 for usuario_finca_a_eliminar in usuario_finca_list:
-                    usuario_finca_a_eliminar.fechaBajaUsuarioFinca = datetime.now()
+                    usuario_finca_a_eliminar.fechaBajaUsuarioFinca = datetime.now(pytz.utc)
                     ultimo_historico = RolUsuarioFinca.objects.get(usuarioFinca= usuario_finca_a_eliminar,
                                                                    fechaBajaRolUsuarioFinca__isnull= True)
-                    ultimo_historico.fechaBajaRolUsuarioFinca = datetime.now()
+                    ultimo_historico.fechaBajaRolUsuarioFinca = datetime.now(pytz.utc)
                     ultimo_historico.save()
                     usuario_finca_a_eliminar.save()
                 response.content = armar_response_content(None)
@@ -512,7 +516,7 @@ def eliminar_usuario_finca(request):
             if datos[KEY_ID_USUARIO_FINCA] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             usuarios_finca = UsuarioFinca.objects.get(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA])
-            usuarios_finca.fechaBajaUsuarioFinca = datetime.now()
+            usuarios_finca.fechaBajaUsuarioFinca = datetime.now(pytz.utc)
             usuarios_finca.save()
             response.content = armar_response_content(None)
             response.status_code = 200
@@ -578,8 +582,8 @@ def agregar_usuario_finca(request):
         if usuario_ingresado.usuarioFincaList.filter(finca=finca, fechaBajaUsuarioFinca__isnull=True).__len__() !=0:
             raise ValueError(ERROR_USUARIO_YA_TIENE_ROL_EN_FINCA, "El usuario ya tiene un rol en la finca, deshabilitarlo")
         rol_ingresado = Rol.objects.get(nombreRol=datos[KEY_NOMBRE_ROL])
-        rol_usuario_finca = RolUsuarioFinca(rol=rol_ingresado, fechaAltaRolUsuarioFinca=datetime.now())
-        usuario_finca_nuevo = UsuarioFinca(usuario=usuario_ingresado, finca=finca, fechaAltaUsuarioFinca=datetime.now())
+        rol_usuario_finca = RolUsuarioFinca(rol=rol_ingresado, fechaAltaRolUsuarioFinca=datetime.now(pytz.utc))
+        usuario_finca_nuevo = UsuarioFinca(usuario=usuario_ingresado, finca=finca, fechaAltaUsuarioFinca=datetime.now(pytz.utc))
         usuario_finca_nuevo.save()
         rol_usuario_finca.usuarioFinca = usuario_finca_nuevo
         usuario_finca_nuevo.rolUsuarioFincaList.add(rol_usuario_finca,bulk=False)
@@ -615,9 +619,9 @@ def modificar_rol_usuario(request):
                                                                 fechaBajaRolUsuarioFinca__isnull=True)
             if rol_ingresado == rol_usuario_finca_viejo.rol:
                 raise ValueError(ERROR_USUARIO_YA_TIENE_ESE_ROL, "El usuario ya dispone de ese rol, por favor intente con otro rol")
-            rol_usuario_finca_viejo.fechaBajaRolUsuarioFinca=datetime.now()
+            rol_usuario_finca_viejo.fechaBajaRolUsuarioFinca=datetime.now(pytz.utc)
             rol_usuario_finca_viejo.save()
-            rol_usuario_finca_nuevo = RolUsuarioFinca(usuarioFinca=usuario_finca,fechaAltaRolUsuarioFinca=datetime.now(),rol=rol_ingresado)
+            rol_usuario_finca_nuevo = RolUsuarioFinca(usuarioFinca=usuario_finca,fechaAltaRolUsuarioFinca=datetime.now(pytz.utc),rol=rol_ingresado)
             usuario_finca.rolUsuarioFincaList.add(rol_usuario_finca_nuevo,bulk=False)
             usuario_finca.save()
             response.content = armar_response_content(None)

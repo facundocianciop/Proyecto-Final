@@ -42,7 +42,7 @@ def crear_sector(request):
                                   )
             sector_nuevo.save()
             historico_nuevo = HistoricoEstadoSector(estado_sector=estado_habilitado, sector=sector_nuevo,
-                                                    fechaInicioEstadoSector=datetime.now())
+                                                    fechaInicioEstadoSector=datetime.now(pytz.utc))
             historico_nuevo.save()
             finca_actual.save()
             response.content = armar_response_content(None)
@@ -115,10 +115,10 @@ def eliminar_sector(request):
                 raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
             historico_viejo = HistoricoEstadoSector.objects.get(sector=sector_seleccionado, estado_sector=estado_habilitado,
                                                                 fechaFinEstadoSector__isnull=True)
-            historico_viejo.fechaFinEstadoSector = datetime.now()
+            historico_viejo.fechaFinEstadoSector = datetime.now(pytz.utc)
             historico_viejo.save()
             estado_deshabilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_DESHABILITADO)
-            historico_nuevo = HistoricoEstadoSector(fechaInicioEstadoSector=datetime.now(),
+            historico_nuevo = HistoricoEstadoSector(fechaInicioEstadoSector=datetime.now(pytz.utc),
                                                     estado_sector=estado_deshabilitado)
             sector_seleccionado.historicoEstadoSectorList.add(historico_nuevo, bulk=False)
             sector_seleccionado.save()
@@ -134,13 +134,13 @@ def eliminar_sector(request):
                         historicoMecanismoRiegoFincaSector.get(
                         fechaFinEstadoMecanismoRiegoFincaSector__isnull=True, estado_mecanismo_riego_finca_sector=
                     estado_mecanismo_riego_sector_habilitado)
-                    ultimo_historico_mecanismo_riego_sector.fechaFinEstadoMecanismoRiegoFincaSector = datetime.now()
+                    ultimo_historico_mecanismo_riego_sector.fechaFinEstadoMecanismoRiegoFincaSector = datetime.now(pytz.utc)
                     ultimo_historico_mecanismo_riego_sector.save()
                     estado_mecanismo_riego_sector_deshabilitado = EstadoMecanismoRiegoFincaSector.objects.get(
                         nombreEstadoMecanismoRiegoFincaSector=ESTADO_DESHABILITADO)
                     nuevo_historico_mecanismo_riego_sector = HistoricoMecanismoRiegoFincaSector(
                         mecanismo_riego_finca_sector=mecanismo_riego_sector_deshabilitar,
-                        fechaInicioEstadoMecanismoRiegoFincaSector= datetime.now(),
+                        fechaInicioEstadoMecanismoRiegoFincaSector= datetime.now(pytz.utc),
                         estado_mecanismo_riego_finca_sector=estado_mecanismo_riego_sector_deshabilitado)
                     nuevo_historico_mecanismo_riego_sector.save()
             if sector_seleccionado.componentesensorsector_set.filter(habilitado=True).__len__() ==1:
@@ -149,12 +149,12 @@ def eliminar_sector(request):
                     historicoEstadoComponenteSensorSector.get(fechaBajaComponenteSensorSector__isnull=True)
                 estado_componente_sensor_deshabilitado = EstadoComponenteSensorSector.objects.get(
                     nombreEstadoComponenteSensorSector=ESTADO_DESHABILITADO)
-                ultimo_historico_componente_sensor_sector.fechaBajaComponenteSensorSector = datetime.now()
+                ultimo_historico_componente_sensor_sector.fechaBajaComponenteSensorSector = datetime.now(pytz.utc)
                 ultimo_historico_componente_sensor_sector.save()
                 nuevo_historico = HistoricoEstadoComponenteSensorSector(
                     estadoComponenteSensorSector=estado_componente_sensor_deshabilitado,
                     componenteSensorSector=componente_sensor_sector,
-                    fechaAltaComponenteSensorSector=datetime.now())
+                    fechaAltaComponenteSensorSector=datetime.now(pytz.utc))
                 componente_sensor_sector.habilitado = False
                 componente_sensor_sector.save()
                 nuevo_historico.save()
@@ -316,7 +316,7 @@ def asignar_mecanismo_a_sector(request):
             else:
                 mecanismo_riego_sector.presion = mecanismo_riego_finca_seleccionado.tipoMecanismoRiego.presionEstandar
             mecanismo_riego_sector.save()
-            nuevo_historico = HistoricoMecanismoRiegoFincaSector(fechaInicioEstadoMecanismoRiegoFincaSector=datetime.now(),
+            nuevo_historico = HistoricoMecanismoRiegoFincaSector(fechaInicioEstadoMecanismoRiegoFincaSector=datetime.now(pytz.utc),
                                                                  estado_mecanismo_riego_finca_sector
                                                                  =estado_mecanismo_riego_finca_sector_habilitado)
             mecanismo_riego_sector.historicoMecanismoRiegoFincaSector.add(nuevo_historico, bulk=False)
@@ -365,13 +365,13 @@ def deshabilitar_mecanismo_riego_sector(request):
                 mecanismo_riego_finca_sector=mecanismo_riego_finca_sector,
                 fechaFinEstadoMecanismoRiegoFinca__isnull=True,
                 estado_mecanismo_riego_finca_sector=estado_mecanismo_sector_habilitado)
-            ultimo_historico_mecanismo_finca_sector.fechaFinEstadoMecanismoRiegoFinca = datetime.now()
+            ultimo_historico_mecanismo_finca_sector.fechaFinEstadoMecanismoRiegoFinca = datetime.now(pytz.utc)
             ultimo_historico_mecanismo_finca_sector.save()
             estado_mecanismo_finca_sector_deshabilitado = EstadoMecanismoRiegoFincaSector.objects.get(
                 nombreEstadoMecanismoRiegoFincaSector=ESTADO_DESHABILITADO)
             nuevo_historico_mecanismo_finca_sector = HistoricoMecanismoRiegoFincaSector(
                 estado_mecanismo_riego_finca_sector=estado_mecanismo_finca_sector_deshabilitado,
-                fechaInicioEstadoMecanismoRiegoFincaSector=datetime.now(),
+                fechaInicioEstadoMecanismoRiegoFincaSector=datetime.now(pytz.utc),
                 mecanismo_riego_finca_sector=mecanismo_riego_finca_sector)
             nuevo_historico_mecanismo_finca_sector.save()
             mecanismo_riego_finca_sector.save()
@@ -421,8 +421,8 @@ def asignar_cultivo_a_sector(request):
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
         if (KEY_ID_SECTOR) in datos and (KEY_DESCRIPCION_CULTIVO in datos) and (KEY_FECHA_PLANTACION in datos) and\
                 (KEY_NOMBRE_SUBTIPO_CULTIVO in datos) and (KEY_NOMBRE_CULTIVO in datos):
-            if datos[KEY_ID_CULTIVO] == '' or datos[KEY_DESCRIPCION_CULTIVO] == '' or datos[KEY_FECHA_PLANTACION] == ''\
-                    or datos[KEY_NOMBRE_CULTIVO] == '' or datos[KEY_ID_SECTOR] == '':
+            if datos[KEY_ID_SECTOR] == '' or datos[KEY_DESCRIPCION_CULTIVO] == '' or datos[KEY_FECHA_PLANTACION] == ''\
+                    or datos[KEY_NOMBRE_CULTIVO] == '' or datos[KEY_NOMBRE_SUBTIPO_CULTIVO] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             sector_seleccionado = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
             if sector_seleccionado.cultivo_set.filter(habilitado=True).__len__() !=0:
@@ -439,8 +439,11 @@ def asignar_cultivo_a_sector(request):
             subtipo_seleccionado = SubtipoCultivo.objects.get(nombreSubtipo=datos[KEY_NOMBRE_SUBTIPO_CULTIVO])
             if subtipo_seleccionado.tipo_cultivo.habilitado != True:
                 raise ValueError(ERROR_TIPO_CULTIVO_NO_HABILITADO, "Este tipo de cultivo no esta habilitado")
-            cultivo = Cultivo(nombre=datos[KEY_NOMBRE_CULTIVO], descripcion=datos[KEY_DESCRIPCION_CULTIVO], habilitado=True,
-                              sector=sector_seleccionado, fechaPlantacion=datos[KEY_FECHA_PLANTACION],
+            fecha_parseada = parsear_datos_fecha(datos[KEY_FECHA_PLANTACION])
+            cultivo = Cultivo(nombre=datos[KEY_NOMBRE_CULTIVO], descripcion=datos[KEY_DESCRIPCION_CULTIVO],
+                              habilitado=True,
+                              sector=sector_seleccionado,
+                              fechaPlantacion=fecha_parseada,
                               subtipo_cultivo=subtipo_seleccionado)
             cultivo.save()
             response.content = armar_response_content(None)
@@ -467,7 +470,8 @@ def modificar_cultivo_sector(request):
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
         if (KEY_ID_CULTIVO & KEY_DESCRIPCION_CULTIVO and KEY_FECHA_PLANTACION & KEY_NOMBRE_CULTIVO)  in datos:
-            if datos[KEY_ID_CULTIVO] == '' or datos[KEY_DESCRIPCION_CULTIVO] == '' or datos[KEY_FECHA_PLANTACION] == '' or datos[KEY_NOMBRE_CULTIVO] == '':
+            if datos[KEY_ID_CULTIVO] == '' or datos[KEY_DESCRIPCION_CULTIVO] == '' or\
+                            datos[KEY_FECHA_PLANTACION] == '' or datos[KEY_NOMBRE_CULTIVO] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO]).__len__() == 0:
                 raise ValueError(ERROR_CULTIVO_NO_EXISTENTE, "El id del cultivo no es correcto")
@@ -513,7 +517,7 @@ def deshabilitar_cultivo_sector(request):
                 raise ValueError(ERROR_CULTIVO_NO_HABILITADO, "El cultivo no está habilitado")
             cultivo_seleccionado = Cultivo.objects.get(idCultivo=datos[KEY_ID_CULTIVO])
             cultivo_seleccionado.habilitado = False
-            cultivo_seleccionado.fechaEliminacion = datetime.now()
+            cultivo_seleccionado.fechaEliminacion = datetime.now(pytz.utc)
             cultivo_seleccionado.save()
             response.content = armar_response_content(None)
             response.status_code = 200
@@ -704,7 +708,7 @@ def asignar_componente_sensor(request):
             estado_componente_sensor_sector_habilitado = EstadoComponenteSensorSector.objects.get(nombreEstadoComponenteSensorSector=ESTADO_HABILITADO)
             nuevo_historico = HistoricoEstadoComponenteSensorSector(estadoComponenteSensorSector=estado_componente_sensor_sector_habilitado,
                                                                     componenteSensorSector=componente_sensor_sector,
-                                                                    fechaAltaComponenteSensorSector=datetime.now())
+                                                                    fechaAltaComponenteSensorSector=datetime.now(pytz.utc))
             componente_sensor_sector.save()
             nuevo_historico.save()
             response.content = armar_response_content(None)
@@ -752,11 +756,11 @@ def desasignar_componente_sensor(request):
             estado_componente_sensor_deshabilitado = EstadoComponenteSensorSector.objects.get(nombreEstadoComponenteSensorSector=ESTADO_DESHABILITADO)
             historico_actual = componente_sensor_sector.historicoEstadoComponenteSensorSector.get(
                 fechaBajaComponenteSensorSector__isnull=True)
-            historico_actual.fechaBajaComponenteSensorSector = datetime.now()
+            historico_actual.fechaBajaComponenteSensorSector = datetime.now(pytz.utc)
             historico_actual.save()
             nuevo_historico = HistoricoEstadoComponenteSensorSector(estadoComponenteSensorSector=estado_componente_sensor_deshabilitado,
                                                                     componenteSensorSector=componente_sensor_sector,
-                                                                    fechaAltaComponenteSensorSector=datetime.now())
+                                                                    fechaAltaComponenteSensorSector=datetime.now(pytz.utc))
             componente_sensor_sector.habilitado = False
             componente_sensor_sector.save()
             nuevo_historico.save()
