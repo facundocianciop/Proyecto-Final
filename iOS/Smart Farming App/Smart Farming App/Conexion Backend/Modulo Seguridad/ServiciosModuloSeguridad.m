@@ -9,6 +9,8 @@
 #import "ServiciosModuloSeguridad.h"
 #import "ContextoUsuario.h"
 
+#import "SFUtils.h"
+
 #pragma mark - Operaciones
 
 #define OPERATION_REGISTRARSE                           @"registrarse"
@@ -68,103 +70,44 @@
     }];
 }
 
-/*
-+(void)authenticate:(NSString *)username
-           password:(NSString *)password
-    completionBlock:(HTTPOperationCompletionBlock)completionBlock
-       failureBlock:(HTTPOperationFailureBlock)failureBlock {
++(void) finalizarSesion:(SuccessBlock)completionBlock
+          failureBlock:(FailureBlock)failureBlock {
     
-    NSMutableDictionary *loginParams = [NSMutableDictionary new];
-    [loginParams setObject:username forKey:PARAM_USERNAME];
-    [loginParams setObject:password forKey:PARAM_PASSWORD];
     
-    [[HTTPConector instance] httpOperation:OPERATION_LOGIN method:METHOD_POST withParameters:loginParams completionBlock:^(NSArray *responseObject) {
+    
+}
+    
++(void) mostrarUsuario:(SuccessBlock)completionBlock
+       failureBlock:(FailureBlock)failureBlock {
+    
+    [[HTTPConector instance] httpOperation:OPERATION_MOSTRAR_USUARIO method:METHOD_GET withParameters:nil completionBlock:^(NSDictionary *responseObject) {
         
-        if (responseObject.count){
-            
-            NSDictionary *responseDict = [responseObject firstObject];
-            NSString *sessionId = [responseDict objectForKey:PARAM_SESSION_ID];
-            NSNumber *userId = [responseDict objectForKey:PARAM_USER_ID];
-            NSNumber *clientId = [responseDict objectForKey:PARAM_CLIENT_ID];
-            NSString *clientDescription = [responseDict objectForKey:PARAM_RAZON_SOCIAL];
-            
-            if (sessionId && [userId integerValue] && [clientId integerValue])
-            {
-                [ContextoUsuario instanceWithSessionId:sessionId userId:[userId longValue] clientId:[clientId longValue] clientDescription:clientDescription];
-                completionBlock(responseObject);
+        RespuestaMostrarUsuario *respuesta = [RespuestaMostrarUsuario new];
+        
+        NSDictionary *datosOperacion = [ServiciosModuloSeguridad armarRespuestaServicio:respuesta withResponseObject:responseObject];
+        
+        if (respuesta.resultado && datosOperacion) {
+            @try {
+                respuesta.username = datosOperacion[KEY_USUARIO];
+                respuesta.email = datosOperacion[KEY_EMAIL];
+                
+                respuesta.nombre = datosOperacion[KEY_NOMBRE_USUARIO];
+                respuesta.apellido = datosOperacion[KEY_APELLIDO_USUARIO];
+                
+                respuesta.fechaNacimiento = [SFUtils dateFromStringYYYYMMDD:datosOperacion[KEY_FECHA_NACIMIENTO]];
+                respuesta.dni = [datosOperacion[KEY_DNI] integerValue];
+                respuesta.cuit = datosOperacion[KEY_CUIT];
+                respuesta.domicilio = datosOperacion[KEY_DOMICILIO];
+                completionBlock(respuesta);
+            } @catch (NSException *exception) {
+                completionBlock(respuesta);
             }
-            else
-            {
-                failureBlock(nil);
-            }
+        } else {
+            completionBlock(respuesta);
         }
-        
     } failureBlock:^(NSError *error) {
-        failureBlock(error);
+        failureBlock([BaseServicios armarErrorServicio:error]);
     }];
 }
 
-+(void)signOut:(HTTPOperationCompletionBlock)completionBlock
-  failureBlock:(HTTPOperationFailureBlock)failureBlock {
-    
-    NSString *sessionID = [[ContextoUsuario instance] currentSessionId];
-    long userId = [[ContextoUsuario instance] currentUserId];
-    
-    NSMutableDictionary *signOutParams = [NSMutableDictionary new];
-    [signOutParams setObject:[NSNumber numberWithLong:userId] forKey:PARAM_USER_ID];
-    [signOutParams setObject:sessionID forKey:PARAM_SESSION_ID];
-    
-    [[HTTPConector instance] httpOperation:OPERATION_LOGOUT method:METHOD_POST withParameters:signOutParams completionBlock:^(NSArray *responseObject) {
-        
-        // Delete User sensitive data
-        [[ContextoUsuario instance] invalidateContext];
-        
-        completionBlock(responseObject);
-    } failureBlock:^(NSError *error) {
-        failureBlock(error);
-    }];
-}
-
-
-+(void)     signUp:(NSString *)razonSocial
-              cuit:(NSString *)cuit
-          contacto:(NSString *)contacto
-             email:(NSString *)email
-          telefono:(NSString *)telefono
-   completionBlock:(HTTPOperationCompletionBlock)completionBlock
-      failureBlock:(HTTPOperationFailureBlock)failureBlock {
-    
-    NSMutableDictionary *signUpParams = [NSMutableDictionary new];
-    [signUpParams setObject:razonSocial forKey:PARAM_RAZON_SOCIAL];
-    [signUpParams setObject:cuit forKey:PARAM_CUIT];
-    [signUpParams setObject:contacto forKey:PARAM_CONTACT_INFO];
-    [signUpParams setObject:email forKey:PARAM_EMAIL];
-    [signUpParams setObject:telefono forKey:PARAM_PHONE];
-    
-    [[HTTPConector instance] httpOperation:OPERATION_SIGNUP method:METHOD_POST withParameters:signUpParams completionBlock:^(NSArray *responseObject) {
-        completionBlock(responseObject);
-    } failureBlock:^(NSError *error) {
-        failureBlock(error);
-    }];
-}
-
-
-+(void)forgotUserCredentials:(NSString *)razonSocial
-                        cuit:(NSString *)cuit
-                       email:(NSString *)email
-             completionBlock:(HTTPOperationCompletionBlock)completionBlock
-                failureBlock:(HTTPOperationFailureBlock)failureBlock {
-    
-    NSMutableDictionary *forgotParams = [NSMutableDictionary new];
-    [forgotParams setObject:razonSocial forKey:PARAM_RAZON_SOCIAL];
-    [forgotParams setObject:cuit forKey:PARAM_CUIT];
-    [forgotParams setObject:email forKey:PARAM_EMAIL];
-    
-    [[HTTPConector instance] httpOperation:OPERATION_FORGOT method:METHOD_POST withParameters:forgotParams completionBlock:^(NSArray *responseObject) {
-        completionBlock(responseObject);
-    } failureBlock:^(NSError *error) {
-        failureBlock(error);
-    }];
-}
-*/
 @end

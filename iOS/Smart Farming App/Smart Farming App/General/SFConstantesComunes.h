@@ -35,6 +35,8 @@ extern NSString *const kRolEncargado;
 
 extern NSString *const kErrorDesconocido;
 extern NSString *const kErrorInicioSesion;
+extern NSString *const kErrorObteniendoDatosUsuario;
+
 extern NSString *const kErrorObteniendoRoles;
 extern NSString *const kErrorObteniendoFincas;
 

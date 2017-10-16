@@ -25,5 +25,8 @@
 #pragma mark - Dates
 
 +(NSString *)formatDateDDMMYYYY:(NSDate *) aDate;
++(NSString *)formatDateYYYYMMDD:(NSDate *) aDate;
+
++(NSDate *)dateFromStringYYYYMMDD:(NSString *) dateString;
 
 @end

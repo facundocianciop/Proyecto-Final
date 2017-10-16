@@ -12,5 +12,6 @@
 
 extern NSString *const kSFNavegarEstadoAutenticadoSegue;
 extern NSString *const kSFNavegarASeccionFincaSegue;
+extern NSString *const kSFNavegarEstadoNoAutenticadoSegue;
 
 @end

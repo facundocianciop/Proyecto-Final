@@ -12,5 +12,6 @@
 
 NSString *const kSFNavegarEstadoAutenticadoSegue = @"SFNavegarEstadoAutenticadoSegue";
 NSString *const kSFNavegarASeccionFincaSegue = @"SFNavegarASeccionFincaSegue";
+NSString *const kSFNavegarEstadoNoAutenticadoSegue = @"SFNavegarEstadoNoAutenticadoSegue";
 
 @end

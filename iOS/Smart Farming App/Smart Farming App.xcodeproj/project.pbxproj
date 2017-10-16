@@ -35,7 +35,6 @@
 		1116D6DF1F94424F0088D61B /* LGSideMenuBorderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116D6D61F94424F0088D61B /* LGSideMenuBorderView.m */; };
 		1116D6E21F9444890088D61B /* FincaLeftMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116D6E11F9444890088D61B /* FincaLeftMenuTableViewController.m */; };
 		1116D6E51F94449A0088D61B /* FincaRightMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116D6E41F94449A0088D61B /* FincaRightMenuTableViewController.m */; };
-		1116D6E81F94454F0088D61B /* FincaNavigationControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116D6E71F94454F0088D61B /* FincaNavigationControllerViewController.m */; };
 		1116D6EB1F9451F70088D61B /* SFInformacionFincaActivadaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116D6EA1F9451F70088D61B /* SFInformacionFincaActivadaViewController.m */; };
 		1116D6EE1F94565F0088D61B /* SFNavegarASeccionFincaSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116D6ED1F94565F0088D61B /* SFNavegarASeccionFincaSegue.m */; };
 		1116DA961F906A370057A048 /* RespuestaInicioSesion.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116DA951F906A370057A048 /* RespuestaInicioSesion.m */; };
@@ -47,6 +46,8 @@
 		111D1DC71F92F4B600E3A168 /* SFFinca.m in Sources */ = {isa = PBXBuildFile; fileRef = 111D1DC61F92F4B600E3A168 /* SFFinca.m */; };
 		111D1DCA1F92FA7500E3A168 /* SFSectorFinca.m in Sources */ = {isa = PBXBuildFile; fileRef = 111D1DC91F92FA7500E3A168 /* SFSectorFinca.m */; };
 		111F7E0B1F94ED0A002615D5 /* SFPerfilUsuarioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 111F7E0A1F94ED0A002615D5 /* SFPerfilUsuarioViewController.m */; };
+		111F7E0E1F94FE4F002615D5 /* RespuestaMostrarUsuario.m in Sources */ = {isa = PBXBuildFile; fileRef = 111F7E0D1F94FE4F002615D5 /* RespuestaMostrarUsuario.m */; };
+		111F7E111F951459002615D5 /* SFNavegarEstadoNoAutenticadoSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 111F7E101F951459002615D5 /* SFNavegarEstadoNoAutenticadoSegue.m */; };
 		11CD00901F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CD008F1F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.m */; };
 		11CD00941F8F178D00C58C49 /* SolicitudInicioSesion.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CD00931F8F178D00C58C49 /* SolicitudInicioSesion.m */; };
 		11CD00971F8F1B7700C58C49 /* IdentificadoresSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CD00961F8F1B7700C58C49 /* IdentificadoresSegue.m */; };
@@ -141,8 +142,6 @@
 		1116D6E11F9444890088D61B /* FincaLeftMenuTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FincaLeftMenuTableViewController.m; sourceTree = "<group>"; };
 		1116D6E31F94449A0088D61B /* FincaRightMenuTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FincaRightMenuTableViewController.h; sourceTree = "<group>"; };
 		1116D6E41F94449A0088D61B /* FincaRightMenuTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FincaRightMenuTableViewController.m; sourceTree = "<group>"; };
-		1116D6E61F94454F0088D61B /* FincaNavigationControllerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FincaNavigationControllerViewController.h; sourceTree = "<group>"; };
-		1116D6E71F94454F0088D61B /* FincaNavigationControllerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FincaNavigationControllerViewController.m; sourceTree = "<group>"; };
 		1116D6E91F9451F70088D61B /* SFInformacionFincaActivadaViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFInformacionFincaActivadaViewController.h; sourceTree = "<group>"; };
 		1116D6EA1F9451F70088D61B /* SFInformacionFincaActivadaViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFInformacionFincaActivadaViewController.m; sourceTree = "<group>"; };
 		1116D6EC1F94565F0088D61B /* SFNavegarASeccionFincaSegue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFNavegarASeccionFincaSegue.h; sourceTree = "<group>"; };
@@ -165,6 +164,10 @@
 		111D1DC91F92FA7500E3A168 /* SFSectorFinca.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFSectorFinca.m; sourceTree = "<group>"; };
 		111F7E091F94ED0A002615D5 /* SFPerfilUsuarioViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFPerfilUsuarioViewController.h; sourceTree = "<group>"; };
 		111F7E0A1F94ED0A002615D5 /* SFPerfilUsuarioViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFPerfilUsuarioViewController.m; sourceTree = "<group>"; };
+		111F7E0C1F94FE4F002615D5 /* RespuestaMostrarUsuario.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RespuestaMostrarUsuario.h; sourceTree = "<group>"; };
+		111F7E0D1F94FE4F002615D5 /* RespuestaMostrarUsuario.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RespuestaMostrarUsuario.m; sourceTree = "<group>"; };
+		111F7E0F1F951459002615D5 /* SFNavegarEstadoNoAutenticadoSegue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFNavegarEstadoNoAutenticadoSegue.h; sourceTree = "<group>"; };
+		111F7E101F951459002615D5 /* SFNavegarEstadoNoAutenticadoSegue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFNavegarEstadoNoAutenticadoSegue.m; sourceTree = "<group>"; };
 		11CD008E1F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFNavegarEstadoAutenticadoSegue.h; sourceTree = "<group>"; };
 		11CD008F1F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFNavegarEstadoAutenticadoSegue.m; sourceTree = "<group>"; };
 		11CD00921F8F178D00C58C49 /* SolicitudInicioSesion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SolicitudInicioSesion.h; sourceTree = "<group>"; };
@@ -402,14 +405,6 @@
 			children = (
 				1116D6C61F9433020088D61B /* SFFincaTableViewCell.h */,
 				1116D6C71F9433020088D61B /* SFFincaTableViewCell.m */,
-				1116D6E01F9444890088D61B /* FincaLeftMenuTableViewController.h */,
-				1116D6E11F9444890088D61B /* FincaLeftMenuTableViewController.m */,
-				1116D6E31F94449A0088D61B /* FincaRightMenuTableViewController.h */,
-				1116D6E41F94449A0088D61B /* FincaRightMenuTableViewController.m */,
-				1116D6E61F94454F0088D61B /* FincaNavigationControllerViewController.h */,
-				1116D6E71F94454F0088D61B /* FincaNavigationControllerViewController.m */,
-				1116D6E91F9451F70088D61B /* SFInformacionFincaActivadaViewController.h */,
-				1116D6EA1F9451F70088D61B /* SFInformacionFincaActivadaViewController.m */,
 			);
 			path = "Modulo Finca";
 			sourceTree = "<group>";
@@ -465,6 +460,8 @@
 			children = (
 				1116DA941F906A370057A048 /* RespuestaInicioSesion.h */,
 				1116DA951F906A370057A048 /* RespuestaInicioSesion.m */,
+				111F7E0C1F94FE4F002615D5 /* RespuestaMostrarUsuario.h */,
+				111F7E0D1F94FE4F002615D5 /* RespuestaMostrarUsuario.m */,
 			);
 			path = Respuestas;
 			sourceTree = "<group>";
@@ -509,6 +506,8 @@
 				11CD008F1F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.m */,
 				1116D6EC1F94565F0088D61B /* SFNavegarASeccionFincaSegue.h */,
 				1116D6ED1F94565F0088D61B /* SFNavegarASeccionFincaSegue.m */,
+				111F7E0F1F951459002615D5 /* SFNavegarEstadoNoAutenticadoSegue.h */,
+				111F7E101F951459002615D5 /* SFNavegarEstadoNoAutenticadoSegue.m */,
 			);
 			path = Navegacion;
 			sourceTree = "<group>";
@@ -556,6 +555,12 @@
 				111D1DBF1F92DEBC00E3A168 /* SFFincasOtrosRolesViewController.m */,
 				1116D6BE1F9390DE0088D61B /* SFFincasPendientesViewController.h */,
 				1116D6BF1F9390DE0088D61B /* SFFincasPendientesViewController.m */,
+				1116D6E01F9444890088D61B /* FincaLeftMenuTableViewController.h */,
+				1116D6E11F9444890088D61B /* FincaLeftMenuTableViewController.m */,
+				1116D6E31F94449A0088D61B /* FincaRightMenuTableViewController.h */,
+				1116D6E41F94449A0088D61B /* FincaRightMenuTableViewController.m */,
+				1116D6E91F9451F70088D61B /* SFInformacionFincaActivadaViewController.h */,
+				1116D6EA1F9451F70088D61B /* SFInformacionFincaActivadaViewController.m */,
 			);
 			path = "Modulo Finca";
 			sourceTree = "<group>";
@@ -866,10 +871,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				1116BA7F1F8C5A2C005C9AFF /* BaseServicios.m in Sources */,
+				111F7E0E1F94FE4F002615D5 /* RespuestaMostrarUsuario.m in Sources */,
 				1116D6E51F94449A0088D61B /* FincaRightMenuTableViewController.m in Sources */,
 				1116D6DF1F94424F0088D61B /* LGSideMenuBorderView.m in Sources */,
 				1116D6DC1F94424F0088D61B /* LGSideMenuHelper.m in Sources */,
 				1116D6C81F9433020088D61B /* SFFincaTableViewCell.m in Sources */,
+				111F7E111F951459002615D5 /* SFNavegarEstadoNoAutenticadoSegue.m in Sources */,
 				1116D6C01F9390DE0088D61B /* SFFincasPendientesViewController.m in Sources */,
 				1116BA8B1F8C6D09005C9AFF /* SFViewControllerBase.m in Sources */,
 				A1AE0B891F8E8CFD009B4494 /* RespuestaServicioBase.m in Sources */,
@@ -892,7 +899,6 @@
 				1116D6EB1F9451F70088D61B /* SFInformacionFincaActivadaViewController.m in Sources */,
 				111D1DBD1F92DE9E00E3A168 /* SFFincasEncargadoViewController.m in Sources */,
 				1116DA9F1F90726C0057A048 /* ServiciosModuloRiego.m in Sources */,
-				1116D6E81F94454F0088D61B /* FincaNavigationControllerViewController.m in Sources */,
 				111D1DC31F92E01100E3A168 /* SFTableViewControllerBase.m in Sources */,
 				11F020841F8F083F00DBC1DC /* SFTextField.m in Sources */,
 				1116D6EE1F94565F0088D61B /* SFNavegarASeccionFincaSegue.m in Sources */,

@@ -8,6 +8,8 @@
 
 #import "ContextoUsuario.h"
 
+#import "HTTPConector.h"
+
 @interface ContextoUsuario ()
 
 @property (strong, nonatomic) NSString  *username;
@@ -57,6 +59,9 @@ static ContextoUsuario *userContext = nil;
 }
 
 -(void)invalidateContext {
+    
+    [[HTTPConector instance] endSession];
+    
     self.username = nil;
     self.fincaId = NSNotFound;
     userContext = nil;

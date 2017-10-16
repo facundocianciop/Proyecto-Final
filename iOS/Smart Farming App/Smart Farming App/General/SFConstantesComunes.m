@@ -35,6 +35,7 @@ NSString *const kRolEncargado = @"encargado";
 
 NSString *const kErrorDesconocido = @"Error desconocido";
 NSString *const kErrorInicioSesion = @"Error de inicio de sesión";
+NSString *const kErrorObteniendoDatosUsuario = @"Error obteniendo datos de usuario";
 NSString *const kErrorObteniendoRoles = @"Error obteniendo roles";
 NSString *const kErrorObteniendoFincas = @"Error obteniendo fincas";
 
