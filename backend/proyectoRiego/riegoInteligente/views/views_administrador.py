@@ -27,7 +27,7 @@ def fincas_por_aprobar(request):
         fincas_pendientes = []
         for historico in historicos_pendientes:
                 fincas_pendientes.append(historico.finca)
-        template = loader.get_template('riegoInteligente/fincasPorAprobar.html')
+        template = loader.get_template('admin/riegoInteligente/fincasPorAprobar.html')
         context = {
             'fincas': fincas_pendientes,
         }
