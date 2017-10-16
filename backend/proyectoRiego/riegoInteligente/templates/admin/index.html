@@ -1,0 +1,9 @@
+
+{% extends "admin/index.html" %}
+
+{% block sidebar %}
+    {{block.super}}
+    <div>
+       <a href="localhost:8000/riegoInteligente/fincasPorAprobar">Fincas Pendientes</a>
+    </div>
+{% endblock %}

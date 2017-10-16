@@ -25,11 +25,14 @@ class SesionUsuario(models.Model):
     fecha_y_hora_inicio = models.DateTimeField(null=True)
 
 
+
 class TipoSesion(models.Model):
     OIDTipoSesion = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     idTipo=models.IntegerField()
     nombre=models.CharField(max_length=15)
 
+    def __str__(self):
+        return "Tipo Sesion: " + self.nombre
 
 class DatosUsuario(models.Model):
     user=models.OneToOneField(User, on_delete=models.CASCADE,null=True)
@@ -80,7 +83,7 @@ class EstadoUsuario(models.Model):
     nombreEstadoUsuario=models.CharField(max_length=100)
 
     def __str__(self):
-        return self.nombreEstadoUsuario
+        return "Estado usuario: " + self.nombreEstadoUsuario
 
 
 class HistoricoEstadoUsuario(models.Model):
@@ -108,7 +111,7 @@ class Rol(models.Model):
         super(Rol, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.nombreRol
+        return "Nombre rol: " + self.nombreRol
 
 
     def as_json(self):
@@ -228,6 +231,7 @@ class ProveedorInformacionClimaticaFinca(models.Model):
     proveedorInformacionClimatica=models.ForeignKey("ProveedorInformacionClimatica",db_column="OIDProveedorInformacionClimatica",null=True)
 
 
+
 class Finca(models.Model):
     OIDFinca=models.UUIDField( primary_key=True ,default=uuid.uuid4, editable=False)
     idFinca=models.IntegerField(default=1, unique=True)
@@ -278,6 +282,9 @@ class HistoricoEstadoFinca(models.Model):
     finca=models.ForeignKey(Finca,db_column="OIDFinca",related_name="historicoEstadoFincaList")
     estadoFinca=models.ForeignKey(EstadoFinca,db_column="OIDEstadoFinca")
 
+    def __str__(self):
+        return "Finca: " + self.finca.nombre + "-" + str(self.fechaInicioEstadoFinca)
+
 
 class MecanismoRiegoFinca(models.Model):
     OIDMecanismoRiegoFinca = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
@@ -318,6 +325,9 @@ class EstadoMecanismoRiegoFinca(models.Model):
     nombreEstadoMecanismoRiegoFinca=models.CharField(max_length=20)
     descripcionEstadoMecanismoRiegoFinca=models.CharField(max_length=100)
 
+    def __str__(self):
+        return "Estado Mecanismo Riego Finca: " + self.nombreEstadoMecanismoRiegoFinca
+
 
 class HistoricoMecanismoRiegoFinca(models.Model):
     OIDHistoricoMecanismoRiegoFinca =models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
@@ -354,7 +364,7 @@ class Sector(models.Model):
                 super(Sector, self).save()
 
     def __str__(self):
-        return ("Este es el sector %d")%self.numeroSector
+        return ("Sector Numero: %d")%self.numeroSector
 
     def as_json(self):
         return dict(
@@ -395,7 +405,7 @@ class Cultivo(models.Model):
 
 
     def __str__(self):
-        return ("Este es el cultivo %s")%self.nombre
+        return ("Nombre cultivo: %s")%self.nombre
 
 
     def as_json(self):
@@ -415,7 +425,7 @@ class EstadoSector(models.Model):
     nombreEstadoSector=models.CharField(max_length=20)
 
     def __str__(self):
-        return ("Este es el estado %s") % self.nombreEstadoSector
+        return ("Estado Sector: %s") % self.nombreEstadoSector
 
 
 class HistoricoEstadoSector(models.Model):
@@ -431,6 +441,9 @@ class EstadoMecanismoRiegoFincaSector(models.Model):
     OIDEstadoMecanismoRiegoFincaSector=models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
     descripcionEstadoMecanismoRiegoFincaSector=models.CharField(max_length=100)
     nombreEstadoMecanismoRiegoFincaSector=models.CharField(max_length=20)
+
+    def __str__(self):
+        return "Estado Mecanismo Riego Finca Sector: " + self.nombreEstadoMecanismoRiegoFincaSector
 
 
 class HistoricoMecanismoRiegoFincaSector(models.Model):
@@ -465,6 +478,9 @@ class EstadoComponenteSensor(models.Model):
         nombreEstado = models.CharField(max_length=20)
         descripcionEstado = models.CharField(max_length=100)
 
+        def __str__(self):
+            return "Estado Componente: " + self.nombreEstado
+
 
 class ComponenteSensor(models.Model):
     OIDComponenteSensor = models.UUIDField( primary_key=True,default=uuid.uuid4, editable=False)
@@ -498,7 +514,8 @@ class ComponenteSensor(models.Model):
                     cantidadMaximaSensores=self.cantidadMaximaSensores,
                     cantidadSensoresAsignados=self.cantidadSensoresAsignados)
 
-
+    def __str__(self):
+        return "Componente Sensor: " + self.modelo + "-" + str(self.idComponenteSensor)
 
 
 #MODULO CULTIVOS
@@ -511,6 +528,8 @@ class TipoCultivo(models.Model):
     fechaAltaTipoCultivo = models.DateTimeField()
     fechaBajaTipoCultivo = models.DateTimeField(null=True)
 
+    def __str__(self):
+        return "Nombre Tipo de Cultivo: " + self.nombreTipoCultivo
 
 class SubtipoCultivo(models.Model):
     OIDSubtipoCultivo = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -522,6 +541,8 @@ class SubtipoCultivo(models.Model):
 
     tipo_cultivo = models.ForeignKey(TipoCultivo, db_column="OIDTipoCultivo")
 
+    def __str__(self):
+        return "Nombre Subtipo de Cultivo: " + self.nombreSubtipo
 
 class CaracteristicaSubtipo(models.Model):
     OIDCaracteristicaSubtipo = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -562,7 +583,7 @@ class TipoConfiguracionRiego(models.Model):
     nombre=models.CharField(max_length=20,unique=True)
 
     def __str__(self):
-        return self.nombre
+        return "Tipo Configuracion Riego: " + self.nombre
 
 
 class ConfiguracionRiego(models.Model):
@@ -625,7 +646,7 @@ class EstadoConfiguracionRiego(models.Model):
     descripcionEstadoConfiguracionRiego=models.CharField(max_length=100)
 
     def __str__(self):
-        return self.nombreEstadoConfiguracionRiego
+        return "Estado Configuracion Riego :" + self.nombreEstadoConfiguracionRiego
 
 
 class HistoricoEstadoConfiguracionRiego(models.Model):
@@ -648,7 +669,7 @@ class EstadoEjecucionRiego(models.Model):
     descripcionEstadoEjecucionRiego = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.nombreEstadoEjecucionRiego
+        return "Estado Ejecucion Riego: " + self.nombreEstadoEjecucionRiego
 
 
 class MecanismoRiegoFincaSector(models.Model):
@@ -705,7 +726,7 @@ class EjecucionRiego(models.Model):
                                                      related_name="ejecucionRiegoList")
 
     def __str__(self):
-        return "Mecanismo riego finca sentor: " + self.mecanismo_riego_finca_sector_id
+        return "Mecanismo riego finca sensor: " + self.mecanismo_riego_finca_sector_id
         + " detalle: " + self.detalle
 
     def as_json(self):
@@ -877,7 +898,8 @@ class TipoMedicion(models.Model):
                     fechaAltaTipoMedicion=self.fechaAltaTipoMedicion,
                     fechaBajaTipoMedicion=self.fechaBajaTipoMedicion)
 
-
+    def __str__(self):
+        return "Tipo Medicion: " + self.nombreTipoMedicion
 
 class Sensor(models.Model):
     OIDSensor = models.UUIDField( primary_key=True, default=uuid.uuid4, editable=False)
@@ -948,6 +970,9 @@ class EstadoComponenteSensorSector(models.Model):
     OIDEstadoComponenteSensorSector = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nombreEstadoComponenteSensorSector = models.CharField(max_length=20)
     descripcionEstadoComponenteSensorSector = models.CharField(max_length=100)
+
+    def __str__(self):
+        return "Nombre Estado Componente Sensor Sector: " + self.nombreEstadoComponenteSensorSector
 
 
 class MedicionCabecera(models.Model):
@@ -1090,6 +1115,8 @@ class TipoMedicionClimatica(models.Model):
             fechaBajaTipoMedicionClimatica=self.fechaBajaTipoMedicionClimatica,
             habilitada=self.habilitada)
 
+    def __str__(self):
+        return "Tipo de Medicion: " + self.nombreTipoMedicionClimatica
 
 class ProveedorInformacionClimatica(models.Model):
     OIDProveedorInformacionClimatica=models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
