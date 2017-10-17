@@ -254,16 +254,15 @@ def obtener_fincas_estado_pendiente(request):
 
 
 @transaction.atomic()
-@login_requerido
 @metodos_requeridos([METHOD_POST])
-def aprobar_finca(request, id_finca):
+def aprobar_finca(request, idFinca):
     response = HttpResponse()
     print request.user.username
-    if request.user.is_staff == False:
-        raise ValueError(ERROR_NO_TIENE_PERMISOS, "El usuario no tiene permisos para acceder a esta pagina")
+    # if request.user.is_staff == False:
+    #     raise ValueError(ERROR_NO_TIENE_PERMISOS, "El usuario no tiene permisos para acceder a esta pagina")
     try:
-            if Finca.objects.filter(idFinca=id_finca).__len__() == 1:
-                    finca_por_aprobar = Finca.objects.get(idFinca=id_finca)
+            if Finca.objects.filter(idFinca=idFinca).__len__() == 1:
+                    finca_por_aprobar = Finca.objects.get(idFinca=idFinca)
                     ultimo_historico = finca_por_aprobar.historicoEstadoFincaList.get(fechaFinEstadoFinca__isnull=True)
                     if ultimo_historico.estadoFinca.nombreEstadoFinca == ESTADO_HABILITADO:
                         raise ValueError(ERROR_FINCA_YA_APROBADA, "Esta finca ya esta aprobada")
