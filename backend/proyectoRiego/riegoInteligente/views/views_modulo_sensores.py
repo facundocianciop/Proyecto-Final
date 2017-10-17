@@ -45,6 +45,43 @@ def crear_sensor(request):
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+def buscar_sensores_componente(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if KEY_ID_COMPONENTE_SENSOR in datos:
+            if datos[KEY_ID_COMPONENTE_SENSOR] == '' :
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if ComponenteSensor.objects.filter(idComponenteSensor=datos[KEY_ID_COMPONENTE_SENSOR]).__len__() != 1:
+                raise ValueError(ERROR_COMPONENTE_SENSOR_NO_EXISTENTE
+                                 , "No existe ese componente sensor")
+            componente_sensor = ComponenteSensor.objects.get(idComponenteSensor=datos[KEY_ID_COMPONENTE_SENSOR])
+            if componente_sensor.asignaciones_list.filter(fechaBaja__isnull=True).__len__() == 0:
+                response.content = armar_response_content(None)
+                response.status_code = 200
+                return response
+            asignaciones = componente_sensor.asignaciones_list.filter(fechaBaja__isnull=True)
+            lista_sensores = []
+            for asignacion in asignaciones:
+                lista_sensores.append(asignacion.sensor)
+            response.content = armar_response_list_content(lista_sensores)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except ValueError as err:
+        print err.args
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError,ValueError) as err:
+        print err.args
+        response.status_code=401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
 
 @transaction.atomic()
 @login_requerido
@@ -509,7 +546,7 @@ def buscar_sensores_no_asignados(request):
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             if Finca.objects.filter(idFinca=datos[KEY_ID_FINCA]).__len__() != 1:
                 raise ValueError(ERROR_FINCA_NO_ENCONTRADA, "No existe la finca ingresada")
-            finca = Finca.objects.get(idFinca=KEY_ID_FINCA)
+            finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
             lista_sensores = Sensor.objects.filter(finca=finca)
             lista_sensores_no_asignados = []
             for sensor in lista_sensores:
