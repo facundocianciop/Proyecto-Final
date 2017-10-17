@@ -543,11 +543,11 @@ class SubtipoCultivo(models.Model):
     descripcion = models.CharField(max_length=100)
     tipo_cultivo = models.ForeignKey(TipoCultivo, db_column="OIDTipoCultivo")
     fechaAltaSubtipoCultivo = models.DateTimeField()
-    fechaBajaSubTipoCultivo = models.DateTimeField(null=True, blank=True)
+    fechaBajaSubtipoCultivo = models.DateTimeField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        if not self.fechaBajaSubTipoCultivo:
-            self.fechaBajaSubTipoCultivo = None
+        if not self.fechaBajaSubtipoCultivo:
+            self.fechaBajaSubtipoCultivo = None
         super(SubtipoCultivo, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -580,6 +580,9 @@ class TipoMecanismoRiego(models.Model):
         if not self.fechaBajaTipoMecanismoRiego:
             self.fechaBajaTipoMecanismoRiego = None
         super(TipoMecanismoRiego, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return "Tipo Mecanismo: " + self.nombreMecanismo
 
     def as_json(self):
         return dict(
