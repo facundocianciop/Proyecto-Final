@@ -505,12 +505,14 @@ class ComponenteSensor(models.Model):
 
 
     def as_json(self):
+        ultimo_historico = self.historico_estado_componente_sensor_list.get(fechaFinEstadoComponenteSensor__isnull=True)
         return dict(idComponenteSensor=self.idComponenteSensor,
                     modelo=self.modelo,
                     descripcion=self.descripcion,
                     finca=self.finca.idFinca,
                     cantidadMaximaSensores=self.cantidadMaximaSensores,
-                    cantidadSensoresAsignados=self.cantidadSensoresAsignados)
+                    cantidadSensoresAsignados=self.cantidadSensoresAsignados,
+                    estado=ultimo_historico.estadoComponenteSensor.nombreEstado)
 
     def __str__(self):
         return "Componente Sensor: " + self.modelo + "-" + str(self.idComponenteSensor)
