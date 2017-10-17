@@ -39,6 +39,8 @@ urlpatterns = [
     url(r'^modificarRolUsuario/$', views_modulo_finca.modificar_rol_usuario, name='modificarRolUsuario'),
     url(r'^modificarFinca/$', views_modulo_finca.modificar_finca, name='modificarFinca'),
     url(r'^eliminarFinca/$', views_modulo_finca.eliminar_finca, name='eliminarFinca'),
+    url(r'^rehabilitarFinca/$', views_modulo_finca.rehabilitar_finca, name='rehabilitarFinca'),
+
 
     url(r'^buscarFincaId/$', views_modulo_finca.buscar_finca_id, name='buscarFincaId'),
     url(r'^devolverPermisos/$', views_modulo_finca.devolver_permisos, name='devolverPermisos'),
@@ -72,6 +74,8 @@ urlpatterns = [
 
     url(r'^asignarComponenteSensor/$', views_configuracion_sectores.asignar_componente_sensor,
         name='asignarComponenteSensor'),
+    url(r'^buscarComponenteSensorPorId/$', views_modulo_sensores.buscar_componente_sensor_por_id,
+        name='buscarComponenteSensorPorId'),
     url(r'^desasignarComponenteSensor/$', views_configuracion_sectores.desasignar_componente_sensor,
         name='desasignarComponenteSensor'),
 

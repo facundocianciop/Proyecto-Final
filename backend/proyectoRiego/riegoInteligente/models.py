@@ -109,7 +109,6 @@ class Rol(models.Model):
         if not self.fechaBajaRol:
             self.fechaBajaRol = None
         super(Rol, self).save(*args, **kwargs)
-
     def __str__(self):
         return "Nombre rol: " + self.nombreRol
 
@@ -226,7 +225,6 @@ class ProveedorInformacionClimaticaFinca(models.Model):
     fechaAltaProveedorInfoClimaticaFinca=models.DateTimeField()
     fechaBajaProveedorInfoClimaticaFinca=models.DateTimeField(null=True)
     frecuencia=models.IntegerField(null=True)
-
     finca=models.ForeignKey("Finca",db_column="OIDFinca",null=True)
     proveedorInformacionClimatica=models.ForeignKey("ProveedorInformacionClimatica",db_column="OIDProveedorInformacionClimatica",null=True)
 
@@ -507,12 +505,14 @@ class ComponenteSensor(models.Model):
 
 
     def as_json(self):
+        ultimo_historico = self.historico_estado_componente_sensor_list.get(fechaFinEstadoComponenteSensor__isnull=True)
         return dict(idComponenteSensor=self.idComponenteSensor,
                     modelo=self.modelo,
                     descripcion=self.descripcion,
                     finca=self.finca.idFinca,
                     cantidadMaximaSensores=self.cantidadMaximaSensores,
-                    cantidadSensoresAsignados=self.cantidadSensoresAsignados)
+                    cantidadSensoresAsignados=self.cantidadSensoresAsignados,
+                    estado=ultimo_historico.estadoComponenteSensor.nombreEstado)
 
     def __str__(self):
         return "Componente Sensor: " + self.modelo + "-" + str(self.idComponenteSensor)
@@ -526,7 +526,12 @@ class TipoCultivo(models.Model):
     descripcion = models.CharField(max_length=100)
     habilitado = models.BooleanField()
     fechaAltaTipoCultivo = models.DateTimeField()
-    fechaBajaTipoCultivo = models.DateTimeField(null=True)
+    fechaBajaTipoCultivo = models.DateTimeField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.fechaBajaTipoCultivo:
+            self.fechaBajaTipoCultivo = None
+        super(TipoCultivo, self).save(*args, **kwargs)
 
     def __str__(self):
         return "Nombre Tipo de Cultivo: " + self.nombreTipoCultivo
@@ -536,10 +541,14 @@ class SubtipoCultivo(models.Model):
     nombreSubtipo = models.CharField(max_length=20)
     habilitado = models.BooleanField()
     descripcion = models.CharField(max_length=100)
-    fechaAltaSubtipoCultivo = models.DateTimeField()
-    fechaBajaSubtipoCultivo = models.DateTimeField(null=True)
-
     tipo_cultivo = models.ForeignKey(TipoCultivo, db_column="OIDTipoCultivo")
+    fechaAltaSubtipoCultivo = models.DateTimeField()
+    fechaBajaSubTipoCultivo = models.DateTimeField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.fechaBajaSubTipoCultivo:
+            self.fechaBajaSubTipoCultivo = None
+        super(SubtipoCultivo, self).save(*args, **kwargs)
 
     def __str__(self):
         return "Nombre Subtipo de Cultivo: " + self.nombreSubtipo
@@ -563,9 +572,15 @@ class TipoMecanismoRiego(models.Model):
     caudalEstandar = models.FloatField(null=True)
     presionEstandar=models.FloatField(null=True)
     eficiencia=models.FloatField(null=True)
-    fechaAltaTipoMecanismoRiego=models.DateTimeField()
-    fechaBajaTipoMecanismoRiego=models.DateTimeField(null=True)
     habilitado=models.BooleanField(default=True)
+    fechaAltaTipoMecanismoRiego=models.DateTimeField()
+    fechaBajaTipoMecanismoRiego = models.DateTimeField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.fechaBajaTipoMecanismoRiego:
+            self.fechaBajaTipoMecanismoRiego = None
+        super(TipoMecanismoRiego, self).save(*args, **kwargs)
+
     def as_json(self):
         return dict(
             nombreMecanismo=self.nombreMecanismo,
@@ -705,6 +720,7 @@ class MecanismoRiegoFincaSector(models.Model):
                     presion=self.presion,
                     sector=self.sector.numeroSector,
                     mecanismoRiegoFinca=self.mecanismoRiegoFinca.idMecanismoRiegoFinca,
+                    nombreTipoMecanismo=self.mecanismoRiegoFinca.tipoMecanismoRiego.nombreMecanismo,
                     idFinca=self.mecanismoRiegoFinca.finca.idFinca)
 
 
@@ -874,7 +890,7 @@ class TipoMedicion(models.Model):
     unidadMedicion = models.CharField(max_length=20)
     habilitado = models.BooleanField()
     fechaAltaTipoMedicion = models.DateTimeField()
-    fechaBajaTipoMedicion = models.DateTimeField(null=True)
+    fechaBajaTipoMedicion = models.DateTimeField(null=True, blank=True)
 
     def save(self):
         "Get last value of Code and Number from database, and increment before save"
@@ -1087,10 +1103,9 @@ class TipoMedicionClimatica(models.Model):
     idTipoMedicionClimatica=models.IntegerField(unique=True, default=1)
     nombreTipoMedicionClimatica=models.CharField(unique=True, max_length=30)
     unidadMedicion=models.CharField(max_length=20, null=True)
-    fechaAltaTipoMedicionClimatica=models.DateTimeField()
-    fechaBajaTipoMedicionClimatica=models.DateTimeField(null=True)
     habilitada=models.BooleanField()
-
+    fechaAltaTipoMedicionClimatica = models.DateTimeField()
+    fechaBajaTipoMedicionClimatica = models.DateTimeField(null=True, blank=True)
 
     def save(self):
         "Get last value of Code and Number from database, and increment before save"
@@ -1119,15 +1134,19 @@ class TipoMedicionClimatica(models.Model):
         return "Tipo de Medicion: " + self.nombreTipoMedicionClimatica
 
 class ProveedorInformacionClimatica(models.Model):
-    OIDProveedorInformacionClimatica=models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    nombreProveedor=models.CharField(max_length=20,unique=True)
-    habilitado=models.BooleanField()
-    urlAPI=models.CharField(max_length=100,null=True)
-    frecuenciaMaxPosible=models.IntegerField(null=True)
-    fechaAltaProveedorInfoClimatica=models.DateTimeField()
-    fechaBajaProveedorInfoClimatica=models.DateTimeField(null=True)
-
+    OIDProveedorInformacionClimatica = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    nombreProveedor = models.CharField(max_length=20,unique=True)
+    habilitado = models.BooleanField()
+    urlAPI = models.CharField(max_length=100,null=True)
+    frecuenciaMaxPosible = models.IntegerField(null=True)
     tipoMedicionClimatica = models.ManyToManyField(TipoMedicionClimatica)
+    fechaAltaProveedorInfoClimatica = models.DateTimeField()
+    fechaBajaProveedorInfoClimatica = models.DateTimeField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.fechaBajaProveedorInfoClimatica:
+            self.fechaBajaProveedorInfoClimatica = None
+        super(ProveedorInformacionClimatica, self).save(*args, **kwargs)
 
 
     def __str__(self):

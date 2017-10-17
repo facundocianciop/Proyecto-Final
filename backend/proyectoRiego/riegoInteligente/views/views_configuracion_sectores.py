@@ -1,5 +1,5 @@
     # -*- coding: UTF-8 -*-
-from django.db import IntegrityError, transaction
+from django.db import transaction
 from .supportClases.security_decorators import *
 from ..models import *
 from supportClases.views_util_functions import *
@@ -29,15 +29,16 @@ def crear_sector(request):
                 for sector in sectores:
                     if sector.historicoEstadoSectorList.filter(fechaFinEstadoSector__isnull=True,
                                                                estado_sector=estado_habilitado).__len__() == 1:
-                        raise ValueError(ERROR_SECTOR_YA_EXISTENTE,"Ya existe un sector con ese numero")
+                        raise ValueError(ERROR_SECTOR_YA_EXISTENTE, "Ya existe un sector con ese numero")
             if Sector.objects.filter(nombreSector=datos[KEY_NOMBRE_SECTOR], finca=finca_actual).__len__() != 0:
                 sectores = Sector.objects.filter(nombreSector=datos[KEY_NOMBRE_SECTOR], finca=finca_actual)
                 for sector in sectores:
                     if sector.historicoEstadoSectorList.filter(fechaFinEstadoSector__isnull=True,
-                                                               estado_sector=estado_habilitado).__len__() ==1:
+                                                               estado_sector=estado_habilitado).__len__() == 1:
                         raise ValueError(ERROR_SECTOR_YA_EXISTENTE, "Ya existe un sector con ese nombre")
             sector_nuevo = Sector(numeroSector=datos[KEY_NUMERO_SECTOR], nombreSector=datos[KEY_NOMBRE_SECTOR],
-                                  descripcionSector=datos[KEY_DESCRIPCION_SECTOR], superficie=datos[KEY_SUPERFICIE_SECTOR],
+                                  descripcionSector=datos[KEY_DESCRIPCION_SECTOR],
+                                  superficie=datos[KEY_SUPERFICIE_SECTOR],
                                   finca=finca_actual
                                   )
             sector_nuevo.save()
@@ -76,7 +77,7 @@ def modificar_sector(request):
             sector_seleccionado = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
             estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
             if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
-                                                                 fechaFinEstadoSector__isnull=True).__len__() != 1:
+                                                    fechaFinEstadoSector__isnull=True).__len__() != 1:
                 raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
 
             sector_seleccionado.nombreSector = datos[KEY_NOMBRE_SECTOR]
@@ -89,7 +90,7 @@ def modificar_sector(request):
         else:
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
     except ValueError as err:
-        return build_bad_request_error(response,err.args[0], err.args[1])
+        return build_bad_request_error(response, err.args[0], err.args[1])
     except (IntegrityError, TypeError, KeyError) as err:
         print err.args
         response.status_code = 401
@@ -105,15 +106,16 @@ def eliminar_sector(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_ID_SECTOR in datos):
+        if KEY_ID_SECTOR in datos:
             if datos[KEY_ID_SECTOR] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             sector_seleccionado = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
             estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
             if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
-                                                                 fechaFinEstadoSector__isnull=True).__len__() != 1:
+                                                    fechaFinEstadoSector__isnull=True).__len__() != 1:
                 raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
-            historico_viejo = HistoricoEstadoSector.objects.get(sector=sector_seleccionado, estado_sector=estado_habilitado,
+            historico_viejo = HistoricoEstadoSector.objects.get(sector=sector_seleccionado,
+                                                                estado_sector=estado_habilitado,
                                                                 fechaFinEstadoSector__isnull=True)
             historico_viejo.fechaFinEstadoSector = datetime.now(pytz.utc)
             historico_viejo.save()
@@ -127,23 +129,23 @@ def eliminar_sector(request):
                 nombreEstadoMecanismoRiegoFincaSector=ESTADO_HABILITADO)
             for mecanismo_riego_sector in mecanismo_riego_sector_lista:
                 if mecanismo_riego_sector.historicoMecanismoRiegoFincaSector.filter(
-                        fechaFinEstadoMecanismoRiegoFincaSector__isnull=True, estado_mecanismo_riego_finca_sector=
-                        estado_mecanismo_riego_sector_habilitado).__len__() == 1:
+                        fechaFinEstadoMecanismoRiegoFincaSector__isnull=True,
+                        estado_mecanismo_riego_finca_sector=estado_mecanismo_riego_sector_habilitado).__len__() == 1:
                     mecanismo_riego_sector_deshabilitar = mecanismo_riego_sector
-                    ultimo_historico_mecanismo_riego_sector = mecanismo_riego_sector.\
-                        historicoMecanismoRiegoFincaSector.get(
-                        fechaFinEstadoMecanismoRiegoFincaSector__isnull=True, estado_mecanismo_riego_finca_sector=
-                    estado_mecanismo_riego_sector_habilitado)
-                    ultimo_historico_mecanismo_riego_sector.fechaFinEstadoMecanismoRiegoFincaSector = datetime.now(pytz.utc)
+                    ultimo_historico_mecanismo_riego_sector = mecanismo_riego_sector. \
+                        historicoMecanismoRiegoFincaSector.get(fechaFinEstadoMecanismoRiegoFincaSector__isnull=True,
+                        estado_mecanismo_riego_finca_sector=estado_mecanismo_riego_sector_habilitado)
+                    ultimo_historico_mecanismo_riego_sector.fechaFinEstadoMecanismoRiegoFincaSector = \
+                        datetime.now(pytz.utc)
                     ultimo_historico_mecanismo_riego_sector.save()
                     estado_mecanismo_riego_sector_deshabilitado = EstadoMecanismoRiegoFincaSector.objects.get(
                         nombreEstadoMecanismoRiegoFincaSector=ESTADO_DESHABILITADO)
                     nuevo_historico_mecanismo_riego_sector = HistoricoMecanismoRiegoFincaSector(
                         mecanismo_riego_finca_sector=mecanismo_riego_sector_deshabilitar,
-                        fechaInicioEstadoMecanismoRiegoFincaSector= datetime.now(pytz.utc),
+                        fechaInicioEstadoMecanismoRiegoFincaSector=datetime.now(pytz.utc),
                         estado_mecanismo_riego_finca_sector=estado_mecanismo_riego_sector_deshabilitado)
                     nuevo_historico_mecanismo_riego_sector.save()
-            if sector_seleccionado.componentesensorsector_set.filter(habilitado=True).__len__() ==1:
+            if sector_seleccionado.componentesensorsector_set.filter(habilitado=True).__len__() == 1:
                 componente_sensor_sector = sector_seleccionado.componentesensorsector_set.get(habilitado=True)
                 ultimo_historico_componente_sensor_sector = componente_sensor_sector.\
                     historicoEstadoComponenteSensorSector.get(fechaBajaComponenteSensorSector__isnull=True)
@@ -164,7 +166,7 @@ def eliminar_sector(request):
         else:
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
     except ValueError as err:
-        return build_bad_request_error(response,err.args[0], err.args[1])
+        return build_bad_request_error(response, err.args[0], err.args[1])
     except (IntegrityError, TypeError, KeyError) as err:
         print err.args
         response.status_code = 401
@@ -180,7 +182,7 @@ def mostrar_sectores(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_ID_FINCA in datos):
+        if KEY_ID_FINCA in datos:
             if datos[KEY_ID_FINCA] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             finca_actual = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
@@ -198,11 +200,12 @@ def mostrar_sectores(request):
         else:
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
     except ValueError as err:
-        return build_bad_request_error(response,err.args[0], err.args[1])
+        return build_bad_request_error(response, err.args[0], err.args[1])
     except (IntegrityError, TypeError, KeyError) as err:
         print err.args
         response.status_code = 401
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
 
 @transaction.atomic()
 @login_requerido
@@ -213,7 +216,7 @@ def buscar_sector_id(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_ID_SECTOR) in datos:
+        if KEY_ID_SECTOR in datos:
             if datos[KEY_ID_SECTOR] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
@@ -223,9 +226,9 @@ def buscar_sector_id(request):
             return response
         else:
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-    except (ValueError,IntegrityError) as err:
+    except (ValueError, IntegrityError) as err:
         print err.args
-        response.content=err.args
+        response.content = err.args
 
 
 @transaction.atomic()
@@ -237,7 +240,7 @@ def mostrar_mecanismo_riego_sector(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_ID_SECTOR in datos):
+        if KEY_ID_SECTOR in datos:
             if datos[KEY_ID_SECTOR] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
@@ -247,11 +250,12 @@ def mostrar_mecanismo_riego_sector(request):
             if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
                                                     fechaFinEstadoSector__isnull=True).__len__() != 1:
                 raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
-            estado_mecanismo_sector_habilitado = EstadoMecanismoRiegoFincaSector.objects.get(nombreEstadoMecanismoRiegoFincaSector=ESTADO_HABILITADO)
+            estado_mecanismo_sector_habilitado = EstadoMecanismoRiegoFincaSector.objects.get(
+                nombreEstadoMecanismoRiegoFincaSector=ESTADO_HABILITADO)
             mecanismo_sector_lista = sector_seleccionado.mecanismoRiegoFincaSector.all()
             for mecanismo in mecanismo_sector_lista:
                 if mecanismo.historicoMecanismoRiegoFincaSector.filter(
-                        estado_mecanismo_riego_finca_sector= estado_mecanismo_sector_habilitado,
+                        estado_mecanismo_riego_finca_sector=estado_mecanismo_sector_habilitado,
                         fechaFinEstadoMecanismoRiegoFincaSector__isnull=True).__len__() == 1:
                     response.content = armar_response_content(mecanismo)
                     response.status_code = 200
@@ -287,16 +291,17 @@ def asignar_mecanismo_a_sector(request):
             estado_mecanismo_riego_finca_sector_habilitado = EstadoMecanismoRiegoFincaSector.objects.get(
                 nombreEstadoMecanismoRiegoFincaSector=ESTADO_HABILITADO)
             for mecanismo_sector in mecanismo_riego_sector_lista:
-                if HistoricoMecanismoRiegoFincaSector.objects.filter(fechaFinEstadoMecanismoRiegoFincaSector__isnull=True,
-                                                                     mecanismo_riego_finca_sector=mecanismo_sector,
-                                                                     estado_mecanismo_riego_finca_sector=
-                                                                     estado_mecanismo_riego_finca_sector_habilitado).__len__() != 0:
-                    raise ValueError (ERROR_SECTOR_YA_TIENE_MECANISMO_HABILITADO,
-                                      "El sector ya tiene un mecanismo de riego asignado")
-            mecanismo_riego_finca_seleccionado = MecanismoRiegoFinca.objects.get(idMecanismoRiegoFinca=
-                                                                                 datos[KEY_ID_MECANISMO_RIEGO_FINCA])
-            historico_mecanismo_riego_finca_actual = mecanismo_riego_finca_seleccionado.historicoMecanismoRiegoFincaList.\
-                get(fechaFinEstadoMecanismoRiegoFinca__isnull=True)
+                if HistoricoMecanismoRiegoFincaSector.objects.filter(
+                        fechaFinEstadoMecanismoRiegoFincaSector__isnull=True,
+                        mecanismo_riego_finca_sector=mecanismo_sector,
+                        estado_mecanismo_riego_finca_sector=estado_mecanismo_riego_finca_sector_habilitado) \
+                        .__len__() != 0:
+                    raise ValueError(ERROR_SECTOR_YA_TIENE_MECANISMO_HABILITADO,
+                                     "El sector ya tiene un mecanismo de riego asignado")
+            mecanismo_riego_finca_seleccionado = MecanismoRiegoFinca.objects.get(
+                idMecanismoRiegoFinca=datos[KEY_ID_MECANISMO_RIEGO_FINCA])
+            historico_mecanismo_riego_finca_actual = mecanismo_riego_finca_seleccionado.\
+                historicoMecanismoRiegoFincaList.get(fechaFinEstadoMecanismoRiegoFinca__isnull=True)
             if historico_mecanismo_riego_finca_actual.estado_mecanismo_riego_finca.nombreEstadoMecanismoRiegoFinca \
                     != ESTADO_HABILITADO:
                 raise ValueError(ERROR_MECANISMO_RIEGO_FINCA_NO_HABILITADO,
@@ -316,9 +321,9 @@ def asignar_mecanismo_a_sector(request):
             else:
                 mecanismo_riego_sector.presion = mecanismo_riego_finca_seleccionado.tipoMecanismoRiego.presionEstandar
             mecanismo_riego_sector.save()
-            nuevo_historico = HistoricoMecanismoRiegoFincaSector(fechaInicioEstadoMecanismoRiegoFincaSector=datetime.now(pytz.utc),
-                                                                 estado_mecanismo_riego_finca_sector
-                                                                 =estado_mecanismo_riego_finca_sector_habilitado)
+            nuevo_historico = HistoricoMecanismoRiegoFincaSector(
+                fechaInicioEstadoMecanismoRiegoFincaSector=datetime.now(pytz.utc),
+                estado_mecanismo_riego_finca_sector=estado_mecanismo_riego_finca_sector_habilitado)
             mecanismo_riego_sector.historicoMecanismoRiegoFincaSector.add(nuevo_historico, bulk=False)
             mecanismo_riego_sector.save()
             response.content = armar_response_content(None)
@@ -344,28 +349,28 @@ def deshabilitar_mecanismo_riego_sector(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR) in datos:
+        if KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR in datos:
             if datos[KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             if MecanismoRiegoFincaSector.objects.filter(
-                idMecanismoRiegoFincaSector=datos[KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR]).__len__() == 0:
+                    idMecanismoRiegoFincaSector=datos[KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR]).__len__() == 0:
                 raise ValueError(ERROR_MECANISMO_RIEGO_FINCA_SECTOR_NO_EXISTE,
                                  "El idMecanismoRiegoFincaSector no existe")
             mecanismo_riego_finca_sector = MecanismoRiegoFincaSector.objects.get(
                 idMecanismoRiegoFincaSector=datos[KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR])
-            estado_mecanismo_sector_habilitado = EstadoMecanismoRiegoFincaSector(
+            estado_mecanismo_sector_habilitado = EstadoMecanismoRiegoFincaSector.objects.get(
                 nombreEstadoMecanismoRiegoFincaSector=ESTADO_HABILITADO)
             if HistoricoMecanismoRiegoFincaSector.objects.filter(
-                mecanismo_riego_finca_sector=mecanismo_riego_finca_sector,
+                    mecanismo_riego_finca_sector=mecanismo_riego_finca_sector,
                     fechaFinEstadoMecanismoRiegoFincaSector__isnull=True,
-                estado_mecanismo_riego_finca_sector=estado_mecanismo_sector_habilitado).__len__() != 1:
-                raise ValueError (ERROR_MECANISMO_RIEGO_FINCA_SECTOR_NO_HABILITADO,
-                                  "El mecanismo sector no se encuentra habilitado")
+                    estado_mecanismo_riego_finca_sector=estado_mecanismo_sector_habilitado).__len__() != 1:
+                raise ValueError(ERROR_MECANISMO_RIEGO_FINCA_SECTOR_NO_HABILITADO, "El mecanismo sector no se encuentra"
+                                                                                   " habilitado")
             ultimo_historico_mecanismo_finca_sector = HistoricoMecanismoRiegoFincaSector.objects.get(
                 mecanismo_riego_finca_sector=mecanismo_riego_finca_sector,
-                fechaFinEstadoMecanismoRiegoFinca__isnull=True,
+                fechaFinEstadoMecanismoRiegoFincaSector__isnull=True,
                 estado_mecanismo_riego_finca_sector=estado_mecanismo_sector_habilitado)
-            ultimo_historico_mecanismo_finca_sector.fechaFinEstadoMecanismoRiegoFinca = datetime.now(pytz.utc)
+            ultimo_historico_mecanismo_finca_sector.fechaFinEstadoMecanismoRiegoFincaSector = datetime.now(pytz.utc)
             ultimo_historico_mecanismo_finca_sector.save()
             estado_mecanismo_finca_sector_deshabilitado = EstadoMecanismoRiegoFincaSector.objects.get(
                 nombreEstadoMecanismoRiegoFincaSector=ESTADO_DESHABILITADO)
@@ -419,14 +424,14 @@ def asignar_cultivo_a_sector(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_ID_SECTOR) in datos and (KEY_DESCRIPCION_CULTIVO in datos) and (KEY_FECHA_PLANTACION in datos) and\
+        if (KEY_ID_SECTOR in datos) and (KEY_DESCRIPCION_CULTIVO in datos) and (KEY_FECHA_PLANTACION in datos) and\
                 (KEY_NOMBRE_SUBTIPO_CULTIVO in datos) and (KEY_NOMBRE_CULTIVO in datos):
             if datos[KEY_ID_SECTOR] == '' or datos[KEY_DESCRIPCION_CULTIVO] == '' or datos[KEY_FECHA_PLANTACION] == ''\
                     or datos[KEY_NOMBRE_CULTIVO] == '' or datos[KEY_NOMBRE_SUBTIPO_CULTIVO] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             sector_seleccionado = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
-            if sector_seleccionado.cultivo_set.filter(habilitado=True).__len__() !=0:
-                raise ValueError (ERROR_SECTOR_YA_TIENE_CULTIVO_ASIGNADO, "El sector ya tiene un cultivo asignado")
+            if sector_seleccionado.cultivo_set.filter(habilitado=True).__len__() != 0:
+                raise ValueError(ERROR_SECTOR_YA_TIENE_CULTIVO_ASIGNADO, "El sector ya tiene un cultivo asignado")
             estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
             if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
                                                     fechaFinEstadoSector__isnull=True).__len__() != 1:
@@ -437,7 +442,7 @@ def asignar_cultivo_a_sector(request):
                                              habilitado=True).__len__() != 1:
                 raise ValueError(ERROR_SUBTIPO_CULTIVO_NO_HABILITADO, "El subtipo seleccionado no esta habilitado")
             subtipo_seleccionado = SubtipoCultivo.objects.get(nombreSubtipo=datos[KEY_NOMBRE_SUBTIPO_CULTIVO])
-            if subtipo_seleccionado.tipo_cultivo.habilitado != True:
+            if not subtipo_seleccionado.tipo_cultivo.habilitado:
                 raise ValueError(ERROR_TIPO_CULTIVO_NO_HABILITADO, "Este tipo de cultivo no esta habilitado")
             fecha_parseada = parsear_datos_fecha(datos[KEY_FECHA_PLANTACION])
             cultivo = Cultivo(nombre=datos[KEY_NOMBRE_CULTIVO], descripcion=datos[KEY_DESCRIPCION_CULTIVO],
@@ -469,7 +474,8 @@ def modificar_cultivo_sector(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_ID_CULTIVO & KEY_DESCRIPCION_CULTIVO and KEY_FECHA_PLANTACION & KEY_NOMBRE_CULTIVO)  in datos:
+        if (KEY_ID_CULTIVO in datos) and (KEY_DESCRIPCION_CULTIVO in datos) and (KEY_FECHA_PLANTACION in datos)\
+                and (KEY_NOMBRE_CULTIVO in datos):
             if datos[KEY_ID_CULTIVO] == '' or datos[KEY_DESCRIPCION_CULTIVO] == '' or\
                             datos[KEY_FECHA_PLANTACION] == '' or datos[KEY_NOMBRE_CULTIVO] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
@@ -478,12 +484,9 @@ def modificar_cultivo_sector(request):
             if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO], habilitado=True).__len__() == 0:
                 raise ValueError(ERROR_CULTIVO_NO_HABILITADO, "El cultivo no está habilitado")
             cultivo_seleccionado = Cultivo.objects.get(idCultivo=datos[KEY_ID_CULTIVO])
-            if KEY_DESCRIPCION_CULTIVO in datos:
-                cultivo_seleccionado.descripcion = datos[KEY_DESCRIPCION_CULTIVO]
-            if KEY_FECHA_PLANTACION in datos:
-                cultivo_seleccionado.fechaPlantacion = datos[KEY_FECHA_PLANTACION]
-            if KEY_NOMBRE_CULTIVO in datos:
-                cultivo_seleccionado.nombre = datos[KEY_NOMBRE_CULTIVO]
+            cultivo_seleccionado.descripcion = datos[KEY_DESCRIPCION_CULTIVO]
+            cultivo_seleccionado.fechaPlantacion = datos[KEY_FECHA_PLANTACION]
+            cultivo_seleccionado.nombre = datos[KEY_NOMBRE_CULTIVO]
             cultivo_seleccionado.save()
             response.content = armar_response_content(None)
             response.status_code = 200
@@ -574,8 +577,8 @@ def mostrar_cultivo_sector(request):
             if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
                                                     fechaFinEstadoSector__isnull=True).__len__() != 1:
                 raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
-            if sector_seleccionado.cultivo_set.filter(habilitado=True).__len__() == 0 :
-                response.content = "[]"
+            if sector_seleccionado.cultivo_set.filter(habilitado=True).__len__() == 0:
+                response.content = armar_response_content(None)
                 response.status_code = 200
                 return response
             cultivo_seleccionado = sector_seleccionado.cultivo_set.get(habilitado=True)
@@ -625,7 +628,6 @@ def mostrar_cultivo_sector_historico(request):
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 
-
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
@@ -635,7 +637,7 @@ def mostrar_componente_sensor_sector(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_ID_SECTOR in datos):
+        if KEY_ID_SECTOR in datos:
             if datos[KEY_ID_SECTOR] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
@@ -698,17 +700,20 @@ def asignar_componente_sensor(request):
                 raise ValueError(ERROR_COMPONENTE_SENSOR_NO_EXISTENTE, "No existe componente sensor con ese id")
             componente = ComponenteSensor.objects.get(idComponenteSensor=datos[KEY_ID_COMPONENTE_SENSOR])
             estado_componente_habilitado = EstadoComponenteSensor.objects.get(nombreEstado=ESTADO_HABILITADO)
-            if componente.historico_estado_componente_sensor_list.filter(fechaFinEstadoComponenteSensor__isnull=True,
-                                                                         estadoComponenteSensor=estado_componente_habilitado).__len__() == 0:
+            if componente.historico_estado_componente_sensor_list.filter(
+                    fechaFinEstadoComponenteSensor__isnull=True,
+                    estadoComponenteSensor=estado_componente_habilitado).__len__() == 0:
                 raise ValueError(ERROR_COMPONENTE_SENSOR_NO_HABILITADO, "El componente no esta habilitado")
-            if componente.componenteSensorSectorList.filter(habilitado=True).__len__() !=0:
+            if componente.componenteSensorSectorList.filter(habilitado=True).__len__() != 0:
                 raise ValueError(ERROR_COMPONENTE_SENSOR_YA_ASIGNADO, "El componente ya esta asignado a otro sector")
             componente_sensor_sector = ComponenteSensorSector(componente_sensor=componente, sector=sector_seleccionado,
                                                               habilitado=True)
-            estado_componente_sensor_sector_habilitado = EstadoComponenteSensorSector.objects.get(nombreEstadoComponenteSensorSector=ESTADO_HABILITADO)
-            nuevo_historico = HistoricoEstadoComponenteSensorSector(estadoComponenteSensorSector=estado_componente_sensor_sector_habilitado,
-                                                                    componenteSensorSector=componente_sensor_sector,
-                                                                    fechaAltaComponenteSensorSector=datetime.now(pytz.utc))
+            estado_componente_sensor_sector_habilitado = EstadoComponenteSensorSector.objects.get(
+                nombreEstadoComponenteSensorSector=ESTADO_HABILITADO)
+            nuevo_historico = HistoricoEstadoComponenteSensorSector(
+                estadoComponenteSensorSector=estado_componente_sensor_sector_habilitado,
+                componenteSensorSector=componente_sensor_sector,
+                fechaAltaComponenteSensorSector=datetime.now(pytz.utc))
             componente_sensor_sector.save()
             nuevo_historico.save()
             response.content = armar_response_content(None)
@@ -725,7 +730,6 @@ def asignar_componente_sensor(request):
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 
-
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
@@ -735,8 +739,8 @@ def desasignar_componente_sensor(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if  (KEY_ID_COMPONENTE_SENSOR in datos) and (KEY_ID_FINCA in datos):
-            if  datos[KEY_ID_COMPONENTE_SENSOR] == '' or datos[KEY_ID_FINCA] == '':
+        if(KEY_ID_COMPONENTE_SENSOR in datos) and (KEY_ID_FINCA in datos):
+            if datos[KEY_ID_COMPONENTE_SENSOR] == '' or datos[KEY_ID_FINCA] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             if Finca.objects.filter(idFinca=datos[KEY_ID_FINCA]).__len__() != 1:
                 raise ValueError(ERROR_FINCA_NO_ENCONTRADA, "No existe la finca ingresada")
@@ -750,17 +754,20 @@ def desasignar_componente_sensor(request):
                 raise ValueError(ERROR_COMPONENTE_SENSOR_NO_EXISTENTE, "No existe componente sensor con ese id")
 
             componente = ComponenteSensor.objects.get(idComponenteSensor=datos[KEY_ID_COMPONENTE_SENSOR])
-            if componente.componenteSensorSectorList.filter(habilitado=True).__len__() == 0 :
-                raise ValueError(ERROR_COMPONENTE_SENSOR_NO_ASIGNADO_A_SECTOR, "No se puede desasignar al componente ya que no esta asignado")
+            if componente.componenteSensorSectorList.filter(habilitado=True).__len__() == 0:
+                raise ValueError(ERROR_COMPONENTE_SENSOR_NO_ASIGNADO_A_SECTOR,
+                                 "No se puede desasignar al componente ya que no esta asignado")
             componente_sensor_sector = componente.componenteSensorSectorList.get(habilitado=True)
-            estado_componente_sensor_deshabilitado = EstadoComponenteSensorSector.objects.get(nombreEstadoComponenteSensorSector=ESTADO_DESHABILITADO)
+            estado_componente_sensor_deshabilitado = EstadoComponenteSensorSector.objects.get(
+                nombreEstadoComponenteSensorSector=ESTADO_DESHABILITADO)
             historico_actual = componente_sensor_sector.historicoEstadoComponenteSensorSector.get(
                 fechaBajaComponenteSensorSector__isnull=True)
             historico_actual.fechaBajaComponenteSensorSector = datetime.now(pytz.utc)
             historico_actual.save()
-            nuevo_historico = HistoricoEstadoComponenteSensorSector(estadoComponenteSensorSector=estado_componente_sensor_deshabilitado,
-                                                                    componenteSensorSector=componente_sensor_sector,
-                                                                    fechaAltaComponenteSensorSector=datetime.now(pytz.utc))
+            nuevo_historico = HistoricoEstadoComponenteSensorSector(
+                estadoComponenteSensorSector=estado_componente_sensor_deshabilitado,
+                componenteSensorSector=componente_sensor_sector,
+                fechaAltaComponenteSensorSector=datetime.now(pytz.utc))
             componente_sensor_sector.habilitado = False
             componente_sensor_sector.save()
             nuevo_historico.save()

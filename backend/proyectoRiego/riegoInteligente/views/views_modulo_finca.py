@@ -23,30 +23,101 @@ def obtener_fincas_por_usuario(request):
         lista_dto_finca_rol = []
         for usuarioFinca in usuario.usuarioFincaList.all():
             finca = usuarioFinca.finca
-            ultimo_historico = HistoricoEstadoFinca.objects.get(finca=finca, fechaFinEstadoFinca__isnull=True)
-            if ultimo_historico.estadoFinca.nombreEstadoFinca == (ESTADO_HABILITADO):
-                rol_usuario_finca = RolUsuarioFinca.objects.get(usuarioFinca=usuarioFinca,
-                                                                fechaBajaRolUsuarioFinca__isnull=True)
-                nombre_rol = rol_usuario_finca.rol.nombreRol
-                lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre, nombreRol=nombre_rol,
-                                                       idFinca=finca.idFinca, ubicacion=finca.ubicacion,
-                                                       estadoFinca=ESTADO_HABILITADO))
-                lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre, nombreRol="",
-                                                       idFinca=finca.idFinca, ubicacion=finca.ubicacion,
-                                                       estadoFinca=ESTADO_PENDIENTE_APROBACION))
-            elif ultimo_historico.estadoFinca.nombreEstadoFinca == ESTADO_DESHABILITADO:
-                nombre_rol = ""
-                lista_roles = usuarioFinca.rolUsuarioFincaList.all()
-                for rolusuario in lista_roles:
-                    if rolusuario.rol.nombreRol == ROL_ENCARGADO:
-                         nombre_rol = ROL_ENCARGADO
-                lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre, nombreRol=nombre_rol,
-                                                       idFinca= finca.idFinca, ubicacion=finca.ubicacion,
-                                                       estadoFinca=ESTADO_DESHABILITADO))
+            if UsuarioFinca.objects.filter(usuario=user.datosusuario, finca=finca). __len__() != 1:
+                usuario_finca_lista = UsuarioFinca.objects.filter(usuario=user.datosusuario, finca=finca)
+                longitud_deseada = usuario_finca_lista.__len__()
+                longitud = 0
+                for usr in usuario_finca_lista:
+                    if usr.fechaBajaUsuarioFinca:
+                        longitud += 1
+                if longitud_deseada == longitud:
+                    ultimo_usuario = UsuarioFinca.objects.filter(usuario=user.datosusuario, finca=finca) \
+                    .order_by("-fechaAltaUsuarioFinca").last()
+                    ultimo_historico = HistoricoEstadoFinca.objects.get(finca=finca, fechaFinEstadoFinca__isnull=True)
+                    if ultimo_historico.estadoFinca.nombreEstadoFinca == (ESTADO_HABILITADO):
+                        rol_usuario_finca = RolUsuarioFinca.objects.get(usuarioFinca=usuarioFinca,
+                                                                        fechaBajaRolUsuarioFinca__isnull=True)
+                        nombre_rol = rol_usuario_finca.rol.nombreRol
+                        lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre,
+                                                               nombreRol=nombre_rol,
+                                                               tamanio=finca.tamanio,
+                                                               idFinca=finca.idFinca,
+                                                               ubicacion=finca.ubicacion,
+                                                               estadoFinca=ESTADO_HABILITADO))
+                    elif ultimo_historico.estadoFinca.nombreEstadoFinca == ESTADO_DESHABILITADO:
+                        nombre_rol = ""
+                        lista_roles = usuarioFinca.rolUsuarioFincaList.all()
+                        for rolusuario in lista_roles:
+                            if rolusuario.rol.nombreRol == ROL_ENCARGADO:
+                                nombre_rol = ROL_ENCARGADO
+                        lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre,
+                                                               nombreRol=nombre_rol,
+                                                               idFinca=finca.idFinca,
+                                                               tamanio=finca.tamanio,
+                                                               ubicacion=finca.ubicacion,
+                                                               estadoFinca=ESTADO_DESHABILITADO))
+                elif usuarioFinca.fechaBajaUsuarioFinca is None:
+                    ultimo_historico = HistoricoEstadoFinca.objects.get(finca=finca, fechaFinEstadoFinca__isnull=True)
+                    if ultimo_historico.estadoFinca.nombreEstadoFinca == (ESTADO_HABILITADO):
+                        rol_usuario_finca = RolUsuarioFinca.objects.get(usuarioFinca=usuarioFinca,
+                                                                        fechaBajaRolUsuarioFinca__isnull=True)
+                        nombre_rol = rol_usuario_finca.rol.nombreRol
+                        lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre,
+                                                               nombreRol=nombre_rol,
+                                                               idFinca=finca.idFinca,
+                                                               tamanio=finca.tamanio,
+                                                               ubicacion=finca.ubicacion,
+                                                               estadoFinca=ESTADO_HABILITADO))
+                    elif ultimo_historico.estadoFinca.nombreEstadoFinca == ESTADO_DESHABILITADO:
+                        nombre_rol = ""
+                        lista_roles = usuarioFinca.rolUsuarioFincaList.all()
+                        for rolusuario in lista_roles:
+                            if rolusuario.rol.nombreRol == ROL_ENCARGADO:
+                                 nombre_rol = ROL_ENCARGADO
+                        lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre,
+                                                               nombreRol=nombre_rol,
+                                                               idFinca= finca.idFinca,
+                                                               tamanio=finca.tamanio,
+                                                               ubicacion=finca.ubicacion,
+                                                               estadoFinca=ESTADO_DESHABILITADO))
+                    else:
+                        lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre,
+                                                               nombreRol="",
+                                                               idFinca=finca.idFinca,
+                                                               ubicacion=finca.ubicacion,
+                                                               tamanio=finca.tamanio,
+                                                               estadoFinca=ultimo_historico.estadoFinca.nombreEstadoFinca))
             else:
-                lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre, nombreRol="",
-                                                       idFinca=finca.idFinca, ubicacion=finca.ubicacion,
-                                                       estadoFinca=ultimo_historico.estadoFinca.nombreEstadoFinca))
+                ultimo_historico = HistoricoEstadoFinca.objects.get(finca=finca, fechaFinEstadoFinca__isnull=True)
+                if ultimo_historico.estadoFinca.nombreEstadoFinca == (ESTADO_HABILITADO):
+                    rol_usuario_finca = RolUsuarioFinca.objects.get(usuarioFinca=usuarioFinca,
+                                                                    fechaBajaRolUsuarioFinca__isnull=True)
+                    nombre_rol = rol_usuario_finca.rol.nombreRol
+                    lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre,
+                                                           nombreRol=nombre_rol,
+                                                           tamanio=finca.tamanio,
+                                                           idFinca=finca.idFinca,
+                                                           ubicacion=finca.ubicacion,
+                                                           estadoFinca=ESTADO_HABILITADO))
+                elif ultimo_historico.estadoFinca.nombreEstadoFinca == ESTADO_DESHABILITADO:
+                    nombre_rol = ""
+                    lista_roles = usuarioFinca.rolUsuarioFincaList.all()
+                    for rolusuario in lista_roles:
+                        if rolusuario.rol.nombreRol == ROL_ENCARGADO:
+                            nombre_rol = ROL_ENCARGADO
+                    lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre,
+                                                           nombreRol=nombre_rol,
+                                                           idFinca=finca.idFinca,
+                                                           tamanio=finca.tamanio,
+                                                           ubicacion=finca.ubicacion,
+                                                           estadoFinca=ESTADO_DESHABILITADO))
+                else:
+                    lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre,
+                                                           nombreRol="",
+                                                           idFinca=finca.idFinca,
+                                                           ubicacion=finca.ubicacion,
+                                                           tamanio=finca.tamanio,
+                                                           estadoFinca=ultimo_historico.estadoFinca.nombreEstadoFinca))
         response.content = armar_response_list_content(lista_dto_finca_rol)
         response.status_code = 200
         return response
@@ -103,15 +174,15 @@ def crear_finca(request):
             #se guarda el objeto en la base de datos
             proveedorInformacionClimaticaFinca.save()
             #se busca la instancia de estado finca "pendienteaprobacion"
-            estadoFinca = EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_PENDIENTE_APROBACION)
+            estado_finca = EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_PENDIENTE_APROBACION)
             #se realiza la creación de un histórico con fecha actual y relacionado al estado encontrado
-            historicoCreado = HistoricoEstadoFinca(fechaInicioEstadoFinca=datetime.now(pytz.utc), estadoFinca=estadoFinca)
+            historico_creado = HistoricoEstadoFinca(fechaInicioEstadoFinca=datetime.now(pytz.utc), estadoFinca=estado_finca)
             #se setea la finca al histórico creado
-            historicoCreado.finca = finca_creada
+            historico_creado.finca = finca_creada
             #se guarda el histórico en la base de datos
-            historicoCreado.save()
+            historico_creado.save()
             #se agrega el historico a la lista de históricos de la finca
-            finca_creada.historicoEstadoFincaList.add(historicoCreado)
+            finca_creada.historicoEstadoFincaList.add(historico_creado)
             #se obtiene el usuario de la petición actual
             user = request.user
             #se obtienen los datos del usuario
@@ -160,9 +231,6 @@ def buscar_proveedores_informacion(request):
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 
-
-
-
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_GET])
@@ -174,10 +242,10 @@ def obtener_fincas_estado_pendiente(request):
         estado_pendiente = EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_PENDIENTE_APROBACION)
         historicos_pendientes = HistoricoEstadoFinca.objects.filter(estadoFinca=estado_pendiente,
                                                                     fechaFinEstadoFinca__isnull=True)
-        fincas_pendientes= []
+        fincas_pendientes = []
         for historico in historicos_pendientes:
             if UsuarioFinca.objects.filter(finca=historico.finca, usuario=usuario).__len__() == 1:
-                 fincas_pendientes.append(historico.finca)
+                fincas_pendientes.append(historico.finca)
         response.content = armar_response_list_content(fincas_pendientes)
         response.status_code = 200
         return response
@@ -185,34 +253,28 @@ def obtener_fincas_estado_pendiente(request):
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 
-
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
-def aprobar_finca(request, idFinca):
-    response=HttpResponse()
-    datos = obtener_datos_json(request)
+def aprobar_finca(request, id_finca):
+    response = HttpResponse()
+    print request.user.username
     if request.user.is_staff == False:
         raise ValueError(ERROR_NO_TIENE_PERMISOS, "El usuario no tiene permisos para acceder a esta pagina")
     try:
-        # if datos == '':
-        #     raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        # if (KEY_ID_FINCA) in datos:
-        #     if datos[KEY_ID_FINCA] == '':
-        #         raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-            if Finca.objects.filter(idFinca=idFinca).__len__() == 1:
-                    finca_por_aprobar = Finca.objects.get(idFinca=idFinca)
+            if Finca.objects.filter(idFinca=id_finca).__len__() == 1:
+                    finca_por_aprobar = Finca.objects.get(idFinca=id_finca)
                     ultimo_historico = finca_por_aprobar.historicoEstadoFincaList.get(fechaFinEstadoFinca__isnull=True)
                     if ultimo_historico.estadoFinca.nombreEstadoFinca == ESTADO_HABILITADO:
                         raise ValueError(ERROR_FINCA_YA_APROBADA, "Esta finca ya esta aprobada")
 
                     estado_habilitado = EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_HABILITADO)
                     estado_pendiente_aprobacion = EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_PENDIENTE_APROBACION)
-                    historico_viejo=HistoricoEstadoFinca.objects.get(estadoFinca=estado_pendiente_aprobacion,
-                                                                     finca=finca_por_aprobar)
+                    historico_viejo = HistoricoEstadoFinca.objects.get(estadoFinca=estado_pendiente_aprobacion,
+                                                                       finca=finca_por_aprobar)
                     historico_viejo.fechaFinEstadoFinca = datetime.now(pytz.utc)
                     historico_viejo.save()
-                    historico_nuevo = HistoricoEstadoFinca(estadoFinca=estado_habilitado,finca=finca_por_aprobar,
+                    historico_nuevo = HistoricoEstadoFinca(estadoFinca=estado_habilitado, finca=finca_por_aprobar,
                                                            fechaInicioEstadoFinca=datetime.now(pytz.utc))
                     finca_por_aprobar.historicoEstadoFincaList.add(historico_nuevo, bulk=False)
                     finca_por_aprobar.save()
@@ -223,14 +285,8 @@ def aprobar_finca(request, idFinca):
                     rol_usuario_finca.rol = rol_encargado
                     rol_usuario_finca.save()
                     usuario_finca.rolUsuarioFincaList.add(rol_usuario_finca)
-
-                    # usuario_finca.save()
-                    # with mail.get_connection() as connection:
-                    #     mail.EmailMessage('SmartFarming: Estado de Aprobación de su finca','Su finca ha sido aprobada, y usted ya dispone del rol de Encargado',from1='facundocianciop',
-                    #                       to1='facundocianciop',connection=connection).send()
-                    #FALTA MANDAR EL MAIL, CONFIGURAR LA CONTRASEÑA Y EL PUERTO
-                    response.content=armar_response_content(None)
-                    response.status_code=200
+                    response.content = armar_response_content(None)
+                    response.status_code = 200
                     return response
             else:
                 raise ValueError(ERROR_FINCA_NO_ENCONTRADA, "No se encontro la finca seleccionada")
@@ -244,13 +300,13 @@ def aprobar_finca(request, idFinca):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
-def no_aprobar_finca(request, idFinca):
+def no_aprobar_finca(request, id_finca):
     response = HttpResponse()
-    if request.user.is_staff == False:
+    if not request.user.is_staff:
         raise ValueError(ERROR_NO_TIENE_PERMISOS, "El usuario no tiene permisos para acceder a esta pagina")
     try:
-            if Finca.objects.filter(idFinca=idFinca).__len__() == 1:
-                    finca_por_aprobar = Finca.objects.get(idFinca=idFinca)
+            if Finca.objects.filter(idFinca=id_finca).__len__() == 1:
+                    finca_por_aprobar = Finca.objects.get(idFinca=id_finca)
                     ultimo_historico = finca_por_aprobar.historicoEstadoFincaList.get(fechaFinEstadoFinca__isnull=True)
                     if ultimo_historico.estadoFinca.nombreEstadoFinca == ESTADO_NO_APROBADO:
                         raise ValueError(ERROR_FINCA_YA_DESAPROBADA, "Esta finca ya esta desaprobada")
@@ -261,17 +317,9 @@ def no_aprobar_finca(request, idFinca):
                     historico_viejo.fechaFinEstadoFinca = datetime.now(pytz.utc)
                     historico_viejo.save()
                     historico_nuevo=HistoricoEstadoFinca(estadoFinca=estado_no_aprobada,finca=finca_por_aprobar,
-                                                fechaInicioEstadoFinca=datetime.now(pytz.utc))
+                                                         fechaInicioEstadoFinca=datetime.now(pytz.utc))
                     historico_nuevo.save()
                     finca_por_aprobar.save()
-                    #finca_por_aprobar.historicoEstadoFincaList.add(historico_nuevo)
-
-                    usuario_finca = UsuarioFinca.objects.get(finca=finca_por_aprobar)
-                    # with mail.get_connection() as connection:
-                    #     mail.EmailMessage('SmartFarming: Estado de Aprobación de su finca',body=datos['mail'],from1='facundocianciop',
-                    #                       to1='facundocianciop',connection=connection).send()
-                    #FALTA MANDAR EL MAIL, CONFIGURAR LA CONTRASEÑA Y EL PUERTO
-                    #ACA PENSE QUE EN CASO DE RECHAZAR LA FINCA QUE EL ADMINISTRADOR ESCRIBIERA UN MENSAJE DICIENDO POR QUÉ LA RECHAZÓ
                     response.content = armar_response_content(None)
                     response.status_code = 200
                     return response
@@ -299,7 +347,8 @@ def mostrar_fincas_encargado(request):
         usuario_finca_lista = UsuarioFinca.objects.filter(usuario=usuario, fechaBajaUsuarioFinca__isnull=True)
         fincas_encargado = []
         for usuario_finca in usuario_finca_lista:
-            if RolUsuarioFinca.objects.filter(usuarioFinca=usuario_finca, fechaBajaRolUsuarioFinca__isnull=True).__len__() != 0:
+            if RolUsuarioFinca.objects.filter(usuarioFinca=usuario_finca,
+                                              fechaBajaRolUsuarioFinca__isnull=True).__len__() != 0:
                 rol = RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca, fechaBajaRolUsuarioFinca__isnull=True).rol
                 if rol.nombreRol == ROL_ENCARGADO:
                     fincas_encargado.append(usuario_finca.finca)
@@ -314,7 +363,7 @@ def mostrar_fincas_encargado(request):
 @login_requerido
 @metodos_requeridos([METHOD_POST])
 def modificar_finca(request):
-    response=HttpResponse()
+    response = HttpResponse()
     datos = obtener_datos_json(request)
     try:
         if datos == '':
@@ -334,7 +383,7 @@ def modificar_finca(request):
                                                                     fechaFinEstadoFinca__isnull=True)
 
                 if historico_actual.estadoFinca.nombreEstadoFinca != datos[KEY_ESTADO_FINCA]:
-                    estado__nuevo=  EstadoFinca.objects.get(nombreEstadoFinca=datos[KEY_ESTADO_FINCA])
+                    estado__nuevo = EstadoFinca.objects.get(nombreEstadoFinca=datos[KEY_ESTADO_FINCA])
                     historico_actual.fechaFinEstadoFinca = datetime.now(pytz.utc)
                     historico_actual.save()
                     historico_nuevo = HistoricoEstadoFinca(fechaInicioEstadoFinca=datetime.now(pytz.utc),
@@ -386,13 +435,17 @@ def eliminar_finca(request):
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             if Finca.objects.filter(idFinca=datos[KEY_ID_FINCA]).__len__() == 1:
                 finca_a_eliminar = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+                estado_finca_deshabilitado = EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_DESHABILITADO)
+                if finca_a_eliminar.historicoEstadoFincaList.filter(fechaFinEstadoFinca__isnull=True,
+                                                                    estadoFinca=estado_finca_deshabilitado):
+                    raise ValueError(ERROR_FINCA_YA_DESHABILITADA, "La finca ya esta deshabilitada")
                 user = request.user
                 usuario = user.datosusuario
                 usuario_finca = UsuarioFinca.objects.get(usuario=usuario, finca=finca_a_eliminar,
                                                          fechaBajaUsuarioFinca__isnull=True)
                 rol_usuario_finca = RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,
                                                                 fechaBajaRolUsuarioFinca__isnull=True)
-                if rol_usuario_finca.rol.nombreRol != 'encargado':
+                if rol_usuario_finca.rol.nombreRol != ROL_ENCARGADO:
                     raise ValueError(ERROR_USUARIO_NO_ENCARGADO, "Este usuario no tiene los privilegios para eliminar "
                                                                  "esta finca")
 
@@ -406,7 +459,7 @@ def eliminar_finca(request):
                                                        finca=finca_a_eliminar, estadoFinca=estado__nuevo)
                 historico_nuevo.save()
                 finca_a_eliminar.save()
-                usuario_finca_list = finca_a_eliminar.usuariofinca_set.all()
+                usuario_finca_list = finca_a_eliminar.usuariofinca_set.filter(fechaBajaUsuarioFinca__isnull=True)
                 for usuario_finca_a_eliminar in usuario_finca_list:
                     usuario_finca_a_eliminar.fechaBajaUsuarioFinca = datetime.now(pytz.utc)
                     ultimo_historico = RolUsuarioFinca.objects.get(usuarioFinca= usuario_finca_a_eliminar,
@@ -427,6 +480,64 @@ def eliminar_finca(request):
         print err.args
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+def rehabilitar_finca(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if (KEY_ID_FINCA) in datos:
+            if datos[KEY_ID_FINCA] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if Finca.objects.filter(idFinca=datos[KEY_ID_FINCA]).__len__() == 1:
+                finca_a_rehabilitar = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+                ultimo_historico = finca_a_rehabilitar.historicoEstadoFincaList.get(fechaFinEstadoFinca__isnull=True)
+                if ultimo_historico.estadoFinca.nombreEstadoFinca == ESTADO_HABILITADO:
+                    raise ValueError(ERROR_FINCA_YA_HABILITADA, "Esta finca ya esta habilitada")
+                usuario_finca = UsuarioFinca.objects.filter(finca=finca_a_rehabilitar, usuario=request.user.datosusuario)\
+                    .order_by('-fechaAltaUsuarioFinca').first()
+                es_encargado = False
+                for rol_usuario_fin in usuario_finca.rolUsuarioFincaList.all():
+                    if rol_usuario_fin.rol.nombreRol == ROL_ENCARGADO:
+                        es_encargado = True
+                if not es_encargado:
+                    raise ValueError(ERROR_USUARIO_NO_ES_ENCARGADO, "Este usuario no puede volver a habilitar la finca "
+                                                                    "ya que nunca fue encargado")
+                estado_habilitado = EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_HABILITADO)
+                historico_viejo = finca_a_rehabilitar.historicoEstadoFincaList.get(fechaFinEstadoFinca__isnull=True)
+                historico_viejo.fechaFinEstadoFinca = datetime.now(pytz.utc)
+                historico_viejo.save()
+                historico_nuevo = HistoricoEstadoFinca(estadoFinca=estado_habilitado, finca=finca_a_rehabilitar,
+                                                       fechaInicioEstadoFinca=datetime.now(pytz.utc))
+                finca_a_rehabilitar.historicoEstadoFincaList.add(historico_nuevo, bulk=False)
+                finca_a_rehabilitar.save()
+                usuario_finca_nuevo = UsuarioFinca(finca=finca_a_rehabilitar, usuario=request.user.datosusuario,
+                                                   fechaAltaUsuarioFinca=datetime.now(pytz.utc))
+                usuario_finca_nuevo.save()
+                rol_encargado = Rol.objects.get(nombreRol=ROL_ENCARGADO)
+                rol_usuario_finca = RolUsuarioFinca()
+                rol_usuario_finca.fechaAltaRolUsuarioFinca = datetime.now(pytz.utc)
+                rol_usuario_finca.rol = rol_encargado
+                rol_usuario_finca.save()
+                usuario_finca_nuevo.rolUsuarioFincaList.add(rol_usuario_finca)
+                response.content = armar_response_content(None)
+                response.status_code = 200
+                return response
+            else:
+                raise ValueError(ERROR_FINCA_NO_ENCONTRADA, "No se encontro la finca seleccionada")
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except ValueError as err:
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
@@ -436,7 +547,7 @@ def buscar_usuarios_no_encargado(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_ID_FINCA) in datos:
+        if KEY_ID_FINCA in datos:
             if datos[KEY_ID_FINCA] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
@@ -446,7 +557,7 @@ def buscar_usuarios_no_encargado(request):
             for usuario_finca in usuarios_finca:
 
                 rol_actual = RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,
-                                                            fechaBajaRolUsuarioFinca__isnull=True)
+                                                         fechaBajaRolUsuarioFinca__isnull=True)
                 if rol_actual.rol != rol_encargado:
                     dto_usuario_finca_list.append(DtoUsuarioFinca(idUsuarioFinca=usuario_finca.idUsuarioFinca,
                                                                   usuario=usuario_finca.usuario.user.username,
@@ -488,12 +599,12 @@ def buscar_usuarios_finca(request):
                                                                 fechaBajaRolUsuarioFinca__isnull=True)
 
                     dto_usuario_finca_list.append(DtoUsuarioFinca(idUsuarioFinca=usuario_finca.idUsuarioFinca,
-                                                                      usuario=usuario_finca.usuario.user.username,
-                                                                      nombreUsuario=usuario_finca.usuario.user.first_name,
-                                                                      apellidoUsuario=usuario_finca.usuario.user.last_name,
-                                                                      email=usuario_finca.usuario.user.email,
-                                                                      imagenUsuario=usuario_finca.usuario.imagenUsuario,
-                                                                      rol= rol_actual.rol.nombreRol))
+                                                                  usuario=usuario_finca.usuario.user.username,
+                                                                  nombreUsuario=usuario_finca.usuario.user.first_name,
+                                                                  apellidoUsuario=usuario_finca.usuario.user.last_name,
+                                                                  email=usuario_finca.usuario.user.email,
+                                                                  imagenUsuario=usuario_finca.usuario.imagenUsuario,
+                                                                  rol= rol_actual.rol.nombreRol))
             response.content = armar_response_list_content(dto_usuario_finca_list)
             response.status_code=200
             return response
@@ -525,7 +636,7 @@ def eliminar_usuario_finca(request):
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
     except IntegrityError as e:
         print e.args
-        response.status_code=401
+        response.status_code = 401
         return response
 
 
@@ -552,7 +663,7 @@ def buscar_usuarios_no_finca(request):
                                                  fechaBajaUsuarioFinca__isnull=True).__len__() == 0) and
                         ((usuario == usuario_logueado)==False)) and usuario.user.is_staff == False:
                     usuarios.append(usuario)
-            response.content=armar_response_list_content(usuarios)
+            response.content = armar_response_list_content(usuarios)
             response.status_code = 200
             return response
         else:
@@ -630,8 +741,8 @@ def modificar_rol_usuario(request):
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
     except (ValueError,IntegrityError) as err:
         print err.args
-        response.content=err.args
-        response.status_code=401
+        response.content = err.args
+        response.status_code = 401
 
 
 @transaction.atomic()
@@ -664,12 +775,12 @@ def devolver_permisos(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_ID_FINCA) in datos:
+        if KEY_ID_FINCA in datos:
             if datos[KEY_ID_FINCA] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
-            user=request.user
-            usuario=user.datosusuario
+            user = request.user
+            usuario = user.datosusuario
             usuario_finca = UsuarioFinca.objects.get(usuario=usuario, finca=finca)
             rol_usuario = RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca, fechaBajaRolUsuarioFinca__isnull=True)
             rol = rol_usuario.rol
@@ -682,4 +793,3 @@ def devolver_permisos(request):
     except (IntegrityError, TypeError, KeyError) as err:
         print err.args
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
-
