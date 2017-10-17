@@ -17,7 +17,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *usuarioTextField;
 @property (weak, nonatomic) IBOutlet UITextField *contraseniaTextField;
 
-
 @end
 
 @implementation SFInicioSesionViewController

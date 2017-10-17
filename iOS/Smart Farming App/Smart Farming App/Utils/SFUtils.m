@@ -28,6 +28,14 @@
     return [SFUtils colorFromHexString:kColorCelesteHex alpha:1.0];
 }
 
++(UIColor *)formCellColor {
+    return [UIColor whiteColor];
+}
+
++(UIColor *)formCellErrorColor {
+    return [UIColor orangeColor];
+}
+
 #pragma mark - Font
 
 #pragma mark - Sizing

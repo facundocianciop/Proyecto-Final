@@ -48,6 +48,9 @@
 		111F7E0B1F94ED0A002615D5 /* SFPerfilUsuarioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 111F7E0A1F94ED0A002615D5 /* SFPerfilUsuarioViewController.m */; };
 		111F7E0E1F94FE4F002615D5 /* RespuestaMostrarUsuario.m in Sources */ = {isa = PBXBuildFile; fileRef = 111F7E0D1F94FE4F002615D5 /* RespuestaMostrarUsuario.m */; };
 		111F7E111F951459002615D5 /* SFNavegarEstadoNoAutenticadoSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 111F7E101F951459002615D5 /* SFNavegarEstadoNoAutenticadoSegue.m */; };
+		111F8F0F1F95AF2400AB7E8F /* SFRecuperarCuentaNuevaContraseniaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 111F8F0E1F95AF2400AB7E8F /* SFRecuperarCuentaNuevaContraseniaViewController.m */; };
+		111F8F151F95B2E600AB7E8F /* SFModificarUsuarioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 111F8F141F95B2E600AB7E8F /* SFModificarUsuarioViewController.m */; };
+		111F8F181F95B32E00AB7E8F /* SFCambiarContraseniaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 111F8F171F95B32E00AB7E8F /* SFCambiarContraseniaViewController.m */; };
 		11CD00901F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CD008F1F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.m */; };
 		11CD00941F8F178D00C58C49 /* SolicitudInicioSesion.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CD00931F8F178D00C58C49 /* SolicitudInicioSesion.m */; };
 		11CD00971F8F1B7700C58C49 /* IdentificadoresSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CD00961F8F1B7700C58C49 /* IdentificadoresSegue.m */; };
@@ -168,6 +171,12 @@
 		111F7E0D1F94FE4F002615D5 /* RespuestaMostrarUsuario.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RespuestaMostrarUsuario.m; sourceTree = "<group>"; };
 		111F7E0F1F951459002615D5 /* SFNavegarEstadoNoAutenticadoSegue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFNavegarEstadoNoAutenticadoSegue.h; sourceTree = "<group>"; };
 		111F7E101F951459002615D5 /* SFNavegarEstadoNoAutenticadoSegue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFNavegarEstadoNoAutenticadoSegue.m; sourceTree = "<group>"; };
+		111F8F0D1F95AF2400AB7E8F /* SFRecuperarCuentaNuevaContraseniaViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFRecuperarCuentaNuevaContraseniaViewController.h; sourceTree = "<group>"; };
+		111F8F0E1F95AF2400AB7E8F /* SFRecuperarCuentaNuevaContraseniaViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFRecuperarCuentaNuevaContraseniaViewController.m; sourceTree = "<group>"; };
+		111F8F131F95B2E600AB7E8F /* SFModificarUsuarioViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFModificarUsuarioViewController.h; sourceTree = "<group>"; };
+		111F8F141F95B2E600AB7E8F /* SFModificarUsuarioViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFModificarUsuarioViewController.m; sourceTree = "<group>"; };
+		111F8F161F95B32E00AB7E8F /* SFCambiarContraseniaViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFCambiarContraseniaViewController.h; sourceTree = "<group>"; };
+		111F8F171F95B32E00AB7E8F /* SFCambiarContraseniaViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFCambiarContraseniaViewController.m; sourceTree = "<group>"; };
 		11CD008E1F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFNavegarEstadoAutenticadoSegue.h; sourceTree = "<group>"; };
 		11CD008F1F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFNavegarEstadoAutenticadoSegue.m; sourceTree = "<group>"; };
 		11CD00921F8F178D00C58C49 /* SolicitudInicioSesion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SolicitudInicioSesion.h; sourceTree = "<group>"; };
@@ -542,6 +551,12 @@
 				A101571C1F90041F00179ED7 /* SFRecuperarCuentaViewController.m */,
 				111F7E091F94ED0A002615D5 /* SFPerfilUsuarioViewController.h */,
 				111F7E0A1F94ED0A002615D5 /* SFPerfilUsuarioViewController.m */,
+				111F8F0D1F95AF2400AB7E8F /* SFRecuperarCuentaNuevaContraseniaViewController.h */,
+				111F8F0E1F95AF2400AB7E8F /* SFRecuperarCuentaNuevaContraseniaViewController.m */,
+				111F8F131F95B2E600AB7E8F /* SFModificarUsuarioViewController.h */,
+				111F8F141F95B2E600AB7E8F /* SFModificarUsuarioViewController.m */,
+				111F8F161F95B32E00AB7E8F /* SFCambiarContraseniaViewController.h */,
+				111F8F171F95B32E00AB7E8F /* SFCambiarContraseniaViewController.m */,
 			);
 			path = "Modulo Seguridad";
 			sourceTree = "<group>";
@@ -775,6 +790,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Smart Farming App/Pods-Smart Farming App-resources.sh",
 				"${PODS_ROOT}/CCTextFieldEffects/CCTextFieldEffects/pencil.png",
+				"${PODS_ROOT}/XLForm/XLForm/XLForm.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -883,6 +899,7 @@
 				1116D6DA1F94424F0088D61B /* LGSideMenuController.m in Sources */,
 				1116BA771F8C5A2C005C9AFF /* ContextoUsuario.m in Sources */,
 				11F020811F8F078D00DBC1DC /* SFTextInputBaseViewController.m in Sources */,
+				111F8F181F95B32E00AB7E8F /* SFCambiarContraseniaViewController.m in Sources */,
 				1116DA9B1F906F8C0057A048 /* RespuestaMostrarFincas.m in Sources */,
 				1116BA7A1F8C5A2C005C9AFF /* ServiciosModuloSeguridad.m in Sources */,
 				1116BA7E1F8C5A2C005C9AFF /* ServiciosModuloFinca.m in Sources */,
@@ -901,6 +918,7 @@
 				1116DA9F1F90726C0057A048 /* ServiciosModuloRiego.m in Sources */,
 				111D1DC31F92E01100E3A168 /* SFTableViewControllerBase.m in Sources */,
 				11F020841F8F083F00DBC1DC /* SFTextField.m in Sources */,
+				111F8F151F95B2E600AB7E8F /* SFModificarUsuarioViewController.m in Sources */,
 				1116D6EE1F94565F0088D61B /* SFNavegarASeccionFincaSegue.m in Sources */,
 				A1AE0B8C1F8E8E1F009B4494 /* SolicitudServicioFincaBase.m in Sources */,
 				1116D6D91F94424F0088D61B /* UIViewController+LGSideMenuController.m in Sources */,
@@ -915,6 +933,7 @@
 				11F0207E1F8F057900DBC1DC /* SFInicioSesionViewController.m in Sources */,
 				A1AE0B8F1F8E8F0B009B4494 /* ErrorServicioBase.m in Sources */,
 				1116D6E21F9444890088D61B /* FincaLeftMenuTableViewController.m in Sources */,
+				111F8F0F1F95AF2400AB7E8F /* SFRecuperarCuentaNuevaContraseniaViewController.m in Sources */,
 				111F7E0B1F94ED0A002615D5 /* SFPerfilUsuarioViewController.m in Sources */,
 				1116BA321F8C5866005C9AFF /* AppDelegate.m in Sources */,
 				111D1DC01F92DEBC00E3A168 /* SFFincasOtrosRolesViewController.m in Sources */,

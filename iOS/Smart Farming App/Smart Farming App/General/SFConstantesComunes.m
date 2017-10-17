@@ -31,6 +31,12 @@ NSString *const kColorVerdeMasClaroHex = @"#C5E86C";
 
 NSString *const kRolEncargado = @"encargado";
 
+#pragma mark - Regex
+
+NSString *const kRegexContrasenia = @"^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,32}$";
+NSString *const kRegexDNI = @"(^$|^([0-9]{8}))";
+NSString *const kRegexCUIT = @"(^$|^\\d{2}\\-\\d{8}\\-\\d{1}$)";
+
 #pragma mark - Mensajes errores
 
 NSString *const kErrorDesconocido = @"Error desconocido";

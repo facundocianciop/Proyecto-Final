@@ -41,7 +41,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JAt-UJ-eXy">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JAt-UJ-eXy">
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iUq-5j-ALh">
@@ -115,7 +115,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="JAt-UJ-eXy" firstAttribute="bottom" secondItem="BM5-Ru-3Dn" secondAttribute="bottom" id="ZZD-ha-Xw8"/>
+                            <constraint firstItem="JAt-UJ-eXy" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="BM5-Ru-3Dn" secondAttribute="bottom" id="ZZD-ha-Xw8"/>
                             <constraint firstItem="JAt-UJ-eXy" firstAttribute="trailing" secondItem="BM5-Ru-3Dn" secondAttribute="trailing" id="ckd-Tf-aJm"/>
                             <constraint firstItem="JAt-UJ-eXy" firstAttribute="top" secondItem="BM5-Ru-3Dn" secondAttribute="top" id="izi-9Y-39X"/>
                             <constraint firstItem="JAt-UJ-eXy" firstAttribute="leading" secondItem="BM5-Ru-3Dn" secondAttribute="leading" id="kd9-8P-aGs"/>
@@ -145,31 +145,48 @@
             </objects>
             <point key="canvasLocation" x="5.625" y="31.690140845070424"/>
         </scene>
-        <!--View Controller-->
+        <!--Registrar Usuario View Controller-->
         <scene sceneID="UY9-Qe-CId">
             <objects>
-                <viewController id="LT7-Xx-DPo" sceneMemberID="viewController">
+                <viewController id="LT7-Xx-DPo" customClass="SFRegistrarUsuarioViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="yXC-gb-Asn">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="dzv-gd-ucX"/>
                     </view>
+                    <navigationItem key="navigationItem" id="Lgu-19-vT1">
+                        <barButtonItem key="rightBarButtonItem" image="Aceptar" id="OtS-om-7C3">
+                            <connections>
+                                <action selector="enviarDatos:" destination="LT7-Xx-DPo" id="eSg-bc-Ar8"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WSZ-Ta-iTT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-349" y="836"/>
         </scene>
-        <!--View Controller-->
+        <!--Recuperar Cuenta View Controller-->
         <scene sceneID="WI5-Gm-Ghy">
             <objects>
-                <viewController id="hWW-eR-oQg" sceneMemberID="viewController">
+                <viewController id="hWW-eR-oQg" customClass="SFRecuperarCuentaViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="AeI-MV-raP">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="K7T-Ve-HTV"/>
                     </view>
+                    <navigationItem key="navigationItem" id="RMy-pw-Ye5">
+                        <barButtonItem key="rightBarButtonItem" image="Aceptar" id="imP-dd-OY9">
+                            <connections>
+                                <action selector="enviarDatos:" destination="hWW-eR-oQg" id="voZ-7u-3cY"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <segue destination="atE-TD-Ehx" kind="show" identifier="SFNavegarRecuperarCuentaSegundoPaso" id="72l-P5-woM"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wZi-eo-63a" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -323,6 +340,7 @@
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Info Finca" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zWb-le-sg6">
                                                     <rect key="frame" x="32" y="8" width="160" height="34"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="MenuItemInfoFinca"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
                                                     <color key="textColor" name="VerdeClaro"/>
                                                     <nil key="highlightedColor"/>
@@ -450,7 +468,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="geJ-ot-ny6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4194" y="179"/>
+            <point key="canvasLocation" x="4193" y="139"/>
         </scene>
         <!--Finca-->
         <scene sceneID="pya-2U-80d">
@@ -503,7 +521,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q4b-bI-jCd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4193" y="-595"/>
+            <point key="canvasLocation" x="4193" y="-660"/>
         </scene>
         <!--Title-->
         <scene sceneID="h3I-bY-fXh">
@@ -521,7 +539,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ylz-oo-Y1B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5400" y="-596"/>
+            <point key="canvasLocation" x="5394" y="-660"/>
         </scene>
         <!--Finca Right Menu Table View Controller-->
         <scene sceneID="U0x-DR-mOw">
@@ -550,7 +568,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="STB-7c-SzR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3774" y="207"/>
+            <point key="canvasLocation" x="3763" y="140"/>
         </scene>
         <!--Fincas-->
         <scene sceneID="U4O-kV-Y1y">
@@ -563,7 +581,6 @@
                                 <segue destination="Icg-LU-BsL" kind="show" id="ZSx-1n-3NN"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="TLF-cO-tMA"/>
                     </navigationItem>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="l8i-Wh-nED">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
@@ -580,6 +597,28 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="luz-ak-6Oy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1097" y="32"/>
+        </scene>
+        <!--Recuperar Cuenta Nueva Contrasenia View Controller-->
+        <scene sceneID="p9f-Nn-WJy">
+            <objects>
+                <viewController id="atE-TD-Ehx" customClass="SFRecuperarCuentaNuevaContraseniaViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="1YO-IX-uzc">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="Sgo-Tj-Muh"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="h8I-GF-5Kl">
+                        <barButtonItem key="rightBarButtonItem" image="Aceptar" id="c0k-uq-vlp">
+                            <connections>
+                                <action selector="enviarDatos:" destination="atE-TD-Ehx" id="3ZI-gg-6lY"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Vvd-Ma-bJh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="353" y="1632"/>
         </scene>
         <!--Aprobacion Pendiente-->
         <scene sceneID="3pW-Um-XXh">
@@ -658,7 +697,51 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7pO-Un-IEK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1913" y="836"/>
+            <point key="canvasLocation" x="2646" y="836"/>
+        </scene>
+        <!--Cambiar Contrasenia View Controller-->
+        <scene sceneID="c09-Wb-DFh">
+            <objects>
+                <viewController id="W2B-7j-Lql" customClass="SFCambiarContraseniaViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="DZo-kQ-vHG">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="FLS-aH-HQ2"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="bky-KE-gbb">
+                        <barButtonItem key="rightBarButtonItem" image="Aceptar" id="Mgg-ye-S7H">
+                            <connections>
+                                <action selector="enviarDatos:" destination="W2B-7j-Lql" id="zeX-5w-yil"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gNe-iO-J1v" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3023" y="-2188"/>
+        </scene>
+        <!--Modificar Usuario View Controller-->
+        <scene sceneID="pAw-W5-7bs">
+            <objects>
+                <viewController id="LHc-b0-B6u" customClass="SFModificarUsuarioViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VPH-Op-N05">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="ROx-7Z-uKw"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="V8S-kl-MPM">
+                        <barButtonItem key="rightBarButtonItem" image="Aceptar" id="dwx-6k-e4K">
+                            <connections>
+                                <action selector="enviarDatos:" destination="LHc-b0-B6u" id="LeW-QN-WyU"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="s7q-vH-5PC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3023" y="-1523"/>
         </scene>
         <!--Perfil-->
         <scene sceneID="FGB-2t-Rlf">
@@ -867,8 +950,16 @@
                     </view>
                     <navigationItem key="navigationItem" title="Perfil" id="vvK-OC-gzd">
                         <rightBarButtonItems>
-                            <barButtonItem image="ModificarUsuario" id="cgH-gM-PqG"/>
-                            <barButtonItem image="ModificarContrasenia" id="cMA-Fc-rAs"/>
+                            <barButtonItem image="ModificarUsuario" id="cgH-gM-PqG">
+                                <connections>
+                                    <segue destination="LHc-b0-B6u" kind="show" id="urc-cA-dxh"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="ModificarContrasenia" id="cMA-Fc-rAs">
+                                <connections>
+                                    <segue destination="W2B-7j-Lql" kind="show" id="21y-hp-VyD"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
@@ -884,7 +975,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eRc-3r-usE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1913" y="-1525"/>
+            <point key="canvasLocation" x="1913" y="-1871"/>
         </scene>
         <!--Encargado-->
         <scene sceneID="mhq-3p-9Ho">
@@ -966,10 +1057,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mjS-97-zTb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1913" y="-619"/>
+            <point key="canvasLocation" x="2646" y="-683"/>
         </scene>
     </scenes>
     <resources>
+        <image name="Aceptar" width="33" height="33"/>
         <image name="AgregarUsuarioIcon" width="33" height="33"/>
         <image name="EncargadoFincaIcon" width="25" height="25"/>
         <image name="Finca1" width="250" height="150"/>
@@ -994,6 +1086,6 @@
         </namedColor>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="RKl-JI-kgQ"/>
+        <segue reference="aTS-j3-8Uj"/>
     </inferredMetricsTieBreakers>
 </document>

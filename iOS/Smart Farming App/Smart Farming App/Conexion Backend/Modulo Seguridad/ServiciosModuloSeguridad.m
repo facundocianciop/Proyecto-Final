@@ -73,8 +73,17 @@
 +(void) finalizarSesion:(SuccessBlock)completionBlock
           failureBlock:(FailureBlock)failureBlock {
     
-    
-    
+    [[HTTPConector instance] httpOperation:OPERATION_FINALIZAR_SESION method:METHOD_POST withParameters:nil completionBlock:^(NSDictionary *responseObject) {
+        
+        RespuestaInicioSesion *respuesta = [RespuestaInicioSesion new];
+        
+        [ServiciosModuloSeguridad armarRespuestaServicio:respuesta withResponseObject:responseObject];
+        
+        completionBlock(respuesta);
+        
+    } failureBlock:^(NSError *error) {
+        failureBlock([ServiciosModuloSeguridad armarErrorServicio:error]);
+    }];
 }
     
 +(void) mostrarUsuario:(SuccessBlock)completionBlock

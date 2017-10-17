@@ -78,20 +78,23 @@
 }
 
 -(void)cerrarSesion {
-    
-    AppDelegate *appDelegate = (AppDelegate*) [[UIApplication sharedApplication]delegate];
-    [appDelegate forzarCierreSesion];
-    
-    /*
+
     __weak typeof (self) weakSelf = self;
     
     [self showActivityIndicator];
     [ServiciosModuloSeguridad finalizarSesion:^(RespuestaServicioBase *respuesta) {
         [weakSelf hideActivityIndicator];
+        
+        AppDelegate *appDelegate = (AppDelegate*) [[UIApplication sharedApplication]delegate];
+        [appDelegate forzarCierreSesion];
+        
     } failureBlock:^(ErrorServicioBase *error) {
         [weakSelf hideActivityIndicator];
+        
+        AppDelegate *appDelegate = (AppDelegate*) [[UIApplication sharedApplication]delegate];
+        [appDelegate forzarCierreSesion];
+        
     }];
-     */
 }
 
 #pragma mark - Configurar UI

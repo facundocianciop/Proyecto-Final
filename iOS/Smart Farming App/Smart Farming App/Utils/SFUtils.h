@@ -17,6 +17,8 @@
 
 +(UIColor *)primaryColor;
 +(UIColor *)secondaryColor;
++(UIColor *)formCellColor;
++(UIColor *)formCellErrorColor;
 
 #pragma mark - Font
 
