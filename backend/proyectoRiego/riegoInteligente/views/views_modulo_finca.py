@@ -118,7 +118,6 @@ def obtener_fincas_por_usuario(request):
                                                            ubicacion=finca.ubicacion,
                                                            tamanio=finca.tamanio,
                                                            estadoFinca=ultimo_historico.estadoFinca.nombreEstadoFinca))
-
         response.content = armar_response_list_content(lista_dto_finca_rol)
         response.status_code = 200
         return response
