@@ -74,6 +74,8 @@ urlpatterns = [
 
     url(r'^asignarComponenteSensor/$', views_configuracion_sectores.asignar_componente_sensor,
         name='asignarComponenteSensor'),
+    url(r'^buscarComponenteSensorPorId/$', views_modulo_sensores.buscar_componente_sensor_por_id,
+        name='buscarComponenteSensorPorId'),
     url(r'^desasignarComponenteSensor/$', views_configuracion_sectores.desasignar_componente_sensor,
         name='desasignarComponenteSensor'),
 
