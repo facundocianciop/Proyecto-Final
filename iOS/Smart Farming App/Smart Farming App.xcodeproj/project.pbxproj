@@ -65,6 +65,13 @@
 		A1AE0B8C1F8E8E1F009B4494 /* SolicitudServicioFincaBase.m in Sources */ = {isa = PBXBuildFile; fileRef = A1AE0B8B1F8E8E1F009B4494 /* SolicitudServicioFincaBase.m */; };
 		A1AE0B8F1F8E8F0B009B4494 /* ErrorServicioBase.m in Sources */ = {isa = PBXBuildFile; fileRef = A1AE0B8E1F8E8F0B009B4494 /* ErrorServicioBase.m */; };
 		A1AE0B921F8E9011009B4494 /* SolicitudServicioBase.m in Sources */ = {isa = PBXBuildFile; fileRef = A1AE0B911F8E9011009B4494 /* SolicitudServicioBase.m */; };
+		A1BD86811F9776810077C91E /* SFSectoresTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1BD86801F9776810077C91E /* SFSectoresTableViewController.m */; };
+		A1BD86851F9777520077C91E /* ServiciosModuloSectores.m in Sources */ = {isa = PBXBuildFile; fileRef = A1BD86841F9777520077C91E /* ServiciosModuloSectores.m */; };
+		A1BD86891F9778830077C91E /* RespuestaObtenerSectores.m in Sources */ = {isa = PBXBuildFile; fileRef = A1BD86881F9778830077C91E /* RespuestaObtenerSectores.m */; };
+		A1BD868D1F9779970077C91E /* SFSectorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1BD868C1F9779970077C91E /* SFSectorTableViewCell.m */; };
+		A1BD86901F97AB0E0077C91E /* SFMecanismosRiegoHabilitadosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1BD868F1F97AB0E0077C91E /* SFMecanismosRiegoHabilitadosViewController.m */; };
+		A1BD86951F97ABDF0077C91E /* SFMecanismoRiegoHabilitadoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1BD86941F97ABDF0077C91E /* SFMecanismoRiegoHabilitadoTableViewCell.m */; };
+		A1BD86981F97AC650077C91E /* SFMecanismoRiegoFincaSector.m in Sources */ = {isa = PBXBuildFile; fileRef = A1BD86971F97AC650077C91E /* SFMecanismoRiegoFincaSector.m */; };
 		E597039ECA16D820156C1A75 /* libPods-Smart Farming AppUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A8F455D29AC3820A5F7AE8 /* libPods-Smart Farming AppUITests.a */; };
 		F9DB669270910874EEE9C455 /* libPods-Smart Farming App.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 678B84909B9700662B8D806F /* libPods-Smart Farming App.a */; };
 /* End PBXBuildFile section */
@@ -205,6 +212,20 @@
 		A1AE0B8E1F8E8F0B009B4494 /* ErrorServicioBase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ErrorServicioBase.m; sourceTree = "<group>"; };
 		A1AE0B901F8E9011009B4494 /* SolicitudServicioBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SolicitudServicioBase.h; sourceTree = "<group>"; };
 		A1AE0B911F8E9011009B4494 /* SolicitudServicioBase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SolicitudServicioBase.m; sourceTree = "<group>"; };
+		A1BD867F1F9776810077C91E /* SFSectoresTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFSectoresTableViewController.h; sourceTree = "<group>"; };
+		A1BD86801F9776810077C91E /* SFSectoresTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFSectoresTableViewController.m; sourceTree = "<group>"; };
+		A1BD86831F9777520077C91E /* ServiciosModuloSectores.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServiciosModuloSectores.h; sourceTree = "<group>"; };
+		A1BD86841F9777520077C91E /* ServiciosModuloSectores.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServiciosModuloSectores.m; sourceTree = "<group>"; };
+		A1BD86871F9778830077C91E /* RespuestaObtenerSectores.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RespuestaObtenerSectores.h; sourceTree = "<group>"; };
+		A1BD86881F9778830077C91E /* RespuestaObtenerSectores.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RespuestaObtenerSectores.m; sourceTree = "<group>"; };
+		A1BD868B1F9779970077C91E /* SFSectorTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFSectorTableViewCell.h; sourceTree = "<group>"; };
+		A1BD868C1F9779970077C91E /* SFSectorTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFSectorTableViewCell.m; sourceTree = "<group>"; };
+		A1BD868E1F97AB0D0077C91E /* SFMecanismosRiegoHabilitadosViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFMecanismosRiegoHabilitadosViewController.h; sourceTree = "<group>"; };
+		A1BD868F1F97AB0E0077C91E /* SFMecanismosRiegoHabilitadosViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFMecanismosRiegoHabilitadosViewController.m; sourceTree = "<group>"; };
+		A1BD86931F97ABDF0077C91E /* SFMecanismoRiegoHabilitadoTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFMecanismoRiegoHabilitadoTableViewCell.h; sourceTree = "<group>"; };
+		A1BD86941F97ABDF0077C91E /* SFMecanismoRiegoHabilitadoTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFMecanismoRiegoHabilitadoTableViewCell.m; sourceTree = "<group>"; };
+		A1BD86961F97AC640077C91E /* SFMecanismoRiegoFincaSector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFMecanismoRiegoFincaSector.h; sourceTree = "<group>"; };
+		A1BD86971F97AC650077C91E /* SFMecanismoRiegoFincaSector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFMecanismoRiegoFincaSector.m; sourceTree = "<group>"; };
 		A31BF76F63193F1D17D68FEC /* Pods-Smart Farming AppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Smart Farming AppUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Smart Farming AppUITests/Pods-Smart Farming AppUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		AA27972AF7A47216E490E53A /* Pods-Smart Farming App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Smart Farming App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Smart Farming App/Pods-Smart Farming App.debug.xcconfig"; sourceTree = "<group>"; };
 		ADF4D971DF49EE7504D8D4CC /* Pods-Smart Farming App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Smart Farming App.release.xcconfig"; path = "Pods/Target Support Files/Pods-Smart Farming App/Pods-Smart Farming App.release.xcconfig"; sourceTree = "<group>"; };
@@ -311,6 +332,7 @@
 				1116BA8F1F8C6E95005C9AFF /* Modulo Seguridad */,
 				1116BA901F8C6EA2005C9AFF /* Modulo Finca */,
 				1116DA9C1F9072120057A048 /* Modulo Riego */,
+				A1BD86821F9776F40077C91E /* Modulo Sectores */,
 				1116BA821F8C6AE9005C9AFF /* Configuracion Servicio */,
 			);
 			path = "Conexion Backend";
@@ -322,6 +344,8 @@
 				1116D6C11F940C490088D61B /* General */,
 				A1AE0B811F8E8BDF009B4494 /* Modulo Seguridad */,
 				A1AE0B821F8E8BF1009B4494 /* Modulo Finca */,
+				A1BD867E1F9776260077C91E /* Modulo Riego */,
+				A1BD867D1F9776180077C91E /* Modulo Sectores */,
 			);
 			path = Controladores;
 			sourceTree = "<group>";
@@ -331,6 +355,8 @@
 			children = (
 				1116BA831F8C6B17005C9AFF /* General */,
 				1116D6C51F9432D00088D61B /* Modulo Finca */,
+				A1BD868A1F9779730077C91E /* Modulo Sectores */,
+				A1BD86921F97AB740077C91E /* Modulo Riego */,
 			);
 			path = Vistas;
 			sourceTree = "<group>";
@@ -502,6 +528,8 @@
 				111D1DC61F92F4B600E3A168 /* SFFinca.m */,
 				111D1DC81F92FA7500E3A168 /* SFSectorFinca.h */,
 				111D1DC91F92FA7500E3A168 /* SFSectorFinca.m */,
+				A1BD86961F97AC640077C91E /* SFMecanismoRiegoFincaSector.h */,
+				A1BD86971F97AC650077C91E /* SFMecanismoRiegoFincaSector.m */,
 			);
 			path = Clases;
 			sourceTree = "<group>";
@@ -578,6 +606,61 @@
 				1116D6EA1F9451F70088D61B /* SFInformacionFincaActivadaViewController.m */,
 			);
 			path = "Modulo Finca";
+			sourceTree = "<group>";
+		};
+		A1BD867D1F9776180077C91E /* Modulo Sectores */ = {
+			isa = PBXGroup;
+			children = (
+				A1BD867F1F9776810077C91E /* SFSectoresTableViewController.h */,
+				A1BD86801F9776810077C91E /* SFSectoresTableViewController.m */,
+			);
+			path = "Modulo Sectores";
+			sourceTree = "<group>";
+		};
+		A1BD867E1F9776260077C91E /* Modulo Riego */ = {
+			isa = PBXGroup;
+			children = (
+				A1BD868E1F97AB0D0077C91E /* SFMecanismosRiegoHabilitadosViewController.h */,
+				A1BD868F1F97AB0E0077C91E /* SFMecanismosRiegoHabilitadosViewController.m */,
+			);
+			path = "Modulo Riego";
+			sourceTree = "<group>";
+		};
+		A1BD86821F9776F40077C91E /* Modulo Sectores */ = {
+			isa = PBXGroup;
+			children = (
+				A1BD86861F97785D0077C91E /* Respuestas */,
+				A1BD86831F9777520077C91E /* ServiciosModuloSectores.h */,
+				A1BD86841F9777520077C91E /* ServiciosModuloSectores.m */,
+			);
+			path = "Modulo Sectores";
+			sourceTree = "<group>";
+		};
+		A1BD86861F97785D0077C91E /* Respuestas */ = {
+			isa = PBXGroup;
+			children = (
+				A1BD86871F9778830077C91E /* RespuestaObtenerSectores.h */,
+				A1BD86881F9778830077C91E /* RespuestaObtenerSectores.m */,
+			);
+			path = Respuestas;
+			sourceTree = "<group>";
+		};
+		A1BD868A1F9779730077C91E /* Modulo Sectores */ = {
+			isa = PBXGroup;
+			children = (
+				A1BD868B1F9779970077C91E /* SFSectorTableViewCell.h */,
+				A1BD868C1F9779970077C91E /* SFSectorTableViewCell.m */,
+			);
+			path = "Modulo Sectores";
+			sourceTree = "<group>";
+		};
+		A1BD86921F97AB740077C91E /* Modulo Riego */ = {
+			isa = PBXGroup;
+			children = (
+				A1BD86931F97ABDF0077C91E /* SFMecanismoRiegoHabilitadoTableViewCell.h */,
+				A1BD86941F97ABDF0077C91E /* SFMecanismoRiegoHabilitadoTableViewCell.m */,
+			);
+			path = "Modulo Riego";
 			sourceTree = "<group>";
 		};
 		B0305F0AC2144FEB6B2E1558 /* Pods */ = {
@@ -895,15 +978,18 @@
 				111F7E111F951459002615D5 /* SFNavegarEstadoNoAutenticadoSegue.m in Sources */,
 				1116D6C01F9390DE0088D61B /* SFFincasPendientesViewController.m in Sources */,
 				1116BA8B1F8C6D09005C9AFF /* SFViewControllerBase.m in Sources */,
+				A1BD86851F9777520077C91E /* ServiciosModuloSectores.m in Sources */,
 				A1AE0B891F8E8CFD009B4494 /* RespuestaServicioBase.m in Sources */,
 				1116D6DA1F94424F0088D61B /* LGSideMenuController.m in Sources */,
 				1116BA771F8C5A2C005C9AFF /* ContextoUsuario.m in Sources */,
 				11F020811F8F078D00DBC1DC /* SFTextInputBaseViewController.m in Sources */,
+				A1BD86901F97AB0E0077C91E /* SFMecanismosRiegoHabilitadosViewController.m in Sources */,
 				111F8F181F95B32E00AB7E8F /* SFCambiarContraseniaViewController.m in Sources */,
 				1116DA9B1F906F8C0057A048 /* RespuestaMostrarFincas.m in Sources */,
 				1116BA7A1F8C5A2C005C9AFF /* ServiciosModuloSeguridad.m in Sources */,
 				1116BA7E1F8C5A2C005C9AFF /* ServiciosModuloFinca.m in Sources */,
 				111D1DC71F92F4B600E3A168 /* SFFinca.m in Sources */,
+				A1BD86811F9776810077C91E /* SFSectoresTableViewController.m in Sources */,
 				1116DA961F906A370057A048 /* RespuestaInicioSesion.m in Sources */,
 				1116D6DB1F94424F0088D61B /* LGSideMenuGesturesHandler.m in Sources */,
 				A101571D1F90041F00179ED7 /* SFRecuperarCuentaViewController.m in Sources */,
@@ -922,7 +1008,9 @@
 				1116D6EE1F94565F0088D61B /* SFNavegarASeccionFincaSegue.m in Sources */,
 				A1AE0B8C1F8E8E1F009B4494 /* SolicitudServicioFincaBase.m in Sources */,
 				1116D6D91F94424F0088D61B /* UIViewController+LGSideMenuController.m in Sources */,
+				A1BD86891F9778830077C91E /* RespuestaObtenerSectores.m in Sources */,
 				1116D6C41F940E310088D61B /* RespuestaBuscarRoles.m in Sources */,
+				A1BD86951F97ABDF0077C91E /* SFMecanismoRiegoHabilitadoTableViewCell.m in Sources */,
 				1116BA931F8C7490005C9AFF /* SFUtils.m in Sources */,
 				A10157171F9003BE00179ED7 /* SFFormularioBaseViewController.m in Sources */,
 				1116BA861F8C6B7D005C9AFF /* SFActivityIndicator.m in Sources */,
@@ -933,10 +1021,12 @@
 				11F0207E1F8F057900DBC1DC /* SFInicioSesionViewController.m in Sources */,
 				A1AE0B8F1F8E8F0B009B4494 /* ErrorServicioBase.m in Sources */,
 				1116D6E21F9444890088D61B /* FincaLeftMenuTableViewController.m in Sources */,
+				A1BD86981F97AC650077C91E /* SFMecanismoRiegoFincaSector.m in Sources */,
 				111F8F0F1F95AF2400AB7E8F /* SFRecuperarCuentaNuevaContraseniaViewController.m in Sources */,
 				111F7E0B1F94ED0A002615D5 /* SFPerfilUsuarioViewController.m in Sources */,
 				1116BA321F8C5866005C9AFF /* AppDelegate.m in Sources */,
 				111D1DC01F92DEBC00E3A168 /* SFFincasOtrosRolesViewController.m in Sources */,
+				A1BD868D1F9779970077C91E /* SFSectorTableViewCell.m in Sources */,
 				11CD00901F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1102,7 +1192,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7MXLATLY7W;
+				DEVELOPMENT_TEAM = ZKE9H755D4;
 				INFOPLIST_FILE = "Smart Farming App/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1118,7 +1208,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7MXLATLY7W;
+				DEVELOPMENT_TEAM = ZKE9H755D4;
 				INFOPLIST_FILE = "Smart Farming App/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

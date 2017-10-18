@@ -10,10 +10,17 @@
 
 @implementation IdentificadoresSegue
 
+#pragma mark - Modulo Seguridad
 NSString *const kSFNavegarEstadoAutenticadoSegue = @"SFNavegarEstadoAutenticadoSegue";
-NSString *const kSFNavegarASeccionFincaSegue = @"SFNavegarASeccionFincaSegue";
 NSString *const kSFNavegarEstadoNoAutenticadoSegue = @"SFNavegarEstadoNoAutenticadoSegue";
 
 NSString *const kSFNavegarRecuperarCuentaSegundoPaso = @"SFNavegarRecuperarCuentaSegundoPaso";
+
+#pragma mark - Modulo Finca
+NSString *const kSFNavegarASeccionFincaSegue = @"SFNavegarASeccionFincaSegue";
+
+#pragma mark - Modulo Sectores
+
+NSString *const kSFNavegarAInfoSectorSegue = @"SFNavegarAInfoSectorSegue";
 
 @end
