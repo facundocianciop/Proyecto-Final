@@ -48,6 +48,15 @@
 
 #pragma mark - Public
 
+-(void)endSession {
+    NSURL *url = [NSURL URLWithString:BASE_URL];
+    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:url];
+    for (NSHTTPCookie *cookie in cookies)
+    {
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
+    }
+}
+
 -(void)httpOperation:(NSString *)operation
               method:(NSString *)method
       withParameters:(NSDictionary *)parameters

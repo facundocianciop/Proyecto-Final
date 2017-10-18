@@ -108,4 +108,10 @@
      return cell;
  }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    [self performSegueWithIdentifier:kSFNavegarASeccionFincaSegue sender:self];
+    
+}
+
 @end

@@ -12,6 +12,8 @@
 #import "SolicitudInicioSesion.h"
 #import "RespuestaInicioSesion.h"
 
+#import "RespuestaMostrarUsuario.h"
+
 @interface ServiciosModuloSeguridad : BaseServicios
 
 #pragma mark - Public
@@ -19,5 +21,11 @@
 +(void) iniciarSesion:(SolicitudInicioSesion*)SolicitudInicioSesion
       completionBlock:(SuccessBlock)completionBlock
          failureBlock:(FailureBlock)failureBlock;
+
++(void) finalizarSesion:(SuccessBlock)completionBlock
+           failureBlock:(FailureBlock)failureBlock;
+
++(void) mostrarUsuario:(SuccessBlock)completionBlock
+          failureBlock:(FailureBlock)failureBlock;
 
 @end

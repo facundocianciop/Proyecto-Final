@@ -23,6 +23,8 @@ typedef void (^HTTPOperationFailureBlock)(NSError *error);
 
 #pragma mark - Publico
 
+-(void)endSession;
+
 -(void)httpOperation:(NSString *)operation
               method:(NSString *)method
       withParameters:(NSDictionary *)parameters

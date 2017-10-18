@@ -11,5 +11,9 @@
 @interface IdentificadoresSegue : NSObject
 
 extern NSString *const kSFNavegarEstadoAutenticadoSegue;
+extern NSString *const kSFNavegarASeccionFincaSegue;
+extern NSString *const kSFNavegarEstadoNoAutenticadoSegue;
+
+extern NSString *const kSFNavegarRecuperarCuentaSegundoPaso;
 
 @end

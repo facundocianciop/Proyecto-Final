@@ -29,29 +29,18 @@
     
     self.tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
     [self.view addGestureRecognizer:self.tapRecognizer];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-}
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    
-    [self.view removeGestureRecognizer:self.tapRecognizer];
 }
 
 -(void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [self.view removeGestureRecognizer:self.tapRecognizer];
 }
 
@@ -124,34 +113,20 @@
 #pragma mark - Keyboard handling
 
 -(void) keyboardWillShow:(NSNotification *)notification {
+    NSDictionary *info = [notification userInfo];
+    CGRect keyboardRect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    keyboardRect = [self.view convertRect:keyboardRect fromView:nil];
     
-    NSDictionary* info = [notification userInfo];
-    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    CGSize tabBarSize = self.tabBarController.tabBar.frame.size;
-    
-    CGFloat keyboardHeight = kbSize.height - tabBarSize.height;
-    
-    [UIView animateWithDuration:0.3 animations:^{
-        [self.viewScrollView mas_updateConstraints:^(MASConstraintMaker *make){
-            make.bottom.equalTo(self.view.mas_bottom).with.offset(-keyboardHeight);
-        }];
-        
-        [self.view layoutIfNeeded];
-    }];
+    UIEdgeInsets contentInset = self.viewScrollView.contentInset;
+    contentInset.bottom = keyboardRect.size.height;
+    self.viewScrollView.contentInset = contentInset;
 }
 
 -(void)keyboardWillHide:(NSNotification *)notification {
-    
-    [UIView animateWithDuration:0.3 animations:^{
-        
-        [self.viewScrollView mas_updateConstraints:^(MASConstraintMaker *make){
-            make.bottom.equalTo(self.view.mas_bottom);
-        }];
-        
-        [self.view layoutIfNeeded];
-    }];
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    self.viewScrollView.contentInset = contentInsets;
+    self.viewScrollView.scrollIndicatorInsets = contentInsets;
 }
-
 
 #pragma mark - UITextFieldDelegate
 
