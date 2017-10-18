@@ -149,6 +149,7 @@ KEY_DESCRIPCION_CONFIGURACION_EVENTO = "descripcionConfiguracionEvento"
 # Reportes
 KEY_FECHA_INICIO_SECTOR = "fechaInicioSector"
 KEY_FECHA_FIN_SECTOR = "fechaFinSector"
+HELADA = "helada"
 
 # Detalle operaciones
 
@@ -189,13 +190,13 @@ ESTADO_ACTIVADO = 'activado'
 ESTADO_DESACTIVADO = 'desactivado'
 ESTADO_HABILITADO = 'habilitado'
 
-ESTADO_EN_REPARACION = 'enReparacion'
+ESTADO_EN_REPARACION = 'en_reparacion'
 
 ESTADO_DESHABILITADO = 'deshabilitado'
 ESTADO_ELIMINADO = 'eliminado'
 
-ESTADO_PENDIENTE_APROBACION = 'pendienteAprobacion'
-ESTADO_NO_APROBADO = 'noAprobado'
+ESTADO_PENDIENTE_APROBACION = 'pendiente_aprobacion'
+ESTADO_NO_APROBADO = 'no_aprobado'
 
 ESTADO_EN_EJECUCION = 'en_ejecucion'
 ESTADO_CANCELADO = 'cancelado'

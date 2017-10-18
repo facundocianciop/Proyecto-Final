@@ -222,7 +222,16 @@ urlpatterns = [
     url(r'^obtenerInformeRiegoEjecucionSector/$',
         views_modulo_reportes.obtener_informe_riego_ejecucion_sector,
         name='obtenerInformeRiegoEjecucionSector'),
+    url(r'^obtenerInformeRiegoHistoricoSector/$',
+        views_modulo_reportes.obtener_informe_riego_historico_sector,
+        name='obtenerInformeRiegoHistoricoSector'),
     url(r'^obtenerInformeHistoricoSector/$',
         views_modulo_reportes.obtener_informe_historico_sector,
-        name='obtenerInformeHistoricoSector')
+        name='obtenerInformeHistoricoSector'),
+    url(r'^obtenerInformeEventosPersonalizados/$',
+        views_modulo_reportes.obtener_informe_eventos_personalizados,
+        name='obtenerInformeEventosPersonalizados'),
+    url(r'^obtenerInformeHistoricoHeladas/$',
+        views_modulo_reportes.obtener_informe_historico_heladas,
+        name='obtenerInformeHistoricoHeladas')
 ]

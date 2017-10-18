@@ -1070,7 +1070,7 @@ class ConfiguracionEventoPersonalizado(models.Model):
     fechaHoraCreacion = models.DateTimeField()
     activado = models.BooleanField(default=False)
 
-    sector = models.ForeignKey(Sector, db_column="OIDSector", related_name="configuracionEventoList", null=True)
+    sector = models.ManyToManyField(Sector)
     usuario_finca = models.ForeignKey(UsuarioFinca, db_column="OIDUsuarioFinca",
                                               related_name="configuracionEventoList")
 
@@ -1092,12 +1092,29 @@ class ConfiguracionEventoPersonalizado(models.Model):
 
 class EventoPersonalizado(models.Model):
     OIDEventoPersonalizado = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    nroEvento = models.IntegerField(unique=True)
+    nroEvento = models.IntegerField(default=1, unique=True)
     fechaHora = models.DateTimeField()
-
+    sector = models.ForeignKey(Sector, db_column="OIDSector", null=True)
     configuracion_evento_personalizado = models.ForeignKey(ConfiguracionEventoPersonalizado,
                                                                    db_column="OIDConfiguracionEventoPersonalizado")
 
+
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        if EventoPersonalizado.objects.all().__len__() == 0:
+            self.nroEvento = 1
+            super(EventoPersonalizado, self).save()
+        else:
+            if EventoPersonalizado.objects.get(nroEvento=self.nroEvento) == self:
+                super(EventoPersonalizado, self).save()
+            else:
+                ultimoEventoPersonalizado = EventoPersonalizado.objects.order_by('-nroEvento')[0]
+                self.nroEvento = ultimoEventoPersonalizado.nroEvento+ 1
+                super(EventoPersonalizado, self).save()
+    def as_json(self):
+        return dict(nroEvento=self.nroEvento,
+                    fechaHora=self.fechaHora,
+                    numeroSector=self.sector.numeroSector)
 
 #MODULO INFORMACION EXTERNA
 
