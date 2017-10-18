@@ -127,6 +127,7 @@ class UsuarioFinca(models.Model):
 
     finca = models.ForeignKey('Finca',db_column="OIDFinca")
     usuario = models.ForeignKey(DatosUsuario,db_column="OIDUsuario", related_name='usuarioFincaList')
+    configuracionEventoPersonalizadoList = models.ManyToManyField("ConfiguracionEventoPersonalizado", null=True)
 
     def __str__(self):
         return "Usuario: " + str(self.usuario.user.username) + " de finca: " + str(self.finca.idFinca)
@@ -1070,9 +1071,8 @@ class ConfiguracionEventoPersonalizado(models.Model):
     fechaHoraCreacion = models.DateTimeField()
     activado = models.BooleanField(default=False)
 
-    sector = models.ManyToManyField(Sector)
-    usuario_finca = models.ForeignKey(UsuarioFinca, db_column="OIDUsuarioFinca",
-                                              related_name="configuracionEventoList")
+    sectorList = models.ManyToManyField(Sector, null=True)
+
 
 
     def save(self):

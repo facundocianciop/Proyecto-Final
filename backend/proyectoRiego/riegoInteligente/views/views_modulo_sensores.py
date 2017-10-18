@@ -547,7 +547,7 @@ def buscar_sensores_no_asignados(request):
             if Finca.objects.filter(idFinca=datos[KEY_ID_FINCA]).__len__() != 1:
                 raise ValueError(ERROR_FINCA_NO_ENCONTRADA, "No existe la finca ingresada")
             finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
-            lista_sensores = Sensor.objects.filter(finca=finca)
+            lista_sensores = Sensor.objects.filter(finca=finca, habilitado=True)
             lista_sensores_no_asignados = []
             for sensor in lista_sensores:
                 if AsignacionSensorComponente.objects.filter(sensor=sensor, fechaBaja__isnull=True).__len__() == 0:

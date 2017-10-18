@@ -25,7 +25,7 @@ def buscar_configuraciones_eventos_personalizados(request):
                                            fechaBajaUsuarioFinca__isnull=True).__len__() == 0:
                 raise ValueError(ERROR_USUARIO_NO_HABILITADO_EN_FINCA, "El usuario no esta habilitado en esa finca")
             usuario_finca = UsuarioFinca.objects.get(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA])
-            lista_configuraciones_eventos_personalizados = usuario_finca.configuracionEventoList.all()
+            lista_configuraciones_eventos_personalizados = usuario_finca.configuracionEventoPersonalizadoList.all()
             lista_dto_configuracion_eventos = []
             for configuracion in lista_configuraciones_eventos_personalizados:
                 lista_medicion_interna_json = []
@@ -35,13 +35,20 @@ def buscar_configuraciones_eventos_personalizados(request):
                         lista_medicion_interna_json.append(medicion.as_json())
                     elif type(medicion) is MedicionEstadoExterno:
                         lista_medicion_externa_json.append(medicion.as_json())
+                lista_numeros_sectores = []
+                lista_id_sectores = []
+                finca = usuario_finca.finca
+                for sector in configuracion.sectorList.all():
+                    if finca.sectorList.filter(idSector=sector.idSector).__len__() == 1:
+                        lista_numeros_sectores.append(sector.numeroSector)
+                        lista_id_sectores.append(sector.idSector)
                 dto_configuracion_evento = DtoConfiguracionEventoPersonalizado(idConfiguracionEvento=configuracion.idConfiguracion,
                                                                                nombre=configuracion.nombre,
                                                                                descripcion=configuracion.descripcion,
                                                                                fechaHoraCreacion=configuracion.fechaHoraCreacion,
                                                                                activado=configuracion.activado,
-                                                                               numeroSector=configuracion.sector.first().numeroSector,
-                                                                               idSector=configuracion.sector.first().idSector,
+                                                                               numeroSector=lista_numeros_sectores,
+                                                                               idSector=lista_id_sectores,
                                                                                notificacionActivada=configuracion.notificacionActivada,
                                                                                listaMedicionesInterna=lista_medicion_interna_json,
                                                                                listaMedicionesExternas=lista_medicion_externa_json
@@ -69,8 +76,8 @@ def mostrar_configuracion_evento_personalizado(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO in datos):
-            if  datos[KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO] == '':
+        if (KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO in datos) and (KEY_ID_FINCA in datos):
+            if  datos[KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO] == '' or datos[KEY_ID_FINCA] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             if ConfiguracionEventoPersonalizado.objects.filter(
                     idConfiguracion=datos[KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO]).__len__() == 0:
@@ -78,6 +85,16 @@ def mostrar_configuracion_evento_personalizado(request):
                                  "No se encuentra una configuracion con ese id")
             configuracion = ConfiguracionEventoPersonalizado.objects.get(
                     idConfiguracion=datos[KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO])
+            lista_numeros_sectores = []
+            lista_id_sectores = []
+            if Finca.objects.filter(idFinca=datos[KEY_ID_FINCA]).__len__() == 0:
+                raise ValueError(ERROR_FINCA_NO_ENCONTRADA, "No se encuentra una finca con ese id")
+            finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+            for sector in configuracion.sectorList.all():
+                if finca.sectorList.filter(idSector=sector.idSector).__len__() == 1:
+                    lista_numeros_sectores.append(sector.numeroSector)
+                    lista_id_sectores.append(sector.idSector)
+
             lista_medicion_interna_json = []
             lista_medicion_externa_json = []
             for medicion in configuracion.medicionEventoList.all():
@@ -90,8 +107,8 @@ def mostrar_configuracion_evento_personalizado(request):
                                                                            descripcion=configuracion.descripcion,
                                                                            fechaHoraCreacion=configuracion.fechaHoraCreacion,
                                                                            activado=configuracion.activado,
-                                                                           numeroSector=configuracion.sector.numeroSector,
-                                                                           idSector=configuracion.sector.idSector,
+                                                                           numeroSector=lista_numeros_sectores,
+                                                                           idSector=lista_id_sectores,
                                                                            notificacionActivada=configuracion.notificacionActivada,
                                                                            listaMedicionesInterna=lista_medicion_interna_json,
                                                                            listaMedicionesExternas=lista_medicion_externa_json)
@@ -727,6 +744,7 @@ def obtener_informe_eventos_personalizados(request):
                     idConfiguracion=datos[KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO]).__len__() == 0:
                 raise ValueError(ERROR_CONFIGURACION_EVENTO_NO_ENCONTRADA, "No existe una configuracion de eventos con "
                                                                            "ese id")
+            sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
             configuracion_evento = ConfiguracionEventoPersonalizado.objects.get(
                 idConfiguracion=datos[KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO])
             fecha_inicio_sector = parsear_datos_fecha(datos[KEY_FECHA_INICIO_SECTOR])
@@ -737,7 +755,8 @@ def obtener_informe_eventos_personalizados(request):
                 response.status_code = 200
                 return response
             lista_eventos = configuracion_evento.eventopersonalizado_set.filter(fechaHora__gte=fecha_inicio_sector,
-                                                                                fechaHora__lte=fecha_fin_sector)
+                                                                                fechaHora__lte=fecha_fin_sector,
+                                                                                sector=sector)
 
             response.content = armar_response_list_content(lista_eventos)
             response.status_code = 200
@@ -797,4 +816,48 @@ def obtener_informe_historico_heladas(request):
         response.status_code = 401
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+def obtener_informe_cruzado_riego_mediciones_(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if (KEY_ID_SECTOR in datos) and (KEY_FECHA_INICIO_SECTOR in datos) and (KEY_FECHA_FIN_SECTOR in datos):
+            if datos[KEY_ID_SECTOR] == '' or datos[KEY_FECHA_INICIO_SECTOR] == '' or datos[KEY_FECHA_FIN_SECTOR] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
+                raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encuentra un sector con ese id")
+            if ConfiguracionEventoPersonalizado.objects.filter(
+                    nombre=HELADA).__len__() == 0:
+                raise ValueError(ERROR_CONFIGURACION_EVENTO_NO_ENCONTRADA, "No existe una configuracion de eventos con "
+                                                                           "ese id")
+            sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
+            configuracion_evento = ConfiguracionEventoPersonalizado.objects.get(
+               nombre=HELADA)
+            fecha_inicio_sector = parsear_datos_fecha(datos[KEY_FECHA_INICIO_SECTOR])
+            fecha_fin_sector = parsear_datos_fecha(datos[KEY_FECHA_FIN_SECTOR])
+            if configuracion_evento.eventopersonalizado_set.filter(fechaHora__gte=fecha_inicio_sector,
+                                                                fechaHora__lte=fecha_fin_sector, sector=sector).__len__() == 0:
+                response.content = armar_response_content(None)
+                response.status_code = 200
+                return response
+            lista_eventos = configuracion_evento.eventopersonalizado_set.filter(fechaHora__gte=fecha_inicio_sector,
+                                                                                fechaHora__lte=fecha_fin_sector, sector=sector)
+
+            response.content = armar_response_list_content(lista_eventos)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except ValueError as err:
+        print err.args
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 

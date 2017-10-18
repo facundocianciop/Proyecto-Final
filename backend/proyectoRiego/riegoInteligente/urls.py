@@ -233,5 +233,8 @@ urlpatterns = [
         name='obtenerInformeEventosPersonalizados'),
     url(r'^obtenerInformeHistoricoHeladas/$',
         views_modulo_reportes.obtener_informe_historico_heladas,
-        name='obtenerInformeHistoricoHeladas')
+        name='obtenerInformeHistoricoHeladas'),
+    url(r'^obtenerInformeCruzadoRiegoMediciones/$',
+        views_modulo_reportes.obtener_informe_cruzado_riego_mediciones_,
+        name='obtenerInformeCruzadoRiegoMediciones')
 ]
