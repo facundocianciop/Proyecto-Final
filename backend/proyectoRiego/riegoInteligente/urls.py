@@ -71,7 +71,8 @@ urlpatterns = [
         name='mostrarCultivoSector'),
     url(r'^mostrarCultivoSectorHistorico/$', views_configuracion_sectores.mostrar_cultivo_sector_historico,
         name='mostrarCultivoSectorHistorico'),
-
+    url(r'^buscarSensoresComponente/$', views_modulo_sensores.buscar_sensores_componente,
+        name='buscarSensoresComponente'),
     url(r'^asignarComponenteSensor/$', views_configuracion_sectores.asignar_componente_sensor,
         name='asignarComponenteSensor'),
     url(r'^buscarComponenteSensorPorId/$', views_modulo_sensores.buscar_componente_sensor_por_id,
