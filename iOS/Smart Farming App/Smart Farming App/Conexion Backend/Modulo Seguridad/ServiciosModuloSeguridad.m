@@ -119,4 +119,50 @@
     }];
 }
 
++(void) registrarUsuario:(SolicitudRegistrarUsuario*)solicitudRegistrarUsuario
+      completionBlock:(SuccessBlock)completionBlock
+         failureBlock:(FailureBlock)failureBlock {
+    
+    NSMutableDictionary *parametrosLlamada = [NSMutableDictionary new];
+    if (solicitudRegistrarUsuario.usuario) {
+        [parametrosLlamada setObject:solicitudRegistrarUsuario.usuario forKey:KEY_USUARIO];
+    }
+    if (solicitudRegistrarUsuario.email) {
+        [parametrosLlamada setObject:solicitudRegistrarUsuario.email forKey:KEY_EMAIL];
+    }
+    if (solicitudRegistrarUsuario.contrasenia) {
+        [parametrosLlamada setObject:solicitudRegistrarUsuario.contrasenia forKey:KEY_CONTRASENIA];
+    }
+    if (solicitudRegistrarUsuario.nombre) {
+        [parametrosLlamada setObject:solicitudRegistrarUsuario.nombre forKey:KEY_NOMBRE_USUARIO];
+    }
+    if (solicitudRegistrarUsuario.apellido) {
+        [parametrosLlamada setObject:solicitudRegistrarUsuario.apellido forKey:KEY_APELLIDO_USUARIO];
+    }
+    if (solicitudRegistrarUsuario.fechaNacimiento) {
+        [parametrosLlamada setObject:[SFUtils formatDateYYYYMMDD: solicitudRegistrarUsuario.fechaNacimiento] forKey:KEY_FECHA_NACIMIENTO];
+    }
+    if (solicitudRegistrarUsuario.dni) {
+        [parametrosLlamada setObject:[NSString stringWithFormat:@"%li", solicitudRegistrarUsuario.dni] forKey:KEY_DNI];
+    }
+    if (solicitudRegistrarUsuario.cuit) {
+        [parametrosLlamada setObject:solicitudRegistrarUsuario.cuit forKey:KEY_CUIT];
+    }
+    if (solicitudRegistrarUsuario.domicilio) {
+        [parametrosLlamada setObject:solicitudRegistrarUsuario.domicilio forKey:KEY_DOMICILIO];
+    }
+    
+    [[HTTPConector instance] httpOperation:OPERATION_REGISTRARSE method:METHOD_PUT withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
+        
+        RespuestaServicioBase *respuesta = [RespuestaServicioBase new];
+        
+        [ServiciosModuloSeguridad armarRespuestaServicio:respuesta withResponseObject:responseObject];
+        
+        completionBlock(respuesta);
+        
+    } failureBlock:^(NSError *error) {
+        failureBlock([ServiciosModuloSeguridad armarErrorServicio:error]);
+    }];
+}
+
 @end

@@ -148,14 +148,13 @@
         weakSelf.primaryAction = nil;
         completionblock();
     }];
-    
     [self.userPrompt addAction:self.primaryAction];
     
     [self showPrompt];
 }
 
 // Mostrar mensaje con informacion
--(void)userInformationPrompt:(NSString *)message {
+-(void)userInformationPrompt:(NSString *)message withCompletion:(void(^)(void))completionBlock {
     self.userPrompt = [UIAlertController alertControllerWithTitle:@"" message:message preferredStyle:UIAlertControllerStyleAlert];
     
     __weak SFFormularioBaseViewController *weakSelf = self;
@@ -163,6 +162,7 @@
         weakSelf.promptDisplayed = NO;
         weakSelf.userPrompt = nil;
         weakSelf.primaryAction = nil;
+        completionBlock();
     }];
     
     [self.userPrompt addAction:self.primaryAction];

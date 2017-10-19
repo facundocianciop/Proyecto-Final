@@ -40,6 +40,8 @@ extern NSString *const kRegexCUIT;
 #pragma mark - Mensajes errores
 
 extern NSString *const kErrorDesconocido;
+
+extern NSString *const kErrorRegistroUsuario;
 extern NSString *const kErrorInicioSesion;
 extern NSString *const kErrorObteniendoDatosUsuario;
 

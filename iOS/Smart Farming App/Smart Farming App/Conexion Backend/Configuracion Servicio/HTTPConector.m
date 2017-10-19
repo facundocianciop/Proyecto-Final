@@ -75,6 +75,11 @@
     else if ([method isEqualToString:METHOD_POST]) {
         [self POST:URL withParameters:parameters completionBlock:completionBlock failureBlock:failureBlock];
     }
+    else if ([method isEqualToString:METHOD_PUT]) {
+        [self PUT:URL withParameters:parameters completionBlock:completionBlock failureBlock:failureBlock];
+    } else {
+        failureBlock([NSError new]);
+    }
 }
 
 #pragma mark - Internal
@@ -107,6 +112,15 @@
 -(void)POST:(NSString *)URL withParameters:(NSDictionary *)parameters completionBlock:(HTTPOperationCompletionBlock)completionBlock failureBlock:(HTTPOperationFailureBlock)failureBlock {
     
     [self.sessionManager POST:URL parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        completionBlock(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [self handleServiceError:task error:error completionBlock:completionBlock failureBlock:failureBlock];
+    }];
+}
+
+-(void)PUT:(NSString *)URL withParameters:(NSDictionary *)parameters completionBlock:(HTTPOperationCompletionBlock)completionBlock failureBlock:(HTTPOperationFailureBlock)failureBlock {
+    
+    [self.sessionManager PUT:URL parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         completionBlock(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         [self handleServiceError:task error:error completionBlock:completionBlock failureBlock:failureBlock];

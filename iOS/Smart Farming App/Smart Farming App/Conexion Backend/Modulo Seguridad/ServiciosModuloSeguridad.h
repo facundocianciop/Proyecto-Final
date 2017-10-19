@@ -14,6 +14,8 @@
 
 #import "RespuestaMostrarUsuario.h"
 
+#import "SolicitudRegistrarUsuario.h"
+
 @interface ServiciosModuloSeguridad : BaseServicios
 
 #pragma mark - Public
@@ -27,5 +29,9 @@
 
 +(void) mostrarUsuario:(SuccessBlock)completionBlock
           failureBlock:(FailureBlock)failureBlock;
+
++(void) registrarUsuario:(SolicitudRegistrarUsuario*)SolicitudInicioSesion
+         completionBlock:(SuccessBlock)completionBlock
+            failureBlock:(FailureBlock)failureBlock;
 
 @end

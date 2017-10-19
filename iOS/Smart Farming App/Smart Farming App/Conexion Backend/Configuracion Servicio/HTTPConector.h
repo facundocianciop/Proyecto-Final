@@ -10,6 +10,7 @@
 
 #define METHOD_GET  @"GET"
 #define METHOD_POST @"POST"
+#define METHOD_PUT @"PUT"
 #define METHOD_DELETE @"DELETE"
 
 typedef void (^HTTPOperationCompletionBlock)(NSDictionary *responseObject);

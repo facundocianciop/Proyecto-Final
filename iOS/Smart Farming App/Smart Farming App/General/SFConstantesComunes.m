@@ -40,8 +40,11 @@ NSString *const kRegexCUIT = @"(^$|^\\d{2}\\-\\d{8}\\-\\d{1}$)";
 #pragma mark - Mensajes errores
 
 NSString *const kErrorDesconocido = @"Error desconocido";
+
+NSString *const kErrorRegistroUsuario = @"Error registrando usuario";
 NSString *const kErrorInicioSesion = @"Error de inicio de sesión";
 NSString *const kErrorObteniendoDatosUsuario = @"Error obteniendo datos de usuario";
+
 NSString *const kErrorObteniendoRoles = @"Error obteniendo roles";
 NSString *const kErrorObteniendoFincas = @"Error obteniendo fincas";
 

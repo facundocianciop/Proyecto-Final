@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		110CC75F1F9849030090C6C0 /* SFMenuReportesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 110CC75E1F9849030090C6C0 /* SFMenuReportesViewController.m */; };
+		110CC7621F9854200090C6C0 /* SolicitudRegistrarUsuario.m in Sources */ = {isa = PBXBuildFile; fileRef = 110CC7611F9854200090C6C0 /* SolicitudRegistrarUsuario.m */; };
 		1116BA321F8C5866005C9AFF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116BA311F8C5866005C9AFF /* AppDelegate.m */; };
 		1116BA381F8C5866005C9AFF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1116BA361F8C5866005C9AFF /* Main.storyboard */; };
 		1116BA3A1F8C5866005C9AFF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1116BA391F8C5866005C9AFF /* Assets.xcassets */; };
@@ -96,6 +98,10 @@
 /* Begin PBXFileReference section */
 		01A8F455D29AC3820A5F7AE8 /* libPods-Smart Farming AppUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Smart Farming AppUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		02958B0F78B72D3983C840CA /* Pods-Smart Farming AppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Smart Farming AppUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Smart Farming AppUITests/Pods-Smart Farming AppUITests.release.xcconfig"; sourceTree = "<group>"; };
+		110CC75D1F9849030090C6C0 /* SFMenuReportesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFMenuReportesViewController.h; sourceTree = "<group>"; };
+		110CC75E1F9849030090C6C0 /* SFMenuReportesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFMenuReportesViewController.m; sourceTree = "<group>"; };
+		110CC7601F9854200090C6C0 /* SolicitudRegistrarUsuario.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SolicitudRegistrarUsuario.h; sourceTree = "<group>"; };
+		110CC7611F9854200090C6C0 /* SolicitudRegistrarUsuario.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SolicitudRegistrarUsuario.m; sourceTree = "<group>"; };
 		1116BA2D1F8C5866005C9AFF /* Smart Farming App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Smart Farming App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1116BA301F8C5866005C9AFF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1116BA311F8C5866005C9AFF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -261,6 +267,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		110CC75C1F9848CD0090C6C0 /* Modulo Reportes */ = {
+			isa = PBXGroup;
+			children = (
+				110CC75D1F9849030090C6C0 /* SFMenuReportesViewController.h */,
+				110CC75E1F9849030090C6C0 /* SFMenuReportesViewController.m */,
+			);
+			path = "Modulo Reportes";
+			sourceTree = "<group>";
+		};
 		1116BA241F8C5866005C9AFF = {
 			isa = PBXGroup;
 			children = (
@@ -298,9 +313,9 @@
 				1116BA311F8C5866005C9AFF /* AppDelegate.m */,
 				1116BA361F8C5866005C9AFF /* Main.storyboard */,
 				1116BA391F8C5866005C9AFF /* Assets.xcassets */,
+				1116BA3F1F8C5866005C9AFF /* main.m */,
 				1116BA3B1F8C5866005C9AFF /* LaunchScreen.storyboard */,
 				1116BA3E1F8C5866005C9AFF /* Info.plist */,
-				1116BA3F1F8C5866005C9AFF /* main.m */,
 			);
 			path = "Smart Farming App";
 			sourceTree = "<group>";
@@ -346,6 +361,7 @@
 				A1AE0B821F8E8BF1009B4494 /* Modulo Finca */,
 				A1BD867E1F9776260077C91E /* Modulo Riego */,
 				A1BD867D1F9776180077C91E /* Modulo Sectores */,
+				110CC75C1F9848CD0090C6C0 /* Modulo Reportes */,
 			);
 			path = Controladores;
 			sourceTree = "<group>";
@@ -554,6 +570,8 @@
 			children = (
 				11CD00921F8F178D00C58C49 /* SolicitudInicioSesion.h */,
 				11CD00931F8F178D00C58C49 /* SolicitudInicioSesion.m */,
+				110CC7601F9854200090C6C0 /* SolicitudRegistrarUsuario.h */,
+				110CC7611F9854200090C6C0 /* SolicitudRegistrarUsuario.m */,
 			);
 			path = Solicitudes;
 			sourceTree = "<group>";
@@ -983,6 +1001,7 @@
 				1116D6DA1F94424F0088D61B /* LGSideMenuController.m in Sources */,
 				1116BA771F8C5A2C005C9AFF /* ContextoUsuario.m in Sources */,
 				11F020811F8F078D00DBC1DC /* SFTextInputBaseViewController.m in Sources */,
+				110CC7621F9854200090C6C0 /* SolicitudRegistrarUsuario.m in Sources */,
 				A1BD86901F97AB0E0077C91E /* SFMecanismosRiegoHabilitadosViewController.m in Sources */,
 				111F8F181F95B32E00AB7E8F /* SFCambiarContraseniaViewController.m in Sources */,
 				1116DA9B1F906F8C0057A048 /* RespuestaMostrarFincas.m in Sources */,
@@ -999,6 +1018,7 @@
 				1116D6DE1F94424F0088D61B /* LGSideMenuView.m in Sources */,
 				1116BA401F8C5866005C9AFF /* main.m in Sources */,
 				1116BA7B1F8C5A2C005C9AFF /* SFConstantesComunes.m in Sources */,
+				110CC75F1F9849030090C6C0 /* SFMenuReportesViewController.m in Sources */,
 				1116D6EB1F9451F70088D61B /* SFInformacionFincaActivadaViewController.m in Sources */,
 				111D1DBD1F92DE9E00E3A168 /* SFFincasEncargadoViewController.m in Sources */,
 				1116DA9F1F90726C0057A048 /* ServiciosModuloRiego.m in Sources */,
@@ -1192,7 +1212,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ZKE9H755D4;
+				DEVELOPMENT_TEAM = 7MXLATLY7W;
 				INFOPLIST_FILE = "Smart Farming App/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1208,7 +1228,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ZKE9H755D4;
+				DEVELOPMENT_TEAM = 7MXLATLY7W;
 				INFOPLIST_FILE = "Smart Farming App/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

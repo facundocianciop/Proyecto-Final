@@ -77,23 +77,27 @@
     [form addFormSection:section];
     
     row = [XLFormRowDescriptor formRowDescriptorWithTag:KEY_FECHA_NACIMIENTO rowType:XLFormRowDescriptorTypeDate title:@"Fecha de Nacimiento"];
+    row.value = [NSDate new];
     [section addFormRow:row];
     
     row = [XLFormRowDescriptor formRowDescriptorWithTag:KEY_DNI rowType:XLFormRowDescriptorTypeNumber title:@"D.N.I."];
     [row.cellConfigAtConfigure setObject:@"D.N.I." forKey:@"textField.placeholder"];
     [row.cellConfigAtConfigure setObject:@(NSTextAlignmentRight) forKey:@"textField.textAlignment"];
     [row addValidator:[XLFormRegexValidator formRegexValidatorWithMsg:@"Ingresar solo numeros" regex:kRegexDNI]];
+    [row.cellConfigAtConfigure setObject:@(8) forKey:@"textFieldMaxNumberOfCharacters"];
     [section addFormRow:row];
     
     row = [XLFormRowDescriptor formRowDescriptorWithTag:KEY_CUIT rowType:XLFormRowDescriptorTypeText title:@"C.U.I.T."];
     [row.cellConfigAtConfigure setObject:@"C.U.I.T." forKey:@"textField.placeholder"];
     [row.cellConfigAtConfigure setObject:@(NSTextAlignmentRight) forKey:@"textField.textAlignment"];
     [row addValidator:[XLFormRegexValidator formRegexValidatorWithMsg:@"C.U.I.T debe llevar guiones" regex:kRegexCUIT]];
+    [row.cellConfigAtConfigure setObject:@(13) forKey:@"textFieldMaxNumberOfCharacters"];
     [section addFormRow:row];
     
     row = [XLFormRowDescriptor formRowDescriptorWithTag:KEY_DOMICILIO rowType:XLFormRowDescriptorTypeText title:@"Domicilio"];
     [row.cellConfigAtConfigure setObject:@"Domicilio" forKey:@"textField.placeholder"];
     [row.cellConfigAtConfigure setObject:@(NSTextAlignmentRight) forKey:@"textField.textAlignment"];
+    [row.cellConfigAtConfigure setObject:@(50) forKey:@"textFieldMaxNumberOfCharacters"];
     [section addFormRow:row];
     
     self.form = form;

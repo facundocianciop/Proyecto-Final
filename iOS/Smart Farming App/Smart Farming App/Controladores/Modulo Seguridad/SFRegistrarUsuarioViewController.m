@@ -38,6 +38,43 @@
 
 #pragma mark - Llamadas servicio
 
+-(void)registrarUsuario {
+    
+    NSDictionary *values = [self.form formValues];
+    
+    SolicitudRegistrarUsuario *solicitud = [SolicitudRegistrarUsuario new];
+    
+    solicitud.usuario = [values objectForKey:KEY_USUARIO];
+    solicitud.email = [values objectForKey:KEY_EMAIL];
+    solicitud.contrasenia = [values objectForKey:KEY_CONTRASENIA];
+    
+    solicitud.nombre = [values objectForKey:KEY_NOMBRE_USUARIO];
+    solicitud.apellido = [values objectForKey:KEY_APELLIDO_USUARIO];
+    solicitud.fechaNacimiento = [values objectForKey:KEY_FECHA_NACIMIENTO];
+    solicitud.dni = [[values objectForKey:KEY_DNI] integerValue];
+    solicitud.cuit = [values objectForKey:KEY_CUIT];
+    solicitud.domicilio = [values objectForKey:KEY_DOMICILIO];
+    
+    __weak typeof (self) weakSelf = self;
+    
+    [self showActivityIndicator];
+    [ServiciosModuloSeguridad registrarUsuario:solicitud completionBlock:^(RespuestaServicioBase *respuesta) {
+        [weakSelf hideActivityIndicator];
+        if (respuesta.resultado) {
+            [weakSelf userInformationPrompt:@"Usuario creado correctamente" withCompletion:^{
+                [weakSelf.navigationController popToRootViewControllerAnimated:YES];
+            }];
+        } else {
+            [weakSelf handleErrorWithPromptTitle:kErrorRegistroUsuario message:kErrorDesconocido withCompletion:^{
+            }];
+        }
+    } failureBlock:^(ErrorServicioBase *error) {
+        [weakSelf hideActivityIndicator];
+        [weakSelf handleErrorWithPromptTitle:kErrorRegistroUsuario message:error.detalleError withCompletion:^{
+        }];
+    }];
+    
+}
 
 #pragma mark - Formulario
 
@@ -95,23 +132,27 @@
     [form addFormSection:section];
     
     row = [XLFormRowDescriptor formRowDescriptorWithTag:KEY_FECHA_NACIMIENTO rowType:XLFormRowDescriptorTypeDate title:@"Fecha de Nacimiento"];
+    row.value = [NSDate new];
     [section addFormRow:row];
     
     row = [XLFormRowDescriptor formRowDescriptorWithTag:KEY_DNI rowType:XLFormRowDescriptorTypeNumber title:@"D.N.I."];
     [row.cellConfigAtConfigure setObject:@"D.N.I." forKey:@"textField.placeholder"];
     [row.cellConfigAtConfigure setObject:@(NSTextAlignmentRight) forKey:@"textField.textAlignment"];
     [row addValidator:[XLFormRegexValidator formRegexValidatorWithMsg:@"Ingresar solo numeros" regex:kRegexDNI]];
+    [row.cellConfigAtConfigure setObject:@(8) forKey:@"textFieldMaxNumberOfCharacters"];
     [section addFormRow:row];
     
     row = [XLFormRowDescriptor formRowDescriptorWithTag:KEY_CUIT rowType:XLFormRowDescriptorTypeText title:@"C.U.I.T."];
     [row.cellConfigAtConfigure setObject:@"C.U.I.T." forKey:@"textField.placeholder"];
     [row.cellConfigAtConfigure setObject:@(NSTextAlignmentRight) forKey:@"textField.textAlignment"];
     [row addValidator:[XLFormRegexValidator formRegexValidatorWithMsg:@"C.U.I.T debe llevar guiones" regex:kRegexCUIT]];
+    [row.cellConfigAtConfigure setObject:@(13) forKey:@"textFieldMaxNumberOfCharacters"];
     [section addFormRow:row];
     
     row = [XLFormRowDescriptor formRowDescriptorWithTag:KEY_DOMICILIO rowType:XLFormRowDescriptorTypeText title:@"Domicilio"];
     [row.cellConfigAtConfigure setObject:@"Domicilio" forKey:@"textField.placeholder"];
     [row.cellConfigAtConfigure setObject:@(NSTextAlignmentRight) forKey:@"textField.textAlignment"];
+    [row.cellConfigAtConfigure setObject:@(50) forKey:@"textFieldMaxNumberOfCharacters"];
     [section addFormRow:row];
     
     self.form = form;
@@ -153,8 +194,7 @@
 }
 
 -(void)hacerLlamadaServicio {
-    
-    
+    [self registrarUsuario];
 }
 
 #pragma mark - Acciones form
