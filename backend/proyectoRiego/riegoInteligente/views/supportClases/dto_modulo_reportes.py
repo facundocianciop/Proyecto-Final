@@ -64,6 +64,24 @@ class DtoRiegoEjecucionSector:
                     mecanismo_sector=self.mecanismo_sector,
                     ejecucion_riego=self.ejecucion_riego,
                     configuracion_riego=self.configuracion_riego)
+class DtoMedicionClimatica:
+    def __init__(self, medicion_climatica):
+        self.medicion_climatica = medicion_climatica
+
+    def as_json(self):
+        return dict(medicionClimatica=self.medicion_climatica)
+
+class DtoHistoricoSector:
+    def __init__(self, dto_medicion_climatica_list, dto_componente_medicion_list):
+        self.dto_medicion_climatica_list = dto_medicion_climatica_list
+        self.dto_componente_medicion_list = dto_componente_medicion_list
+
+    def as_json(self):
+        return dict(
+            componenteMedicionListaMediciones= [dto_componente.as_json() for dto_componente in self.dto_componente_medicion_list],
+        medicionClimaticaList= [dto_medicion_climatica.as_json() for dto_medicion_climatica in self.dto_medicion_climatica_list]
+        )
+
 
 class DtoComponenteMedicion:
     def __init__(self, componente, medicion_cabecera):
@@ -75,6 +93,8 @@ class DtoComponenteMedicion:
                     componente=self.componente,
                     medicionCabecera=self.medicion_cabecera
                 )
+
+
 class DtoMecanismoRiegoConfiguracion:
     def __init__(self, mecanismo_riego_finca_sector, ejecucion, configuracion):
         self.mecanismo_riego_finca_sector = mecanismo_riego_finca_sector
@@ -86,4 +106,26 @@ class DtoMecanismoRiegoConfiguracion:
             mecanismo_riego_finca_sector=self.mecanismo_riego_finca_sector,
             ejecucion=self.ejecucion,
             configuracion=self.configuracion
+        )
+
+
+class DtoMedicionCruzadaRiego:
+    def __init__(self, mecanismo_riego_finca_sector, ejecucion, configuracion, lista_mediciones_componente,
+                 lista_mediciones_climaticas_antes, lista_mediciones_climaticas_despues):
+        self.mecanismo_riego_finca_sector = mecanismo_riego_finca_sector
+        self.ejecucion = ejecucion
+        self.configuracion = configuracion
+        self.lista_mediciones_componente = lista_mediciones_componente
+        self.lista_mediciones_climaticas_antes = lista_mediciones_climaticas_antes
+        self.lista_mediciones_climaticas_despues = lista_mediciones_climaticas_despues
+
+
+    def as_json(self):
+        return dict(
+            mecanismo_riego_finca_sector=self.mecanismo_riego_finca_sector,
+            ejecucion=self.ejecucion,
+            configuracion=self.configuracion,
+            listaMedicionesComponente=[medicion.as_json() for medicion in self.lista_mediciones_componente],
+            listaMedicionesClimaticasAntes=[medicion_antes.as_json() for medicion_antes in self.lista_mediciones_climaticas_antes],
+            listaMedicionClimaticasDespues=[medicion_despues.as_json() for medicion_despues in self.lista_mediciones_climaticas_despues]
         )
