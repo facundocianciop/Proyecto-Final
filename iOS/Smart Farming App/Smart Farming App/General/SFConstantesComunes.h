@@ -37,13 +37,28 @@ extern NSString *const kRegexContrasenia;
 extern NSString *const kRegexDNI;
 extern NSString *const kRegexCUIT;
 
+#pragma mark - Mensajes confirmacion
+
+extern NSString *const kConfirmacionRegistroUsuario;
+extern NSString *const kConfirmacionEnvioMailRecuperacionCuenta;
+extern NSString *const kConfirmacionCambioContraseniaRecuperacionCuenta;
+
+extern NSString *const kConfirmacionModificacionUsuario;
+extern NSString *const kConfirmacionCambioContrasenia;
+
 #pragma mark - Mensajes errores
 
 extern NSString *const kErrorDesconocido;
 
 extern NSString *const kErrorRegistroUsuario;
+extern NSString *const kErrorRecuperarCuenta;
+extern NSString *const kErrorRecuperarCuentaCambioContasenia;
+
 extern NSString *const kErrorInicioSesion;
 extern NSString *const kErrorObteniendoDatosUsuario;
+
+extern NSString *const kErrorModificacionUsuario;
+extern NSString *const kErrorCambioContrasenia;
 
 extern NSString *const kErrorObteniendoRoles;
 extern NSString *const kErrorObteniendoFincas;

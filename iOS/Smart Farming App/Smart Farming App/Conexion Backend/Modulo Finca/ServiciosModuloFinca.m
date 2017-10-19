@@ -52,10 +52,14 @@
                 
                 SFFinca *finca = [SFFinca new];
                 
-                finca.idFinca = [[datos objectForKey:KEY_ID_FINCA] longLongValue];
+                if ([datosOperacion objectForKey:KEY_ID_FINCA]) {
+                    finca.idFinca = [[datos objectForKey:KEY_ID_FINCA] longLongValue];
+                }
                 finca.nombre = [datos objectForKey:KEY_NOMBRE_FINCA_RESPUESTA];
                 
-                finca.tamanio = [[datos objectForKey:KEY_TAMANIO] integerValue];
+                if ([datos objectForKey:KEY_TAMANIO] ) {
+                    finca.tamanio = [[datos objectForKey:KEY_TAMANIO] integerValue];
+                }
                 finca.ubicacion = [datos objectForKey:KEY_UBICACION];
                 finca.direccionLegal = [datos objectForKey:KEY_DIRECCION_LEGAL];
                 
@@ -88,10 +92,13 @@
                 
                 SFFinca *finca = [SFFinca new];
                 
-                finca.idFinca = [[datos objectForKey:KEY_ID_FINCA] longLongValue];
+                if ([datos objectForKey:KEY_ID_FINCA]) {
+                    finca.idFinca = [[datos objectForKey:KEY_ID_FINCA] longLongValue];
+                }
                 finca.nombre = [datos objectForKey:KEY_NOMBRE_FINCA_RESPUESTA];
-                
-                finca.tamanio = [[datos objectForKey:KEY_TAMANIO] integerValue];
+                if ([datos objectForKey:KEY_TAMANIO]) {
+                    finca.tamanio = [[datos objectForKey:KEY_TAMANIO] integerValue];
+                }
                 finca.ubicacion = [datos objectForKey:KEY_UBICACION];
                 finca.direccionLegal = [datos objectForKey:KEY_DIRECCION_LEGAL];
                 
@@ -122,10 +129,14 @@
                 
                 SFFinca *finca = [SFFinca new];
                 
-                finca.idFinca = [[datos objectForKey:KEY_ID_FINCA] longLongValue];
+                if ([datos objectForKey:KEY_ID_FINCA]) {
+                    finca.idFinca = [[datos objectForKey:KEY_ID_FINCA] longLongValue];
+                }
                 finca.nombre = [datos objectForKey:KEY_NOMBRE_FINCA];
                 
-                finca.tamanio = [[datos objectForKey:KEY_TAMANIO] integerValue];
+                if ([datos objectForKey:KEY_TAMANIO]) {
+                    finca.tamanio = [[datos objectForKey:KEY_TAMANIO] integerValue];
+                }
                 finca.ubicacion = [datos objectForKey:KEY_UBICACION];
                 finca.direccionLegal = [datos objectForKey:KEY_DIRECCION_LEGAL];
                 

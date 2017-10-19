@@ -63,6 +63,12 @@
 		A10157171F9003BE00179ED7 /* SFFormularioBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A10157161F9003BE00179ED7 /* SFFormularioBaseViewController.m */; };
 		A101571A1F9003E600179ED7 /* SFRegistrarUsuarioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A10157191F9003E600179ED7 /* SFRegistrarUsuarioViewController.m */; };
 		A101571D1F90041F00179ED7 /* SFRecuperarCuentaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A101571C1F90041F00179ED7 /* SFRecuperarCuentaViewController.m */; };
+		A1893E091F98FE040060DC8A /* SolicitudModificarUsuario.m in Sources */ = {isa = PBXBuildFile; fileRef = A1893E081F98FE040060DC8A /* SolicitudModificarUsuario.m */; };
+		A1893E0C1F9900020060DC8A /* SolicitudCambiarContrasenia.m in Sources */ = {isa = PBXBuildFile; fileRef = A1893E0B1F9900020060DC8A /* SolicitudCambiarContrasenia.m */; };
+		A1893E0F1F9900860060DC8A /* SolicitudRecuperarCuenta.m in Sources */ = {isa = PBXBuildFile; fileRef = A1893E0E1F9900860060DC8A /* SolicitudRecuperarCuenta.m */; };
+		A1893E121F9900B60060DC8A /* SolicitudRecuperarCuentaCambiarContrasenia.m in Sources */ = {isa = PBXBuildFile; fileRef = A1893E111F9900B60060DC8A /* SolicitudRecuperarCuentaCambiarContrasenia.m */; };
+		A1893E151F9933580060DC8A /* RespuestaRecuperarCuenta.m in Sources */ = {isa = PBXBuildFile; fileRef = A1893E141F9933580060DC8A /* RespuestaRecuperarCuenta.m */; };
+		A1893E181F994A5A0060DC8A /* SFControladorEstadoSesion.m in Sources */ = {isa = PBXBuildFile; fileRef = A1893E171F994A5A0060DC8A /* SFControladorEstadoSesion.m */; };
 		A1AE0B891F8E8CFD009B4494 /* RespuestaServicioBase.m in Sources */ = {isa = PBXBuildFile; fileRef = A1AE0B881F8E8CFD009B4494 /* RespuestaServicioBase.m */; };
 		A1AE0B8C1F8E8E1F009B4494 /* SolicitudServicioFincaBase.m in Sources */ = {isa = PBXBuildFile; fileRef = A1AE0B8B1F8E8E1F009B4494 /* SolicitudServicioFincaBase.m */; };
 		A1AE0B8F1F8E8F0B009B4494 /* ErrorServicioBase.m in Sources */ = {isa = PBXBuildFile; fileRef = A1AE0B8E1F8E8F0B009B4494 /* ErrorServicioBase.m */; };
@@ -210,6 +216,18 @@
 		A10157191F9003E600179ED7 /* SFRegistrarUsuarioViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFRegistrarUsuarioViewController.m; sourceTree = "<group>"; };
 		A101571B1F90041F00179ED7 /* SFRecuperarCuentaViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFRecuperarCuentaViewController.h; sourceTree = "<group>"; };
 		A101571C1F90041F00179ED7 /* SFRecuperarCuentaViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFRecuperarCuentaViewController.m; sourceTree = "<group>"; };
+		A1893E071F98FE040060DC8A /* SolicitudModificarUsuario.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SolicitudModificarUsuario.h; sourceTree = "<group>"; };
+		A1893E081F98FE040060DC8A /* SolicitudModificarUsuario.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SolicitudModificarUsuario.m; sourceTree = "<group>"; };
+		A1893E0A1F9900020060DC8A /* SolicitudCambiarContrasenia.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SolicitudCambiarContrasenia.h; sourceTree = "<group>"; };
+		A1893E0B1F9900020060DC8A /* SolicitudCambiarContrasenia.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SolicitudCambiarContrasenia.m; sourceTree = "<group>"; };
+		A1893E0D1F9900860060DC8A /* SolicitudRecuperarCuenta.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SolicitudRecuperarCuenta.h; sourceTree = "<group>"; };
+		A1893E0E1F9900860060DC8A /* SolicitudRecuperarCuenta.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SolicitudRecuperarCuenta.m; sourceTree = "<group>"; };
+		A1893E101F9900B60060DC8A /* SolicitudRecuperarCuentaCambiarContrasenia.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SolicitudRecuperarCuentaCambiarContrasenia.h; sourceTree = "<group>"; };
+		A1893E111F9900B60060DC8A /* SolicitudRecuperarCuentaCambiarContrasenia.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SolicitudRecuperarCuentaCambiarContrasenia.m; sourceTree = "<group>"; };
+		A1893E131F9933580060DC8A /* RespuestaRecuperarCuenta.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RespuestaRecuperarCuenta.h; sourceTree = "<group>"; };
+		A1893E141F9933580060DC8A /* RespuestaRecuperarCuenta.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RespuestaRecuperarCuenta.m; sourceTree = "<group>"; };
+		A1893E161F994A5A0060DC8A /* SFControladorEstadoSesion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFControladorEstadoSesion.h; sourceTree = "<group>"; };
+		A1893E171F994A5A0060DC8A /* SFControladorEstadoSesion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFControladorEstadoSesion.m; sourceTree = "<group>"; };
 		A1AE0B871F8E8CFD009B4494 /* RespuestaServicioBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RespuestaServicioBase.h; sourceTree = "<group>"; };
 		A1AE0B881F8E8CFD009B4494 /* RespuestaServicioBase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RespuestaServicioBase.m; sourceTree = "<group>"; };
 		A1AE0B8A1F8E8E1F009B4494 /* SolicitudServicioFincaBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SolicitudServicioFincaBase.h; sourceTree = "<group>"; };
@@ -391,6 +409,8 @@
 			children = (
 				1116BA8E1F8C6DA0005C9AFF /* SFConstantesComunes.h */,
 				1116BA6D1F8C5A2C005C9AFF /* SFConstantesComunes.m */,
+				A1893E161F994A5A0060DC8A /* SFControladorEstadoSesion.h */,
+				A1893E171F994A5A0060DC8A /* SFControladorEstadoSesion.m */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -513,6 +533,8 @@
 				1116DA951F906A370057A048 /* RespuestaInicioSesion.m */,
 				111F7E0C1F94FE4F002615D5 /* RespuestaMostrarUsuario.h */,
 				111F7E0D1F94FE4F002615D5 /* RespuestaMostrarUsuario.m */,
+				A1893E131F9933580060DC8A /* RespuestaRecuperarCuenta.h */,
+				A1893E141F9933580060DC8A /* RespuestaRecuperarCuenta.m */,
 			);
 			path = Respuestas;
 			sourceTree = "<group>";
@@ -572,6 +594,14 @@
 				11CD00931F8F178D00C58C49 /* SolicitudInicioSesion.m */,
 				110CC7601F9854200090C6C0 /* SolicitudRegistrarUsuario.h */,
 				110CC7611F9854200090C6C0 /* SolicitudRegistrarUsuario.m */,
+				A1893E071F98FE040060DC8A /* SolicitudModificarUsuario.h */,
+				A1893E081F98FE040060DC8A /* SolicitudModificarUsuario.m */,
+				A1893E0A1F9900020060DC8A /* SolicitudCambiarContrasenia.h */,
+				A1893E0B1F9900020060DC8A /* SolicitudCambiarContrasenia.m */,
+				A1893E0D1F9900860060DC8A /* SolicitudRecuperarCuenta.h */,
+				A1893E0E1F9900860060DC8A /* SolicitudRecuperarCuenta.m */,
+				A1893E101F9900B60060DC8A /* SolicitudRecuperarCuentaCambiarContrasenia.h */,
+				A1893E111F9900B60060DC8A /* SolicitudRecuperarCuentaCambiarContrasenia.m */,
 			);
 			path = Solicitudes;
 			sourceTree = "<group>";
@@ -1019,6 +1049,7 @@
 				1116BA401F8C5866005C9AFF /* main.m in Sources */,
 				1116BA7B1F8C5A2C005C9AFF /* SFConstantesComunes.m in Sources */,
 				110CC75F1F9849030090C6C0 /* SFMenuReportesViewController.m in Sources */,
+				A1893E181F994A5A0060DC8A /* SFControladorEstadoSesion.m in Sources */,
 				1116D6EB1F9451F70088D61B /* SFInformacionFincaActivadaViewController.m in Sources */,
 				111D1DBD1F92DE9E00E3A168 /* SFFincasEncargadoViewController.m in Sources */,
 				1116DA9F1F90726C0057A048 /* ServiciosModuloRiego.m in Sources */,
@@ -1033,14 +1064,19 @@
 				A1BD86951F97ABDF0077C91E /* SFMecanismoRiegoHabilitadoTableViewCell.m in Sources */,
 				1116BA931F8C7490005C9AFF /* SFUtils.m in Sources */,
 				A10157171F9003BE00179ED7 /* SFFormularioBaseViewController.m in Sources */,
+				A1893E0F1F9900860060DC8A /* SolicitudRecuperarCuenta.m in Sources */,
+				A1893E091F98FE040060DC8A /* SolicitudModificarUsuario.m in Sources */,
+				A1893E121F9900B60060DC8A /* SolicitudRecuperarCuentaCambiarContrasenia.m in Sources */,
 				1116BA861F8C6B7D005C9AFF /* SFActivityIndicator.m in Sources */,
 				11CD00941F8F178D00C58C49 /* SolicitudInicioSesion.m in Sources */,
+				A1893E0C1F9900020060DC8A /* SolicitudCambiarContrasenia.m in Sources */,
 				111D1DCA1F92FA7500E3A168 /* SFSectorFinca.m in Sources */,
 				A1AE0B921F8E9011009B4494 /* SolicitudServicioBase.m in Sources */,
 				1116D6DD1F94424F0088D61B /* LGSideMenuSegue.m in Sources */,
 				11F0207E1F8F057900DBC1DC /* SFInicioSesionViewController.m in Sources */,
 				A1AE0B8F1F8E8F0B009B4494 /* ErrorServicioBase.m in Sources */,
 				1116D6E21F9444890088D61B /* FincaLeftMenuTableViewController.m in Sources */,
+				A1893E151F9933580060DC8A /* RespuestaRecuperarCuenta.m in Sources */,
 				A1BD86981F97AC650077C91E /* SFMecanismoRiegoFincaSector.m in Sources */,
 				111F8F0F1F95AF2400AB7E8F /* SFRecuperarCuentaNuevaContraseniaViewController.m in Sources */,
 				111F7E0B1F94ED0A002615D5 /* SFPerfilUsuarioViewController.m in Sources */,

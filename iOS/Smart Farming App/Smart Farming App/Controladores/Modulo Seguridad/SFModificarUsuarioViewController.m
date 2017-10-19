@@ -38,6 +38,41 @@
 
 #pragma mark - Llamadas servicio
 
+-(void)modificarUsuario {
+    NSDictionary *values = [self.form formValues];
+    
+    SolicitudModificarUsuario *solicitud = [SolicitudModificarUsuario new];
+    
+    solicitud.email = [values objectForKey:KEY_EMAIL];
+    
+    solicitud.nombre = [values objectForKey:KEY_NOMBRE_USUARIO];
+    solicitud.apellido = [values objectForKey:KEY_APELLIDO_USUARIO];
+    solicitud.fechaNacimiento = [values objectForKey:KEY_FECHA_NACIMIENTO];
+    if ([values objectForKey:KEY_DNI]) {
+        solicitud.dni = [[values objectForKey:KEY_DNI] integerValue];
+    }
+    solicitud.cuit = [values objectForKey:KEY_CUIT];
+    solicitud.domicilio = [values objectForKey:KEY_DOMICILIO];
+    
+    __weak typeof (self) weakSelf = self;
+    
+    [self showActivityIndicator];
+    [ServiciosModuloSeguridad modificarUsuario:solicitud completionBlock:^(RespuestaServicioBase *respuesta) {
+        [weakSelf hideActivityIndicator];
+        if (respuesta.resultado) {
+            [weakSelf userInformationPrompt:kConfirmacionModificacionUsuario withCompletion:^{
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }];
+        } else {
+            [weakSelf handleErrorWithPromptTitle:kErrorModificacionUsuario message:kErrorDesconocido withCompletion:^{
+            }];
+        }
+    } failureBlock:^(ErrorServicioBase *error) {
+        [weakSelf hideActivityIndicator];
+        [weakSelf handleErrorWithPromptTitle:kErrorModificacionUsuario message:error.detalleError withCompletion:^{
+        }];
+    }];
+}
 
 #pragma mark - Formulario
 
@@ -133,8 +168,7 @@
 }
 
 -(void)hacerLlamadaServicio {
-    
-    
+    [self modificarUsuario];
 }
 
 #pragma mark - Acciones form

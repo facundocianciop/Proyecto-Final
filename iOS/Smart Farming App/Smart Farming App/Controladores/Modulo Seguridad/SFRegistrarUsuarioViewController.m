@@ -51,7 +51,9 @@
     solicitud.nombre = [values objectForKey:KEY_NOMBRE_USUARIO];
     solicitud.apellido = [values objectForKey:KEY_APELLIDO_USUARIO];
     solicitud.fechaNacimiento = [values objectForKey:KEY_FECHA_NACIMIENTO];
-    solicitud.dni = [[values objectForKey:KEY_DNI] integerValue];
+    if ([values objectForKey:KEY_DNI] != [NSNull null]) {
+        solicitud.dni = [[values objectForKey:KEY_DNI] integerValue];
+    }
     solicitud.cuit = [values objectForKey:KEY_CUIT];
     solicitud.domicilio = [values objectForKey:KEY_DOMICILIO];
     
@@ -61,7 +63,7 @@
     [ServiciosModuloSeguridad registrarUsuario:solicitud completionBlock:^(RespuestaServicioBase *respuesta) {
         [weakSelf hideActivityIndicator];
         if (respuesta.resultado) {
-            [weakSelf userInformationPrompt:@"Usuario creado correctamente" withCompletion:^{
+            [weakSelf userInformationPrompt:kConfirmacionRegistroUsuario withCompletion:^{
                 [weakSelf.navigationController popToRootViewControllerAnimated:YES];
             }];
         } else {

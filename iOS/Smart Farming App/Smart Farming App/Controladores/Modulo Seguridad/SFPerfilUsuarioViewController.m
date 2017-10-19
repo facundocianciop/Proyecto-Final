@@ -9,7 +9,7 @@
 #import "SFPerfilUsuarioViewController.h"
 
 #import "ServiciosModuloSeguridad.h"
-#import "AppDelegate.h"
+#import "ContextoUsuario.h"
 
 @interface SFPerfilUsuarioViewController ()
 
@@ -50,6 +50,13 @@
 }
 */
 
+#pragma mark - private
+
+-(void)cerrarSesion {
+    [[ContextoUsuario instance] invalidateContext];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
 #pragma mark - Llamadas servicio
 
 -(void)obtenerDatosUsuario {
@@ -69,7 +76,6 @@
             [weakSelf handleErrorWithPromptTitle:kErrorObteniendoDatosUsuario message:kErrorDesconocido withCompletion:^{
             }];
         }
-        
     } failureBlock:^(ErrorServicioBase *error) {
         [weakSelf hideActivityIndicator];
         [weakSelf handleErrorWithPromptTitle:kErrorObteniendoDatosUsuario message:error.detalleError withCompletion:^{
@@ -77,23 +83,17 @@
     }];
 }
 
--(void)cerrarSesion {
+-(void)llamadaCerrarSesion {
 
     __weak typeof (self) weakSelf = self;
     
     [self showActivityIndicator];
     [ServiciosModuloSeguridad finalizarSesion:^(RespuestaServicioBase *respuesta) {
         [weakSelf hideActivityIndicator];
-        
-        AppDelegate *appDelegate = (AppDelegate*) [[UIApplication sharedApplication]delegate];
-        [appDelegate forzarCierreSesion];
-        
+        [self cerrarSesion];
     } failureBlock:^(ErrorServicioBase *error) {
         [weakSelf hideActivityIndicator];
-        
-        AppDelegate *appDelegate = (AppDelegate*) [[UIApplication sharedApplication]delegate];
-        [appDelegate forzarCierreSesion];
-        
+        [self cerrarSesion];
     }];
 }
 
@@ -106,7 +106,9 @@
     
     self.nombre.text = [NSString stringWithFormat:@"%@ %@", datosUsuario.username, datosUsuario.apellido];
     
-    self.fechaNacimiento.text = [SFUtils formatDateDDMMYYYY: datosUsuario.fechaNacimiento];
+    if (datosUsuario.fechaNacimiento) {
+        self.fechaNacimiento.text = [SFUtils formatDateDDMMYYYY: datosUsuario.fechaNacimiento];
+    }
     self.dni.text = [NSString stringWithFormat:@"%li", datosUsuario.dni];
     self.cuit.text = datosUsuario.cuit;
     self.domicilio.text = datosUsuario.domicilio;
@@ -115,8 +117,7 @@
 #pragma mark - Acciones
 
 - (IBAction)cerrarSesion:(id)sender {
-    
-    [self cerrarSesion];
+    [self llamadaCerrarSesion];
 }
 
 @end

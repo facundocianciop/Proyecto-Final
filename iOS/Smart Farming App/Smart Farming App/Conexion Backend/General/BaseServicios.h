@@ -35,6 +35,7 @@ typedef void(^SuccessBlock)(RespuestaServicioBase *respuesta);
 #define ROL_STAKEHOLDER         @"stakeholder"
 
 // Datos usuario
+#define KEY_ID_USUARIO          @"idUsuario"
 #define KEY_USUARIO             @"usuario"
 #define KEY_EMAIL               @"email"
 #define KEY_NOMBRE_USUARIO      @"nombre"

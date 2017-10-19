@@ -38,7 +38,35 @@
 
 #pragma mark - Llamadas servicio
 
-
+-(void)definirNuevaContrasenia {
+    
+    NSDictionary *values = [self.form formValues];
+    
+    SolicitudRecuperarCuentaCambiarContrasenia*solicitud = [SolicitudRecuperarCuentaCambiarContrasenia new];
+    
+    solicitud.idUsuario = self.idUsuario;
+    solicitud.codigoVerificacion = [values objectForKey:KEY_CODIGO_VERIFICACION];
+    solicitud.contraseniaNueva = [values objectForKey:KEY_CONTRASENIA_NUEVA];
+    
+    __weak typeof (self) weakSelf = self;
+    
+    [self showActivityIndicator];
+    [ServiciosModuloSeguridad cambiarContraseniaRecuperarCuenta:solicitud completionBlock:^(RespuestaServicioBase *respuesta) {
+        [weakSelf hideActivityIndicator];
+        if (respuesta.resultado) {
+            [weakSelf userInformationPrompt:kErrorRecuperarCuentaCambioContasenia withCompletion:^{
+                [weakSelf.navigationController popToRootViewControllerAnimated:YES];
+            }];
+        } else {
+            [weakSelf handleErrorWithPromptTitle:kErrorRecuperarCuenta message:kErrorDesconocido withCompletion:^{
+            }];
+        }
+    } failureBlock:^(ErrorServicioBase *error) {
+        [weakSelf hideActivityIndicator];
+        [weakSelf handleErrorWithPromptTitle:kErrorRecuperarCuenta message:error.detalleError withCompletion:^{
+        }];
+    }];
+}
 
 #pragma mark - Formulario
 
@@ -92,8 +120,7 @@
 }
 
 -(void)hacerLlamadaServicio {
-    
-
+    [self definirNuevaContrasenia];
 }
 
 #pragma mark - Acciones form

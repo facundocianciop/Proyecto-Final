@@ -9,8 +9,11 @@
 #import "SFRecuperarCuentaViewController.h"
 
 #import "ServiciosModuloSeguridad.h"
+#import "SFRecuperarCuentaNuevaContraseniaViewController.h"
 
 @interface SFRecuperarCuentaViewController ()
+
+@property (assign, nonatomic) long userId;
 
 @end
 
@@ -26,19 +29,49 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if ([[segue identifier] isEqualToString:kSFNavegarRecuperarCuentaSegundoPaso]) {
+        SFRecuperarCuentaNuevaContraseniaViewController *vc = [segue destinationViewController];
+        vc.idUsuario = self.userId;
+    }
 }
-*/
 
 #pragma mark - Llamadas servicio
 
+-(void)recuperarCuenta {
+    
+    NSDictionary *values = [self.form formValues];
 
+    SolicitudRecuperarCuenta *solicitud = [SolicitudRecuperarCuenta new];
+    
+    solicitud.email = [values objectForKey:KEY_EMAIL];
+    
+    __weak typeof (self) weakSelf = self;
+    
+    [self showActivityIndicator];
+    [ServiciosModuloSeguridad recuperarCuenta:solicitud completionBlock:^(RespuestaServicioBase *respuesta) {
+        [weakSelf hideActivityIndicator];
+        if (respuesta.resultado) {
+            if ([respuesta isKindOfClass:[RespuestaRecuperarCuenta class]]) {
+                RespuestaRecuperarCuenta *respuestaRecuperarCuenta = (RespuestaRecuperarCuenta *)respuesta;
+                weakSelf.userId = respuestaRecuperarCuenta.userId;
+                [weakSelf userInformationPrompt:kConfirmacionEnvioMailRecuperacionCuenta withCompletion:^{
+                    [weakSelf performSegueWithIdentifier:kSFNavegarRecuperarCuentaSegundoPaso sender:self];
+                }];
+            }
+        } else {
+            [weakSelf handleErrorWithPromptTitle:kErrorRecuperarCuenta message:kErrorDesconocido withCompletion:^{
+            }];
+        }
+    } failureBlock:^(ErrorServicioBase *error) {
+        [weakSelf hideActivityIndicator];
+        [weakSelf handleErrorWithPromptTitle:kErrorRecuperarCuenta message:error.detalleError withCompletion:^{
+        }];
+    }];
+}
 
 #pragma mark - Formulario
 
@@ -82,8 +115,7 @@
 }
 
 -(void)hacerLlamadaServicio {
-    
-    [self performSegueWithIdentifier:kSFNavegarRecuperarCuentaSegundoPaso sender:self];
+    [self recuperarCuenta];
 }
 
 #pragma mark - Acciones form
@@ -91,6 +123,5 @@
 - (IBAction)enviarDatos:(id)sender {
     [self enviarForm];
 }
-
 
 @end
