@@ -1208,6 +1208,14 @@ class MedicionInformacionClimaticaCabecera(models.Model):
                                                               db_column="OIDProveedorInformacionClimaticaFinca",
                                                               related_name="medicionInformacionClimaticaCabeceraList")
 
+    def as_json(self):
+        return dict(nroMedicion=self.nroMedicion,
+                    fechaHora=self.fechaHora,
+                    proveedorInformacion=self.proveedor_informacion_climatica_externa.
+                    proveedorInformacionClimatica.nombreProveedor,
+                    mediciones_detalles=[ medicion.as_json() for medicion in self.medicionInformacionClimaticaDetalle.all()]
+        )
+
 
 class MedicionInformacionClimaticaDetalle(models.Model):
     OIDMedicionInformacionClimaticaDetalle=models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
@@ -1216,3 +1224,8 @@ class MedicionInformacionClimaticaDetalle(models.Model):
 
     medicion_informacion_climatica_cabecera=models.ForeignKey(MedicionInformacionClimaticaCabecera,db_column="OIDMedicionInformacionClimaticaCabecera",related_name="medicionInformacionClimaticaDetalle")
     tipo_medicion_climatica=models.ForeignKey(TipoMedicionClimatica,db_column="OIDTipoMedicionClimatica")
+
+    def as_json(self):
+        return dict(nroRenglon=self.nroRenglon,
+                    valor=self.valor,
+                    tipoMedicionClimatica=self.tipo_medicion_climatica.nombreTipoMedicionClimatica)

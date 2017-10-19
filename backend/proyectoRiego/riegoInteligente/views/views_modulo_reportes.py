@@ -617,20 +617,10 @@ def obtener_informe_historico_sector(request):
             if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
                                                     fechaFinEstadoSector__isnull=True).__len__() != 1:
                 raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
-            # if KEY_ID_SECTOR in datos:
-            #     finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
-            #     sector_pertenece_a_finca = False
-            #     if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 1:
-            #         sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
-            #         if finca.sectorList.filter(OIDSector=sector.OIDSector).__len__() == 1:
-            #             sector_pertenece_a_finca = True
-            #         if sector_pertenece_a_finca == False:
-            #             print "NO PERTENECE"
-            #             return build_unauthorized_error(response, ERROR_NO_TIENE_PERMISOS,
-            #                                             DETALLE_ERROR_NO_TIENE_PERMISOS)
             fecha_inicio_sector = parsear_datos_fecha(datos[KEY_FECHA_INICIO_SECTOR])
             fecha_fin_sector = parsear_datos_fecha(datos[KEY_FECHA_FIN_SECTOR])
             lista_dto_componente_medicion = []
+            lista_dto_medicion_climatica = []
             componentes = sector_seleccionado.componentesensorsector_set.all()
             estado_componente_sensor_sector_habilitado = EstadoComponenteSensorSector.objects.get(
                 nombreEstadoComponenteSensorSector=ESTADO_HABILITADO)
@@ -645,11 +635,19 @@ def obtener_informe_historico_sector(request):
                         dto_componente_medicion = DtoComponenteMedicion(medicion_cabecera=medicion.as_json(),
                                                                         componente=componente.componente_sensor.as_json())
                         lista_dto_componente_medicion.append(dto_componente_medicion)
-            if lista_dto_componente_medicion.__len__() == 0 :
-                response.content = armar_response_content(None)
-                response.status_code = 200
-                return response
-            response.content = armar_response_list_content(lista_dto_componente_medicion)
+            if MedicionInformacionClimaticaCabecera.objects.filter(fechaHora__gte=datos[KEY_FECHA_INICIO_SECTOR],
+                                                                   fechaHora__lte=datos[KEY_FECHA_FIN_SECTOR]).__len__() != 0:
+                for medicion_climatica in MedicionInformacionClimaticaCabecera.objects.filter(fechaHora__gte=datos[KEY_FECHA_INICIO_SECTOR],
+                                                                   fechaHora__lte=datos[KEY_FECHA_FIN_SECTOR]):
+                    dto_medicion_climatica = DtoMedicionClimatica(medicion_climatica)
+                    lista_dto_medicion_climatica.append(dto_medicion_climatica)
+            dto_historico_sector = DtoHistoricoSector(dto_medicion_climatica_list=lista_dto_medicion_climatica,
+                                                      dto_componente_medicion_list=lista_dto_componente_medicion)
+            # if lista_dto_componente_medicion.__len__() == 0 :
+            #     response.content = armar_response_content(None)
+            #     response.status_code = 200
+            #     return response
+            response.content = armar_response_content(dto_historico_sector)
             response.status_code = 200
             return response
         else:
@@ -682,17 +680,6 @@ def obtener_informe_riego_historico_sector(request):
             if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
                                                     fechaFinEstadoSector__isnull=True).__len__() != 1:
                 raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
-            # if KEY_ID_SECTOR in datos:
-            #     finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
-            #     sector_pertenece_a_finca = False
-            #     if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 1:
-            #         sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
-            #         if finca.sectorList.filter(OIDSector=sector.OIDSector).__len__() == 1:
-            #             sector_pertenece_a_finca = True
-            #         if sector_pertenece_a_finca == False:
-            #             print "NO PERTENECE"
-            #             return build_unauthorized_error(response, ERROR_NO_TIENE_PERMISOS,
-            #                                             DETALLE_ERROR_NO_TIENE_PERMISOS)
             fecha_inicio_sector = parsear_datos_fecha(datos[KEY_FECHA_INICIO_SECTOR])
             fecha_fin_sector = parsear_datos_fecha(datos[KEY_FECHA_FIN_SECTOR])
             lista_dto_mecanismo_riego_configuracion = []
@@ -831,24 +818,29 @@ def obtener_informe_cruzado_riego_mediciones_(request):
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
                 raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encuentra un sector con ese id")
-            if ConfiguracionEventoPersonalizado.objects.filter(
-                    nombre=HELADA).__len__() == 0:
-                raise ValueError(ERROR_CONFIGURACION_EVENTO_NO_ENCONTRADA, "No existe una configuracion de eventos con "
-                                                                           "ese id")
-            sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
-            configuracion_evento = ConfiguracionEventoPersonalizado.objects.get(
-               nombre=HELADA)
+            estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
+            sector_seleccionado = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
+            if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
+                                                    fechaFinEstadoSector__isnull=True).__len__() != 1:
+                raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
             fecha_inicio_sector = parsear_datos_fecha(datos[KEY_FECHA_INICIO_SECTOR])
             fecha_fin_sector = parsear_datos_fecha(datos[KEY_FECHA_FIN_SECTOR])
-            if configuracion_evento.eventopersonalizado_set.filter(fechaHora__gte=fecha_inicio_sector,
-                                                                fechaHora__lte=fecha_fin_sector, sector=sector).__len__() == 0:
+            lista_dto_mecanismo_riego_configuracion = []
+            mecanismos_riego_sector = sector_seleccionado.mecanismoRiegoFincaSector.all()
+            for mecanismo in mecanismos_riego_sector:
+                ejecuciones_riego = mecanismo.ejecucionRiegoList.filter(fecha_hora_inicio__gte=fecha_inicio_sector,
+                                                                    fecha_hora_inicio__lte=fecha_fin_sector)
+                for ejecucion in ejecuciones_riego:
+                    dto_mecanismo_riego_configuracion = DtoMecanismoRiegoConfiguracion(
+                        mecanismo_riego_finca_sector=mecanismo.as_json(),
+                        ejecucion=ejecucion.as_json(),
+                        configuracion=ejecucion.configuracion_riego.as_json())
+                    lista_dto_mecanismo_riego_configuracion.append(dto_mecanismo_riego_configuracion)
+            if lista_dto_mecanismo_riego_configuracion.__len__() == 0 :
                 response.content = armar_response_content(None)
                 response.status_code = 200
                 return response
-            lista_eventos = configuracion_evento.eventopersonalizado_set.filter(fechaHora__gte=fecha_inicio_sector,
-                                                                                fechaHora__lte=fecha_fin_sector, sector=sector)
-
-            response.content = armar_response_list_content(lista_eventos)
+            response.content = armar_response_list_content(lista_dto_mecanismo_riego_configuracion)
             response.status_code = 200
             return response
         else:
@@ -860,4 +852,5 @@ def obtener_informe_cruzado_riego_mediciones_(request):
         print err.args
         response.status_code = 401
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
 
