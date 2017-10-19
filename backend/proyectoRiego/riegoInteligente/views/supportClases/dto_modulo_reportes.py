@@ -66,12 +66,24 @@ class DtoRiegoEjecucionSector:
                     configuracion_riego=self.configuracion_riego)
 
 class DtoComponenteMedicion:
-            def __init__(self, componente, medicion_cabecera):
-                self.componente = componente
-                self.medicion_cabecera = medicion_cabecera
+    def __init__(self, componente, medicion_cabecera):
+        self.componente = componente
+        self.medicion_cabecera = medicion_cabecera
 
-            def as_json(self):
-                return dict(
+    def as_json(self):
+        return dict(
                     componente=self.componente,
                     medicionCabecera=self.medicion_cabecera
                 )
+class DtoMecanismoRiegoConfiguracion:
+    def __init__(self, mecanismo_riego_finca_sector, ejecucion, configuracion):
+        self.mecanismo_riego_finca_sector = mecanismo_riego_finca_sector
+        self.ejecucion = ejecucion
+        self.configuracion = configuracion
+
+    def as_json(self):
+        return dict(
+            mecanismo_riego_finca_sector=self.mecanismo_riego_finca_sector,
+            ejecucion=self.ejecucion,
+            configuracion=self.configuracion
+        )

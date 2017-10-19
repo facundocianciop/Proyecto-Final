@@ -31,10 +31,18 @@ extern NSString *const kColorVerdeMasClaroHex;
 
 extern NSString *const kRolEncargado;
 
+#pragma mark - Regex
+
+extern NSString *const kRegexContrasenia;
+extern NSString *const kRegexDNI;
+extern NSString *const kRegexCUIT;
+
 #pragma mark - Mensajes errores
 
 extern NSString *const kErrorDesconocido;
 extern NSString *const kErrorInicioSesion;
+extern NSString *const kErrorObteniendoDatosUsuario;
+
 extern NSString *const kErrorObteniendoRoles;
 extern NSString *const kErrorObteniendoFincas;
 

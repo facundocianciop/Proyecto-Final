@@ -17,6 +17,8 @@
 
 +(UIColor *)primaryColor;
 +(UIColor *)secondaryColor;
++(UIColor *)formCellColor;
++(UIColor *)formCellErrorColor;
 
 #pragma mark - Font
 
@@ -25,5 +27,8 @@
 #pragma mark - Dates
 
 +(NSString *)formatDateDDMMYYYY:(NSDate *) aDate;
++(NSString *)formatDateYYYYMMDD:(NSDate *) aDate;
+
++(NSDate *)dateFromStringYYYYMMDD:(NSString *) dateString;
 
 @end

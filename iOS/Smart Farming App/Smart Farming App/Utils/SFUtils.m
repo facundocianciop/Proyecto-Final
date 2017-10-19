@@ -28,6 +28,14 @@
     return [SFUtils colorFromHexString:kColorCelesteHex alpha:1.0];
 }
 
++(UIColor *)formCellColor {
+    return [UIColor whiteColor];
+}
+
++(UIColor *)formCellErrorColor {
+    return [UIColor orangeColor];
+}
+
 #pragma mark - Font
 
 #pragma mark - Sizing
@@ -45,5 +53,15 @@
     [dateFormat setDateFormat:@"YYYY-MM-dd"];
     return [dateFormat stringFromDate:aDate];
 }
+
++(NSDate *)dateFromStringYYYYMMDD:(NSString *) dateString {
+    // Convert string to date object
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"yyyy-MM-dd"];
+    return [dateFormat dateFromString:dateString];
+}
+
+
+
 
 @end

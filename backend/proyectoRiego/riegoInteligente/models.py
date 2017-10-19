@@ -127,6 +127,7 @@ class UsuarioFinca(models.Model):
 
     finca = models.ForeignKey('Finca',db_column="OIDFinca")
     usuario = models.ForeignKey(DatosUsuario,db_column="OIDUsuario", related_name='usuarioFincaList')
+    configuracionEventoPersonalizadoList = models.ManyToManyField("ConfiguracionEventoPersonalizado", null=True)
 
     def __str__(self):
         return "Usuario: " + str(self.usuario.user.username) + " de finca: " + str(self.finca.idFinca)
@@ -543,11 +544,11 @@ class SubtipoCultivo(models.Model):
     descripcion = models.CharField(max_length=100)
     tipo_cultivo = models.ForeignKey(TipoCultivo, db_column="OIDTipoCultivo")
     fechaAltaSubtipoCultivo = models.DateTimeField()
-    fechaBajaSubTipoCultivo = models.DateTimeField(null=True, blank=True)
+    fechaBajaSubtipoCultivo = models.DateTimeField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        if not self.fechaBajaSubTipoCultivo:
-            self.fechaBajaSubTipoCultivo = None
+        if not self.fechaBajaSubtipoCultivo:
+            self.fechaBajaSubtipoCultivo = None
         super(SubtipoCultivo, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -580,6 +581,9 @@ class TipoMecanismoRiego(models.Model):
         if not self.fechaBajaTipoMecanismoRiego:
             self.fechaBajaTipoMecanismoRiego = None
         super(TipoMecanismoRiego, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return "Tipo Mecanismo: " + self.nombreMecanismo
 
     def as_json(self):
         return dict(
@@ -1067,9 +1071,8 @@ class ConfiguracionEventoPersonalizado(models.Model):
     fechaHoraCreacion = models.DateTimeField()
     activado = models.BooleanField(default=False)
 
-    sector = models.ForeignKey(Sector, db_column="OIDSector", related_name="configuracionEventoList", null=True)
-    usuario_finca = models.ForeignKey(UsuarioFinca, db_column="OIDUsuarioFinca",
-                                              related_name="configuracionEventoList")
+    sectorList = models.ManyToManyField(Sector, null=True)
+
 
 
     def save(self):
@@ -1089,12 +1092,29 @@ class ConfiguracionEventoPersonalizado(models.Model):
 
 class EventoPersonalizado(models.Model):
     OIDEventoPersonalizado = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    nroEvento = models.IntegerField(unique=True)
+    nroEvento = models.IntegerField(default=1, unique=True)
     fechaHora = models.DateTimeField()
-
+    sector = models.ForeignKey(Sector, db_column="OIDSector", null=True)
     configuracion_evento_personalizado = models.ForeignKey(ConfiguracionEventoPersonalizado,
                                                                    db_column="OIDConfiguracionEventoPersonalizado")
 
+
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        if EventoPersonalizado.objects.all().__len__() == 0:
+            self.nroEvento = 1
+            super(EventoPersonalizado, self).save()
+        else:
+            if EventoPersonalizado.objects.get(nroEvento=self.nroEvento) == self:
+                super(EventoPersonalizado, self).save()
+            else:
+                ultimoEventoPersonalizado = EventoPersonalizado.objects.order_by('-nroEvento')[0]
+                self.nroEvento = ultimoEventoPersonalizado.nroEvento+ 1
+                super(EventoPersonalizado, self).save()
+    def as_json(self):
+        return dict(nroEvento=self.nroEvento,
+                    fechaHora=self.fechaHora,
+                    numeroSector=self.sector.numeroSector)
 
 #MODULO INFORMACION EXTERNA
 
