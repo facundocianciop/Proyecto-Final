@@ -78,7 +78,8 @@ class DtoHistoricoSector:
 
     def as_json(self):
         return dict(
-            componenteMedicionListaMediciones= [dto_componente.as_json() for dto_componente in self.dto_componente_medicion_list],
+            componenteMedicionListaMediciones= [dto_componente.as_json() for dto_componente in
+                                                self.dto_componente_medicion_list],
         medicionClimaticaList= [dto_medicion_climatica.as_json() for dto_medicion_climatica in self.dto_medicion_climatica_list]
         )
 
