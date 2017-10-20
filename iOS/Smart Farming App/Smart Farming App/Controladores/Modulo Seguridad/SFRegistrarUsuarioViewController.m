@@ -50,12 +50,19 @@
     
     solicitud.nombre = [values objectForKey:KEY_NOMBRE_USUARIO];
     solicitud.apellido = [values objectForKey:KEY_APELLIDO_USUARIO];
-    solicitud.fechaNacimiento = [values objectForKey:KEY_FECHA_NACIMIENTO];
+    
+    if ([values objectForKey:KEY_FECHA_NACIMIENTO] != [NSNull null]) {
+        solicitud.fechaNacimiento = [values objectForKey:KEY_FECHA_NACIMIENTO];
+    }
     if ([values objectForKey:KEY_DNI] != [NSNull null]) {
         solicitud.dni = [[values objectForKey:KEY_DNI] integerValue];
     }
-    solicitud.cuit = [values objectForKey:KEY_CUIT];
-    solicitud.domicilio = [values objectForKey:KEY_DOMICILIO];
+    if ([values objectForKey:KEY_CUIT] != [NSNull null]) {
+        solicitud.cuit = [values objectForKey:KEY_CUIT];
+    }
+    if ([values objectForKey:KEY_DOMICILIO] != [NSNull null]) {
+        solicitud.domicilio = [values objectForKey:KEY_DOMICILIO];
+    }
     
     __weak typeof (self) weakSelf = self;
     

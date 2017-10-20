@@ -467,7 +467,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="geJ-ot-ny6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4193" y="139"/>
+            <point key="canvasLocation" x="4193" y="147"/>
         </scene>
         <!--Reportes-->
         <scene sceneID="9KX-r8-OEy">
@@ -477,38 +477,193 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="79W-vl-K1J">
-                                <rect key="frame" x="40" y="64" width="240" height="411"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="but-tX-Oww">
-                                    <size key="itemSize" width="217" height="74"/>
-                                    <size key="headerReferenceSize" width="150" height="54"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="79W-vl-K1J">
+                                <rect key="frame" x="40" y="64" width="240" height="504"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="9" minimumInteritemSpacing="10" id="but-tX-Oww">
+                                    <size key="itemSize" width="230" height="60"/>
+                                    <size key="headerReferenceSize" width="50" height="25"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="sk2-YH-g92">
-                                        <rect key="frame" x="12" y="54" width="217" height="74"/>
+                                        <rect key="frame" x="5" y="25" width="230" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                            <rect key="frame" x="0.0" y="0.0" width="217" height="74"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="230" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6RR-7d-OQi">
+                                                    <rect key="frame" x="5" y="5" width="220" height="40"/>
+                                                    <color key="backgroundColor" name="VerdeClaro"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <state key="normal" title="Reporte">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <segue destination="gsR-tw-KxV" kind="show" identifier="SFNavegarAReporteTipo1Segue" id="hAe-Xx-kxH"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
                                         </view>
-                                        <size key="customSize" width="217" height="74"/>
+                                        <color key="backgroundColor" name="VerdeMasClaro"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="6RR-7d-OQi" secondAttribute="trailing" constant="15" id="PeZ-b2-07p"/>
+                                            <constraint firstItem="6RR-7d-OQi" firstAttribute="top" secondItem="sk2-YH-g92" secondAttribute="top" constant="5" id="nUd-ly-GwQ"/>
+                                            <constraint firstItem="6RR-7d-OQi" firstAttribute="leading" secondItem="sk2-YH-g92" secondAttribute="leading" constant="15" id="qDA-ZH-qZb"/>
+                                            <constraint firstAttribute="bottom" secondItem="6RR-7d-OQi" secondAttribute="bottom" constant="5" id="yYR-e8-ucI"/>
+                                        </constraints>
+                                        <size key="customSize" width="230" height="50"/>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="4zU-yy-est">
+                                        <rect key="frame" x="5" y="84" width="230" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="230" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lkx-Eb-0WQ">
+                                                    <rect key="frame" x="5" y="5" width="220" height="40"/>
+                                                    <color key="backgroundColor" name="VerdeClaro"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <state key="normal" title="Reporte">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <segue destination="IoQ-yy-Zg0" kind="show" identifier="SFNavegarAReporteTipo2Segue" id="JhB-CY-mmM"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </view>
+                                        <color key="backgroundColor" name="VerdeMasClaro"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="Lkx-Eb-0WQ" secondAttribute="bottom" constant="5" id="85P-8O-Uhr"/>
+                                            <constraint firstItem="Lkx-Eb-0WQ" firstAttribute="leading" secondItem="4zU-yy-est" secondAttribute="leading" constant="15" id="rK5-Yk-KZW"/>
+                                            <constraint firstAttribute="trailing" secondItem="Lkx-Eb-0WQ" secondAttribute="trailing" constant="15" id="rrA-dG-TiN"/>
+                                            <constraint firstItem="Lkx-Eb-0WQ" firstAttribute="top" secondItem="4zU-yy-est" secondAttribute="top" constant="5" id="vYH-6t-hfQ"/>
+                                        </constraints>
+                                        <size key="customSize" width="230" height="50"/>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Qft-aE-s3H">
+                                        <rect key="frame" x="5" y="143" width="230" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="230" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6M5-xA-KgE">
+                                                    <rect key="frame" x="5" y="5" width="220" height="40"/>
+                                                    <color key="backgroundColor" name="VerdeClaro"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <state key="normal" title="Reporte">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <segue destination="M7j-zQ-mlx" kind="show" identifier="SFNavegarAReporteTipo3Segue" id="lHF-Ug-gT6"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </view>
+                                        <color key="backgroundColor" name="VerdeMasClaro"/>
+                                        <constraints>
+                                            <constraint firstItem="6M5-xA-KgE" firstAttribute="top" secondItem="Qft-aE-s3H" secondAttribute="top" constant="5" id="GEL-9i-gEZ"/>
+                                            <constraint firstAttribute="bottom" secondItem="6M5-xA-KgE" secondAttribute="bottom" constant="5" id="juD-gM-Gmf"/>
+                                            <constraint firstItem="6M5-xA-KgE" firstAttribute="leading" secondItem="Qft-aE-s3H" secondAttribute="leading" constant="15" id="oW2-8a-HKE"/>
+                                            <constraint firstAttribute="trailing" secondItem="6M5-xA-KgE" secondAttribute="trailing" constant="15" id="yJF-bs-kdC"/>
+                                        </constraints>
+                                        <size key="customSize" width="230" height="50"/>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="hGW-Jb-HY6">
+                                        <rect key="frame" x="5" y="202" width="230" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="230" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lxn-PT-esO">
+                                                    <rect key="frame" x="5" y="5" width="220" height="40"/>
+                                                    <color key="backgroundColor" name="VerdeClaro"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <state key="normal" title="Reporte">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <segue destination="cv2-J1-LV3" kind="show" identifier="SFNavegarAReporteTipo4Segue" id="gFA-jM-3YV"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </view>
+                                        <color key="backgroundColor" name="VerdeMasClaro"/>
+                                        <constraints>
+                                            <constraint firstItem="Lxn-PT-esO" firstAttribute="leading" secondItem="hGW-Jb-HY6" secondAttribute="leading" constant="15" id="MEW-Bu-oi1"/>
+                                            <constraint firstAttribute="bottom" secondItem="Lxn-PT-esO" secondAttribute="bottom" constant="5" id="MqR-Zd-krP"/>
+                                            <constraint firstItem="Lxn-PT-esO" firstAttribute="top" secondItem="hGW-Jb-HY6" secondAttribute="top" constant="5" id="f0H-zg-VKs"/>
+                                            <constraint firstAttribute="trailing" secondItem="Lxn-PT-esO" secondAttribute="trailing" constant="15" id="v7s-di-igu"/>
+                                        </constraints>
+                                        <size key="customSize" width="230" height="50"/>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Pmr-w0-KNf">
+                                        <rect key="frame" x="5" y="261" width="230" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="230" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sgf-0u-h2K">
+                                                    <rect key="frame" x="5" y="5" width="220" height="40"/>
+                                                    <color key="backgroundColor" name="VerdeClaro"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <state key="normal" title="Reporte">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <segue destination="vAv-LR-95S" kind="show" identifier="SFNavegarAReporteTipo5Segue" id="UP8-pY-Qqy"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </view>
+                                        <color key="backgroundColor" name="VerdeMasClaro"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="sgf-0u-h2K" secondAttribute="bottom" constant="5" id="9LT-Jz-rAG"/>
+                                            <constraint firstAttribute="trailing" secondItem="sgf-0u-h2K" secondAttribute="trailing" constant="15" id="B98-Oe-fWs"/>
+                                            <constraint firstItem="sgf-0u-h2K" firstAttribute="top" secondItem="Pmr-w0-KNf" secondAttribute="top" constant="5" id="nPl-sW-FB0"/>
+                                            <constraint firstItem="sgf-0u-h2K" firstAttribute="leading" secondItem="Pmr-w0-KNf" secondAttribute="leading" constant="15" id="zyB-qn-iZA"/>
+                                        </constraints>
+                                        <size key="customSize" width="230" height="50"/>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="WFQ-oc-kbP">
+                                        <rect key="frame" x="5" y="320" width="230" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="230" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2wp-Th-x3D">
+                                                    <rect key="frame" x="5" y="5" width="220" height="40"/>
+                                                    <color key="backgroundColor" name="VerdeClaro"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <state key="normal" title="Reporte">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <segue destination="BSh-BR-PiO" kind="show" identifier="SFNavegarAReporteTipo6Segue" id="YRJ-zW-a4B"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </view>
+                                        <color key="backgroundColor" name="VerdeMasClaro"/>
+                                        <constraints>
+                                            <constraint firstItem="2wp-Th-x3D" firstAttribute="leading" secondItem="WFQ-oc-kbP" secondAttribute="leading" constant="15" id="4cS-dL-ECe"/>
+                                            <constraint firstAttribute="trailing" secondItem="2wp-Th-x3D" secondAttribute="trailing" constant="15" id="a2q-f4-leg"/>
+                                            <constraint firstAttribute="bottom" secondItem="2wp-Th-x3D" secondAttribute="bottom" constant="5" id="cnw-id-fE4"/>
+                                            <constraint firstItem="2wp-Th-x3D" firstAttribute="top" secondItem="WFQ-oc-kbP" secondAttribute="top" constant="5" id="fKP-ha-mag"/>
+                                        </constraints>
+                                        <size key="customSize" width="230" height="50"/>
                                     </collectionViewCell>
                                 </cells>
-                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="IWr-Jt-wh3">
-                                    <rect key="frame" x="0.0" y="0.0" width="240" height="54"/>
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Krh-yW-SJP">
+                                    <rect key="frame" x="0.0" y="0.0" width="240" height="25"/>
                                     <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Seleccionar reporte:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hCq-LF-mQp">
-                                            <rect key="frame" x="8" y="0.0" width="224" height="50"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
                                 </collectionReusableView>
                             </collectionView>
                         </subviews>
@@ -525,7 +680,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hWU-u9-wvN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5047.5" y="-82.394366197183103"/>
+            <point key="canvasLocation" x="5014" y="-660"/>
         </scene>
         <!--Finca-->
         <scene sceneID="pya-2U-80d">
@@ -574,33 +729,16 @@
                         <segue destination="4O0-Ku-EW5" kind="custom" identifier="left" customClass="LGSideMenuSegue" id="fzx-mW-WOO"/>
                         <segue destination="adm-qy-jCX" kind="custom" identifier="right" customClass="LGSideMenuSegue" id="q8Y-nW-8RP"/>
                         <segue destination="UvP-5Z-EFv" kind="custom" identifier="root" customClass="LGSideMenuSegue" id="mfi-xA-jKe"/>
-                        <segue destination="E08-SY-gJB" kind="show" id="etx-Xz-BZa"/>
+                        <segue destination="E08-SY-gJB" kind="show" identifier="SFNavegarASectoresFincaSegue" id="etx-Xz-BZa"/>
                         <segue destination="dvm-S2-qd2" kind="show" id="pNf-ZB-Y9h"/>
-                        <segue destination="ONj-bK-xiY" kind="show" id="1yG-4o-5Mj"/>
-                        <segue destination="lCO-5V-Ubu" kind="show" id="XAz-c9-5JD"/>
+                        <segue destination="lCO-5V-Ubu" kind="show" identifier="SFNavegarReportesFincaSegue" id="XAz-c9-5JD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q4b-bI-jCd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4192.5" y="-660.21126760563379"/>
         </scene>
-        <!--Mecanismos de Riego-->
-        <scene sceneID="6Sh-z2-agx">
-            <objects>
-                <viewController id="ONj-bK-xiY" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="nzB-m1-zPv">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <viewLayoutGuide key="safeArea" id="4AD-wE-mgo"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Mecanismos de Riego" id="kfn-Al-tAc"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Muy-VY-QHO" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5014" y="-1459"/>
-        </scene>
-        <!--Ejecución Riego-->
+        <!--Mecanismos Riego-->
         <scene sceneID="hTK-OS-8z3">
             <objects>
                 <viewController id="dvm-S2-qd2" customClass="SFMecanismosRiegoHabilitadosViewController" sceneMemberID="viewController">
@@ -623,7 +761,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="k6t-MR-ghF">
-                                <rect key="frame" x="0.0" y="70" width="320" height="405"/>
+                                <rect key="frame" x="0.0" y="70" width="320" height="498"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="N06-tN-ORQ" detailTextLabel="iw8-tu-oiL" style="IBUITableViewCellStyleSubtitle" id="Jht-sI-JUJ" customClass="SFMecanismoRiegoHabilitadoTableViewCell">
@@ -665,15 +803,106 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="hiU-4w-cDs"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Ejecución Riego" id="tkW-wA-EM9"/>
+                    <navigationItem key="navigationItem" title="Mecanismos Riego" id="tkW-wA-EM9"/>
                     <connections>
                         <outlet property="emptyMecanismosRiegoLabel" destination="NMR-b4-GTv" id="ael-5L-DOE"/>
                         <outlet property="mecanismosRiegoHabilitadosTableView" destination="k6t-MR-ghF" id="geR-JC-aBL"/>
+                        <segue destination="fEM-m5-KJm" kind="show" id="6Tm-HK-70L"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cD2-Ik-h12" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5014" y="-766"/>
+            <point key="canvasLocation" x="5014" y="-1389"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="S4K-5c-t4g">
+            <objects>
+                <viewController id="gsR-tw-KxV" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ZD4-ME-r5X">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="huC-5a-pfc"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XDW-Yd-1mH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5372" y="147"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="i8j-9b-kvy">
+            <objects>
+                <viewController id="M7j-zQ-mlx" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="vSF-92-daU">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="1iD-6c-A6h"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5MC-29-b4G" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6799" y="147"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="inl-ar-EXx">
+            <objects>
+                <viewController id="cv2-J1-LV3" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="xmt-G9-QNH">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="22y-BL-gOH"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ASD-ey-BxM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7459" y="147"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="GVK-Sm-W0i">
+            <objects>
+                <viewController id="vAv-LR-95S" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="bk8-HX-2wN">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="1BV-Im-P3M"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QHI-Ec-4tm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="8194" y="147"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="gKz-6G-8ON">
+            <objects>
+                <viewController id="BSh-BR-PiO" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="NwH-Zf-usm">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="kDR-75-xaA"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RKJ-bQ-lOh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="8886" y="147"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="z5P-9C-y9V">
+            <objects>
+                <viewController id="IoQ-yy-Zg0" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="FpA-SM-wV2">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="HPw-im-XCc"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="N2O-Vg-dLL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6094" y="147"/>
         </scene>
         <!--Sectores-->
         <scene sceneID="PAb-BU-SJh">
@@ -684,7 +913,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="La finca no tiene sectores" textAlignment="center" lineBreakMode="wordWrap" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xim-0n-Cjs">
-                                <rect key="frame" x="0.0" y="70" width="320" height="405"/>
+                                <rect key="frame" x="0.0" y="70" width="320" height="498"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -697,7 +926,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="GxT-52-Chd">
-                                <rect key="frame" x="0.0" y="70" width="320" height="405"/>
+                                <rect key="frame" x="0.0" y="70" width="320" height="498"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" indentationWidth="10" textLabel="t93-wd-gW4" detailTextLabel="5pg-p6-KJJ" style="IBUITableViewCellStyleSubtitle" id="axJ-2e-Emr" customClass="SFSectorTableViewCell">
@@ -748,11 +977,124 @@
                     <connections>
                         <outlet property="emptySectoresTVMessage" destination="Xim-0n-Cjs" id="ukn-4e-y9v"/>
                         <outlet property="sectoresTableView" destination="GxT-52-Chd" id="Y27-4G-vD2"/>
+                        <segue destination="LFZ-yX-gBD" kind="show" identifier="SFNavegarAInfoSectorSegue" id="H2Z-vK-Elg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VEd-9F-Xow" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5014" y="-2129"/>
+        </scene>
+        <!--Información sector-->
+        <scene sceneID="cHI-9l-yu5">
+            <objects>
+                <viewController id="LFZ-yX-gBD" customClass="SFDetallesSectorViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="yIG-Xr-44N">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="vB7-c1-nnh">
+                                <rect key="frame" x="12" y="64" width="304" height="196"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YNk-vA-UJb">
+                                        <rect key="frame" x="0.0" y="0.0" width="304" height="50"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="gbA-Ym-KT6">
+                                        <rect key="frame" x="0.0" y="65" width="304" height="21.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a5N-Ll-Ly3">
+                                                <rect key="frame" x="0.0" y="0.0" width="152" height="21.5"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JAz-y8-vwd">
+                                                <rect key="frame" x="152" y="0.0" width="152" height="21.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="xFs-Nl-Sl1">
+                                        <rect key="frame" x="0.0" y="101.5" width="304" height="21.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3H5-RN-bss">
+                                                <rect key="frame" x="0.0" y="0.0" width="152" height="21.5"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d3I-32-9KL">
+                                                <rect key="frame" x="152" y="0.0" width="152" height="21.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Uo0-13-NbV">
+                                        <rect key="frame" x="0.0" y="138" width="304" height="21.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="amr-5L-p6g">
+                                                <rect key="frame" x="0.0" y="0.0" width="152" height="21.5"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Q5-KA-g76">
+                                                <rect key="frame" x="152" y="0.0" width="152" height="21.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="tUW-Wv-rfc">
+                                        <rect key="frame" x="0.0" y="174.5" width="304" height="21.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jr5-Jl-LgN">
+                                                <rect key="frame" x="0.0" y="0.0" width="152" height="21.5"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5h2-xi-ZAP">
+                                                <rect key="frame" x="152" y="0.0" width="152" height="21.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="wqY-FR-Ghs"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Información sector" id="UQ7-Gh-6Un"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3Lz-M3-TBI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6335.625" y="-2130.6338028169016"/>
+        </scene>
+        <!--Estado mecanismo de riego-->
+        <scene sceneID="mIc-2z-SQh">
+            <objects>
+                <viewController id="fEM-m5-KJm" customClass="SFDetallesMecanismoRiegoViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="PzV-xf-UUX">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="Kzk-Jj-NLV"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Estado mecanismo de riego" id="Vbc-Sq-3OI"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zqg-qU-FGL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6336" y="-1389"/>
         </scene>
         <!--Title-->
         <scene sceneID="h3I-bY-fXh">
@@ -918,7 +1260,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="STB-7c-SzR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3763" y="140"/>
+            <point key="canvasLocation" x="3767" y="147"/>
         </scene>
         <!--Fincas-->
         <scene sceneID="U4O-kV-Y1y">
@@ -1429,10 +1771,10 @@
             <color red="0.59215686270000001" green="0.84313725490000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="VerdeMasClaro">
-            <color red="0.77254901960784317" green="0.90980392156862744" blue="0.42352941176470588" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.7725490196" green="0.90980392160000001" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="aTS-j3-8Uj"/>
+        <segue reference="RKl-JI-kgQ"/>
     </inferredMetricsTieBreakers>
 </document>
