@@ -111,22 +111,22 @@ class DtoMecanismoRiegoConfiguracion:
 
 
 class DtoMedicionCruzadaRiego:
-    def __init__(self, mecanismo_riego_finca_sector, ejecucion, configuracion, lista_mediciones_componente,
-                 lista_mediciones_climaticas_antes, lista_mediciones_climaticas_despues):
+    def __init__(self, mecanismo_riego_finca_sector, ejecucion, configuracion, mediciones_componente_antes,
+                mediciones_componente_despues, mediciones_climaticas_antes):
         self.mecanismo_riego_finca_sector = mecanismo_riego_finca_sector
         self.ejecucion = ejecucion
         self.configuracion = configuracion
-        self.lista_mediciones_componente = lista_mediciones_componente
-        self.lista_mediciones_climaticas_antes = lista_mediciones_climaticas_antes
-        self.lista_mediciones_climaticas_despues = lista_mediciones_climaticas_despues
+        self.mediciones_componente_antes = mediciones_componente_antes
+        self.mediciones_componente_despues = mediciones_componente_despues
+        self.mediciones_climaticas_antes = mediciones_climaticas_antes
 
 
     def as_json(self):
         return dict(
-            mecanismo_riego_finca_sector=self.mecanismo_riego_finca_sector,
-            ejecucion=self.ejecucion,
-            configuracion=self.configuracion,
-            listaMedicionesComponente=[medicion.as_json() for medicion in self.lista_mediciones_componente],
-            listaMedicionesClimaticasAntes=[medicion_antes.as_json() for medicion_antes in self.lista_mediciones_climaticas_antes],
-            listaMedicionClimaticasDespues=[medicion_despues.as_json() for medicion_despues in self.lista_mediciones_climaticas_despues]
+            mecanismo_riego_finca_sector=self.mecanismo_riego_finca_sector.as_json(),
+            ejecucion=self.ejecucion.as_json(),
+            configuracion=self.configuracion.as_json(),
+            medicionesComponenteAntes=self.mediciones_componente_antes.as_json(),
+            medicionesComponenteDespues=self.mediciones_componente_despues.as_json(),
+            medicionesClimaticasAntes=self.mediciones_climaticas_antes.as_json()
         )
