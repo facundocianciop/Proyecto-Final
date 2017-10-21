@@ -65,7 +65,7 @@ def modificar_proveedor_finca(request):
             if datos[KEY_NOMBRE_PROVEEDOR] == '' or datos[KEY_ID_FINCA] == '' or datos[KEY_FRECUENCIA] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             if ProveedorInformacionClimatica.objects.filter(nombreProveedor=datos[KEY_NOMBRE_PROVEEDOR]).__len__() == 0:
-                raise ValueError(ERROR_PROVEEDOR_NO_ENCONTRADO, "No se encuentra al proveedor con ese id")
+                raise ValueError(ERROR_PROVEEDOR_NO_ENCONTRADO, "No se encuentra al proveedor con ese id.")
 
             proveedorSeleccionado = ProveedorInformacionClimatica.objects.get(nombreProveedor=datos[KEY_NOMBRE_PROVEEDOR])
             finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
@@ -73,7 +73,7 @@ def modificar_proveedor_finca(request):
                     proveedorInformacionClimatica=proveedorSeleccionado, finca=finca,
                 fechaBajaProveedorInfoClimaticaFinca__isnull=True)
             if int(datos[KEY_FRECUENCIA]) < proveedorSeleccionado.frecuenciaMaxPosible:
-                raise ValueError(ERROR_FRECUENCIA_MAXIMA_SUPERADA, "No se puede colocar esa frecuencia, ya que es mayor a la permitida por el proveedor")
+                raise ValueError(ERROR_FRECUENCIA_MAXIMA_SUPERADA, "No se puede colocar esa frecuencia, ya que es mayor a la permitida por el proveedor.")
             proveedorInformacionClimaticaFinca.frecuencia = datos[KEY_FRECUENCIA]
             proveedorInformacionClimaticaFinca.save()
             response.content = armar_response_content(None)
