@@ -1,6 +1,6 @@
 class DtoConfiguracionEventoPersonalizado:
     def __init__(self, idConfiguracionEvento, nombre, descripcion, fechaHoraCreacion, activado, numeroSector, idSector,
-                 notificacionActivada, listaMedicionesExternas, listaMedicionesInterna):
+                 notificacionActivada, listaMedicionesExternas, listaMedicionesInterna, usuarioFincaId):
         self.id_configuracion_evento = idConfiguracionEvento
         self.nombre = nombre
         self.descripcion = descripcion
@@ -11,6 +11,7 @@ class DtoConfiguracionEventoPersonalizado:
         self.notificacion_activada = notificacionActivada
         self.lista_mediciones_externas = listaMedicionesExternas
         self.lista_mediciones_internas = listaMedicionesInterna
+        self.id_usuario_finca = usuarioFincaId
 
     def as_json(self):
         return dict(
@@ -23,7 +24,8 @@ class DtoConfiguracionEventoPersonalizado:
             id_sector=self.id_sector,
             notificacion_activada=self.notificacion_activada,
             lista_mediciones_externas=self.lista_mediciones_externas,
-            lista_mediciones_internas=self.lista_mediciones_internas)
+            lista_mediciones_internas=self.lista_mediciones_internas,
+            id_usuario_finca=self.id_usuario_finca)
 
 
 class DtoEstadoActualSector:
