@@ -8,9 +8,6 @@
 
 #import "AppDelegate.h"
 
-#import "IdentificadoresSegue.h"
-#import "ContextoUsuario.h"
-
 @interface AppDelegate ()
 
 @end
@@ -48,22 +45,6 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-}
-
--(void)forzarCierreSesion {
-    [[ContextoUsuario instance] invalidateContext];
-    [[self.window rootViewController] dismissViewControllerAnimated:YES completion:nil];
-    [self performSelector:@selector(irAPaginaInicio) withObject:nil afterDelay:0.50];
-}
-
--(void)irAPaginaInicio {
-    
-    if ([[self.window rootViewController] navigationController]) {
-        [[[self.window rootViewController] navigationController] performSegueWithIdentifier:kSFNavegarEstadoNoAutenticadoSegue sender:[self.window rootViewController]];
-    } else {
-        UINavigationController *navigationController = (UINavigationController *)[self.window rootViewController];
-        [navigationController popToRootViewControllerAnimated:YES];
-    }
 }
 
 @end

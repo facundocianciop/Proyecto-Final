@@ -38,7 +38,35 @@
 
 #pragma mark - Llamadas servicio
 
-
+-(void)definirNuevaContrasenia {
+    
+    NSDictionary *values = [self.form formValues];
+    
+    SolicitudRecuperarCuentaCambiarContrasenia*solicitud = [SolicitudRecuperarCuentaCambiarContrasenia new];
+    
+    solicitud.username = self.username;
+    solicitud.codigoVerificacion = [values objectForKey:KEY_CODIGO_VERIFICACION];
+    solicitud.contraseniaNueva = [values objectForKey:KEY_CONTRASENIA_NUEVA];
+    
+    __weak typeof (self) weakSelf = self;
+    
+    [self showActivityIndicator];
+    [ServiciosModuloSeguridad cambiarContraseniaRecuperarCuenta:solicitud completionBlock:^(RespuestaServicioBase *respuesta) {
+        [weakSelf hideActivityIndicator];
+        if (respuesta.resultado) {
+            [weakSelf userInformationPrompt:kConfirmacionCambioContraseniaRecuperacionCuenta withCompletion:^{
+                [weakSelf.navigationController popToRootViewControllerAnimated:YES];
+            }];
+        } else {
+            [weakSelf handleErrorWithPromptTitle:kErrorRecuperarCuentaCambioContasenia message:kErrorDesconocido withCompletion:^{
+            }];
+        }
+    } failureBlock:^(ErrorServicioBase *error) {
+        [weakSelf hideActivityIndicator];
+        [weakSelf handleErrorWithPromptTitle:kErrorRecuperarCuentaCambioContasenia message:error.detalleError withCompletion:^{
+        }];
+    }];
+}
 
 #pragma mark - Formulario
 
@@ -51,7 +79,7 @@
     form = [XLFormDescriptor formDescriptorWithTitle:@"Código de verificación"];
     
     // Seccion contrasenia
-    section = [XLFormSectionDescriptor formSectionWithTitle:@"Contraseña"];
+    section = [XLFormSectionDescriptor formSectionWithTitle:@"Ingresar nueva contraseña"];
     section.footerTitle = @"Su contraseña debe tener al menos 8 caracteres y al menos un número y una letra";
     [form addFormSection:section];
     
@@ -92,8 +120,7 @@
 }
 
 -(void)hacerLlamadaServicio {
-    
-
+    [self definirNuevaContrasenia];
 }
 
 #pragma mark - Acciones form

@@ -33,6 +33,6 @@
 -(void)handleErrorWithPromptTitle:(NSString *)title message:(NSString *)message withCompletion:(void(^)(void))completionblock;
 
 // Show custom information message
--(void)userInformationPrompt:(NSString *)message;
+-(void)userInformationPrompt:(NSString *)message withCompletion:(void(^)(void))completionBlock;
 
 @end

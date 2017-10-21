@@ -10,6 +10,12 @@
 
 @interface SFInformacionFincaActivadaViewController ()
 
+@property (strong, nonatomic) IBOutlet UILabel *nombreFincaLabel;
+@property (strong, nonatomic) IBOutlet UILabel *rolUsuarioLabel;
+@property (strong, nonatomic) IBOutlet UILabel *ubicacionFincaLabel;
+@property (strong, nonatomic) IBOutlet UILabel *direccionLegalLabel;
+@property (strong, nonatomic) IBOutlet UILabel *tamanioFincaLabel;
+
 @end
 
 @implementation SFInformacionFincaActivadaViewController

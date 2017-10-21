@@ -10,4 +10,12 @@
 
 @interface SFModificarUsuarioViewController : SFFormularioBaseViewController
 
+@property (strong, nonatomic) XLFormRowDescriptor *emailRow;
+@property (strong, nonatomic) XLFormRowDescriptor *nombreRow;
+@property (strong, nonatomic) XLFormRowDescriptor *apellidoRow;
+@property (strong, nonatomic) XLFormRowDescriptor *fechaNacimientoRow;
+@property (strong, nonatomic) XLFormRowDescriptor *dniRow;
+@property (strong, nonatomic) XLFormRowDescriptor *cuitRow;
+@property (strong, nonatomic) XLFormRowDescriptor *domicilioRow;
+
 @end

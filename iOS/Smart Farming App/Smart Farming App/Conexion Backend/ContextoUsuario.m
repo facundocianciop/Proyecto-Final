@@ -38,7 +38,7 @@ static ContextoUsuario *userContext = nil;
     ContextoUsuario *userContext = [ContextoUsuario instanceWithUsername:nil];
     
     if (!userContext.username){
-        //[NSException raise:@"BCUserContext: User context hasn't been initialized properly. Param:userId may be uninitialized." format:@""];
+        //[NSException raise:@"BCUserContext: User context hasn't been initialized properly. Param:idUsuario may be uninitialized." format:@""];
         NSLog(@"ContextoUsuario: El contexto de usario no se inicio correctamente. Param:username puede que no este inicializado.");
     }
     return  userContext;
