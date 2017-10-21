@@ -10,7 +10,7 @@
 
 @interface SolicitudRecuperarCuentaCambiarContrasenia : SolicitudServicioBase
 
-@property (assign, nonatomic) long idUsuario;
+@property (strong, nonatomic) NSString *username;
 @property (strong, nonatomic) NSString *codigoVerificacion;
 @property (strong, nonatomic) NSString *contraseniaNueva;
 

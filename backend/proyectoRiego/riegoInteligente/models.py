@@ -95,7 +95,7 @@ class HistoricoEstadoUsuario(models.Model):
     estadoUsuario=models.ForeignKey(EstadoUsuario,db_column="OIDEstadoUsuario")
 
     def __str__(self):
-        return self.usuario.user.username + "-" + self.fechaInicioEstadoUsuario + "-" + \
+        return self.usuario.user.username + "-" + str(self.fechaInicioEstadoUsuario) + "-" + \
                self.estadoUsuario.nombreEstadoUsuario
 
 
@@ -825,7 +825,7 @@ class CriterioRiego(models.Model):
                 super(CriterioRiego, self).save()
             else:
                 ultimo_criterio_riego = CriterioRiego.objects.order_by('-id_criterio_riego')[0]
-                self.id_configuracion_riego = ultimo_criterio_riego.id_criterio_riego + 1
+                self.id_criterio_riego = ultimo_criterio_riego.id_criterio_riego + 1
                 super(CriterioRiego, self).save()
 
 

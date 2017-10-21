@@ -152,12 +152,15 @@
                 if ([datosOperacion objectForKey:KEY_FECHA_NACIMIENTO]) {
                     respuesta.fechaNacimiento = [SFUtils dateFromStringYYYYMMDD:datosOperacion[KEY_FECHA_NACIMIENTO]];
                 }
-                if ([datosOperacion objectForKey:KEY_DNI]) {
+                if ([datosOperacion objectForKey:KEY_DNI] != [NSNull null]) {
                     respuesta.dni = [[datosOperacion objectForKey:KEY_DNI] integerValue];
                 }
-                respuesta.cuit = [datosOperacion objectForKey:KEY_CUIT];
-                respuesta.domicilio = [datosOperacion objectForKey:KEY_DOMICILIO];
-                
+                if ([datosOperacion objectForKey:KEY_CUIT] != [NSNull null]) {
+                    respuesta.cuit = [datosOperacion objectForKey:KEY_CUIT];;
+                }
+                if ([datosOperacion objectForKey:KEY_DOMICILIO] != [NSNull null]) {
+                    respuesta.domicilio = [datosOperacion objectForKey:KEY_DOMICILIO];
+                }
                 completionBlock(respuesta);
             } @catch (NSException *exception) {
                 completionBlock(respuesta);
@@ -252,8 +255,8 @@
         
         if (respuesta.resultado && datosOperacion) {
             @try {
-                if ([datosOperacion objectForKey:KEY_ID_USUARIO]) {
-                    respuesta.userId = [[datosOperacion objectForKey:KEY_ID_USUARIO] longLongValue];
+                if ([datosOperacion objectForKey:KEY_KEY_USUARIO]) {
+                    respuesta.username = [datosOperacion objectForKey:KEY_KEY_USUARIO];
                 }
                 
                 completionBlock(respuesta);
@@ -273,8 +276,8 @@
            failureBlock:(FailureBlock)failureBlock {
     
     NSMutableDictionary *parametrosLlamada = [NSMutableDictionary new];
-    if (solicitudRecuperarCuentaCambiarContrasenia.idUsuario) {
-        [parametrosLlamada setObject:[NSString stringWithFormat:@"%li", solicitudRecuperarCuentaCambiarContrasenia.idUsuario] forKey:KEY_ID_USUARIO];
+    if (solicitudRecuperarCuentaCambiarContrasenia.username) {
+        [parametrosLlamada setObject:solicitudRecuperarCuentaCambiarContrasenia.username forKey:KEY_USUARIO];
     }
     if (solicitudRecuperarCuentaCambiarContrasenia.codigoVerificacion) {
         [parametrosLlamada setObject:solicitudRecuperarCuentaCambiarContrasenia.codigoVerificacion forKey:KEY_CODIGO_VERIFICACION];

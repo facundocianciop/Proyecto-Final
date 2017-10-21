@@ -17,6 +17,8 @@ NSString *const kSFNavegarEstadoNoAutenticadoSegue = @"SFNavegarEstadoNoAutentic
 
 NSString *const kSFNavegarRecuperarCuentaSegundoPaso = @"SFNavegarRecuperarCuentaSegundoPaso";
 
+NSString *const kSFNavegarModificarUsuarioSegue = @"SFNavegarModificarUsuarioSegue";
+
 #pragma mark - Modulo Finca
 
 NSString *const kSFNavegarASeccionFincaSegue = @"SFNavegarASeccionFincaSegue";

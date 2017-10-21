@@ -87,7 +87,6 @@
     
     XLFormDescriptor * form;
     XLFormSectionDescriptor * section;
-    XLFormRowDescriptor * row;
     
     form = [XLFormDescriptor formDescriptorWithTitle:@"Modificar usuario"];
     
@@ -95,53 +94,51 @@
     section = [XLFormSectionDescriptor formSectionWithTitle:@"Usuario"];
     [form addFormSection:section];
     
-    row = [XLFormRowDescriptor formRowDescriptorWithTag:KEY_EMAIL rowType:XLFormRowDescriptorTypeEmail title:@"Email"];
-    [row.cellConfigAtConfigure setObject:@"Email" forKey:@"textField.placeholder"];
-    [row.cellConfigAtConfigure setObject:@(NSTextAlignmentRight) forKey:@"textField.textAlignment"];
-    row.required = YES;
-    [row addValidator:[XLFormValidator emailValidator]];
-    [section addFormRow:row];
+    self.emailRow = [XLFormRowDescriptor formRowDescriptorWithTag:KEY_EMAIL rowType:XLFormRowDescriptorTypeEmail title:@"Email"];
+    [self.emailRow.cellConfigAtConfigure setObject:@"Email" forKey:@"textField.placeholder"];
+    [self.emailRow.cellConfigAtConfigure setObject:@(NSTextAlignmentRight) forKey:@"textField.textAlignment"];
+    self.emailRow.required = YES;
+    [self.emailRow addValidator:[XLFormValidator emailValidator]];
+    [section addFormRow:self.emailRow];
     
-    row = [XLFormRowDescriptor formRowDescriptorWithTag:KEY_NOMBRE_USUARIO rowType:XLFormRowDescriptorTypeName title:@"Nombre"];
-    [row.cellConfigAtConfigure setObject:@"Nombre" forKey:@"textField.placeholder"];
-    [row.cellConfigAtConfigure setObject:@(NSTextAlignmentRight) forKey:@"textField.textAlignment"];
-    row.required = YES;
-    [section addFormRow:row];
+    self.nombreRow = [XLFormRowDescriptor formRowDescriptorWithTag:KEY_NOMBRE_USUARIO rowType:XLFormRowDescriptorTypeName title:@"Nombre"];
+    [self.nombreRow.cellConfigAtConfigure setObject:@"Nombre" forKey:@"textField.placeholder"];
+    [self.nombreRow.cellConfigAtConfigure setObject:@(NSTextAlignmentRight) forKey:@"textField.textAlignment"];
+    self.nombreRow.required = YES;
+    [section addFormRow:self.nombreRow];
     
-    row = [XLFormRowDescriptor formRowDescriptorWithTag:KEY_APELLIDO_USUARIO rowType:XLFormRowDescriptorTypeName title:@"Apellido"];
-    [row.cellConfigAtConfigure setObject:@"Apellido" forKey:@"textField.placeholder"];
-    [row.cellConfigAtConfigure setObject:@(NSTextAlignmentRight) forKey:@"textField.textAlignment"];
-    row.required = YES;
-    [section addFormRow:row];
+    self.apellidoRow = [XLFormRowDescriptor formRowDescriptorWithTag:KEY_APELLIDO_USUARIO rowType:XLFormRowDescriptorTypeName title:@"Apellido"];
+    [self.apellidoRow.cellConfigAtConfigure setObject:@"Apellido" forKey:@"textField.placeholder"];
+    [self.apellidoRow.cellConfigAtConfigure setObject:@(NSTextAlignmentRight) forKey:@"textField.textAlignment"];
+    self.apellidoRow.required = YES;
+    [section addFormRow:self.apellidoRow];
     
     // Seccion informacion opcional
     section = [XLFormSectionDescriptor formSectionWithTitle:@"Datos adicionales"];
     [form addFormSection:section];
     
-    row = [XLFormRowDescriptor formRowDescriptorWithTag:KEY_FECHA_NACIMIENTO rowType:XLFormRowDescriptorTypeDate title:@"Fecha de Nacimiento"];
-    row.value = [NSDate new];
-    [section addFormRow:row];
+    self.fechaNacimientoRow = [XLFormRowDescriptor formRowDescriptorWithTag:KEY_FECHA_NACIMIENTO rowType:XLFormRowDescriptorTypeDate title:@"Fecha de Nacimiento"];
+    [section addFormRow:self.fechaNacimientoRow];
     
-    row = [XLFormRowDescriptor formRowDescriptorWithTag:KEY_DNI rowType:XLFormRowDescriptorTypeNumber title:@"D.N.I."];
-    [row.cellConfigAtConfigure setObject:@"D.N.I." forKey:@"textField.placeholder"];
-    [row.cellConfigAtConfigure setObject:@(NSTextAlignmentRight) forKey:@"textField.textAlignment"];
-    [row addValidator:[XLFormRegexValidator formRegexValidatorWithMsg:@"Ingresar solo numeros" regex:kRegexDNI]];
-    [row.cellConfigAtConfigure setObject:@(8) forKey:@"textFieldMaxNumberOfCharacters"];
-    [section addFormRow:row];
+    self.dniRow = [XLFormRowDescriptor formRowDescriptorWithTag:KEY_DNI rowType:XLFormRowDescriptorTypeNumber title:@"D.N.I."];
+    [self.dniRow.cellConfigAtConfigure setObject:@"D.N.I." forKey:@"textField.placeholder"];
+    [self.dniRow.cellConfigAtConfigure setObject:@(NSTextAlignmentRight) forKey:@"textField.textAlignment"];
+    [self.dniRow addValidator:[XLFormRegexValidator formRegexValidatorWithMsg:@"Ingresar solo numeros" regex:kRegexDNI]];
+    [self.dniRow.cellConfigAtConfigure setObject:@(8) forKey:@"textFieldMaxNumberOfCharacters"];
+    [section addFormRow:self.dniRow];
     
-    row = [XLFormRowDescriptor formRowDescriptorWithTag:KEY_CUIT rowType:XLFormRowDescriptorTypeText title:@"C.U.I.T."];
-    [row.cellConfigAtConfigure setObject:@"C.U.I.T." forKey:@"textField.placeholder"];
-    [row.cellConfigAtConfigure setObject:@(NSTextAlignmentRight) forKey:@"textField.textAlignment"];
-    [row addValidator:[XLFormRegexValidator formRegexValidatorWithMsg:@"C.U.I.T debe llevar guiones" regex:kRegexCUIT]];
-    [row.cellConfigAtConfigure setObject:@(13) forKey:@"textFieldMaxNumberOfCharacters"];
-    [section addFormRow:row];
+    self.cuitRow = [XLFormRowDescriptor formRowDescriptorWithTag:KEY_CUIT rowType:XLFormRowDescriptorTypeText title:@"C.U.I.T."];
+    [self.cuitRow.cellConfigAtConfigure setObject:@"C.U.I.T." forKey:@"textField.placeholder"];
+    [self.cuitRow.cellConfigAtConfigure setObject:@(NSTextAlignmentRight) forKey:@"textField.textAlignment"];
+    [self.cuitRow addValidator:[XLFormRegexValidator formRegexValidatorWithMsg:@"C.U.I.T debe llevar guiones" regex:kRegexCUIT]];
+    [self.cuitRow.cellConfigAtConfigure setObject:@(13) forKey:@"textFieldMaxNumberOfCharacters"];
+    [section addFormRow:self.cuitRow];
     
-    row = [XLFormRowDescriptor formRowDescriptorWithTag:KEY_DOMICILIO rowType:XLFormRowDescriptorTypeText title:@"Domicilio"];
-    [row.cellConfigAtConfigure setObject:@"Domicilio" forKey:@"textField.placeholder"];
-    [row.cellConfigAtConfigure setObject:@(NSTextAlignmentRight) forKey:@"textField.textAlignment"];
-    [row.cellConfigAtConfigure setObject:@(50) forKey:@"textFieldMaxNumberOfCharacters"];
-    [section addFormRow:row];
-    
+    self.domicilioRow = [XLFormRowDescriptor formRowDescriptorWithTag:KEY_DOMICILIO rowType:XLFormRowDescriptorTypeText title:@"Domicilio"];
+    [self.domicilioRow.cellConfigAtConfigure setObject:@"Domicilio" forKey:@"textField.placeholder"];
+    [self.domicilioRow.cellConfigAtConfigure setObject:@(NSTextAlignmentRight) forKey:@"textField.textAlignment"];
+    [self.domicilioRow.cellConfigAtConfigure setObject:@(50) forKey:@"textFieldMaxNumberOfCharacters"];
+    [section addFormRow:self.domicilioRow];
     self.form = form;
 }
 

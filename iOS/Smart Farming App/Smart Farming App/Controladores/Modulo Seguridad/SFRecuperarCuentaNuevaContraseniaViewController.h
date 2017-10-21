@@ -10,6 +10,6 @@
 
 @interface SFRecuperarCuentaNuevaContraseniaViewController : SFFormularioBaseViewController
 
-@property (assign, nonatomic) long idUsuario;
+@property (strong, nonatomic) NSString *username;
 
 @end

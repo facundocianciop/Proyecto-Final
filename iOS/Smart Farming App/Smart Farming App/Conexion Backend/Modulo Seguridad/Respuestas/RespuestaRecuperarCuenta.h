@@ -10,6 +10,6 @@
 
 @interface RespuestaRecuperarCuenta : RespuestaServicioBase
 
-@property (assign, nonatomic) long userId;
+@property (strong, nonatomic) NSString *username;
 
 @end

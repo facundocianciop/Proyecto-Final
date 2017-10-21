@@ -52,16 +52,22 @@
                 
                 SFFinca *finca = [SFFinca new];
                 
-                if ([datosOperacion objectForKey:KEY_ID_FINCA]) {
+                if ([datos objectForKey:KEY_ID_FINCA] != [NSNull null]) {
                     finca.idFinca = [[datos objectForKey:KEY_ID_FINCA] longLongValue];
                 }
-                finca.nombre = [datos objectForKey:KEY_NOMBRE_FINCA_RESPUESTA];
+                if ([datos objectForKey:KEY_NOMBRE_FINCA_RESPUESTA] != [NSNull null]) {
+                    finca.nombre = [datos objectForKey:KEY_NOMBRE_FINCA_RESPUESTA];
+                }
                 
-                if ([datos objectForKey:KEY_TAMANIO] ) {
+                if ([datos objectForKey:KEY_TAMANIO] != [NSNull null]) {
                     finca.tamanio = [[datos objectForKey:KEY_TAMANIO] integerValue];
                 }
-                finca.ubicacion = [datos objectForKey:KEY_UBICACION];
-                finca.direccionLegal = [datos objectForKey:KEY_DIRECCION_LEGAL];
+                if ([datos objectForKey:KEY_UBICACION] != [NSNull null]) {
+                    finca.ubicacion = [datos objectForKey:KEY_UBICACION];
+                }
+                if ([datos objectForKey:KEY_DIRECCION_LEGAL] != [NSNull null]) {
+                    finca.direccionLegal = [datos objectForKey:KEY_DIRECCION_LEGAL];
+                }
                 
                 [fincas addObject:finca];
             }
@@ -92,15 +98,22 @@
                 
                 SFFinca *finca = [SFFinca new];
                 
-                if ([datos objectForKey:KEY_ID_FINCA]) {
+                if ([datos objectForKey:KEY_ID_FINCA] != [NSNull null]) {
                     finca.idFinca = [[datos objectForKey:KEY_ID_FINCA] longLongValue];
                 }
-                finca.nombre = [datos objectForKey:KEY_NOMBRE_FINCA_RESPUESTA];
-                if ([datos objectForKey:KEY_TAMANIO]) {
+                if ([datos objectForKey:KEY_NOMBRE_FINCA_RESPUESTA] != [NSNull null]) {
+                    finca.nombre = [datos objectForKey:KEY_NOMBRE_FINCA_RESPUESTA];
+                }
+                
+                if ([datos objectForKey:KEY_TAMANIO] != [NSNull null]) {
                     finca.tamanio = [[datos objectForKey:KEY_TAMANIO] integerValue];
                 }
-                finca.ubicacion = [datos objectForKey:KEY_UBICACION];
-                finca.direccionLegal = [datos objectForKey:KEY_DIRECCION_LEGAL];
+                if ([datos objectForKey:KEY_UBICACION] != [NSNull null]) {
+                    finca.ubicacion = [datos objectForKey:KEY_UBICACION];
+                }
+                if ([datos objectForKey:KEY_DIRECCION_LEGAL] != [NSNull null]) {
+                    finca.direccionLegal = [datos objectForKey:KEY_DIRECCION_LEGAL];
+                }
                 
                 [fincas addObject:finca];
             }
@@ -129,18 +142,25 @@
                 
                 SFFinca *finca = [SFFinca new];
                 
-                if ([datos objectForKey:KEY_ID_FINCA]) {
+                if ([datos objectForKey:KEY_ID_FINCA] != [NSNull null]) {
                     finca.idFinca = [[datos objectForKey:KEY_ID_FINCA] longLongValue];
                 }
-                finca.nombre = [datos objectForKey:KEY_NOMBRE_FINCA];
+                if ([datos objectForKey:KEY_NOMBRE_FINCA_RESPUESTA] != [NSNull null]) {
+                    finca.nombre = [datos objectForKey:KEY_NOMBRE_FINCA_RESPUESTA];
+                }
                 
-                if ([datos objectForKey:KEY_TAMANIO]) {
+                if ([datos objectForKey:KEY_TAMANIO] != [NSNull null]) {
                     finca.tamanio = [[datos objectForKey:KEY_TAMANIO] integerValue];
                 }
-                finca.ubicacion = [datos objectForKey:KEY_UBICACION];
-                finca.direccionLegal = [datos objectForKey:KEY_DIRECCION_LEGAL];
-                
-                finca.rolUsuario = [datos objectForKey:KEY_NOMBRE_ROL];
+                if ([datos objectForKey:KEY_UBICACION] != [NSNull null]) {
+                    finca.ubicacion = [datos objectForKey:KEY_UBICACION];
+                }
+                if ([datos objectForKey:KEY_DIRECCION_LEGAL] != [NSNull null]) {
+                    finca.direccionLegal = [datos objectForKey:KEY_DIRECCION_LEGAL];
+                }
+                if ([datos objectForKey:KEY_NOMBRE_ROL] != [NSNull null]) {
+                    finca.rolUsuario = [datos objectForKey:KEY_NOMBRE_ROL];
+                }
                 
                 [fincas addObject:finca];
             }
@@ -167,10 +187,11 @@
             
             for (NSDictionary *datos in datosOperacion) {
                 
-                NSString *rol = [datos objectForKey:KEY_NOMBRE_ROL];
-                
-                if ([rol isKindOfClass:[NSString class]] && ![rol isEqualToString:@""]) {
-                    [roles addObject:rol];
+                if ([datos objectForKey:KEY_NOMBRE_ROL] != [NSNull null]) {
+                    NSString *rol = [datos objectForKey:KEY_NOMBRE_ROL];
+                    if ([rol isKindOfClass:[NSString class]] && ![rol isEqualToString:@""]) {
+                        [roles addObject:rol];
+                    }
                 }
             }
             respuesta.nombreRoles = roles;

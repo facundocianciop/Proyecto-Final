@@ -13,7 +13,7 @@
 
 @interface SFRecuperarCuentaViewController ()
 
-@property (assign, nonatomic) long userId;
+@property (strong, nonatomic) NSString *username;
 
 @end
 
@@ -35,7 +35,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:kSFNavegarRecuperarCuentaSegundoPaso]) {
         SFRecuperarCuentaNuevaContraseniaViewController *vc = [segue destinationViewController];
-        vc.idUsuario = self.userId;
+        vc.username = self.username;
     }
 }
 
@@ -57,7 +57,7 @@
         if (respuesta.resultado) {
             if ([respuesta isKindOfClass:[RespuestaRecuperarCuenta class]]) {
                 RespuestaRecuperarCuenta *respuestaRecuperarCuenta = (RespuestaRecuperarCuenta *)respuesta;
-                weakSelf.userId = respuestaRecuperarCuenta.userId;
+                weakSelf.username = respuestaRecuperarCuenta.username;
                 [weakSelf userInformationPrompt:kConfirmacionEnvioMailRecuperacionCuenta withCompletion:^{
                     [weakSelf performSegueWithIdentifier:kSFNavegarRecuperarCuentaSegundoPaso sender:self];
                 }];

@@ -53,8 +53,8 @@
     [ServiciosModuloSeguridad cambiarContrasenia:solicitud completionBlock:^(RespuestaServicioBase *respuesta) {
         [weakSelf hideActivityIndicator];
         if (respuesta.resultado) {
-            [weakSelf userInformationPrompt:kErrorRecuperarCuentaCambioContasenia withCompletion:^{
-                [weakSelf.navigationController popViewControllerAnimated:YES];
+            [weakSelf userInformationPrompt:kConfirmacionCambioContrasenia withCompletion:^{
+                [weakSelf.navigationController popToRootViewControllerAnimated:YES];
             }];
         } else {
             [weakSelf handleErrorWithPromptTitle:kErrorCambioContrasenia message:kErrorDesconocido withCompletion:^{

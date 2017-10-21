@@ -17,6 +17,8 @@ extern NSString *const kSFNavegarEstadoNoAutenticadoSegue;
 
 extern NSString *const kSFNavegarRecuperarCuentaSegundoPaso;
 
+extern NSString *const kSFNavegarModificarUsuarioSegue;
+
 #pragma mark - Modulo Finca
 
 extern NSString *const kSFNavegarASeccionFincaSegue;

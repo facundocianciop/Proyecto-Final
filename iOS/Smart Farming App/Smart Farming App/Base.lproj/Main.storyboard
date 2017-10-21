@@ -1644,7 +1644,7 @@
                         <rightBarButtonItems>
                             <barButtonItem image="ModificarUsuario" id="cgH-gM-PqG">
                                 <connections>
-                                    <segue destination="LHc-b0-B6u" kind="show" id="urc-cA-dxh"/>
+                                    <segue destination="LHc-b0-B6u" kind="show" identifier="SFNavegarModificarUsuarioSegue" id="urc-cA-dxh"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem image="ModificarContrasenia" id="cMA-Fc-rAs">
