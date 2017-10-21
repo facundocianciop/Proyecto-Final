@@ -23,6 +23,8 @@ def obtener_fincas_por_usuario(request):
         lista_dto_finca_rol = []
         for usuarioFinca in usuario.usuarioFincaList.all():
             finca = usuarioFinca.finca
+            ultimo_usuario = UsuarioFinca.objects.filter(usuario=user.datosusuario, finca=finca) \
+                .order_by("-fechaAltaUsuarioFinca").last()
             if UsuarioFinca.objects.filter(usuario=user.datosusuario, finca=finca). __len__() != 1:
                 usuario_finca_lista = UsuarioFinca.objects.filter(usuario=user.datosusuario, finca=finca)
                 longitud_deseada = usuario_finca_lista.__len__()
@@ -31,8 +33,8 @@ def obtener_fincas_por_usuario(request):
                     if usr.fechaBajaUsuarioFinca:
                         longitud += 1
                 if longitud_deseada == longitud:
-                    ultimo_usuario = UsuarioFinca.objects.filter(usuario=user.datosusuario, finca=finca) \
-                    .order_by("-fechaAltaUsuarioFinca").last()
+                    # ultimo_usuario = UsuarioFinca.objects.filter(usuario=user.datosusuario, finca=finca) \
+                    # .order_by("-fechaAltaUsuarioFinca").last()
                     ultimo_historico = HistoricoEstadoFinca.objects.get(finca=finca, fechaFinEstadoFinca__isnull=True)
                     if ultimo_historico.estadoFinca.nombreEstadoFinca == (ESTADO_HABILITADO):
                         rol_usuario_finca = RolUsuarioFinca.objects.get(usuarioFinca=usuarioFinca,
@@ -43,7 +45,8 @@ def obtener_fincas_por_usuario(request):
                                                                tamanio=finca.tamanio,
                                                                idFinca=finca.idFinca,
                                                                ubicacion=finca.ubicacion,
-                                                               estadoFinca=ESTADO_HABILITADO))
+                                                               estadoFinca=ESTADO_HABILITADO,
+                                                               idUsuarioFinca=ultimo_usuario.idUsuarioFinca))
                     elif ultimo_historico.estadoFinca.nombreEstadoFinca == ESTADO_DESHABILITADO:
                         nombre_rol = ""
                         lista_roles = usuarioFinca.rolUsuarioFincaList.all()
@@ -55,7 +58,8 @@ def obtener_fincas_por_usuario(request):
                                                                idFinca=finca.idFinca,
                                                                tamanio=finca.tamanio,
                                                                ubicacion=finca.ubicacion,
-                                                               estadoFinca=ESTADO_DESHABILITADO))
+                                                               estadoFinca=ESTADO_DESHABILITADO,
+                                                               idUsuarioFinca=ultimo_usuario.idUsuarioFinca))
                 elif usuarioFinca.fechaBajaUsuarioFinca is None:
                     ultimo_historico = HistoricoEstadoFinca.objects.get(finca=finca, fechaFinEstadoFinca__isnull=True)
                     if ultimo_historico.estadoFinca.nombreEstadoFinca == (ESTADO_HABILITADO):
@@ -67,7 +71,8 @@ def obtener_fincas_por_usuario(request):
                                                                idFinca=finca.idFinca,
                                                                tamanio=finca.tamanio,
                                                                ubicacion=finca.ubicacion,
-                                                               estadoFinca=ESTADO_HABILITADO))
+                                                               estadoFinca=ESTADO_HABILITADO,
+                                                               idUsuarioFinca=ultimo_usuario.idUsuarioFinca))
                     elif ultimo_historico.estadoFinca.nombreEstadoFinca == ESTADO_DESHABILITADO:
                         nombre_rol = ""
                         lista_roles = usuarioFinca.rolUsuarioFincaList.all()
@@ -79,14 +84,16 @@ def obtener_fincas_por_usuario(request):
                                                                idFinca= finca.idFinca,
                                                                tamanio=finca.tamanio,
                                                                ubicacion=finca.ubicacion,
-                                                               estadoFinca=ESTADO_DESHABILITADO))
+                                                               estadoFinca=ESTADO_DESHABILITADO,
+                                                               idUsuarioFinca=ultimo_usuario.idUsuarioFinca))
                     else:
                         lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre,
                                                                nombreRol="",
                                                                idFinca=finca.idFinca,
                                                                ubicacion=finca.ubicacion,
                                                                tamanio=finca.tamanio,
-                                                               estadoFinca=ultimo_historico.estadoFinca.nombreEstadoFinca))
+                                                               estadoFinca=ultimo_historico.estadoFinca.nombreEstadoFinca,
+                                                               idUsuarioFinca=ultimo_usuario.idUsuarioFinca))
             else:
                 ultimo_historico = HistoricoEstadoFinca.objects.get(finca=finca, fechaFinEstadoFinca__isnull=True)
                 if ultimo_historico.estadoFinca.nombreEstadoFinca == (ESTADO_HABILITADO):
@@ -98,7 +105,8 @@ def obtener_fincas_por_usuario(request):
                                                            tamanio=finca.tamanio,
                                                            idFinca=finca.idFinca,
                                                            ubicacion=finca.ubicacion,
-                                                           estadoFinca=ESTADO_HABILITADO))
+                                                           estadoFinca=ESTADO_HABILITADO,
+                                                           idUsuarioFinca=ultimo_usuario.idUsuarioFinca))
                 elif ultimo_historico.estadoFinca.nombreEstadoFinca == ESTADO_DESHABILITADO:
                     nombre_rol = ""
                     lista_roles = usuarioFinca.rolUsuarioFincaList.all()
@@ -110,14 +118,16 @@ def obtener_fincas_por_usuario(request):
                                                            idFinca=finca.idFinca,
                                                            tamanio=finca.tamanio,
                                                            ubicacion=finca.ubicacion,
-                                                           estadoFinca=ESTADO_DESHABILITADO))
+                                                           estadoFinca=ESTADO_DESHABILITADO,
+                                                           idUsuarioFinca=ultimo_usuario.idUsuarioFinca))
                 else:
                     lista_dto_finca_rol.append(DtoFincaRol(nombreFinca=usuarioFinca.finca.nombre,
                                                            nombreRol="",
                                                            idFinca=finca.idFinca,
                                                            ubicacion=finca.ubicacion,
                                                            tamanio=finca.tamanio,
-                                                           estadoFinca=ultimo_historico.estadoFinca.nombreEstadoFinca))
+                                                           estadoFinca=ultimo_historico.estadoFinca.nombreEstadoFinca,
+                                                           idUsuarioFinca=ultimo_usuario.idUsuarioFinca))
         response.content = armar_response_list_content(lista_dto_finca_rol)
         response.status_code = 200
         return response
@@ -176,7 +186,8 @@ def crear_finca(request):
             #se busca la instancia de estado finca "pendienteaprobacion"
             estado_finca = EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_PENDIENTE_APROBACION)
             #se realiza la creación de un histórico con fecha actual y relacionado al estado encontrado
-            historico_creado = HistoricoEstadoFinca(fechaInicioEstadoFinca=datetime.now(pytz.utc), estadoFinca=estado_finca)
+            historico_creado = HistoricoEstadoFinca(fechaInicioEstadoFinca=datetime.now(pytz.utc),
+                                                    estadoFinca=estado_finca)
             #se setea la finca al histórico creado
             historico_creado.finca = finca_creada
             #se guarda el histórico en la base de datos
