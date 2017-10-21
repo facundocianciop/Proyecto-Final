@@ -652,7 +652,8 @@ def obtener_informe_historico_sector(request):
                 historicos = componente.historicoEstadoComponenteSensorSector.all()
                 if historicos.filter(fechaAltaComponenteSensorSector__gte=fecha_inicio_sector,
                                      fechaAltaComponenteSensorSector__lte=fecha_fin_sector,
-                                     estadoComponenteSensorSector=estado_componente_sensor_sector_habilitado).__len__() >= 1:
+                                     estadoComponenteSensorSector=estado_componente_sensor_sector_habilitado)\
+                        .__len__() >= 1:
                     mediciones = componente.medicionCabeceraList.filter(fechaYHora__gte=fecha_inicio_sector,
                                                                         fechaYHora__lte=fecha_fin_sector)
                     for medicion in mediciones:
@@ -660,7 +661,8 @@ def obtener_informe_historico_sector(request):
                                                                         componente=componente.componente_sensor.as_json())
                         lista_dto_componente_medicion.append(dto_componente_medicion)
             if MedicionInformacionClimaticaCabecera.objects.filter(fechaHora__gte=datos[KEY_FECHA_INICIO_SECTOR],
-                                                                   fechaHora__lte=datos[KEY_FECHA_FIN_SECTOR]).__len__() != 0:
+                                                                   fechaHora__lte=datos[KEY_FECHA_FIN_SECTOR])\
+                    .__len__() != 0:
                 for medicion_climatica in MedicionInformacionClimaticaCabecera.objects.filter(
                         fechaHora__gte=datos[KEY_FECHA_INICIO_SECTOR],
                         fechaHora__lte=datos[KEY_FECHA_FIN_SECTOR]):
