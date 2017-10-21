@@ -477,7 +477,7 @@ def cambiar_contrasenia_recuperar_cuenta(request):
 
     usuario = user.datosusuario
     if usuario.codigoVerificacion == codigo_verificacion:
-
+        usuario.codigoVerificacion = ''
         user.set_password(contrasenia_nueva)
         user.save()
 

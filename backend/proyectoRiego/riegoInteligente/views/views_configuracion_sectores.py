@@ -21,7 +21,14 @@ def crear_sector(request):
             if datos[KEY_ID_FINCA] == '' or datos[KEY_NOMBRE_SECTOR] == '' or datos[KEY_DESCRIPCION_SECTOR] == '' \
                     or datos[KEY_SUPERFICIE_SECTOR] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if Finca.objects.filter(idFinca=datos[KEY_ID_FINCA]).__len__() == 0:
+                raise ValueError(ERROR_FINCA_NO_ENCONTRADA, "No se encontro una finca con ese id.")
             finca_actual = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+            estado_finca_habilitado = EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_HABILITADO)
+            if finca_actual.historicoEstadoFincaList.get(fechaFinEstadoFinca__isnull=True).estadoFinca != \
+                    estado_finca_habilitado:
+                raise ValueError(ERROR_FINCA_NO_HABILITADA, "No se puede crear sector porque la finca no esta"
+                                                            " habilitada.")
             estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
 
             if Sector.objects.filter(numeroSector=datos[KEY_NUMERO_SECTOR], finca=finca_actual).__len__() != 0:
@@ -29,22 +36,45 @@ def crear_sector(request):
                 for sector in sectores:
                     if sector.historicoEstadoSectorList.filter(fechaFinEstadoSector__isnull=True,
                                                                estado_sector=estado_habilitado).__len__() == 1:
-                        raise ValueError(ERROR_SECTOR_YA_EXISTENTE, "Ya existe un sector con ese numero")
+                        raise ValueError(ERROR_SECTOR_YA_EXISTENTE, "Ya existe un sector con ese numero.")
             if Sector.objects.filter(nombreSector=datos[KEY_NOMBRE_SECTOR], finca=finca_actual).__len__() != 0:
                 sectores = Sector.objects.filter(nombreSector=datos[KEY_NOMBRE_SECTOR], finca=finca_actual)
                 for sector in sectores:
                     if sector.historicoEstadoSectorList.filter(fechaFinEstadoSector__isnull=True,
                                                                estado_sector=estado_habilitado).__len__() == 1:
-                        raise ValueError(ERROR_SECTOR_YA_EXISTENTE, "Ya existe un sector con ese nombre")
+                        raise ValueError(ERROR_SECTOR_YA_EXISTENTE, "Ya existe un sector con ese nombre.")
+            if finca_actual.tamanio < int(datos[KEY_SUPERFICIE_SECTOR]):
+                raise ValueError(ERROR_SECTOR_SUPERA_TAMANIO_FINCA, "El sector no puede ser mas grande que la finca.")
+            superficie_ocupada = 0
+            sectores_finca = Sector.objects.filter(finca=finca_actual)
+            for sector in sectores_finca:
+                if sector.historicoEstadoSectorList.filter(fechaFinEstadoSector__isnull=True,
+                                                           estado_sector=estado_habilitado).__len__() == 1:
+                    superficie_ocupada += int(sector.superficie)
+            superficie_ocupada += int(datos[KEY_SUPERFICIE_SECTOR])
+            if superficie_ocupada > finca_actual.tamanio:
+                raise ValueError(ERROR_SECTORES_SUPERAN_TAMANIO_FINCA, "La suma de las superficies superan el tamanio"
+                                                                       "de la finca.")
+            if ConfiguracionEventoPersonalizado.objects.filter(nombre=HELADA).__len__ == 0:
+                raise ValueError(ERROR_HELADA_NO_CARGADA, "No se encuentra cargada la configuracion para heladas.")
+            helada = ConfiguracionEventoPersonalizado.objects.get(nombre=HELADA)
+            usuario = request.user
+            datos_usuario = usuario.datosusuario
+            usuario_finca = UsuarioFinca.objects.get(usuario=datos_usuario, finca=finca_actual)
+            usuario_finca.configuracionEventoPersonalizadoList.add(helada)
+            usuario_finca.save()
+            helada.save()
             sector_nuevo = Sector(numeroSector=datos[KEY_NUMERO_SECTOR], nombreSector=datos[KEY_NOMBRE_SECTOR],
                                   descripcionSector=datos[KEY_DESCRIPCION_SECTOR],
-                                  superficie=datos[KEY_SUPERFICIE_SECTOR],
+                                  superficie=int(datos[KEY_SUPERFICIE_SECTOR]),
                                   finca=finca_actual
                                   )
             sector_nuevo.save()
             historico_nuevo = HistoricoEstadoSector(estado_sector=estado_habilitado, sector=sector_nuevo,
                                                     fechaInicioEstadoSector=datetime.now(pytz.utc))
             historico_nuevo.save()
+            helada.sectorList.add(sector_nuevo)
+            helada.save()
             finca_actual.save()
             response.content = armar_response_content(None)
             response.status_code = 200
@@ -79,7 +109,19 @@ def modificar_sector(request):
             if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
                                                     fechaFinEstadoSector__isnull=True).__len__() != 1:
                 raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
-
+            finca_actual = sector_seleccionado.finca
+            if finca_actual.tamanio < int(datos[KEY_SUPERFICIE_SECTOR]):
+                raise ValueError(ERROR_SECTOR_SUPERA_TAMANIO_FINCA, "El sector no puede ser mas grande que la finca.")
+            superficie_ocupada = 0
+            sectores_finca = Sector.objects.filter(finca=finca_actual)
+            for sector in sectores_finca:
+                if sector.historicoEstadoSectorList.filter(fechaFinEstadoSector__isnull=True,
+                                                           estado_sector=estado_habilitado).__len__() == 1:
+                    superficie_ocupada += int(sector.superficie)
+            superficie_ocupada += int(datos[KEY_SUPERFICIE_SECTOR])
+            if superficie_ocupada > finca_actual.tamanio:
+                raise ValueError(ERROR_SECTORES_SUPERAN_TAMANIO_FINCA, "La suma de las superficies superan el tamanio"
+                                                                       "de la finca.")
             sector_seleccionado.nombreSector = datos[KEY_NOMBRE_SECTOR]
             sector_seleccionado.descripcionSector = datos[KEY_DESCRIPCION_SECTOR]
             sector_seleccionado.superficie = datos[KEY_SUPERFICIE_SECTOR]
