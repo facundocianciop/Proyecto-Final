@@ -38,6 +38,34 @@
 
 #pragma mark - Llamadas servicio
 
+-(void)cambiarContrasenia {
+    
+    NSDictionary *values = [self.form formValues];
+    
+    SolicitudCambiarContrasenia *solicitud = [SolicitudCambiarContrasenia new];
+    
+    solicitud.contraseniaActual = [values objectForKey:KEY_CONTRASENIA_VIEJA];
+    solicitud.contraseniaNueva = [values objectForKey:KEY_CONTRASENIA_NUEVA];
+    
+    __weak typeof (self) weakSelf = self;
+    
+    [self showActivityIndicator];
+    [ServiciosModuloSeguridad cambiarContrasenia:solicitud completionBlock:^(RespuestaServicioBase *respuesta) {
+        [weakSelf hideActivityIndicator];
+        if (respuesta.resultado) {
+            [weakSelf userInformationPrompt:kConfirmacionCambioContrasenia withCompletion:^{
+                [weakSelf.navigationController popToRootViewControllerAnimated:YES];
+            }];
+        } else {
+            [weakSelf handleErrorWithPromptTitle:kErrorCambioContrasenia message:kErrorDesconocido withCompletion:^{
+            }];
+        }
+    } failureBlock:^(ErrorServicioBase *error) {
+        [weakSelf hideActivityIndicator];
+        [weakSelf handleErrorWithPromptTitle:kErrorCambioContrasenia message:error.detalleError withCompletion:^{
+        }];
+    }];
+}
 
 #pragma mark - Formulario
 
@@ -89,8 +117,7 @@
 }
 
 -(void)hacerLlamadaServicio {
-    
-    
+    [self cambiarContrasenia];
 }
 
 #pragma mark - Acciones form

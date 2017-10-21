@@ -44,17 +44,19 @@ def buscar_configuraciones_eventos_personalizados(request):
                     if finca.sectorList.filter(idSector=sector.idSector).__len__() == 1:
                         lista_numeros_sectores.append(sector.numeroSector)
                         lista_id_sectores.append(sector.idSector)
-                dto_configuracion_evento = DtoConfiguracionEventoPersonalizado(idConfiguracionEvento=configuracion.idConfiguracion,
-                                                                               nombre=configuracion.nombre,
-                                                                               descripcion=configuracion.descripcion,
-                                                                               fechaHoraCreacion=configuracion.fechaHoraCreacion,
-                                                                               activado=configuracion.activado,
-                                                                               numeroSector=lista_numeros_sectores,
-                                                                               idSector=lista_id_sectores,
-                                                                               notificacionActivada=configuracion.notificacionActivada,
-                                                                               listaMedicionesInterna=lista_medicion_interna_json,
-                                                                               listaMedicionesExternas=lista_medicion_externa_json
-                                                                               )
+                dto_configuracion_evento = DtoConfiguracionEventoPersonalizado(
+                    idConfiguracionEvento=configuracion.idConfiguracion,
+                    nombre=configuracion.nombre,
+                    descripcion=configuracion.descripcion,
+                    fechaHoraCreacion=configuracion.fechaHoraCreacion,
+                    activado=configuracion.activado,
+                    numeroSector=lista_numeros_sectores,
+                    idSector=lista_id_sectores,
+                    notificacionActivada=configuracion.notificacionActivada,
+                    listaMedicionesInterna=lista_medicion_interna_json,
+                    listaMedicionesExternas=lista_medicion_externa_json,
+                    usuarioFincaId=configuracion.usuariofinca_set.first().idUsuarioFinca
+                )
                 lista_dto_configuracion_eventos.append(dto_configuracion_evento)
             response.content = armar_response_list_content(lista_dto_configuracion_eventos)
             response.status_code = 200
@@ -104,16 +106,18 @@ def mostrar_configuracion_evento_personalizado(request):
                     lista_medicion_interna_json.append(medicion.as_json())
                 elif isinstance(medicion, MedicionEstadoExterno):
                     lista_medicion_externa_json.append(medicion.as_json())
-            dto_configuracion_evento = DtoConfiguracionEventoPersonalizado(idConfiguracionEvento=configuracion.idConfiguracion,
-                                                                           nombre=configuracion.nombre,
-                                                                           descripcion=configuracion.descripcion,
-                                                                           fechaHoraCreacion=configuracion.fechaHoraCreacion,
-                                                                           activado=configuracion.activado,
-                                                                           numeroSector=lista_numeros_sectores,
-                                                                           idSector=lista_id_sectores,
-                                                                           notificacionActivada=configuracion.notificacionActivada,
-                                                                           listaMedicionesInterna=lista_medicion_interna_json,
-                                                                           listaMedicionesExternas=lista_medicion_externa_json)
+            dto_configuracion_evento = DtoConfiguracionEventoPersonalizado(
+                idConfiguracionEvento=configuracion.idConfiguracion,
+                nombre=configuracion.nombre,
+                descripcion=configuracion.descripcion,
+                fechaHoraCreacion=configuracion.fechaHoraCreacion,
+                activado=configuracion.activado,
+                numeroSector=lista_numeros_sectores,
+                idSector=lista_id_sectores,
+                notificacionActivada=configuracion.notificacionActivada,
+                listaMedicionesInterna=lista_medicion_interna_json,
+                listaMedicionesExternas=lista_medicion_externa_json,
+                usuarioFincaId=configuracion.usuariofinca_set.first().idUsuarioFinca)
             response.content = armar_response_content(dto_configuracion_evento)
             response.status_code = 200
             return response
@@ -209,30 +213,35 @@ def mostrar_tipo_medicion_climatica_finca(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def crear_configuracion_evento_personalizado(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if ((KEY_CONFIGURACION_MEDICION_INTERNA in datos)and(KEY_CONFIGURACION_MEDICION_EXTERNA in datos))\
+        if((KEY_CONFIGURACION_MEDICION_INTERNA in datos)and(KEY_CONFIGURACION_MEDICION_EXTERNA in datos)\
                 and(KEY_ID_USUARIO_FINCA in datos) and (KEY_NOMBRE_CONFIGURACION_EVENTO in datos) and \
                 (KEY_NOTIFICACION_ACTIVADA in datos) and (KEY_CONFIGURACION_ACTIVADA in datos) and \
-                (KEY_ID_SECTOR in datos):
-            if  (datos[KEY_CONFIGURACION_MEDICION_INTERNA] == '' or datos[KEY_CONFIGURACION_MEDICION_EXTERNA] == ''):
+                (KEY_ID_SECTOR in datos)):
+            if datos[KEY_CONFIGURACION_MEDICION_INTERNA] == '' or datos[KEY_CONFIGURACION_MEDICION_EXTERNA] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
+                raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No existe un sector con ese id.")
             sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
             usuario_finca = UsuarioFinca.objects.get(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA])
-            configuracion_evento = ConfiguracionEventoPersonalizado(nombre=datos[KEY_NOMBRE_CONFIGURACION_EVENTO],
-                                                                    notificacionActivada=datos[KEY_NOTIFICACION_ACTIVADA],
-                                                                    activado=datos[KEY_CONFIGURACION_ACTIVADA],
-                                                                     fechaHoraCreacion=datetime.now(pytz.utc),
-                                                                    descripcion=datos[KEY_DESCRIPCION_CONFIGURACION_EVENTO],
-                                                                fechaAltaConfiguracionEventoPersonalizado=datetime.now(pytz.utc),
-                                                                    usuario_finca=usuario_finca
-                                                                    )
-            configuracion_evento.sector.add(sector)
+            configuracion_evento = ConfiguracionEventoPersonalizado(
+                nombre=datos[KEY_NOMBRE_CONFIGURACION_EVENTO],
+                notificacionActivada=datos[KEY_NOTIFICACION_ACTIVADA],
+                activado=datos[KEY_CONFIGURACION_ACTIVADA],
+                fechaHoraCreacion=datetime.now(pytz.utc),
+                descripcion=datos[KEY_DESCRIPCION_CONFIGURACION_EVENTO],
+                fechaAltaConfiguracionEventoPersonalizado=datetime.now(pytz.utc)
+            )
             configuracion_evento.save()
+            configuracion_evento.sectorList.add(sector)
+            usuario_finca.configuracionEventoPersonalizadoList.add(configuracion_evento)
+            usuario_finca.save()
             datos_configuracion_medicion_interna = datos[KEY_CONFIGURACION_MEDICION_INTERNA]
             for configuracion_interna in datos_configuracion_medicion_interna:
                 tipo_medicion_interna = TipoMedicion.objects.get(
@@ -289,14 +298,15 @@ def asignar_configuracion_evento_personalizado_a_sector(request):
             configuracion_evento = ConfiguracionEventoPersonalizado.objects.get(
                 idConfiguracion=datos[KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO])
             usuario_finca = UsuarioFinca.objects.get(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA])
-            configuracion_evento = ConfiguracionEventoPersonalizado(nombre=datos[KEY_NOMBRE_CONFIGURACION_EVENTO],
-                                                                    notificacionActivada=datos[KEY_NOTIFICACION_ACTIVADA],
-                                                                    activado=datos[KEY_CONFIGURACION_ACTIVADA],
-                                                                    sector=sector, fechaHoraCreacion=datetime.now(pytz.utc),
-                                                                    descripcion=datos[KEY_DESCRIPCION_CONFIGURACION_EVENTO],
-                                                                fechaAltaConfiguracionEventoPersonalizado=datetime.now(pytz.utc),
-                                                                    usuario_finca=usuario_finca
-                                                                    )
+            configuracion_evento = ConfiguracionEventoPersonalizado(
+                nombre=datos[KEY_NOMBRE_CONFIGURACION_EVENTO],
+                notificacionActivada=datos[KEY_NOTIFICACION_ACTIVADA],
+                activado=datos[KEY_CONFIGURACION_ACTIVADA],
+                sector=sector, fechaHoraCreacion=datetime.now(pytz.utc),
+                descripcion=datos[KEY_DESCRIPCION_CONFIGURACION_EVENTO],
+                fechaAltaConfiguracionEventoPersonalizado=datetime.now(pytz.utc),
+                usuario_finca=usuario_finca
+            )
             configuracion_evento.save()
             datos_configuracion_medicion_interna = datos[KEY_CONFIGURACION_MEDICION_INTERNA]
             for configuracion_interna in datos_configuracion_medicion_interna:
@@ -340,11 +350,11 @@ def modificar_configuracion_evento_personalizado(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if ((KEY_CONFIGURACION_MEDICION_INTERNA in datos)and(KEY_CONFIGURACION_MEDICION_EXTERNA in datos))\
+        if((KEY_CONFIGURACION_MEDICION_INTERNA in datos)and(KEY_CONFIGURACION_MEDICION_EXTERNA in datos))\
                 and(KEY_ID_USUARIO_FINCA in datos) and (KEY_NOMBRE_CONFIGURACION_EVENTO in datos) and \
                 (KEY_NOTIFICACION_ACTIVADA in datos) and (KEY_CONFIGURACION_ACTIVADA in datos) and \
                 (KEY_ID_SECTOR in datos) and (KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO in datos):
-            if  (datos[KEY_CONFIGURACION_MEDICION_INTERNA] == '' and datos[KEY_CONFIGURACION_MEDICION_EXTERNA] == '')\
+            if(datos[KEY_CONFIGURACION_MEDICION_INTERNA] == '' and datos[KEY_CONFIGURACION_MEDICION_EXTERNA] == '')\
                     or (datos[KEY_ID_USUARIO_FINCA] == '') or (datos[KEY_NOMBRE_CONFIGURACION_EVENTO] == '')\
                     or (datos[KEY_NOTIFICACION_ACTIVADA] == '')\
                     or (datos[KEY_CONFIGURACION_ACTIVADA] == '') or (datos[KEY_ID_SECTOR] == '') or \
@@ -489,7 +499,8 @@ def obtener_estado_actual_sector(request):
             if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
                                                     fechaFinEstadoSector__isnull=True).__len__() != 1:
                 raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
-            estado_mecanismo_sector_habilitado = EstadoMecanismoRiegoFincaSector.objects.get(nombreEstadoMecanismoRiegoFincaSector=ESTADO_HABILITADO)
+            estado_mecanismo_sector_habilitado = EstadoMecanismoRiegoFincaSector.objects.get(
+                nombreEstadoMecanismoRiegoFincaSector=ESTADO_HABILITADO)
             mecanismo_sector_lista = sector_seleccionado.mecanismoRiegoFincaSector.all()
             mecanismo_sector = ""
             ejecucion_riego = ""
@@ -558,7 +569,8 @@ def obtener_informe_riego_ejecucion_sector(request):
             if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
                                                     fechaFinEstadoSector__isnull=True).__len__() != 1:
                 raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
-            estado_mecanismo_sector_habilitado = EstadoMecanismoRiegoFincaSector.objects.get(nombreEstadoMecanismoRiegoFincaSector=ESTADO_HABILITADO)
+            estado_mecanismo_sector_habilitado = EstadoMecanismoRiegoFincaSector.objects.get(
+                nombreEstadoMecanismoRiegoFincaSector=ESTADO_HABILITADO)
             mecanismo_sector_lista = sector_seleccionado.mecanismoRiegoFincaSector.all()
             mecanismo_sector = ""
             ejecucion_riego = ""
@@ -639,8 +651,9 @@ def obtener_informe_historico_sector(request):
                         lista_dto_componente_medicion.append(dto_componente_medicion)
             if MedicionInformacionClimaticaCabecera.objects.filter(fechaHora__gte=datos[KEY_FECHA_INICIO_SECTOR],
                                                                    fechaHora__lte=datos[KEY_FECHA_FIN_SECTOR]).__len__() != 0:
-                for medicion_climatica in MedicionInformacionClimaticaCabecera.objects.filter(fechaHora__gte=datos[KEY_FECHA_INICIO_SECTOR],
-                                                                   fechaHora__lte=datos[KEY_FECHA_FIN_SECTOR]):
+                for medicion_climatica in MedicionInformacionClimaticaCabecera.objects.filter(
+                        fechaHora__gte=datos[KEY_FECHA_INICIO_SECTOR],
+                        fechaHora__lte=datos[KEY_FECHA_FIN_SECTOR]):
                     dto_medicion_climatica = DtoMedicionClimatica(medicion_climatica)
                     lista_dto_medicion_climatica.append(dto_medicion_climatica)
             dto_historico_sector = DtoHistoricoSector(dto_medicion_climatica_list=lista_dto_medicion_climatica,
@@ -666,6 +679,7 @@ def obtener_informe_historico_sector(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def obtener_informe_riego_historico_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -776,22 +790,20 @@ def obtener_informe_historico_heladas(request):
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
                 raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encuentra un sector con ese id")
-            if ConfiguracionEventoPersonalizado.objects.filter(
-                    nombre=HELADA).__len__() == 0:
-                raise ValueError(ERROR_CONFIGURACION_EVENTO_NO_ENCONTRADA, "No existe una configuracion de eventos con "
-                                                                           "ese id")
             sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
             configuracion_evento = ConfiguracionEventoPersonalizado.objects.get(
                nombre=HELADA)
             fecha_inicio_sector = parsear_datos_fecha(datos[KEY_FECHA_INICIO_SECTOR])
             fecha_fin_sector = parsear_datos_fecha(datos[KEY_FECHA_FIN_SECTOR])
             if configuracion_evento.eventopersonalizado_set.filter(fechaHora__gte=fecha_inicio_sector,
-                                                                fechaHora__lte=fecha_fin_sector, sector=sector).__len__() == 0:
+                                                                fechaHora__lte=fecha_fin_sector, sector=sector).\
+                    __len__() == 0:
                 response.content = armar_response_content(None)
                 response.status_code = 200
                 return response
             lista_eventos = configuracion_evento.eventopersonalizado_set.filter(fechaHora__gte=fecha_inicio_sector,
-                                                                                fechaHora__lte=fecha_fin_sector, sector=sector)
+                                                                                fechaHora__lte=fecha_fin_sector,
+                                                                                sector=sector)
 
             response.content = armar_response_list_content(lista_eventos)
             response.status_code = 200
@@ -854,11 +866,13 @@ def obtener_informe_cruzado_riego_mediciones_(request):
                             fechaYHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30)).__len__() > 0:
                         medicion_cabecera_antes = componente_sensor_sector_asignado.medicionCabeceraList.filter(
                             fechaYHora__lte=ejecucion.fecha_hora_inicio,
-                            fechaYHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30)).order_by("-fechaYHora").last()
+                            fechaYHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30)).\
+                            order_by("-fechaYHora").last()
                     """PARA OBTENER LA MEDICION POSTERIOR AL RIEGO"""
                     if componente_sensor_sector_asignado.medicionCabeceraList.filter(
                                 fechaYHora__lte=ejecucion.fecha_hora_finalizacion,
-                                fechaYHora__gte=ejecucion.fecha_hora_finalizacion + timedelta(minutes=30)).__len__() > 0:
+                                fechaYHora__gte=ejecucion.fecha_hora_finalizacion + timedelta(minutes=30))\
+                            .__len__() > 0:
                         medicion_cabecera_despues = componente_sensor_sector_asignado.medicionCabeceraList.filter(
                             fechaYHora__lte=ejecucion.fecha_hora_inicio,
                             fechaYHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30)).order_by(
@@ -866,21 +880,23 @@ def obtener_informe_cruzado_riego_mediciones_(request):
                     if mecanismo.mecanismoRiegoFinca.finca.proveedorinformacionclimaticafinca_set.filter(
                         fechaAltaProveedorInfoClimaticaFinca__lte=ejecucion.fecha_hora_inicio,
                         fechaBajaProveedorInfoClimaticaFinca__gte=ejecucion.fecha_hora_finalizacion).__len__() == 1:
-                        proveedor_finca = mecanismo.mecanismoRiegoFinca.finca.proveedorinformacionclimaticafinca_set.get(
-                        fechaAltaProveedorInfoClimaticaFinca__lte=ejecucion.fecha_hora_inicio,
-                        fechaBajaProveedorInfoClimaticaFinca__gte=ejecucion.fecha_hora_finalizacion)
+                        proveedor_finca = mecanismo.mecanismoRiegoFinca.finca.proveedorinformacionclimaticafinca_set. \
+                            get(fechaAltaProveedorInfoClimaticaFinca__lte=ejecucion.fecha_hora_inicio,
+                                fechaBajaProveedorInfoClimaticaFinca__gte=ejecucion.fecha_hora_finalizacion)
                         if proveedor_finca.medicionInformacionClimaticaCabeceraList.filter(
                             fechaYHora__lte=ejecucion.fecha_hora_inicio,
                             fechaYHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30)).__len__() > 0:
                             medicion_climatica_antes = proveedor_finca.medicionInformacionClimaticaCabeceraList.filter(
                             fechaYHora__lte=ejecucion.fecha_hora_inicio,
-                            fechaYHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30)).order_by("-fechaYHora").last()
-                    lista_dto_medicion_cruzada_riego.append(DtoMedicionCruzadaRiego(mecanismo_riego_finca_sector=mecanismo,
-                                                                                    ejecucion=ejecucion,
-                                                                                    configuracion=ejecucion.configuracion_riego,
-                                                                                    mediciones_componente_antes=medicion_cabecera_antes,
-                                                                                    mediciones_componente_despues=medicion_cabecera_despues,
-                                                                                    mediciones_climaticas_antes=medicion_climatica_antes))
+                            fechaYHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30))\
+                                .order_by("-fechaYHora").last()
+                    lista_dto_medicion_cruzada_riego.append(DtoMedicionCruzadaRiego(
+                        mecanismo_riego_finca_sector=mecanismo,
+                        ejecucion=ejecucion,
+                        configuracion=ejecucion.configuracion_riego,
+                        mediciones_componente_antes=medicion_cabecera_antes,
+                        mediciones_componente_despues=medicion_cabecera_despues,
+                        mediciones_climaticas_antes=medicion_climatica_antes))
 
                 response.content = armar_response_list_content(lista_dto_medicion_cruzada_riego)
                 response.status_code = 200

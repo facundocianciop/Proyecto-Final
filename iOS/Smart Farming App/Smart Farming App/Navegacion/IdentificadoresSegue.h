@@ -10,10 +10,35 @@
 
 @interface IdentificadoresSegue : NSObject
 
+#pragma mark - Modulo Seguridad
+
 extern NSString *const kSFNavegarEstadoAutenticadoSegue;
-extern NSString *const kSFNavegarASeccionFincaSegue;
 extern NSString *const kSFNavegarEstadoNoAutenticadoSegue;
 
 extern NSString *const kSFNavegarRecuperarCuentaSegundoPaso;
+
+extern NSString *const kSFNavegarModificarUsuarioSegue;
+
+#pragma mark - Modulo Finca
+
+extern NSString *const kSFNavegarASeccionFincaSegue;
+
+extern NSString *const kSFNavegarASectoresFincaSegue;
+extern NSString *const kSFNavegarAMecanismosRiegoFincaSegue;
+extern NSString *const kSFNavegarReportesFincaSegue;
+
+#pragma mark - Modulo Sectores
+
+extern NSString *const kSFNavegarAInfoSectorSegue;
+extern NSString *const kSFNavegarAInfoMecanismoRiegoSectorSegue;
+
+#pragma mark - Modulo Reportes
+
+extern NSString *const kSFNavegarAReporteTipo1Segue;
+extern NSString *const kSFNavegarAReporteTipo2Segue;
+extern NSString *const kSFNavegarAReporteTipo3Segue;
+extern NSString *const kSFNavegarAReporteTipo4Segue;
+extern NSString *const kSFNavegarAReporteTipo5Segue;
+extern NSString *const kSFNavegarAReporteTipo6Segue;
 
 @end

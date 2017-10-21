@@ -14,7 +14,7 @@
 
 @implementation FincaLeftMenuTableViewController
 
-static NSString *kMenuItemInfoFinca = @"CellInfoFinca";
+static NSString *kMenuItemMecanismosRiego = @"CellMecanismosRiego";
 static NSString *kMenuItemSectores = @"CellSectores";
 static NSString *kMenuItemRiego = @"CellRiego";
 static NSString *kMenuItemReportes = @"CellReportes";
@@ -51,10 +51,10 @@ static NSString *kMenuItemVolver = @"CellVolver";
     
     UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
     
-    if ([cell.reuseIdentifier isEqualToString:kMenuItemInfoFinca]) {
+    if ([cell.reuseIdentifier isEqualToString:kMenuItemSectores]) {
         
     }
-    else if ([cell.reuseIdentifier isEqualToString:kMenuItemSectores]) {
+    else if ([cell.reuseIdentifier isEqualToString:kMenuItemMecanismosRiego]) {
         
     }
     else if ([cell.reuseIdentifier isEqualToString:kMenuItemRiego]) {

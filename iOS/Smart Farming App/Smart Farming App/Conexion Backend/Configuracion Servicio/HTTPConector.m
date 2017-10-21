@@ -11,6 +11,7 @@
 #import <AFNetworking.h>
 #import <AFHTTPSessionManager.h>
 
+#import "SFControladorEstadoSesion.h"
 #import "ErrorServicioBase.h"
 
 #define BASE_URL    @"http://127.0.0.1:8000/riegoInteligente/"
@@ -75,6 +76,11 @@
     else if ([method isEqualToString:METHOD_POST]) {
         [self POST:URL withParameters:parameters completionBlock:completionBlock failureBlock:failureBlock];
     }
+    else if ([method isEqualToString:METHOD_PUT]) {
+        [self PUT:URL withParameters:parameters completionBlock:completionBlock failureBlock:failureBlock];
+    } else {
+        failureBlock([NSError new]);
+    }
 }
 
 #pragma mark - Internal
@@ -113,6 +119,15 @@
     }];
 }
 
+-(void)PUT:(NSString *)URL withParameters:(NSDictionary *)parameters completionBlock:(HTTPOperationCompletionBlock)completionBlock failureBlock:(HTTPOperationFailureBlock)failureBlock {
+    
+    [self.sessionManager PUT:URL parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        completionBlock(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [self handleServiceError:task error:error completionBlock:completionBlock failureBlock:failureBlock];
+    }];
+}
+
 -(void)handleServiceError:(NSURLSessionDataTask *) task error:(NSError *)error completionBlock:(HTTPOperationCompletionBlock)completionBlock failureBlock:(HTTPOperationFailureBlock)failureBlock {
     
     NSHTTPURLResponse* response = (NSHTTPURLResponse*)task.response;
@@ -126,6 +141,12 @@
             errorServicio = [[ErrorServicioBase alloc] initWithDomain:error.domain code:response.statusCode userInfo:serializedData];
             errorServicio.codigoError = serializedData[KEY_ERROR_CODE];
             errorServicio.detalleError = serializedData[KEY_ERROR_DESCRIPTION];
+            
+            if ([errorServicio.codigoError isEqualToString:ERROR_LOGIN_REQUERIDO]) {
+                [self forzarCierreSesion];
+                return;
+            }
+            
         } @catch (NSException *exception) {
             errorServicio = [[ErrorServicioBase alloc] initWithDomain:error.domain code:error.code userInfo:error.userInfo];
             errorServicio.codigoError = [NSString stringWithFormat:@"%li", error.code];
@@ -148,7 +169,6 @@
     }
     
     // Algunas llamadas pueden fallar y entrar por el success block. Controlar codigo de respuesta.
-    // Ejemplo: cerrar_sesion
     if (!task){
         failureBlock(errorServicio);
         return;
@@ -158,6 +178,11 @@
     }else{
         failureBlock(errorServicio);
     }
+}
+
+-(void)forzarCierreSesion {
+    SFControladorEstadoSesion *controladorSesion = [SFControladorEstadoSesion new];
+    [controladorSesion forzarCierreSesion];
 }
 
 @end

@@ -8,6 +8,7 @@
 
 #import "SFViewControllerBase.h"
 
+#import "ContextoUsuario.h"
 #import "SFActivityIndicator.h"
 
 @interface SFViewControllerBase ()
