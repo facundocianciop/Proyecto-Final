@@ -176,7 +176,8 @@ def crear_finca(request):
             #se busca la instancia de estado finca "pendienteaprobacion"
             estado_finca = EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_PENDIENTE_APROBACION)
             #se realiza la creación de un histórico con fecha actual y relacionado al estado encontrado
-            historico_creado = HistoricoEstadoFinca(fechaInicioEstadoFinca=datetime.now(pytz.utc), estadoFinca=estado_finca)
+            historico_creado = HistoricoEstadoFinca(fechaInicioEstadoFinca=datetime.now(pytz.utc),
+                                                    estadoFinca=estado_finca)
             #se setea la finca al histórico creado
             historico_creado.finca = finca_creada
             #se guarda el histórico en la base de datos
