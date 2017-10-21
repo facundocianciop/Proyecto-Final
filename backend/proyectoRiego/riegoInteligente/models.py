@@ -598,11 +598,24 @@ class TipoMecanismoRiego(models.Model):
 
 class TipoConfiguracionRiego(models.Model):
     OIDTipoConfiguracionRiego=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    idTipoConfiguracion=models.IntegerField(unique=True)
+    idTipoConfiguracion=models.IntegerField(unique=True,default=1)
     nombre=models.CharField(max_length=20,unique=True)
 
     def __str__(self):
         return "Tipo Configuracion Riego: " + self.nombre
+
+    def save(self):
+        "Get last value of Code and Number from database, and increment before save"
+        if TipoConfiguracionRiego.objects.all().__len__() == 0:
+            self.idTipoConfiguracion = 1
+            super(TipoConfiguracionRiego, self).save()
+        else:
+            if TipoConfiguracionRiego.objects.get(idTipoConfiguracion=self.idTipoConfiguracion) == self:
+                super(TipoConfiguracionRiego, self).save()
+            else:
+                ultimoTipoConfiguracion = TipoConfiguracionRiego.objects.order_by('-idTipoConfiguracion')[0]
+                self.idTipoConfiguracion = ultimoTipoConfiguracion.idTipoConfiguracion + 1
+                super(TipoConfiguracionRiego, self).save()
 
 
 class ConfiguracionRiego(models.Model):
