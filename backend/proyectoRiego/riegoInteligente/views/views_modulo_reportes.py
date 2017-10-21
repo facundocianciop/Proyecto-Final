@@ -297,37 +297,8 @@ def asignar_configuracion_evento_personalizado_a_sector(request):
                                                                            "ese id")
             configuracion_evento = ConfiguracionEventoPersonalizado.objects.get(
                 idConfiguracion=datos[KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO])
-            usuario_finca = UsuarioFinca.objects.get(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA])
-            configuracion_evento = ConfiguracionEventoPersonalizado(
-                nombre=datos[KEY_NOMBRE_CONFIGURACION_EVENTO],
-                notificacionActivada=datos[KEY_NOTIFICACION_ACTIVADA],
-                activado=datos[KEY_CONFIGURACION_ACTIVADA],
-                sector=sector, fechaHoraCreacion=datetime.now(pytz.utc),
-                descripcion=datos[KEY_DESCRIPCION_CONFIGURACION_EVENTO],
-                fechaAltaConfiguracionEventoPersonalizado=datetime.now(pytz.utc),
-                usuario_finca=usuario_finca
-            )
+            configuracion_evento.sectorList.add(sector)
             configuracion_evento.save()
-            datos_configuracion_medicion_interna = datos[KEY_CONFIGURACION_MEDICION_INTERNA]
-            for configuracion_interna in datos_configuracion_medicion_interna:
-                tipo_medicion_interna = TipoMedicion.objects.get(
-                    idTipoMedicion=configuracion_interna[KEY_ID_TIPO_MEDICION])
-                medicion_fuente_interna = MedicionFuenteInterna(
-                    valorMaximo=configuracion_interna[KEY_VALOR_MAXIMO],
-                    valorMinimo=configuracion_interna[KEY_VALOR_MINIMO],
-                    tipoMedicion=tipo_medicion_interna,
-                    configuracionEventoPersonalizado=configuracion_evento)
-                medicion_fuente_interna.save()
-            datos_configuracion_medicion_externa = datos[KEY_CONFIGURACION_MEDICION_EXTERNA]
-            for configuracion_externa in datos_configuracion_medicion_externa:
-                tipo_medicion_externa = TipoMedicionClimatica.objects.get(
-                    idTipoMedicionClimatica=configuracion_externa[KEY_ID_TIPO_MEDICION_CLIMATICA])
-                medicion_estado_externo = MedicionEstadoExterno(
-                    valorMaximo=configuracion_externa[KEY_VALOR_MAXIMO],
-                    valorMinimo=configuracion_externa[KEY_VALOR_MINIMO],
-                    tipoMedicion=tipo_medicion_externa,
-                    configuracionEventoPersonalizado=configuracion_evento)
-                medicion_estado_externo.save()
             response.content = armar_response_content(None)
             response.status_code = 200
             return response
@@ -340,6 +311,45 @@ def asignar_configuracion_evento_personalizado_a_sector(request):
         print err.args
         response.status_code = 401
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+def desasignar_configuracion_evento_personalizado_de_sector(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if(KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO in datos) and (KEY_ID_SECTOR in datos):
+            if(datos[KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO] == '' or datos[KEY_ID_SECTOR] == ''):
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
+                raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No existe un sector con ese id")
+            sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
+            if ConfiguracionEventoPersonalizado.objects.filter(
+                    idConfiguracion=datos[KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO]).__len__() == 0:
+                raise ValueError(ERROR_CONFIGURACION_EVENTO_NO_ENCONTRADA, "No existe una configuracion de eventos con "
+                                                                           "ese id")
+            configuracion_evento = ConfiguracionEventoPersonalizado.objects.get(
+                idConfiguracion=datos[KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO])
+            configuracion_evento.sectorList.remove(sector)
+            configuracion_evento.save()
+            response.content = armar_response_content(None)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except ValueError as err:
+        print err.args
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
 
 @transaction.atomic()
 @login_requerido
