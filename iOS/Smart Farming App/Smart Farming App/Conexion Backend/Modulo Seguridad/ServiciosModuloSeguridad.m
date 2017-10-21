@@ -9,6 +9,8 @@
 #import "ServiciosModuloSeguridad.h"
 #import "ContextoUsuario.h"
 
+#import "SFUtils.h"
+
 #pragma mark - Operaciones
 
 #define OPERATION_REGISTRARSE                           @"registrarse"
@@ -32,6 +34,52 @@
 @implementation ServiciosModuloSeguridad
 
 #pragma mark - Public
+
++(void) registrarUsuario:(SolicitudRegistrarUsuario*)solicitudRegistrarUsuario
+         completionBlock:(SuccessBlock)completionBlock
+            failureBlock:(FailureBlock)failureBlock {
+    
+    NSMutableDictionary *parametrosLlamada = [NSMutableDictionary new];
+    if (solicitudRegistrarUsuario.usuario) {
+        [parametrosLlamada setObject:solicitudRegistrarUsuario.usuario forKey:KEY_USUARIO];
+    }
+    if (solicitudRegistrarUsuario.email) {
+        [parametrosLlamada setObject:solicitudRegistrarUsuario.email forKey:KEY_EMAIL];
+    }
+    if (solicitudRegistrarUsuario.contrasenia) {
+        [parametrosLlamada setObject:solicitudRegistrarUsuario.contrasenia forKey:KEY_CONTRASENIA];
+    }
+    if (solicitudRegistrarUsuario.nombre) {
+        [parametrosLlamada setObject:solicitudRegistrarUsuario.nombre forKey:KEY_NOMBRE_USUARIO];
+    }
+    if (solicitudRegistrarUsuario.apellido) {
+        [parametrosLlamada setObject:solicitudRegistrarUsuario.apellido forKey:KEY_APELLIDO_USUARIO];
+    }
+    if (solicitudRegistrarUsuario.fechaNacimiento) {
+        [parametrosLlamada setObject:[SFUtils formatDateYYYYMMDD: solicitudRegistrarUsuario.fechaNacimiento] forKey:KEY_FECHA_NACIMIENTO];
+    }
+    if (solicitudRegistrarUsuario.dni) {
+        [parametrosLlamada setObject:[NSString stringWithFormat:@"%li", solicitudRegistrarUsuario.dni] forKey:KEY_DNI];
+    }
+    if (solicitudRegistrarUsuario.cuit) {
+        [parametrosLlamada setObject:solicitudRegistrarUsuario.cuit forKey:KEY_CUIT];
+    }
+    if (solicitudRegistrarUsuario.domicilio) {
+        [parametrosLlamada setObject:solicitudRegistrarUsuario.domicilio forKey:KEY_DOMICILIO];
+    }
+    
+    [[HTTPConector instance] httpOperation:OPERATION_REGISTRARSE method:METHOD_PUT withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
+        
+        RespuestaServicioBase *respuesta = [RespuestaServicioBase new];
+        
+        [ServiciosModuloSeguridad armarRespuestaServicio:respuesta withResponseObject:responseObject];
+        
+        completionBlock(respuesta);
+        
+    } failureBlock:^(NSError *error) {
+        failureBlock([ServiciosModuloSeguridad armarErrorServicio:error]);
+    }];
+}
 
 +(void) iniciarSesion:(SolicitudInicioSesion*)SolicitudInicioSesion
       completionBlock:(SuccessBlock)completionBlock
@@ -68,103 +116,187 @@
     }];
 }
 
-/*
-+(void)authenticate:(NSString *)username
-           password:(NSString *)password
-    completionBlock:(HTTPOperationCompletionBlock)completionBlock
-       failureBlock:(HTTPOperationFailureBlock)failureBlock {
++(void) finalizarSesion:(SuccessBlock)completionBlock
+          failureBlock:(FailureBlock)failureBlock {
     
-    NSMutableDictionary *loginParams = [NSMutableDictionary new];
-    [loginParams setObject:username forKey:PARAM_USERNAME];
-    [loginParams setObject:password forKey:PARAM_PASSWORD];
-    
-    [[HTTPConector instance] httpOperation:OPERATION_LOGIN method:METHOD_POST withParameters:loginParams completionBlock:^(NSArray *responseObject) {
+    [[HTTPConector instance] httpOperation:OPERATION_FINALIZAR_SESION method:METHOD_POST withParameters:nil completionBlock:^(NSDictionary *responseObject) {
         
-        if (responseObject.count){
-            
-            NSDictionary *responseDict = [responseObject firstObject];
-            NSString *sessionId = [responseDict objectForKey:PARAM_SESSION_ID];
-            NSNumber *userId = [responseDict objectForKey:PARAM_USER_ID];
-            NSNumber *clientId = [responseDict objectForKey:PARAM_CLIENT_ID];
-            NSString *clientDescription = [responseDict objectForKey:PARAM_RAZON_SOCIAL];
-            
-            if (sessionId && [userId integerValue] && [clientId integerValue])
-            {
-                [ContextoUsuario instanceWithSessionId:sessionId userId:[userId longValue] clientId:[clientId longValue] clientDescription:clientDescription];
-                completionBlock(responseObject);
+        RespuestaInicioSesion *respuesta = [RespuestaInicioSesion new];
+        
+        [ServiciosModuloSeguridad armarRespuestaServicio:respuesta withResponseObject:responseObject];
+        
+        completionBlock(respuesta);
+        
+    } failureBlock:^(NSError *error) {
+        failureBlock([ServiciosModuloSeguridad armarErrorServicio:error]);
+    }];
+}
+    
++(void) mostrarUsuario:(SuccessBlock)completionBlock
+       failureBlock:(FailureBlock)failureBlock {
+    
+    [[HTTPConector instance] httpOperation:OPERATION_MOSTRAR_USUARIO method:METHOD_GET withParameters:nil completionBlock:^(NSDictionary *responseObject) {
+        
+        RespuestaMostrarUsuario *respuesta = [RespuestaMostrarUsuario new];
+        
+        NSDictionary *datosOperacion = [ServiciosModuloSeguridad armarRespuestaServicio:respuesta withResponseObject:responseObject];
+        
+        if (respuesta.resultado && datosOperacion) {
+            @try {
+                respuesta.username = [datosOperacion objectForKey:KEY_USUARIO];
+                respuesta.email = [datosOperacion objectForKey:KEY_EMAIL];
+                
+                respuesta.nombre = [datosOperacion objectForKey:KEY_NOMBRE_USUARIO];
+                respuesta.apellido = [datosOperacion objectForKey:KEY_APELLIDO_USUARIO];
+                
+                if ([datosOperacion objectForKey:KEY_FECHA_NACIMIENTO]) {
+                    respuesta.fechaNacimiento = [SFUtils dateFromStringYYYYMMDD:datosOperacion[KEY_FECHA_NACIMIENTO]];
+                }
+                if ([datosOperacion objectForKey:KEY_DNI] != [NSNull null]) {
+                    respuesta.dni = [[datosOperacion objectForKey:KEY_DNI] integerValue];
+                }
+                if ([datosOperacion objectForKey:KEY_CUIT] != [NSNull null]) {
+                    respuesta.cuit = [datosOperacion objectForKey:KEY_CUIT];;
+                }
+                if ([datosOperacion objectForKey:KEY_DOMICILIO] != [NSNull null]) {
+                    respuesta.domicilio = [datosOperacion objectForKey:KEY_DOMICILIO];
+                }
+                completionBlock(respuesta);
+            } @catch (NSException *exception) {
+                completionBlock(respuesta);
             }
-            else
-            {
-                failureBlock(nil);
-            }
+        } else {
+            completionBlock(respuesta);
         }
+    } failureBlock:^(NSError *error) {
+        failureBlock([BaseServicios armarErrorServicio:error]);
+    }];
+}
+
++(void) modificarUsuario:(SolicitudModificarUsuario*)solicitudModificarUsuario
+         completionBlock:(SuccessBlock)completionBlock
+            failureBlock:(FailureBlock)failureBlock {
+    
+    NSMutableDictionary *parametrosLlamada = [NSMutableDictionary new];
+    if (solicitudModificarUsuario.email) {
+        [parametrosLlamada setObject:solicitudModificarUsuario.email forKey:KEY_EMAIL];
+    }
+    if (solicitudModificarUsuario.nombre) {
+        [parametrosLlamada setObject:solicitudModificarUsuario.nombre forKey:KEY_NOMBRE_USUARIO];
+    }
+    if (solicitudModificarUsuario.apellido) {
+        [parametrosLlamada setObject:solicitudModificarUsuario.apellido forKey:KEY_APELLIDO_USUARIO];
+    }
+    if (solicitudModificarUsuario.fechaNacimiento) {
+        [parametrosLlamada setObject:[SFUtils formatDateYYYYMMDD: solicitudModificarUsuario.fechaNacimiento] forKey:KEY_FECHA_NACIMIENTO];
+    }
+    if (solicitudModificarUsuario.dni) {
+        [parametrosLlamada setObject:[NSString stringWithFormat:@"%li", solicitudModificarUsuario.dni] forKey:KEY_DNI];
+    }
+    if (solicitudModificarUsuario.cuit) {
+        [parametrosLlamada setObject:solicitudModificarUsuario.cuit forKey:KEY_CUIT];
+    }
+    if (solicitudModificarUsuario.domicilio) {
+        [parametrosLlamada setObject:solicitudModificarUsuario.domicilio forKey:KEY_DOMICILIO];
+    }
+    
+    [[HTTPConector instance] httpOperation:OPERATION_MODIFICAR_USUARIO method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
+        
+        RespuestaServicioBase *respuesta = [RespuestaServicioBase new];
+        
+        [ServiciosModuloSeguridad armarRespuestaServicio:respuesta withResponseObject:responseObject];
+        
+        completionBlock(respuesta);
         
     } failureBlock:^(NSError *error) {
-        failureBlock(error);
+        failureBlock([ServiciosModuloSeguridad armarErrorServicio:error]);
     }];
 }
 
-+(void)signOut:(HTTPOperationCompletionBlock)completionBlock
-  failureBlock:(HTTPOperationFailureBlock)failureBlock {
++(void) cambiarContrasenia:(SolicitudCambiarContrasenia*)solicitudCambiarContrasenia
+         completionBlock:(SuccessBlock)completionBlock
+            failureBlock:(FailureBlock)failureBlock {
     
-    NSString *sessionID = [[ContextoUsuario instance] currentSessionId];
-    long userId = [[ContextoUsuario instance] currentUserId];
+    NSMutableDictionary *parametrosLlamada = [NSMutableDictionary new];
+    if (solicitudCambiarContrasenia.contraseniaActual) {
+        [parametrosLlamada setObject:solicitudCambiarContrasenia.contraseniaActual forKey:KEY_CONTRASENIA_VIEJA];
+    }
+    if (solicitudCambiarContrasenia.contraseniaNueva) {
+        [parametrosLlamada setObject:solicitudCambiarContrasenia.contraseniaNueva forKey:KEY_CONTRASENIA_NUEVA];
+    }
     
-    NSMutableDictionary *signOutParams = [NSMutableDictionary new];
-    [signOutParams setObject:[NSNumber numberWithLong:userId] forKey:PARAM_USER_ID];
-    [signOutParams setObject:sessionID forKey:PARAM_SESSION_ID];
-    
-    [[HTTPConector instance] httpOperation:OPERATION_LOGOUT method:METHOD_POST withParameters:signOutParams completionBlock:^(NSArray *responseObject) {
+    [[HTTPConector instance] httpOperation:OPERATION_CAMBIAR_CONTRASENIA method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
         
-        // Delete User sensitive data
-        [[ContextoUsuario instance] invalidateContext];
+        RespuestaServicioBase *respuesta = [RespuestaServicioBase new];
         
-        completionBlock(responseObject);
+        [ServiciosModuloSeguridad armarRespuestaServicio:respuesta withResponseObject:responseObject];
+        
+        completionBlock(respuesta);
+        
     } failureBlock:^(NSError *error) {
-        failureBlock(error);
+        failureBlock([ServiciosModuloSeguridad armarErrorServicio:error]);
     }];
 }
 
-
-+(void)     signUp:(NSString *)razonSocial
-              cuit:(NSString *)cuit
-          contacto:(NSString *)contacto
-             email:(NSString *)email
-          telefono:(NSString *)telefono
-   completionBlock:(HTTPOperationCompletionBlock)completionBlock
-      failureBlock:(HTTPOperationFailureBlock)failureBlock {
++(void) recuperarCuenta:(SolicitudRecuperarCuenta*)solicitudRecuperarCuenta
+         completionBlock:(SuccessBlock)completionBlock
+            failureBlock:(FailureBlock)failureBlock {
     
-    NSMutableDictionary *signUpParams = [NSMutableDictionary new];
-    [signUpParams setObject:razonSocial forKey:PARAM_RAZON_SOCIAL];
-    [signUpParams setObject:cuit forKey:PARAM_CUIT];
-    [signUpParams setObject:contacto forKey:PARAM_CONTACT_INFO];
-    [signUpParams setObject:email forKey:PARAM_EMAIL];
-    [signUpParams setObject:telefono forKey:PARAM_PHONE];
+    NSMutableDictionary *parametrosLlamada = [NSMutableDictionary new];
+    if (solicitudRecuperarCuenta.email) {
+        [parametrosLlamada setObject:solicitudRecuperarCuenta.email forKey:KEY_EMAIL];
+    }
     
-    [[HTTPConector instance] httpOperation:OPERATION_SIGNUP method:METHOD_POST withParameters:signUpParams completionBlock:^(NSArray *responseObject) {
-        completionBlock(responseObject);
+    [[HTTPConector instance] httpOperation:OPERATION_RECUPERAR_CUENTA method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
+        
+        RespuestaRecuperarCuenta *respuesta = [RespuestaRecuperarCuenta new];
+        
+        NSDictionary *datosOperacion = [ServiciosModuloSeguridad armarRespuestaServicio:respuesta withResponseObject:responseObject];
+        
+        if (respuesta.resultado && datosOperacion) {
+            @try {
+                if ([datosOperacion objectForKey:KEY_KEY_USUARIO]) {
+                    respuesta.username = [datosOperacion objectForKey:KEY_KEY_USUARIO];
+                }
+                
+                completionBlock(respuesta);
+            } @catch (NSException *exception) {
+                completionBlock(respuesta);
+            }
+        } else {
+            completionBlock(respuesta);
+        }
     } failureBlock:^(NSError *error) {
-        failureBlock(error);
+        failureBlock([ServiciosModuloSeguridad armarErrorServicio:error]);
     }];
 }
 
-
-+(void)forgotUserCredentials:(NSString *)razonSocial
-                        cuit:(NSString *)cuit
-                       email:(NSString *)email
-             completionBlock:(HTTPOperationCompletionBlock)completionBlock
-                failureBlock:(HTTPOperationFailureBlock)failureBlock {
++(void) cambiarContraseniaRecuperarCuenta:(SolicitudRecuperarCuentaCambiarContrasenia*)solicitudRecuperarCuentaCambiarContrasenia
+        completionBlock:(SuccessBlock)completionBlock
+           failureBlock:(FailureBlock)failureBlock {
     
-    NSMutableDictionary *forgotParams = [NSMutableDictionary new];
-    [forgotParams setObject:razonSocial forKey:PARAM_RAZON_SOCIAL];
-    [forgotParams setObject:cuit forKey:PARAM_CUIT];
-    [forgotParams setObject:email forKey:PARAM_EMAIL];
+    NSMutableDictionary *parametrosLlamada = [NSMutableDictionary new];
+    if (solicitudRecuperarCuentaCambiarContrasenia.username) {
+        [parametrosLlamada setObject:solicitudRecuperarCuentaCambiarContrasenia.username forKey:KEY_USUARIO];
+    }
+    if (solicitudRecuperarCuentaCambiarContrasenia.codigoVerificacion) {
+        [parametrosLlamada setObject:solicitudRecuperarCuentaCambiarContrasenia.codigoVerificacion forKey:KEY_CODIGO_VERIFICACION];
+    }
+    if (solicitudRecuperarCuentaCambiarContrasenia.contraseniaNueva) {
+        [parametrosLlamada setObject:solicitudRecuperarCuentaCambiarContrasenia.contraseniaNueva forKey:KEY_CONTRASENIA_NUEVA];
+    }
     
-    [[HTTPConector instance] httpOperation:OPERATION_FORGOT method:METHOD_POST withParameters:forgotParams completionBlock:^(NSArray *responseObject) {
-        completionBlock(responseObject);
+    [[HTTPConector instance] httpOperation:OPERATION_CAMBIAR_CONTRASENIA_RECUPERAR_CUENTA method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
+        
+        RespuestaServicioBase *respuesta = [RespuestaServicioBase new];
+        
+        [ServiciosModuloSeguridad armarRespuestaServicio:respuesta withResponseObject:responseObject];
+        
+        completionBlock(respuesta);
+        
     } failureBlock:^(NSError *error) {
-        failureBlock(error);
+        failureBlock([ServiciosModuloSeguridad armarErrorServicio:error]);
     }];
 }
-*/
+
 @end

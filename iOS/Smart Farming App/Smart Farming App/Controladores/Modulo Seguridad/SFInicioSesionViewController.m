@@ -17,7 +17,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *usuarioTextField;
 @property (weak, nonatomic) IBOutlet UITextField *contraseniaTextField;
 
-
 @end
 
 @implementation SFInicioSesionViewController
@@ -26,6 +25,16 @@
     [super viewDidLoad];
     
     self.viewScrollView = self.signInScrollView;
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    self.usuarioTextField.text = @"";
+    [self.usuarioTextField resignFirstResponder];
+    
+    self.contraseniaTextField.text = @"";
+    [self.contraseniaTextField resignFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -65,8 +74,7 @@
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    
 }
 
 @end

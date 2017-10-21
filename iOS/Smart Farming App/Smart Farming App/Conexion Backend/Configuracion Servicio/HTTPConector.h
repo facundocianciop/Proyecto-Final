@@ -10,6 +10,7 @@
 
 #define METHOD_GET  @"GET"
 #define METHOD_POST @"POST"
+#define METHOD_PUT @"PUT"
 #define METHOD_DELETE @"DELETE"
 
 typedef void (^HTTPOperationCompletionBlock)(NSDictionary *responseObject);
@@ -22,6 +23,8 @@ typedef void (^HTTPOperationFailureBlock)(NSError *error);
 +(instancetype)instance;
 
 #pragma mark - Publico
+
+-(void)endSession;
 
 -(void)httpOperation:(NSString *)operation
               method:(NSString *)method

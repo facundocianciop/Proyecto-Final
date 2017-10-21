@@ -8,6 +8,8 @@
 
 #import "ContextoUsuario.h"
 
+#import "HTTPConector.h"
+
 @interface ContextoUsuario ()
 
 @property (strong, nonatomic) NSString  *username;
@@ -36,7 +38,7 @@ static ContextoUsuario *userContext = nil;
     ContextoUsuario *userContext = [ContextoUsuario instanceWithUsername:nil];
     
     if (!userContext.username){
-        //[NSException raise:@"BCUserContext: User context hasn't been initialized properly. Param:userId may be uninitialized." format:@""];
+        //[NSException raise:@"BCUserContext: User context hasn't been initialized properly. Param:idUsuario may be uninitialized." format:@""];
         NSLog(@"ContextoUsuario: El contexto de usario no se inicio correctamente. Param:username puede que no este inicializado.");
     }
     return  userContext;
@@ -57,6 +59,9 @@ static ContextoUsuario *userContext = nil;
 }
 
 -(void)invalidateContext {
+    
+    [[HTTPConector instance] endSession];
+    
     self.username = nil;
     self.fincaId = NSNotFound;
     userContext = nil;

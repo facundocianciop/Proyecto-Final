@@ -8,6 +8,7 @@
 
 #import "SFViewControllerBase.h"
 
+#import "ContextoUsuario.h"
 #import "SFActivityIndicator.h"
 
 @interface SFViewControllerBase ()
@@ -35,7 +36,7 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:kSFNavigationBarBackButtonText style:UIBarButtonItemStylePlain target:nil action:nil];
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     [self.navigationItem setBackBarButtonItem:backButton];
 }
 
