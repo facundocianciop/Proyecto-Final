@@ -390,7 +390,7 @@ def obtener_criterios_iniciales_configuracion_riego_mecanismo_riego_finca_sector
             raise ValueError
 
         criterios_riego_iniciales = CriterioRiego.objects.filter(
-            configuracionRiegoInicial=configuracion_riego, fecha_eliminacion_criterio=None)
+            configuracionRiegoInicial=configuracion_riego, fecha_eliminacion_criterio=None).select_subclasses()
 
         response.content = armar_response_list_content(criterios_riego_iniciales)
         response.status_code = 200
@@ -445,7 +445,7 @@ def obtener_criterios_finales_configuracion_riego_mecanismo_riego_finca_sector(r
             raise ValueError
 
         criterios_riego_finales = CriterioRiego.objects.filter(
-            configuracionRiegoFinal=configuracion_riego, fecha_eliminacion_criterio=None)
+            configuracionRiegoFinal=configuracion_riego, fecha_eliminacion_criterio=None).select_subclasses()
 
         response.content = armar_response_list_content(criterios_riego_finales)
         response.status_code = 200
@@ -891,16 +891,16 @@ def agregar_criterio_inicial_configuracion_riego_mecanismo_riego_finca_sector(re
         if datos[KEY_TIPO_CRITERIO_RIEGO] == TIPO_CRITERIO_RIEGO_MEDICION:
 
             if KEY_VALOR_MEDICION_CRITERIO_RIEGO not in datos:
-                raise KeyError
+                raise KeyError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_VALOR_MEDICION_INEXISTENTE)
 
             if datos[KEY_VALOR_MEDICION_CRITERIO_RIEGO] == "":
-                raise ValueError
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_VALOR_MEDICION_INEXISTENTE)
 
             if KEY_ID_TIPO_MEDICION not in datos:
-                raise KeyError
+                raise KeyError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_TIPO_MEDICION_INEXISTENTE)
 
             if datos[KEY_ID_TIPO_MEDICION] == "":
-                raise ValueError
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_TIPO_MEDICION_INEXISTENTE)
 
         elif datos[KEY_TIPO_CRITERIO_RIEGO] == TIPO_CRITERIO_RIEGO_VOLUMEN_AGUA:
 
@@ -909,16 +909,16 @@ def agregar_criterio_inicial_configuracion_riego_mecanismo_riego_finca_sector(re
         elif datos[KEY_TIPO_CRITERIO_RIEGO] == TIPO_CRITERIO_RIEGO_HORA:
 
             if KEY_HORA_INICIO_CRITERIO_RIEGO not in datos:
-                raise KeyError
+                raise KeyError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_HORA_INICIO_INEXISTENTE)
 
             if datos[KEY_HORA_INICIO_CRITERIO_RIEGO] == "":
-                raise ValueError
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_HORA_INICIO_INEXISTENTE)
 
             if KEY_DIA_INICIO_CRITERIO_RIEGO not in datos:
-                raise KeyError
+                raise KeyError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_DIA_INICIO_INEXISTENTE)
 
             if datos[KEY_DIA_INICIO_CRITERIO_RIEGO] == "":
-                raise ValueError
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_DIA_INICIO_INEXISTENTE)
 
         else:
             raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INCORRECTO)
@@ -1068,38 +1068,38 @@ def agregar_criterio_final_configuracion_riego_mecanismo_riego_finca_sector(requ
         if datos[KEY_TIPO_CRITERIO_RIEGO] == TIPO_CRITERIO_RIEGO_MEDICION:
 
             if KEY_VALOR_MEDICION_CRITERIO_RIEGO not in datos:
-                raise KeyError
+                raise KeyError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_VALOR_MEDICION_INEXISTENTE)
 
             if datos[KEY_VALOR_MEDICION_CRITERIO_RIEGO] == "":
-                raise ValueError
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_VALOR_MEDICION_INEXISTENTE)
 
             if KEY_ID_TIPO_MEDICION not in datos:
-                raise KeyError
+                raise KeyError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_TIPO_MEDICION_INEXISTENTE)
 
             if datos[KEY_ID_TIPO_MEDICION] == "":
-                raise ValueError
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_TIPO_MEDICION_INEXISTENTE)
 
         elif datos[KEY_TIPO_CRITERIO_RIEGO] == TIPO_CRITERIO_RIEGO_VOLUMEN_AGUA:
 
             if KEY_VOLUMEN_AGUA_CRITERIO_RIEGO not in datos:
-                raise KeyError
+                raise KeyError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_VOLUMEN_INEXISTENTE)
 
             if datos[KEY_VOLUMEN_AGUA_CRITERIO_RIEGO] == "":
-                raise ValueError
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_VOLUMEN_INEXISTENTE)
 
         elif datos[KEY_TIPO_CRITERIO_RIEGO] == TIPO_CRITERIO_RIEGO_HORA:
 
             if KEY_HORA_INICIO_CRITERIO_RIEGO not in datos:
-                raise KeyError
+                raise KeyError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_HORA_INICIO_INEXISTENTE)
 
             if datos[KEY_HORA_INICIO_CRITERIO_RIEGO] == "":
-                raise ValueError
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_HORA_INICIO_INEXISTENTE)
 
             if KEY_DIA_INICIO_CRITERIO_RIEGO not in datos:
-                raise KeyError
+                raise KeyError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_DIA_INICIO_INEXISTENTE)
 
             if datos[KEY_DIA_INICIO_CRITERIO_RIEGO] == "":
-                raise ValueError
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_DIA_INICIO_INEXISTENTE)
 
         else:
             raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INCORRECTO)
@@ -1259,7 +1259,8 @@ def eliminar_criterio_configuracion_riego_mecanismo_riego_finca_sector(request):
             raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CONFIGURACION_RIEGO_INCORRECTA)
 
         # Comprobar que la configuracion elegida sea programada
-        tipo_configuracion_riego_programada = TipoConfiguracionRiego(nombre=TIPO_CONFIGURACION_RIEGO_PROGRAMADO)
+        tipo_configuracion_riego_programada = TipoConfiguracionRiego.objects.\
+            get(nombre=TIPO_CONFIGURACION_RIEGO_PROGRAMADO)
         if not configuracion_riego_elegida.tipoConfiguracionRiego == tipo_configuracion_riego_programada:
             raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CONFIGURACION_RIEGO_AUTOMATICA_CRITERIO)
 
@@ -1271,7 +1272,12 @@ def eliminar_criterio_configuracion_riego_mecanismo_riego_finca_sector(request):
                 or ultimo_estado_historico.estado_configuracion_riego == estado_configuracion_riego_deshabilitado:
 
             # Comprobar que la configuracion elegida se corresponda con el criterio
-            criterio_riego_elegido = CriterioRiego.objects.get(id_criterio_riego=datos[KEY_ID_CRITERIO_RIEGO])
+            try:
+                criterio_riego_elegido = CriterioRiego.objects.get_subclass(
+                    id_criterio_riego=datos[KEY_ID_CRITERIO_RIEGO], fecha_eliminacion_criterio=None)
+            except ObjectDoesNotExist:
+                raise ObjectDoesNotExist(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CRITERIO_RIEGO_INEXISTENTE)
+
             if criterio_riego_elegido.configuracionRiegoInicial != configuracion_riego_elegida \
                     and criterio_riego_elegido.configuracionRiegoFinal != configuracion_riego_elegida:
                 raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_RELACION_CONFIGURACION_RIEGO_CRITERIO)
@@ -1353,38 +1359,38 @@ def modificar_criterio_configuracion_riego_mecanismo_riego_finca_sector(request)
         if datos[KEY_TIPO_CRITERIO_RIEGO] == TIPO_CRITERIO_RIEGO_MEDICION:
 
             if KEY_VALOR_MEDICION_CRITERIO_RIEGO not in datos:
-                raise KeyError
+                raise KeyError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_VALOR_MEDICION_INEXISTENTE)
 
             if datos[KEY_VALOR_MEDICION_CRITERIO_RIEGO] == "":
-                raise ValueError
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_VALOR_MEDICION_INEXISTENTE)
 
             if KEY_ID_TIPO_MEDICION not in datos:
-                raise KeyError
+                raise KeyError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_TIPO_MEDICION_INEXISTENTE)
 
             if datos[KEY_ID_TIPO_MEDICION] == "":
-                raise ValueError
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_TIPO_MEDICION_INEXISTENTE)
 
         elif datos[KEY_TIPO_CRITERIO_RIEGO] == TIPO_CRITERIO_RIEGO_VOLUMEN_AGUA:
 
             if KEY_VOLUMEN_AGUA_CRITERIO_RIEGO not in datos:
-                raise KeyError
+                raise KeyError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_VOLUMEN_INEXISTENTE)
 
             if datos[KEY_VOLUMEN_AGUA_CRITERIO_RIEGO] == "":
-                raise ValueError
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_VOLUMEN_INEXISTENTE)
 
         elif datos[KEY_TIPO_CRITERIO_RIEGO] == TIPO_CRITERIO_RIEGO_HORA:
 
             if KEY_HORA_INICIO_CRITERIO_RIEGO not in datos:
-                raise KeyError
+                raise KeyError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_HORA_INICIO_INEXISTENTE)
 
             if datos[KEY_HORA_INICIO_CRITERIO_RIEGO] == "":
-                raise ValueError
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_HORA_INICIO_INEXISTENTE)
 
             if KEY_DIA_INICIO_CRITERIO_RIEGO not in datos:
-                raise KeyError
+                raise KeyError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_DIA_INICIO_INEXISTENTE)
 
             if datos[KEY_DIA_INICIO_CRITERIO_RIEGO] == "":
-                raise ValueError
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_DIA_INICIO_INEXISTENTE)
 
         else:
             raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INCORRECTO)
@@ -1404,7 +1410,8 @@ def modificar_criterio_configuracion_riego_mecanismo_riego_finca_sector(request)
             raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CONFIGURACION_RIEGO_INCORRECTA)
 
         # Comprobar que la configuracion elegida sea programada
-        tipo_configuracion_riego_programada = TipoConfiguracionRiego(nombre=TIPO_CONFIGURACION_RIEGO_PROGRAMADO)
+        tipo_configuracion_riego_programada = TipoConfiguracionRiego.objects.get(
+            nombre=TIPO_CONFIGURACION_RIEGO_PROGRAMADO)
         if not configuracion_riego_elegida.tipoConfiguracionRiego == tipo_configuracion_riego_programada:
             raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CONFIGURACION_RIEGO_AUTOMATICA_CRITERIO)
 
@@ -1416,13 +1423,22 @@ def modificar_criterio_configuracion_riego_mecanismo_riego_finca_sector(request)
                 or ultimo_estado_historico.estado_configuracion_riego == estado_configuracion_riego_deshabilitado:
 
             # Comprobar que la configuracion elegida se corresponda con el criterio
-            criterio_riego_elegido = CriterioRiego.objects.get(id_criterio_riego=datos[KEY_ID_CRITERIO_RIEGO])
+            try:
+                criterio_riego_elegido = CriterioRiego.objects.get_subclass(
+                    id_criterio_riego=datos[KEY_ID_CRITERIO_RIEGO], fecha_eliminacion_criterio=None)
+            except ObjectDoesNotExist:
+                raise ObjectDoesNotExist(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CRITERIO_RIEGO_INEXISTENTE)
+
             if criterio_riego_elegido.configuracionRiegoInicial != configuracion_riego_elegida \
                     and criterio_riego_elegido.configuracionRiegoFinal != configuracion_riego_elegida:
                 raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_RELACION_CONFIGURACION_RIEGO_CRITERIO)
 
             # Se verifica el tipo de criterio riego y se crea el tipo de criterio correspondiente
             if datos[KEY_TIPO_CRITERIO_RIEGO] == TIPO_CRITERIO_RIEGO_MEDICION:
+
+                # Comprobar que el criterio elegido se corresponde con el tipo
+                if not isinstance(criterio_riego_elegido, CriterioRiegoPorMedicion):
+                    raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INCORRECTO_MEDICION)
 
                 criterio_riego_medicion_elegido = CriterioRiegoPorMedicion.objects.get(
                     id_criterio_riego=datos[KEY_ID_CRITERIO_RIEGO])
@@ -1444,6 +1460,10 @@ def modificar_criterio_configuracion_riego_mecanismo_riego_finca_sector(request)
 
             elif datos[KEY_TIPO_CRITERIO_RIEGO] == TIPO_CRITERIO_RIEGO_VOLUMEN_AGUA:
 
+                # Comprobar que el criterio elegido se corresponde con el tipo
+                if not isinstance(criterio_riego_elegido, CriterioRiegoVolumenAgua):
+                    raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INCORRECTO_VOLUMEN)
+
                 criterio_riego_volumen_agua_elegido = CriterioRiegoVolumenAgua.objects.get(
                     id_criterio_riego=datos[KEY_ID_CRITERIO_RIEGO])
 
@@ -1459,6 +1479,10 @@ def modificar_criterio_configuracion_riego_mecanismo_riego_finca_sector(request)
                 return response
 
             elif datos[KEY_TIPO_CRITERIO_RIEGO] == TIPO_CRITERIO_RIEGO_HORA:
+
+                # Comprobar que el criterio elegido se corresponde con el tipo
+                if not isinstance(criterio_riego_elegido, CriterioRiegoPorHora):
+                    raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INCORRECTO_HORA)
 
                 criterio_riego_hora_elegido = CriterioRiegoPorHora.objects.get(
                     id_criterio_riego=datos[KEY_ID_CRITERIO_RIEGO])
