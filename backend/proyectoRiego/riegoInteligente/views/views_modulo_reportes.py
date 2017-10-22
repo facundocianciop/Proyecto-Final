@@ -106,6 +106,7 @@ def mostrar_configuracion_evento_personalizado(request):
                     lista_medicion_interna_json.append(medicion.as_json())
                 elif isinstance(medicion, MedicionEstadoExterno):
                     lista_medicion_externa_json.append(medicion.as_json())
+
             dto_configuracion_evento = DtoConfiguracionEventoPersonalizado(
                 idConfiguracionEvento=configuracion.idConfiguracion,
                 nombre=configuracion.nombre,

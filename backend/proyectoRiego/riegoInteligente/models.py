@@ -1,6 +1,7 @@
 from datetime import datetime
 import pytz
 import uuid
+from model_utils.managers import InheritanceManager
 
 from django.conf import settings
 from django.db import models
@@ -1007,21 +1008,32 @@ class CriterioRiego(models.Model):
     nombre = models.CharField(max_length=50, null=True)
     descripcion = models.CharField(max_length=100, null=True)
 
-    configuracionRiegoInicial = models.OneToOneField(ConfiguracionRiego,
-                                                     on_delete=models.CASCADE,
-                                                     db_column="OIDConfiguracionRiegoInicial",
-                                                     related_name="criterioRiegoInicial",
-                                                     null=True)
+    configuracionRiegoInicial = models.ForeignKey(ConfiguracionRiego,
+                                                  on_delete=models.CASCADE,
+                                                  db_column="OIDConfiguracionRiegoInicial",
+                                                  related_name="criterioRiegoInicial",
+                                                  null=True)
     configuracionRiegoFinal = models.ForeignKey(ConfiguracionRiego,
                                                 on_delete=models.CASCADE,
                                                 db_column="OIDConfiguracionRiegoFinal",
                                                 related_name="criterioRiegoFinal",
                                                 null=True)
 
+    objects = InheritanceManager()
+
     def __str__(self):
-        # TODO
-        return "id criterio riego: " + str(self.id_criterio_riego)
-        # "(Configuracion riego: " + str(self.id_configuracion_riego) + ")"
+        if self.configuracionRiegoInicial and self.configuracionRiegoFinal:
+            return "id criterio riego: " + str(self.id_criterio_riego) + \
+                   " - Configuracion riego inicial de: " + self.configuracionRiegoInicial.nombre + \
+                   " - Configuracion riego final de: " + self.configuracionRiegoFinal.nombre
+        elif self.configuracionRiegoInicial:
+            return "id criterio riego: " + str(self.id_criterio_riego) + \
+                   " - Configuracion riego inicial de: " + self.configuracionRiegoInicial.nombre
+        elif self.configuracionRiegoFinal:
+            return "id criterio riego: " + str(self.id_criterio_riego) + \
+                   " - Configuracion riego final de: " + self.configuracionRiegoFinal.nombre
+        else:
+            return "id criterio riego: " + str(self.id_criterio_riego)
 
     def save(self, *args, **kwargs):
         """Crear o incrementar id_criterio_riego"""
@@ -1029,7 +1041,7 @@ class CriterioRiego(models.Model):
             self.id_criterio_riego = 1
             super(CriterioRiego, self).save(*args, **kwargs)
         else:
-            if CriterioRiego.objects.get(id_criterio_riego=self.id_criterio_riego) == self:
+            if CriterioRiego.objects.get_subclass(id_criterio_riego=self.id_criterio_riego) == self:
                 super(CriterioRiego, self).save(*args, **kwargs)
             else:
                 ultimo_criterio_riego = CriterioRiego.objects.order_by('-id_criterio_riego')[0]
@@ -1293,6 +1305,7 @@ class MedicionEvento(models.Model):
     configuracionEventoPersonalizado = models.ForeignKey('ConfiguracionEventoPersonalizado',
                                                          db_column="OIDConfiguracionEventoPersonalizado",
                                                          related_name="medicionEventoList")
+    objects = InheritanceManager()
 
 
 class MedicionFuenteInterna(MedicionEvento):
