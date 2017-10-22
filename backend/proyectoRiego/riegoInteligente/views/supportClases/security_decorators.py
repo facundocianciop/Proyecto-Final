@@ -137,7 +137,7 @@ def permisos_rol_requeridos(permisos_rol_list):
                     sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
                     if finca.sectorList.filter(OIDSector=sector.OIDSector).__len__() == 1:
                             sector_pertenece_a_finca = True
-                    if sector_pertenece_a_finca == False:
+                    if not sector_pertenece_a_finca:
                         print "NO PERTENECE"
                         return build_unauthorized_error(response, ERROR_NO_TIENE_PERMISOS,
                                                         DETALLE_ERROR_NO_TIENE_PERMISOS)
@@ -150,7 +150,7 @@ def permisos_rol_requeridos(permisos_rol_list):
                     if finca.mecanismoriegofinca_set.filter(
                             OIDMecanismoRiegoFinca=mecanismo_finca.OIDMecanismoRiegoFinca).__len__() == 1:
                         mecanismo_pertenece_a_finca = True
-                    if mecanismo_pertenece_a_finca == False:
+                    if not mecanismo_pertenece_a_finca:
                         return build_unauthorized_error(response, ERROR_NO_TIENE_PERMISOS,
                                                         DETALLE_ERROR_NO_TIENE_PERMISOS)
             if KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR in datos:
@@ -165,7 +165,7 @@ def permisos_rol_requeridos(permisos_rol_list):
                                 OIDMecanismoRiegoFincaSector=mecanismo_finca_sector.OIDMecanismoRiegoFincaSector)\
                                 .__len__() == 1:
                             mecanismo_sector_pertenece_a_finca = True
-                    if mecanismo_sector_pertenece_a_finca == False:
+                    if not mecanismo_sector_pertenece_a_finca:
                         return build_unauthorized_error(response, ERROR_NO_TIENE_PERMISOS,
                                                         DETALLE_ERROR_NO_TIENE_PERMISOS)
 

@@ -143,10 +143,20 @@ DETALLE_ERROR_MODIFICACION_CONFIGURACION_RIEGO = 'La configuracion de riego ya f
 DETALLE_ERROR_CONFIGURACION_RIEGO_INCORRECTA = 'La configuracion de riego es incorrecta'
 DETALLE_ERROR_RELACION_CONFIGURACION_RIEGO_CRITERIO = 'El criterio de riego no se corresponde con la configuracion'
 DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INCORRECTO = 'El tipo de criterio riego es incorrecto'
+DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INCORRECTO_MEDICION = "El criterio elegido no es por medicion"
+DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INCORRECTO_HORA = "El criterio elegido no es por hora"
+DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INCORRECTO_VOLUMEN = "El criterio elegido no es por volumen de agua"
 DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INICIAL_INCORRECTO = 'El tipo de criterio riego no es valido como criterio inicial'
 DETALLE_ERROR_TIPO_CRITERIO_RIEGO_FINAL_INCORRECTO = 'El tipo de criterio riego no es valido como criterio final'
-DETALLE_ERROR_CONFIGURACION_RIEGO_AUTOMATICA_CRITERIO = 'A una configuracion de riego automatica no se le pueden' \
-                                                        'asignar criterios'
+DETALLE_ERROR_CRITERIO_RIEGO_INEXISTENTE = 'El criterio de riego seleccionado no existe'
+DETALLE_ERROR_CRITERIO_RIEGO_VALOR_MEDICION_INEXISTENTE = 'Falta ingresar valor de medicion'
+DETALLE_ERROR_CRITERIO_RIEGO_TIPO_MEDICION_INEXISTENTE = 'Falta ingresar tipo de medicion'
+DETALLE_ERROR_CRITERIO_RIEGO_HORA_INICIO_INEXISTENTE = 'Falta ingresar hora de inicio'
+DETALLE_ERROR_CRITERIO_RIEGO_DIA_INICIO_INEXISTENTE = 'Falta ingresar dia de inicio'
+DETALLE_ERROR_CRITERIO_RIEGO_VOLUMEN_INEXISTENTE = 'Falta ingresar volumen de agua'
+
+DETALLE_ERROR_CONFIGURACION_RIEGO_AUTOMATICA_CRITERIO = 'A una configuracion de riego automatica no se le asignan' \
+                                                        ' criterios'
 DETALLE_ERROR_CONFIGURACION_RIEGO_CANTIDAD_MAX_CRITERIO_INICIAL = 'La cantidad maxima de criterios iniciales fue ' \
                                                                   'alcanzada'
 DETALLE_ERROR_CONFIGURACION_RIEGO_CANTIDAD_MAX_CRITERIO_FINAL = 'La cantidad maxima de criterios finales fue alcanzada'
