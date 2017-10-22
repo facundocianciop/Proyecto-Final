@@ -1296,6 +1296,7 @@ class MedicionDetalle(models.Model):
 
 class MedicionEvento(models.Model):
     OIDMedicionEvento = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    idMedicionEvento = models.IntegerField(default=1, unique=True, editable=False)
     valorMaximo = models.FloatField()
     valorMinimo = models.FloatField()
     # class Meta:
@@ -1307,6 +1308,18 @@ class MedicionEvento(models.Model):
                                                          related_name="medicionEventoList")
     objects = InheritanceManager()
 
+    def save(self, *args, **kwargs):
+        """Crear o incrementar id_criterio_riego"""
+        if MedicionEvento.objects.all().__len__() == 0:
+            self.idMedicionEvento = 1
+            super(MedicionEvento, self).save(*args, **kwargs)
+        else:
+            if MedicionEvento.objects.get_subclass(idMedicionEvento=self.idMedicionEvento) == self:
+                super(MedicionEvento, self).save(*args, **kwargs)
+            else:
+                ultimaMedicionEvento = MedicionEvento.objects.order_by('-idMedicionEvento')[0]
+                self.idMedicionEvento = ultimaMedicionEvento.idMedicionEvento+ 1
+                super(MedicionEvento, self).save(*args, **kwargs)
 
 class MedicionFuenteInterna(MedicionEvento):
     # RECIBE COMO PARAMETRO A LA CLASE MEDICION EVENTO PORQUE HEREDA DE ELLA

@@ -32,7 +32,9 @@ def buscar_configuraciones_eventos_personalizados(request):
             for configuracion in lista_configuraciones_eventos_personalizados:
                 lista_medicion_interna_json = []
                 lista_medicion_externa_json= []
-                for  medicion in configuracion.medicionEventoList.all():
+                lista_mediciones = MedicionEvento.objects.filter(
+                    configuracionEventoPersonalizado=configuracion).select_subclasses()
+                for medicion in lista_mediciones:
                     if type(medicion) is MedicionFuenteInterna:
                         lista_medicion_interna_json.append(medicion.as_json())
                     elif type(medicion) is MedicionEstadoExterno:
@@ -101,7 +103,7 @@ def mostrar_configuracion_evento_personalizado(request):
 
             lista_medicion_interna_json = []
             lista_medicion_externa_json = []
-            for medicion in configuracion.medicionEventoList.all():
+            for medicion in configuracion.medicionEventoList.all().select_subclasses():
                 if isinstance(medicion, MedicionFuenteInterna):
                     lista_medicion_interna_json.append(medicion.as_json())
                 elif isinstance(medicion, MedicionEstadoExterno):
