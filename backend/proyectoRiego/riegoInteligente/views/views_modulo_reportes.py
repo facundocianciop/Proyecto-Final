@@ -12,6 +12,8 @@ from datetime import timedelta
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def buscar_configuraciones_eventos_personalizados(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -76,6 +78,8 @@ def buscar_configuraciones_eventos_personalizados(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def mostrar_configuracion_evento_personalizado(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -136,6 +140,8 @@ def mostrar_configuracion_evento_personalizado(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def mostrar_tipo_medicion_interna_finca(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -175,6 +181,8 @@ def mostrar_tipo_medicion_interna_finca(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def buscar_tipo_medicion_interna_id(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -203,6 +211,8 @@ def buscar_tipo_medicion_interna_id(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def buscar_tipo_medicion_climatica_id(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -234,6 +244,8 @@ def buscar_tipo_medicion_climatica_id(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def mostrar_tipo_medicion_climatica_finca(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -276,6 +288,8 @@ def mostrar_tipo_medicion_climatica_finca(request):
 @login_requerido
 @metodos_requeridos([METHOD_POST])
 @manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
+
 def crear_configuracion_evento_personalizado(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -341,6 +355,8 @@ def crear_configuracion_evento_personalizado(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def asignar_configuracion_evento_personalizado_a_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -378,6 +394,8 @@ def asignar_configuracion_evento_personalizado_a_sector(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def desasignar_configuracion_evento_personalizado_de_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -416,6 +434,8 @@ def desasignar_configuracion_evento_personalizado_de_sector(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def modificar_configuracion_evento_personalizado(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -481,6 +501,8 @@ def modificar_configuracion_evento_personalizado(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def desactivar_configuracion_evento_personalizado(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -518,6 +540,8 @@ def desactivar_configuracion_evento_personalizado(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def activar_configuracion_evento_personalizado(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -555,6 +579,8 @@ def activar_configuracion_evento_personalizado(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGENERARINFORMEESTADOACTUALSECTORES])
 def obtener_estado_actual_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -597,17 +623,28 @@ def obtener_estado_actual_sector(request):
             if sector_seleccionado.componentesensorsector_set.filter(habilitado=True).__len__() == 1:
                 componente_sensor_sector = sector_seleccionado.componentesensorsector_set.get(habilitado=True)
                 componente_sensor = componente_sensor_sector.componente_sensor.as_json()
-                ultima_medicion = componente_sensor_sector.medicionCabeceraList.all().order_by('-nroMedicion')[0]
+                if componente_sensor_sector.medicionCabeceraList.all().__len__() != 0:
+                    ultima_medicion = componente_sensor_sector.medicionCabeceraList.all().order_by('-nroMedicion')[0]
 
-            dto_estado_actual_sector = DtoEstadoActualSector(numeroSector=sector_seleccionado.numeroSector,
-                                                             idSector=sector_seleccionado.idSector,
-                                                             superficieSector=sector_seleccionado.superficie,
-                                                             descripcionSector=sector_seleccionado.descripcionSector,
-                                                             mecanismoSector=mecanismo_sector,
-                                                             componenteSector=componente_sensor,
-                                                             ultimaMedicion=ultima_medicion.as_json(),
-                                                             ejecucionRiego=ejecucion_riego,
-                                                             configuracionRiego=configuracion_riego)
+                    dto_estado_actual_sector = DtoEstadoActualSector(numeroSector=sector_seleccionado.numeroSector,
+                                                                     idSector=sector_seleccionado.idSector,
+                                                                     superficieSector=sector_seleccionado.superficie,
+                                                                     descripcionSector=sector_seleccionado.descripcionSector,
+                                                                     mecanismoSector=mecanismo_sector,
+                                                                     componenteSector=componente_sensor,
+                                                                     ultimaMedicion=ultima_medicion.as_json(),
+                                                                     ejecucionRiego=ejecucion_riego,
+                                                                     configuracionRiego=configuracion_riego)
+            else:
+                dto_estado_actual_sector = DtoEstadoActualSector(numeroSector=sector_seleccionado.numeroSector,
+                                                                 idSector=sector_seleccionado.idSector,
+                                                                 superficieSector=sector_seleccionado.superficie,
+                                                                 descripcionSector=sector_seleccionado.descripcionSector,
+                                                                 mecanismoSector=mecanismo_sector,
+                                                                 componenteSector=componente_sensor,
+                                                                 ultimaMedicion=ultima_medicion,
+                                                                 ejecucionRiego=ejecucion_riego,
+                                                                 configuracionRiego=configuracion_riego)
             response.content = armar_response_content(dto_estado_actual_sector)
             response.status_code = 200
             return response
@@ -625,6 +662,8 @@ def obtener_estado_actual_sector(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGENERARINFORMERIEGOENEJECUCION])
 def obtener_informe_riego_ejecucion_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -662,10 +701,10 @@ def obtener_informe_riego_ejecucion_sector(request):
                         configuracion_riego = ejecucion.configuracion_riego.as_json()
 
                     dto_riego_ejecucion_sector = DtoRiegoEjecucionSector(numeroSector=sector_seleccionado.numeroSector,
-                                                                     idSector=sector_seleccionado.idSector,
-                                                                     mecanismoSector=mecanismo_sector,
-                                                                     ejecucionRiego=ejecucion_riego,
-                                                                     configuracionRiego=configuracion_riego)
+                                                                        idSector=sector_seleccionado.idSector,
+                                                                        mecanismoSector=mecanismo_sector,
+                                                                        ejecucionRiego=ejecucion_riego,
+                                                                        configuracionRiego=configuracion_riego)
                     response.content = armar_response_content(dto_riego_ejecucion_sector)
                     response.status_code = 200
                     return response
@@ -687,6 +726,8 @@ def obtener_informe_riego_ejecucion_sector(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGENERARINFORMEESTADOHISTORICOSECTORESFINCA])
 def obtener_informe_historico_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -754,6 +795,7 @@ def obtener_informe_historico_sector(request):
 @login_requerido
 @metodos_requeridos([METHOD_POST])
 @manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGENERARINFORMERIEGOPORSECTORESHISTORICO])
 def obtener_informe_riego_historico_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -805,6 +847,8 @@ def obtener_informe_riego_historico_sector(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGENERARINFORMEEVENTOPERSONALIZADO])
 def obtener_informe_eventos_personalizados(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -853,6 +897,8 @@ def obtener_informe_eventos_personalizados(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGENERARINFORMEHELADASHISTORICO])
 def obtener_informe_historico_heladas(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -896,6 +942,8 @@ def obtener_informe_historico_heladas(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGENERARINFORMECRUZADORIEGOMEDICION])
 def obtener_informe_cruzado_riego_mediciones_(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -918,65 +966,77 @@ def obtener_informe_cruzado_riego_mediciones_(request):
             estado_componente_sensor_sector_habilitado = EstadoComponenteSensorSector.objects.get(
                 nombreEstadoComponenteSensorSector=ESTADO_HABILITADO)
             mecanismos_riego_sector = sector_seleccionado.mecanismoRiegoFincaSector.all()
-            for mecanismo in mecanismos_riego_sector:
-                ejecuciones_riego = mecanismo.ejecucionRiegoList.filter(fecha_hora_inicio__gte=fecha_inicio_sector,
-                                                                        fecha_hora_inicio__lte=fecha_fin_sector,
-                                                                        fecha_hora_final_programada__isnull=False)
-                for ejecucion in ejecuciones_riego:
-                    medicion_cabecera_antes = ""
-                    medicion_cabecera_despues = ""
-                    medicion_climatica_antes = ""
-                    sector = ejecucion.mecanismo_riego_finca_sector.sector
-                    lista_componente_sensor_sector = sector.componentesensorsector_set.all()
-                    componente_sensor_sector_asignado = ""
-                    for componente_sensor_sector in lista_componente_sensor_sector:
-                        if componente_sensor_sector.historicoEstadoComponenteSensorSector.filter(
-                                fechaAltaComponenteSensorSector__lte=ejecucion.fecha_hora_inicio,
-                                fechaBajaComponenteSensorSector__gte=ejecucion.fecha_hora_finalizacion).__len__() == 1:
-                            componente_sensor_sector_asignado = componente_sensor_sector
-                    """PARA OBTENER LA MEDICION ANTERIOR AL RIEGO"""
-                    if componente_sensor_sector_asignado.medicionCabeceraList.filter(
-                            fechaYHora__lte=ejecucion.fecha_hora_inicio,
-                            fechaYHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30)).__len__() > 0:
-                        medicion_cabecera_antes = componente_sensor_sector_asignado.medicionCabeceraList.filter(
-                            fechaYHora__lte=ejecucion.fecha_hora_inicio,
-                            fechaYHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30)).\
-                            order_by("-fechaYHora").last()
-                    """PARA OBTENER LA MEDICION POSTERIOR AL RIEGO"""
-                    if componente_sensor_sector_asignado.medicionCabeceraList.filter(
-                                fechaYHora__lte=ejecucion.fecha_hora_finalizacion,
-                                fechaYHora__gte=ejecucion.fecha_hora_finalizacion + timedelta(minutes=30))\
-                            .__len__() > 0:
-                        medicion_cabecera_despues = componente_sensor_sector_asignado.medicionCabeceraList.filter(
-                            fechaYHora__lte=ejecucion.fecha_hora_inicio,
-                            fechaYHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30)).order_by(
-                            "-fechaYHora").first()
-                    if mecanismo.mecanismoRiegoFinca.finca.proveedorinformacionclimaticafinca_set.filter(
-                        fechaAltaProveedorInfoClimaticaFinca__lte=ejecucion.fecha_hora_inicio,
-                        fechaBajaProveedorInfoClimaticaFinca__gte=ejecucion.fecha_hora_finalizacion).__len__() == 1:
-                        proveedor_finca = mecanismo.mecanismoRiegoFinca.finca.proveedorinformacionclimaticafinca_set. \
-                            get(fechaAltaProveedorInfoClimaticaFinca__lte=ejecucion.fecha_hora_inicio,
-                                fechaBajaProveedorInfoClimaticaFinca__gte=ejecucion.fecha_hora_finalizacion)
-                        if proveedor_finca.medicionInformacionClimaticaCabeceraList.filter(
-                            fechaYHora__lte=ejecucion.fecha_hora_inicio,
-                            fechaYHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30)).__len__() > 0:
-                            medicion_climatica_antes = proveedor_finca.medicionInformacionClimaticaCabeceraList.filter(
-                            fechaYHora__lte=ejecucion.fecha_hora_inicio,
-                            fechaYHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30))\
-                                .order_by("-fechaYHora").last()
-                    lista_dto_medicion_cruzada_riego.append(DtoMedicionCruzadaRiego(
-                        mecanismo_riego_finca_sector=mecanismo,
-                        ejecucion=ejecucion,
-                        configuracion=ejecucion.configuracion_riego,
-                        mediciones_componente_antes=medicion_cabecera_antes,
-                        mediciones_componente_despues=medicion_cabecera_despues,
-                        mediciones_climaticas_antes=medicion_climatica_antes))
+            if mecanismos_riego_sector.__len__() != 0:
+                for mecanismo in mecanismos_riego_sector:
+                    ejecuciones_riego = mecanismo.ejecucionRiegoList.filter(fecha_hora_inicio__gte=fecha_inicio_sector,
+                                                                            fecha_hora_inicio__lte=fecha_fin_sector,
+                                                                            fecha_hora_final_programada__isnull=False)
+                    for ejecucion in ejecuciones_riego:
+                        medicion_cabecera_antes = ""
+                        medicion_cabecera_despues = ""
+                        medicion_climatica_antes = ""
+                        sector = ejecucion.mecanismo_riego_finca_sector.sector
+                        lista_componente_sensor_sector = sector.componentesensorsector_set.all()
+                        componente_sensor_sector_asignado = ""
+                        for componente_sensor_sector in lista_componente_sensor_sector:
+                            if componente_sensor_sector.historicoEstadoComponenteSensorSector.filter(
+                                    fechaAltaComponenteSensorSector__lte=ejecucion.fecha_hora_inicio,
+                                    fechaBajaComponenteSensorSector__gte=ejecucion.fecha_hora_finalizacion).__len__() == 1:
+                                componente_sensor_sector_asignado = componente_sensor_sector
+                        """PARA OBTENER LA MEDICION ANTERIOR AL RIEGO"""
+                        if componente_sensor_sector_asignado.medicionCabeceraList.filter(
+                                fechaYHora__lte=ejecucion.fecha_hora_inicio,
+                                fechaYHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30)).__len__() > 0:
+                            medicion_cabecera_antes = componente_sensor_sector_asignado.medicionCabeceraList.filter(
+                                fechaYHora__lte=ejecucion.fecha_hora_inicio,
+                                fechaYHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30)).\
+                                order_by("-fechaYHora").last()
+                        """PARA OBTENER LA MEDICION POSTERIOR AL RIEGO"""
+                        if componente_sensor_sector_asignado.medicionCabeceraList.filter(
+                                    fechaYHora__lte=ejecucion.fecha_hora_finalizacion,
+                                    fechaYHora__gte=ejecucion.fecha_hora_finalizacion + timedelta(minutes=30))\
+                                .__len__() > 0:
+                            medicion_cabecera_despues = componente_sensor_sector_asignado.medicionCabeceraList.filter(
+                                fechaYHora__lte=ejecucion.fecha_hora_inicio,
+                                fechaYHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30)).order_by(
+                                "-fechaYHora").first()
+                        if mecanismo.mecanismoRiegoFinca.finca.proveedorinformacionclimaticafinca_set.filter(
+                            fechaAltaProveedorInfoClimaticaFinca__lte=ejecucion.fecha_hora_inicio,
+                            fechaBajaProveedorInfoClimaticaFinca__gte=ejecucion.fecha_hora_finalizacion).__len__() == 1:
+                            proveedor_finca = mecanismo.mecanismoRiegoFinca.finca.proveedorinformacionclimaticafinca_set. \
+                                get(fechaAltaProveedorInfoClimaticaFinca__lte=ejecucion.fecha_hora_inicio,
+                                    fechaBajaProveedorInfoClimaticaFinca__gte=ejecucion.fecha_hora_finalizacion)
+                            if proveedor_finca.medicionInformacionClimaticaCabeceraList.filter(
+                                fechaYHora__lte=ejecucion.fecha_hora_inicio,
+                                fechaYHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30)).__len__() > 0:
+                                medicion_climatica_antes = proveedor_finca.medicionInformacionClimaticaCabeceraList.filter(
+                                fechaYHora__lte=ejecucion.fecha_hora_inicio,
+                                fechaYHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30))\
+                                    .order_by("-fechaYHora").last()
+                        if mecanismo != "":
+                            mecanismo = mecanismo.as_json()
+                        if medicion_climatica_antes != "":
+                            medicion_climatica_antes = medicion_climatica_antes.as_json()
+                        if medicion_cabecera_antes != "":
+                            medicion_cabecera_antes = medicion_cabecera_antes.as_json()
+                        if medicion_cabecera_despues != "":
+                            medicion_cabecera_despues = medicion_cabecera_despues.as_json()
+                        lista_dto_medicion_cruzada_riego.append(DtoMedicionCruzadaRiego(
+                            mecanismo_riego_finca_sector=mecanismo,
+                            ejecucion=ejecucion.as_json(),
+                            configuracion=ejecucion.configuracion_riego.as_json(),
+                            mediciones_componente_antes=medicion_cabecera_antes.as_json(),
+                            mediciones_componente_despues=medicion_cabecera_despues.as_json(),
+                            mediciones_climaticas_antes=medicion_climatica_antes.as_json()))
 
-                response.content = armar_response_list_content(lista_dto_medicion_cruzada_riego)
-                response.status_code = 200
-                return response
-            else:
-                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+                    response.content = armar_response_list_content(lista_dto_medicion_cruzada_riego)
+                    response.status_code = 200
+                    return response
+            response.content = armar_response_content(None)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
     except ValueError as err:
         print err.args
         return build_bad_request_error(response, err.args[0], err.args[1])

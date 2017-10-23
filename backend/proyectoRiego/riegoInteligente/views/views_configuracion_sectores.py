@@ -10,6 +10,8 @@ from supportClases.dto_modulo_configuracion_sectores import *
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_PUT])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDECREARSECTOR])
 def crear_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -93,6 +95,8 @@ def crear_sector(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARSECTOR])
 def modificar_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -142,6 +146,8 @@ def modificar_sector(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARSECTOR])
 def eliminar_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -218,6 +224,7 @@ def eliminar_sector(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def mostrar_sectores(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -252,6 +259,7 @@ def mostrar_sectores(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def buscar_sector_id(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -319,6 +327,8 @@ def mostrar_mecanismo_riego_sector(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_PUT])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARSECTOR, PERMISO_PUEDEASIGNARMECRIEGOASECTOR])
 def asignar_mecanismo_a_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -385,6 +395,8 @@ def asignar_mecanismo_a_sector(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARSECTOR, PERMISO_PUEDEASIGNARMECRIEGOASECTOR])
 def deshabilitar_mecanismo_riego_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -439,6 +451,7 @@ def deshabilitar_mecanismo_riego_sector(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_GET])
+@manejar_errores()
 def mostrar_subtipos_tipos_cultivos(request):
     response = HttpResponse()
     try:
@@ -460,6 +473,8 @@ def mostrar_subtipos_tipos_cultivos(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_PUT])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARSECTOR, PERMISO_PUEDEASIGNARCULTIVO])
 def asignar_cultivo_a_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -510,6 +525,8 @@ def asignar_cultivo_a_sector(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARSECTOR, PERMISO_PUEDEASIGNARCULTIVO])
 def modificar_cultivo_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -547,6 +564,8 @@ def modificar_cultivo_sector(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARSECTOR, PERMISO_PUEDEASIGNARCULTIVO])
 def deshabilitar_cultivo_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -605,6 +624,7 @@ def deshabilitar_cultivo_sector(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def mostrar_cultivo_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -641,6 +661,7 @@ def mostrar_cultivo_sector(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def mostrar_cultivo_sector_historico(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -673,6 +694,7 @@ def mostrar_cultivo_sector_historico(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def mostrar_componente_sensor_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -712,6 +734,8 @@ def mostrar_componente_sensor_sector(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARSECTOR, PERMISO_PUEDEASIGNARCOMPONENTESENSOR])
 def asignar_componente_sensor(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -775,6 +799,8 @@ def asignar_componente_sensor(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARSECTOR, PERMISO_PUEDEASIGNARCOMPONENTESENSOR])
 def desasignar_componente_sensor(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
