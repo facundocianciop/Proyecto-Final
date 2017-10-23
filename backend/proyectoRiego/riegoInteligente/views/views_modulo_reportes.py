@@ -620,6 +620,7 @@ def obtener_estado_actual_sector(request):
                             configuracion_riego = ejecucion.configuracion_riego.as_json()
             componente_sensor = ""
             ultima_medicion = ""
+            dto_estado_actual_sector = None
             if sector_seleccionado.componentesensorsector_set.filter(habilitado=True).__len__() == 1:
                 componente_sensor_sector = sector_seleccionado.componentesensorsector_set.get(habilitado=True)
                 componente_sensor = componente_sensor_sector.componente_sensor.as_json()
@@ -823,10 +824,14 @@ def obtener_informe_riego_historico_sector(request):
                                                                         fecha_hora_inicio__lte=fecha_fin_sector,
                                                                         fecha_hora_final_programada__isnull=False)
                 for ejecucion in ejecuciones_riego:
+                    if ejecucion.configuracion_riego is None:
+                        configuracion = ""
+                    else:
+                        configuracion = ejecucion.configuracion_riego.as_json()
                     dto_mecanismo_riego_configuracion = DtoMecanismoRiegoConfiguracion(
                         mecanismo_riego_finca_sector=mecanismo.as_json(),
                         ejecucion=ejecucion.as_json(),
-                        configuracion=ejecucion.configuracion_riego.as_json())
+                        configuracion=configuracion)
                     lista_dto_mecanismo_riego_configuracion.append(dto_mecanismo_riego_configuracion)
             if lista_dto_mecanismo_riego_configuracion.__len__() == 0 :
                 response.content = armar_response_content(None)
