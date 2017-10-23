@@ -597,17 +597,28 @@ def obtener_estado_actual_sector(request):
             if sector_seleccionado.componentesensorsector_set.filter(habilitado=True).__len__() == 1:
                 componente_sensor_sector = sector_seleccionado.componentesensorsector_set.get(habilitado=True)
                 componente_sensor = componente_sensor_sector.componente_sensor.as_json()
-                ultima_medicion = componente_sensor_sector.medicionCabeceraList.all().order_by('-nroMedicion')[0]
+                if componente_sensor_sector.medicionCabeceraList.all().__len__() != 0:
+                    ultima_medicion = componente_sensor_sector.medicionCabeceraList.all().order_by('-nroMedicion')[0]
 
-            dto_estado_actual_sector = DtoEstadoActualSector(numeroSector=sector_seleccionado.numeroSector,
-                                                             idSector=sector_seleccionado.idSector,
-                                                             superficieSector=sector_seleccionado.superficie,
-                                                             descripcionSector=sector_seleccionado.descripcionSector,
-                                                             mecanismoSector=mecanismo_sector,
-                                                             componenteSector=componente_sensor,
-                                                             ultimaMedicion=ultima_medicion.as_json(),
-                                                             ejecucionRiego=ejecucion_riego,
-                                                             configuracionRiego=configuracion_riego)
+                    dto_estado_actual_sector = DtoEstadoActualSector(numeroSector=sector_seleccionado.numeroSector,
+                                                                     idSector=sector_seleccionado.idSector,
+                                                                     superficieSector=sector_seleccionado.superficie,
+                                                                     descripcionSector=sector_seleccionado.descripcionSector,
+                                                                     mecanismoSector=mecanismo_sector,
+                                                                     componenteSector=componente_sensor,
+                                                                     ultimaMedicion=ultima_medicion.as_json(),
+                                                                     ejecucionRiego=ejecucion_riego,
+                                                                     configuracionRiego=configuracion_riego)
+            else:
+                dto_estado_actual_sector = DtoEstadoActualSector(numeroSector=sector_seleccionado.numeroSector,
+                                                                 idSector=sector_seleccionado.idSector,
+                                                                 superficieSector=sector_seleccionado.superficie,
+                                                                 descripcionSector=sector_seleccionado.descripcionSector,
+                                                                 mecanismoSector=mecanismo_sector,
+                                                                 componenteSector=componente_sensor,
+                                                                 ultimaMedicion=ultima_medicion,
+                                                                 ejecucionRiego=ejecucion_riego,
+                                                                 configuracionRiego=configuracion_riego)
             response.content = armar_response_content(dto_estado_actual_sector)
             response.status_code = 200
             return response
