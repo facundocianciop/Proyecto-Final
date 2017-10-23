@@ -612,12 +612,12 @@ def obtener_estado_actual_sector(request):
                         nombreEstadoEjecucionRiego=ESTADO_EN_EJECUCION)
                     if mecanismo.ejecucionRiegoList.filter(estado_ejecucion_riego=estado_riego_en_ejecucion
                                                            ).__len__() == 1:
-                        ejecucion = mecanismo.ejecucionRiegoList.get(
-                            estado_ejecucion_riego=estado_riego_en_ejecucion)
-                        ejecucion_riego = mecanismo.ejecucionRiegoList.get(
-                            estado_ejecucion_riego=estado_riego_en_ejecucion).as_json()
-                        configuracion_riego = ejecucion.configuracion_riego.as_json()
-
+                        ejecucion = mecanismo.ejecucionRiegoList.get(estado_ejecucion_riego=estado_riego_en_ejecucion)
+                        ejecucion_riego = ejecucion.as_json()
+                        if ejecucion.configuracion_riego is None:
+                            configuracion_riego = ""
+                        else:
+                            configuracion_riego = ejecucion.configuracion_riego.as_json()
             componente_sensor = ""
             ultima_medicion = ""
             if sector_seleccionado.componentesensorsector_set.filter(habilitado=True).__len__() == 1:
@@ -696,9 +696,11 @@ def obtener_informe_riego_ejecucion_sector(request):
                     if mecanismo.ejecucionRiegoList.filter(estado_ejecucion_riego=estado_riego_en_ejecucion).__len__()\
                             == 1:
                         ejecucion = mecanismo.ejecucionRiegoList.get(estado_ejecucion_riego=estado_riego_en_ejecucion)
-                        ejecucion_riego = mecanismo.ejecucionRiegoList.get(
-                            estado_ejecucion_riego=estado_riego_en_ejecucion).as_json()
-                        configuracion_riego = ejecucion.configuracion_riego.as_json()
+                        ejecucion_riego = ejecucion.as_json()
+                        if ejecucion.configuracion_riego is None:
+                            configuracion_riego = ""
+                        else:
+                            configuracion_riego = ejecucion.configuracion_riego.as_json()
 
                     dto_riego_ejecucion_sector = DtoRiegoEjecucionSector(numeroSector=sector_seleccionado.numeroSector,
                                                                         idSector=sector_seleccionado.idSector,
