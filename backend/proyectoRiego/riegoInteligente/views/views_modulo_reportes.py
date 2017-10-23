@@ -175,6 +175,65 @@ def mostrar_tipo_medicion_interna_finca(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+def buscar_tipo_medicion_interna_id(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if (KEY_ID_TIPO_MEDICION in datos):
+            if  datos[KEY_ID_TIPO_MEDICION] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if TipoMedicion.objects.filter(idTipoMedicion=datos[KEY_ID_TIPO_MEDICION]).__len__() == 0:
+                raise ValueError(ERROR_TIPO_MEDICION_NO_EXISTENTE, "No se encuentra una medicion con ese id.")
+            tipo_medicion = TipoMedicion.objects.get(idTipoMedicion=datos[KEY_ID_TIPO_MEDICION])
+            response.content = armar_response_content(tipo_medicion)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except ValueError as err:
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+def buscar_tipo_medicion_climatica_id(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if (KEY_ID_TIPO_MEDICION_CLIMATICA in datos):
+            if  datos[KEY_ID_TIPO_MEDICION_CLIMATICA] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if TipoMedicionClimatica.objects.filter(idTipoMedicionClimatica=datos[KEY_ID_TIPO_MEDICION_CLIMATICA]).\
+                    __len__() == 0:
+                raise ValueError(ERROR_TIPO_MEDICION_CLIMATICA_NO_EXISTENTE,
+                                 "No se encuentra una medicion con ese id.")
+            tipo_medicion = TipoMedicionClimatica.objects.get(idTipoMedicionClimatica=datos[KEY_ID_TIPO_MEDICION_CLIMATICA])
+            response.content = armar_response_content(tipo_medicion)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except ValueError as err:
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
 def mostrar_tipo_medicion_climatica_finca(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
