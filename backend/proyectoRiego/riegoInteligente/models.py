@@ -1426,7 +1426,8 @@ class ProveedorInformacionClimatica(models.Model):
     OIDProveedorInformacionClimatica = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     nombreProveedor = models.CharField(max_length=20, unique=True)
     habilitado = models.BooleanField()
-    urlAPI = models.CharField(max_length=100, null=True)
+    urlAPI = models.CharField(max_length=150, null=True)
+    apiKey = models.CharField(max_length=150, null=True)
     frecuenciaMaxPosible = models.IntegerField(null=True)
     tipoMedicionClimatica = models.ManyToManyField(TipoMedicionClimatica)
     fechaAltaProveedorInfoClimatica = models.DateTimeField()
@@ -1473,12 +1474,26 @@ class MedicionEstadoExterno(MedicionEvento):
 
 class MedicionInformacionClimaticaCabecera(models.Model):
     OIDMedicionInformacionClimaticaCabecera = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    nroMedicion = models.IntegerField(unique=True)
+    nroMedicion = models.IntegerField(unique=True, default=1, editable=False)
     fechaHora = models.DateTimeField()
 
     proveedor_informacion_climatica_externa = models.ForeignKey(ProveedorInformacionClimaticaFinca,
                                                                 db_column="OIDProveedorInformacionClimaticaFinca",
                                                                 related_name="medicionInformacionClimaticaCabeceraList")
+
+    def save(self, *args, **kwargs):
+        """Get last value of Code and Number from database, and increment before save"""
+        if MedicionInformacionClimaticaCabecera.objects.all().__len__() == 0:
+            self.nroMedicion = 1
+            super(MedicionInformacionClimaticaCabecera, self).save(*args, **kwargs)
+        else:
+            if MedicionInformacionClimaticaCabecera.objects.get(nroMedicion=self.nroMedicion) == self:
+                super(MedicionInformacionClimaticaCabecera, self).save(*args, **kwargs)
+            else:
+                ultima_medicion_cabecera = \
+                    MedicionInformacionClimaticaCabecera.objects.order_by('-nroMedicion')[0]
+                self.nroMedicion = ultima_medicion_cabecera.nroMedicion + 1
+                super(MedicionInformacionClimaticaCabecera, self).save(*args, **kwargs)
 
     def as_json(self):
         return dict(
