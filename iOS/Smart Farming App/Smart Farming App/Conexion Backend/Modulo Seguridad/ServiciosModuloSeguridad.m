@@ -149,7 +149,7 @@
                 respuesta.nombre = [datosOperacion objectForKey:KEY_NOMBRE_USUARIO];
                 respuesta.apellido = [datosOperacion objectForKey:KEY_APELLIDO_USUARIO];
                 
-                if ([datosOperacion objectForKey:KEY_FECHA_NACIMIENTO]) {
+                if ([datosOperacion objectForKey:KEY_FECHA_NACIMIENTO]!= [NSNull null]) {
                     respuesta.fechaNacimiento = [SFUtils dateFromStringYYYYMMDD:datosOperacion[KEY_FECHA_NACIMIENTO]];
                 }
                 if ([datosOperacion objectForKey:KEY_DNI] != [NSNull null]) {

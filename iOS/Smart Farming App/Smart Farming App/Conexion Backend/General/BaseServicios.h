@@ -13,6 +13,8 @@
 #import "SolicitudServicioBase.h"
 #import "RespuestaServicioBase.h"
 
+#import "SFUtils.h"
+
 #pragma mark - Definicion de bloques
 
 typedef void(^WorkBlock)(void);
@@ -57,7 +59,7 @@ typedef void(^SuccessBlock)(RespuestaServicioBase *respuesta);
 // Datos finca
 #define KEY_ID_FINCA                @"idFinca"
 #define KEY_NOMBRE_FINCA            @"nombreFinca"
-#define  KEY_NOMBRE_FINCA_RESPUESTA @"nombre"
+#define KEY_NOMBRE_FINCA_RESPUESTA @"nombre"
 #define KEY_DIRECCION_LEGAL         @"direccionLegal"
 #define KEY_UBICACION               @"ubicacion"
 #define KEY_TAMANIO                 @"tamanio"
@@ -67,28 +69,37 @@ typedef void(^SuccessBlock)(RespuestaServicioBase *respuesta);
 #define KEY_NOMBRE_ROL              @"nombreRol"
 
 // Mecanismo riego
-#define KEY_NOMBRE_TIPO_MECANISMO           @"nombreTipoMecanismo"
-#define KEY_ID_MECANISMO_RIEGO_FINCA        @"idMecanismoRiegoFinca"
-#define KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR @"idMecanismoRiegoFincaSector"
-#define KEY_NOMBRE_PROVEEDOR                @"nombreProveedor"
-#define KEY_MECANISMO_RIEGO_CAUDAL          @"caudalMecanismoRiego"
-#define KEY_MECANISMO_RIEGO_PRESION         @"presionMecanismoRiego"
+#define KEY_NOMBRE_TIPO_MECANISMO               @"nombreTipoMecanismo"
+#define KEY_ID_MECANISMO_RIEGO_FINCA            @"idMecanismoRiegoFinca"
+#define KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR     @"idMecanismoRiegoFincaSector"
+#define KEY_NOMBRE_PROVEEDOR                    @"nombreProveedor"
+#define KEY_MECANISMO_RIEGO_CAUDAL              @"caudalMecanismoRiego"
+#define KEY_MECANISMO_RIEGO_PRESION             @"presionMecanismoRiego"
+#define KEY_MECANISMO_RIEGO_CAUDAL_RESPUESTA    @"caudal"
+#define KEY_MECANISMO_RIEGO_PRESION_RESPUESTA   @"presion"
 
 // Sector
-#define KEY_NUMERO_SECTOR       @"numeroSector"
-#define KEY_NOMBRE_SECTOR       @"nombreSector"
-#define KEY_DESCRIPCION_SECTOR  @"descripcionSector"
-#define KEY_SUPERFICIE_SECTOR   @"superficieSector"
-#define KEY_ID_SECTOR           @"idSector"
+#define KEY_NUMERO_SECTOR               @"numeroSector"
+#define KEY_NOMBRE_SECTOR               @"nombreSector"
+#define KEY_DESCRIPCION_SECTOR          @"descripcionSector"
+#define KEY_SUPERFICIE_SECTOR           @"superficieSector"
+#define KEY_ID_SECTOR                   @"idSector"
 
 // Subtipo Cultivos
 #define KEY_NOMBRE_SUBTIPO_CULTIVO  @"nombreSubtipoCultivo"
 
 // Cultivo
-#define KEY_NOMBRE_CULTIVO      @"nombreCultivo"
-#define KEY_DESCRIPCION_CULTIVO @"descripcionCultivo"
-#define KEY_FECHA_PLANTACION    @"fechaPlantacion"
-#define KEY_ID_CULTIVO          @"idCultivo"
+#define KEY_NOMBRE_CULTIVO                  @"nombreCultivo"
+#define KEY_DESCRIPCION_CULTIVO             @"descripcionCultivo"
+#define KEY_ID_CULTIVO                      @"idCultivo"
+
+#define KEY_NOMBRE_CULTIVO_SECTOR               @"nombre"
+#define KEY_DESCRIPCION_CULTIVO_SECTOR          @"descripcion"
+#define KEY_FECHA_PLANTACION_CULTIVO_SECTOR     @"fechaPlantacion"
+#define KEY_FECHA_ELIMINACION_CULTIVO_SECTOR    @"fechaEliminacion"
+#define KEY_TIPO_CULTIVO_SECTOR                 @"tipo"
+#define KEY_SUBTIPO_CULTIVO_SECTOR              @"subtipo"
+#define KEY_HABILITADO_CULTIVO_SECTOR           @"habilitado"
 
 // Sensores
 #define KEY_ID_TIPO_MEDICION    @"idTipoMedicion"
@@ -99,6 +110,12 @@ typedef void(^SuccessBlock)(RespuestaServicioBase *respuesta);
 #define KEY_MODELO_COMPONENTE           @"modeloComponente"
 #define KEY_DESCRIPCION_COMPONENTE      @"descripcionComponente"
 #define KEY_CANTIDAD_MAXIMA_SENSORES    @"cantidadMaximaSensores"
+#define KEY_CANTIDAD_SENSORES_ASIGNADOS @"cantidadSensoresAsignados"
+
+#define KEY_MODELO_COMPONENTE_SENSOR_RESPUESTA      @"modelo"
+#define KEY_DESCRIPCION_COMPONENTE_SENSOR_RESPUESTA @"descripcion"
+#define KEY_FINCA_COMPONENTE_SENSOR_RESPUESTA       @"finca"
+#define KEY_ESTADO_COMPONENTE_SENSOR_RESPUESTA      @"estado"
 
 // Configuracion riego
 #define KEY_ID_CONFIGURACION_RIEGO              @"idConfiguracionRiego"

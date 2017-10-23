@@ -1,5 +1,5 @@
 //
-//  RespuestaObtenerSectores.h
+//  RespuestaMostrarSectores.h
 //  Smart Farming App
 //
 //  Created by Facundo José Palma on 10/18/17.
@@ -9,7 +9,7 @@
 #import "RespuestaServicioBase.h"
 #import "SFSectorFinca.h"
 
-@interface RespuestaObtenerSectores : RespuestaServicioBase
+@interface RespuestaMostrarSectores : RespuestaServicioBase
 
 @property (strong, nonatomic) NSArray<SFSectorFinca*> *sectores;
 
