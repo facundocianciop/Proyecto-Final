@@ -830,8 +830,7 @@ def obtener_informe_riego_historico_sector(request):
             mecanismos_riego_sector = sector_seleccionado.mecanismoRiegoFincaSector.all()
             for mecanismo in mecanismos_riego_sector:
                 ejecuciones_riego = mecanismo.ejecucionRiegoList.filter(fecha_hora_inicio__gte=fecha_inicio_sector,
-                                                                        fecha_hora_inicio__lte=fecha_fin_sector,
-                                                                        fecha_hora_final_programada__isnull=False)
+                                                                        fecha_hora_inicio__lte=fecha_fin_sector)
                 for ejecucion in ejecuciones_riego:
                     if ejecucion.configuracion_riego is None:
                         configuracion = ""
