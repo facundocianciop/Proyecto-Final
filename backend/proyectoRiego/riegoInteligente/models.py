@@ -1331,7 +1331,8 @@ class MedicionFuenteInterna(MedicionEvento):
         return dict(
             valor_maximo=self.valorMaximo,
             valor_minimo=self.valorMinimo,
-            tipo_medicion=self.tipoMedicion.nombreTipoMedicion
+            tipo_medicion=self.tipoMedicion.nombreTipoMedicion,
+            unidad_medicion=self.tipoMedicion.unidadMedicion
         )
 
 
@@ -1478,7 +1479,9 @@ class MedicionEstadoExterno(MedicionEvento):
         return dict(
             valor_maximo=self.valorMaximo,
             valor_minimo=self.valorMinimo,
-            tipo_medicion=self.tipoMedicion.nombreTipoMedicionClimatica
+            tipo_medicion=self.tipoMedicion.nombreTipoMedicionClimatica,
+            unidad_medicion=self.tipoMedicion.unidadMedicion
+
         )
 
 
