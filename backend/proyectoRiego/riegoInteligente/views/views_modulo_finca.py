@@ -15,6 +15,7 @@ from supportClases.error_handler import *
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_GET])
+@manejar_errores()
 def obtener_fincas_por_usuario(request):
     response = HttpResponse()
     try:
@@ -141,6 +142,7 @@ def obtener_fincas_por_usuario(request):
 @login_requerido
 #este método sólo acepta una petición del tipo PUT
 @metodos_requeridos([METHOD_PUT])
+@manejar_errores()
 def crear_finca(request):
     #se crea un objeto HttpResponse
     response = HttpResponse()
@@ -226,6 +228,7 @@ def crear_finca(request):
 @login_requerido
 #este método sólo acepta una petición del tipo GET
 @metodos_requeridos([METHOD_GET])
+@manejar_errores()
 def buscar_proveedores_informacion(request):
     # se crea un objeto HttpResponse
     response=HttpResponse()
@@ -245,6 +248,7 @@ def buscar_proveedores_informacion(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_GET])
+@manejar_errores()
 def obtener_fincas_estado_pendiente(request):
     response = HttpResponse()
     try:
@@ -269,8 +273,8 @@ def obtener_fincas_estado_pendiente(request):
 def aprobar_finca(request, idFinca):
     response = HttpResponse()
     print request.user.username
-    # if request.user.is_staff == False:
-    #     raise ValueError(ERROR_NO_TIENE_PERMISOS, "El usuario no tiene permisos para acceder a esta pagina")
+    if request.user.is_staff == False:
+        raise ValueError(ERROR_NO_TIENE_PERMISOS, "El usuario no tiene permisos para acceder a esta pagina")
     try:
             if Finca.objects.filter(idFinca=idFinca).__len__() == 1:
                     finca_por_aprobar = Finca.objects.get(idFinca=idFinca)
@@ -311,8 +315,8 @@ def aprobar_finca(request, idFinca):
 @metodos_requeridos([METHOD_POST])
 def no_aprobar_finca(request, idFinca):
     response = HttpResponse()
-    # if not request.user.is_staff:
-    #     raise ValueError(ERROR_NO_TIENE_PERMISOS, "El usuario no tiene permisos para acceder a esta pagina")
+    if not request.user.is_staff:
+        raise ValueError(ERROR_NO_TIENE_PERMISOS, "El usuario no tiene permisos para acceder a esta pagina")
     try:
             if Finca.objects.filter(idFinca=idFinca).__len__() == 1:
                     finca_por_aprobar = Finca.objects.get(idFinca=idFinca)
@@ -344,6 +348,7 @@ def no_aprobar_finca(request, idFinca):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_GET])
+@manejar_errores()
 def mostrar_fincas_encargado(request):
     response = HttpResponse()
     try:
@@ -371,6 +376,8 @@ def mostrar_fincas_encargado(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARFINCA])
 def modificar_finca(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -433,6 +440,8 @@ def buscar_roles(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARFINCA])
 def eliminar_finca(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -493,6 +502,7 @@ def eliminar_finca(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def rehabilitar_finca(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -626,6 +636,8 @@ def buscar_usuarios_finca(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARUSUARIOSFINCA])
 def eliminar_usuario_finca(request):
     response=HttpResponse()
     datos=obtener_datos_json(request)
@@ -685,6 +697,8 @@ def buscar_usuarios_no_finca(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_PUT])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARUSUARIOSFINCA])
 def agregar_usuario_finca(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -720,6 +734,8 @@ def agregar_usuario_finca(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARUSUARIOSFINCA])
 def modificar_rol_usuario(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -778,6 +794,7 @@ def buscar_finca_id(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def devolver_permisos(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)

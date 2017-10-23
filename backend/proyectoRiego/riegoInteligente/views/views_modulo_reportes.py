@@ -12,6 +12,8 @@ from datetime import timedelta
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def buscar_configuraciones_eventos_personalizados(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -76,6 +78,8 @@ def buscar_configuraciones_eventos_personalizados(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def mostrar_configuracion_evento_personalizado(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -136,6 +140,8 @@ def mostrar_configuracion_evento_personalizado(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def mostrar_tipo_medicion_interna_finca(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -175,6 +181,8 @@ def mostrar_tipo_medicion_interna_finca(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def buscar_tipo_medicion_interna_id(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -203,6 +211,8 @@ def buscar_tipo_medicion_interna_id(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def buscar_tipo_medicion_climatica_id(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -234,6 +244,8 @@ def buscar_tipo_medicion_climatica_id(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def mostrar_tipo_medicion_climatica_finca(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -276,6 +288,8 @@ def mostrar_tipo_medicion_climatica_finca(request):
 @login_requerido
 @metodos_requeridos([METHOD_POST])
 @manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
+
 def crear_configuracion_evento_personalizado(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -341,6 +355,8 @@ def crear_configuracion_evento_personalizado(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def asignar_configuracion_evento_personalizado_a_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -378,6 +394,8 @@ def asignar_configuracion_evento_personalizado_a_sector(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def desasignar_configuracion_evento_personalizado_de_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -416,6 +434,8 @@ def desasignar_configuracion_evento_personalizado_de_sector(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def modificar_configuracion_evento_personalizado(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -481,6 +501,8 @@ def modificar_configuracion_evento_personalizado(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def desactivar_configuracion_evento_personalizado(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -518,6 +540,8 @@ def desactivar_configuracion_evento_personalizado(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def activar_configuracion_evento_personalizado(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -555,6 +579,8 @@ def activar_configuracion_evento_personalizado(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGENERARINFORMEESTADOACTUALSECTORES])
 def obtener_estado_actual_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -636,6 +662,8 @@ def obtener_estado_actual_sector(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGENERARINFORMERIEGOENEJECUCION])
 def obtener_informe_riego_ejecucion_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -673,10 +701,10 @@ def obtener_informe_riego_ejecucion_sector(request):
                         configuracion_riego = ejecucion.configuracion_riego.as_json()
 
                     dto_riego_ejecucion_sector = DtoRiegoEjecucionSector(numeroSector=sector_seleccionado.numeroSector,
-                                                                     idSector=sector_seleccionado.idSector,
-                                                                     mecanismoSector=mecanismo_sector,
-                                                                     ejecucionRiego=ejecucion_riego,
-                                                                     configuracionRiego=configuracion_riego)
+                                                                        idSector=sector_seleccionado.idSector,
+                                                                        mecanismoSector=mecanismo_sector,
+                                                                        ejecucionRiego=ejecucion_riego,
+                                                                        configuracionRiego=configuracion_riego)
                     response.content = armar_response_content(dto_riego_ejecucion_sector)
                     response.status_code = 200
                     return response
@@ -698,6 +726,8 @@ def obtener_informe_riego_ejecucion_sector(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGENERARINFORMEESTADOHISTORICOSECTORESFINCA])
 def obtener_informe_historico_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -765,6 +795,7 @@ def obtener_informe_historico_sector(request):
 @login_requerido
 @metodos_requeridos([METHOD_POST])
 @manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGENERARINFORMERIEGOPORSECTORESHISTORICO])
 def obtener_informe_riego_historico_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -816,6 +847,8 @@ def obtener_informe_riego_historico_sector(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGENERARINFORMEEVENTOPERSONALIZADO])
 def obtener_informe_eventos_personalizados(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -864,6 +897,8 @@ def obtener_informe_eventos_personalizados(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGENERARINFORMEHELADASHISTORICO])
 def obtener_informe_historico_heladas(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -907,6 +942,8 @@ def obtener_informe_historico_heladas(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGENERARINFORMECRUZADORIEGOMEDICION])
 def obtener_informe_cruzado_riego_mediciones_(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)

@@ -7,6 +7,7 @@ from supportClases.dto_obtencion_informacion_externa import *
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def obtener_proveedor_finca(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -55,6 +56,8 @@ def obtener_proveedor_finca(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARFINCA])
 def modificar_proveedor_finca(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -90,6 +93,8 @@ def modificar_proveedor_finca(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARFINCA])
 def deshabilitar_proveedor_finca(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -127,6 +132,8 @@ def deshabilitar_proveedor_finca(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARFINCA])
 def cambiar_proveedor_finca(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
