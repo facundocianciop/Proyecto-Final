@@ -125,10 +125,10 @@ class DtoMedicionCruzadaRiego:
 
     def as_json(self):
         return dict(
-            mecanismo_riego_finca_sector=self.mecanismo_riego_finca_sector.as_json(),
-            ejecucion=self.ejecucion.as_json(),
-            configuracion=self.configuracion.as_json(),
-            medicionesComponenteAntes=self.mediciones_componente_antes.as_json(),
-            medicionesComponenteDespues=self.mediciones_componente_despues.as_json(),
-            medicionesClimaticasAntes=self.mediciones_climaticas_antes.as_json()
+            mecanismo_riego_finca_sector=self.mecanismo_riego_finca_sector,
+            ejecucion=self.ejecucion,
+            configuracion=self.configuracion,
+            medicionesComponenteAntes=self.mediciones_componente_antes,
+            medicionesComponenteDespues=self.mediciones_componente_despues,
+            medicionesClimaticasAntes=self.mediciones_climaticas_antes
         )
