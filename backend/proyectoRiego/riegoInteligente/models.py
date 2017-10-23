@@ -1065,7 +1065,9 @@ class CriterioRiegoPorMedicion(CriterioRiego):
             nombre=self.nombre,
             descripcion=self.descripcion,
             fechaCreacionCriterio=fecha_creacion_date,
-            valor=self.valor
+            valor=self.valor,
+            tipoMedicion=self.tipo_medicion.nombreTipoMedicion,
+            unidadMedicion=self.tipo_medicion.unidadMedicion
         )
 
 
