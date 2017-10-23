@@ -11,6 +11,8 @@ from supportClases.dto_configuracion_finca import *
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARSENSORES])
 def crear_sensor(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -48,6 +50,7 @@ def crear_sensor(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def buscar_sensores_componente(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -86,6 +89,8 @@ def buscar_sensores_componente(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARSENSORES])
 def deshabilitar_sensor(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -118,6 +123,8 @@ def deshabilitar_sensor(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARSENSORES])
 def modificar_sensor(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -158,6 +165,7 @@ def modificar_sensor(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def mostrar_sensores_finca(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -188,6 +196,7 @@ def mostrar_sensores_finca(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_GET])
+@manejar_errores()
 def mostrar_tipo_medicion(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -208,6 +217,8 @@ def mostrar_tipo_medicion(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARSENSORES, PERMISO_PUEDEASIGNARCOMPONENTESENSOR])
 def crear_componente_sensor(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -247,6 +258,8 @@ def crear_componente_sensor(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARSENSORES])
 def modificar_componente_sensor(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -289,6 +302,8 @@ def modificar_componente_sensor(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARSENSORES, PERMISO_PUEDEASIGNARCOMPONENTESENSOR])
 def habilitar_componente_sensor(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -336,6 +351,7 @@ def habilitar_componente_sensor(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def buscar_componente_sensor_por_id(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -365,6 +381,8 @@ def buscar_componente_sensor_por_id(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARSENSORES, PERMISO_PUEDEASIGNARCOMPONENTESENSOR])
 def deshabilitar_componente_sensor(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -428,6 +446,8 @@ def deshabilitar_componente_sensor(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARSENSORES, PERMISO_PUEDEASIGNARCOMPONENTESENSOR])
 def asignar_sensor_a_componente_sensor(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -483,6 +503,8 @@ def asignar_sensor_a_componente_sensor(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARSENSORES, PERMISO_PUEDEASIGNARCOMPONENTESENSOR])
 def desasignar_sensor_de_componente_sensor(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -535,6 +557,7 @@ def desasignar_sensor_de_componente_sensor(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def buscar_sensores_no_asignados(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -570,6 +593,7 @@ def buscar_sensores_no_asignados(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def mostrar_componentes_sensor_finca_habilitados(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -608,6 +632,7 @@ def mostrar_componentes_sensor_finca_habilitados(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def mostrar_componentes_sensor_finca(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -640,6 +665,7 @@ def mostrar_componentes_sensor_finca(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def mostrar_componentes_sensor_finca_no_asignados(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
