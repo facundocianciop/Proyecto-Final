@@ -620,6 +620,7 @@ def obtener_estado_actual_sector(request):
                             configuracion_riego = ejecucion.configuracion_riego.as_json()
             componente_sensor = ""
             ultima_medicion = ""
+            dto_estado_actual_sector = None
             if sector_seleccionado.componentesensorsector_set.filter(habilitado=True).__len__() == 1:
                 componente_sensor_sector = sector_seleccionado.componentesensorsector_set.get(habilitado=True)
                 componente_sensor = componente_sensor_sector.componente_sensor.as_json()
