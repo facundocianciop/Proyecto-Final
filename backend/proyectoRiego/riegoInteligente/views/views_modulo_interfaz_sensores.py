@@ -15,8 +15,8 @@ from supportClases.error_handler import *
 
 
 @transaction.atomic()
-@login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def recibir_medicion(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)

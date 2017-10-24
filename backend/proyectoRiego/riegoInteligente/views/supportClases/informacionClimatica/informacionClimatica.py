@@ -8,6 +8,7 @@ from riegoInteligente.views.supportClases.informacionClimatica import adaptadorO
 @transaction.atomic()
 def obtener_mediciones_finca(id_finca):
 
+    # noinspection PyBroadException
     try:
         finca = Finca.objects.get(idFinca=id_finca)
 
@@ -28,8 +29,9 @@ def obtener_mediciones_finca(id_finca):
         ultima_medicion = None
         try:
             ultima_medicion = MedicionInformacionClimaticaCabecera.\
-                objects.get(proveedor_informacion_climatica_externa=proveedor_info_climatica_finca)
-        except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned) as err:
+                objects.filter(proveedor_informacion_climatica_externa=proveedor_info_climatica_finca).\
+                order_by('-fechaHora').first()
+        except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned):
             pass
 
         if ultima_medicion:
@@ -37,17 +39,16 @@ def obtener_mediciones_finca(id_finca):
                 print "La llamada no cumple con la frecuencia"
                 return False
 
-        detalles = obtener_medicion_climatica_proveedor(proveedor_informacion_climatica.nombreProveedor,
+        cabecera = armar_cabecera_medicion(proveedor_info_climatica_finca)
+        detalles = obtener_medicion_climatica_proveedor(cabecera, proveedor_informacion_climatica.nombreProveedor,
                                                         finca.ubicacion)
         if not detalles:
             print "No se crearon los detalles de mediciones"
             return False
 
-        cabecera = armar_cabecera_medicion(proveedor_info_climatica_finca)
-
         for detalle in detalles:
-            detalle.medicion_informacion_climatica_cabecera = cabecera
-
+            detalle.save()
+        cabecera.save()
         return True
 
     except Exception:
@@ -69,9 +70,9 @@ def controlar_frecuencia(frecuencia, fecha_utima_medicion):
         return False
 
 
-def obtener_medicion_climatica_proveedor(nombre_proveedor, ubicacion):
+def obtener_medicion_climatica_proveedor(cabecera_medicion, nombre_proveedor, ubicacion):
     if nombre_proveedor == adaptadorOpenWeather.NOMBRE_PROVEEDOR_OPEN_WEATHER:
-        return adaptadorOpenWeather.obtener_mediciones_climaticas(ubicacion)
+        return adaptadorOpenWeather.obtener_mediciones_climaticas(cabecera_medicion, ubicacion)
     else:
         return None
 

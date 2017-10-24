@@ -1121,7 +1121,7 @@ class TipoMedicion(models.Model):
     fechaBajaTipoMedicion = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        verbose_name_plural = "Tipos de mediciones"
+        verbose_name_plural = "_Tipos de mediciones"
 
     def save(self, *args, **kwargs):
         """Get last value of Code and Number from database, and increment before save"""
@@ -1393,7 +1393,7 @@ class TipoMedicionClimatica(models.Model):
     fechaBajaTipoMedicionClimatica = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        verbose_name_plural = "Tipos de mediciones climaticas"
+        verbose_name_plural = "_Tipos de mediciones climaticas"
 
     def save(self, *args, **kwargs):
         """Get last value of Code and Number from database, and increment before save"""

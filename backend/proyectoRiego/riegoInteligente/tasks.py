@@ -20,7 +20,5 @@ def mul(x, y):
 
 
 @shared_task
-def xsum(numbers):
-    return sum(numbers)
-
-
+def controlar_configuracion_riego_medicion(id_finca, detalles_mediciones):
+    print "Controlar configuraciones riego por medicion"

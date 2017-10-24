@@ -213,3 +213,11 @@ TIPO_CONFIGURACION_RIEGO_AUTOMATICO = 'automatico'
 TIPO_CRITERIO_RIEGO_MEDICION = "criterio_riego_medicion"
 TIPO_CRITERIO_RIEGO_VOLUMEN_AGUA = "criterio_riego_volumen_agua"
 TIPO_CRITERIO_RIEGO_HORA = "criterio_riego_hora"
+
+# Tipos de medicion
+
+TIPO_MEDICION_TEMPERATURA_AIRE = 'Temperatura aire'
+TIPO_MEDICION_TEMPERATURA_SUELO = 'Temperatura suelo'
+TIPO_MEDICION_HUMEDAD_AIRE = 'Humedad aire'
+TIPO_MEDICION_HUMEDAD_SUELO = 'Humedad suelo'
+TIPO_MEDICION_RADIACION_SOLAR = 'Radiacion solar'

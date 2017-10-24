@@ -23,10 +23,11 @@ app.autodiscover_tasks()
 # celery -A proyectoRiego worker -l info
 
 
+# noinspection PyUnusedLocal
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
     # Calls test('hello') every 10 seconds.
-    sender.add_periodic_task(30.0, test.s('hello'), name='add every 10')
+    sender.add_periodic_task(30.0, obtener_mediciones_climaticas.s(), name='Obtener mediciones climaticas')
 
     # Calls test('world') every 30 seconds
     # sender.add_periodic_task(30.0, test.s('world'), expires=10)
@@ -35,11 +36,11 @@ def setup_periodic_tasks(sender, **kwargs):
     # sender.add_periodic_task(
     #    crontab(hour=7, minute=30, day_of_week=1),
     #    test.s('Happy Mondays!'),
-    #)
+    # )
 
 
 @app.task
-def test(arg):
+def obtener_mediciones_climaticas():
     from riegoInteligente.views.supportClases.procesos_background import *
     obtener_mediciones_climaticas()
 
