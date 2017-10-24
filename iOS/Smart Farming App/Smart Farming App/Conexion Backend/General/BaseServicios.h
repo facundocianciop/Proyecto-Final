@@ -134,7 +134,19 @@ typedef void(^SuccessBlock)(RespuestaServicioBase *respuesta);
 #define KEY_DIA_INICIO_CRITERIO_RIEGO       @"diaInicioCriterioRiego"
 
 // Obtencion informacion externa
-#define KEY_FRECUENCIA      @"frecuencia"
+#define KEY_PROVEEDOR_INFO_EXTERNA_NOMBRE_PROVEEDOR             @"nombreProveedor"
+#define KEY_PROVEEDOR_INFO_EXTERNA_FRECUENCIA_MAXIMA_POSIBLE    @"frecuenciaMaximaPosible"
+#define KEY_PROVEEDOR_INFO_EXTERNA_FRECUENCIA_ACTUAL            @"frecuenciaActual"
+#define KEY_PROVEEDOR_INFO_EXTERNA_FECHA_ALTA_PROVEEDOR_FINCA   @"fechaAltaProveedorFinca"
+#define KEY_PROVEEDOR_INFO_EXTERNA_URL_API                      @"urlApi"
+#define KEY_PROVEEDOR_INFO_EXTERNA_LISTA_TIPO_MEDICION          @"listaTipoMedicion"
+
+#define KEY_MEDICION_CLIMATICA_ID_TIPO_MEDICION_CLIMATICA            @"idTipoMedicionClimatica"
+#define KEY_MEDICION_CLIMATICA_NOMBRE_TIPO_MEDICION_CLIMATICA        @"nombreTipoMedicionClimatica"
+#define KEY_MEDICION_CLIMATICA_UNIDAD_MEDICION                       @"unidadMedicion"
+#define KEY_MEDICION_CLIMATICA_FECHA_ALTA_TIPO_MEDICION_CLIMATICA    @"fechaAltaTipoMedicionClimatica"
+#define KEY_MEDICION_CLIMATICA_FECHA_BAJA_TIPO_MEDICION_CLIMATICA    @"fechaBajaTipoMedicionClimatica"
+#define KEY_MEDICION_CLIMATICA_HABILITADA                            @"habilitada"
 
 // Mediciones
 #define KEY_LISTA_MEDICIONES        @"listaMediciones"
@@ -151,6 +163,32 @@ typedef void(^SuccessBlock)(RespuestaServicioBase *respuesta);
 #define KEY_NOTIFICACION_ACTIVADA                   @"notificacionActivada"
 #define KEY_CONFIGURACION_ACTIVADA                  @"configuracionActivada"
 #define KEY_DESCRIPCION_CONFIGURACION_EVENTO        @"descripcionConfiguracionEvento"
+
+// Permisos
+#define KEY_PERMISO_PUEDE_ASIGNAR_COMPONENTE_SENSOR                         @"puedeAsignarComponenteSensor"
+#define KEY_PERMISO_PUEDE_ASIGNAR_CULTIVO                                   @"puedeAsignarCultivo"
+#define KEY_PERMISO_PUEDE_ASIGNAR_MECRIEGO_A_FINCA                          @"puedeAsignarMecRiegoAFinca"
+#define KEY_PERMISO_PUEDE_ASIGNAR_MECRIEGO_A_SECTOR                         @"puedeAsignarMecRiegoASector"
+#define KEY_PERMISO_PUEDE_CONFIGURAR_OBTENCION_INFO_EXTERNA                 @"puedeConfigurarObtencionInfoExterna"
+#define KEY_PERMISO_PUEDE_CREAR_COMPONENTE_SENSOR                           @"puedeCrearComponenteSensor"
+#define KEY_PERMISO_PUEDE_CREAR_CONFIGURACION_RIEGO                         @"puedeCrearConfiguracionRiego"
+#define KEY_PERMISO_PUEDE_CREAR_SECTOR                                      @"puedeCrearSector"
+#define KEY_PERMISO_PUEDE_GENERAR_INFORME_CRUZADO_RIEGO_MEDICION            @"puedeGenerarInformeCruzadoRiegoMedicion"
+#define KEY_PERMISO_PUEDE_GENERAR_INFORME_ESTADO_ACTUAL_SECTORES            @"puedeGenerarInformeEstadoActualSectores"
+#define KEY_PERMISO_PUEDE_GENERAR_INFORME_ESTADO_HISTORICO_SECTORES_FINCA   @"puedeGenerarInformeEstadoHistoricoSectoresFinca"
+#define KEY_PERMISO_PUEDE_GENERAR_INFORME_EVENTO_PERSONALIZADO              @"puedeGenerarInformeEventoPersonalizado"
+#define KEY_PERMISO_PUEDE_GENERAR_INFORME_HELADAS_HISTORICO                 @"puedeGenerarInformeHeladasHistorico"
+#define KEY_PERMISO_PUEDE_GENERAR_INFORME_RIEGO_EN_EJECUCION                @"puedeGenerarInformeRiegoEnEjecucion"
+#define KEY_PERMISO_PUEDE_GENERAR_INFORME_RIEGO_POR_SECTORES_HISTORICO      @"puedeGenerarInformeRiegoPorSectoresHistorico"
+#define KEY_PERMISO_PUEDE_GESTIONAR_COMPONENTE_SENSOR                       @"puedeGestionarComponenteSensor"
+#define KEY_PERMISO_PUEDE_GESTIONAR_CULTIVO_SECTOR                          @"puedeGestionarCultivoSector"
+#define KEY_PERMISO_PUEDE_GESTIONAR_EVENTO_PERSONALIZADO                    @"puedeGestionarEventoPersonalizado"
+#define KEY_PERMISO_PUEDE_GESTIONAR_FINCA                                   @"puedeGestionarFinca"
+#define KEY_PERMISO_PUEDE_GESTIONAR_SECTOR                                  @"puedeGestionarSector"
+#define KEY_PERMISO_PUEDE_GESTIONAR_SENSORES                                @"puedeGestionarSensores"
+#define KEY_PERMISO_PUEDE_GESTIONAR_USUARIOS_FINCA                          @"puedeGestionarUsuariosFinca"
+#define KEY_PERMISO_PUEDE_INICIAR_O_DETENER_RIEGO_MANUALMENTE               @"puedeIniciarODetenerRiegoManualmente"
+#define KEY_PERMISO_PUEDE_MODIFICAR_CONFIGURACION_RIEGO                     @"puedeModificarConfiguracionRiego"
 
 @interface BaseServicios : NSObject
 

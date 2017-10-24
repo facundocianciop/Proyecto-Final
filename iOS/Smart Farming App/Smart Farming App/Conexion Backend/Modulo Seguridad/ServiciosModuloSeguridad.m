@@ -22,7 +22,6 @@
 
 #define OPERATION_RECUPERAR_CUENTA                      @"recuperarCuenta"
 #define OPERATION_CAMBIAR_CONTRASENIA_RECUPERAR_CUENTA  @"cambiarContraseniaRecuperarCuenta"
-#define OPERATION_ELIMINAR_USUARIO                      @"eliminarUsuario"
 
 
 @interface ServiciosModuloSeguridad()
