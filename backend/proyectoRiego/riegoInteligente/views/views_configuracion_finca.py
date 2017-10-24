@@ -11,6 +11,7 @@ from supportClases.dto_configuracion_finca import *
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def mostrarMecanismosRiegoFinca(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -51,6 +52,7 @@ def mostrarMecanismosRiegoFinca(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def mostrar_mecanismos_nuevos(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -87,6 +89,8 @@ def mostrar_mecanismos_nuevos(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARFINCA, PERMISO_PUEDEASIGNARMECRIEGOAFINCA])
 def habilitar_mecanismo_riego_finca(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -130,6 +134,8 @@ def habilitar_mecanismo_riego_finca(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_PUT])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARFINCA, PERMISO_PUEDEASIGNARMECRIEGOAFINCA])
 def agregar_mecanismo_riego_finca(request):
     response=HttpResponse()
     datos = obtener_datos_json(request)
@@ -177,6 +183,8 @@ def agregar_mecanismo_riego_finca(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARFINCA, PERMISO_PUEDEASIGNARMECRIEGOAFINCA])
 def deshabilitar_mecanismo_riego_finca(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
