@@ -8,6 +8,10 @@
 
 #import "RespuestaServicioBase.h"
 
+#import "SFSensor.h"
+
 @interface RespuestaMostrarSensoresFinca : RespuestaServicioBase
+
+@property (strong, nonatomic) NSArray<SFSensor*> *sensoresFinca;
 
 @end

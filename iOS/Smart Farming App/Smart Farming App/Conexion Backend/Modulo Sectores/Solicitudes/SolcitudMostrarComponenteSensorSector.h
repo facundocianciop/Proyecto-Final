@@ -10,6 +10,7 @@
 
 @interface SolcitudMostrarComponenteSensorSector : RespuestaServicioBase
 
+@property (assign, nonatomic) long idFinca;
 @property (assign, nonatomic) long idSector;
 
 @end

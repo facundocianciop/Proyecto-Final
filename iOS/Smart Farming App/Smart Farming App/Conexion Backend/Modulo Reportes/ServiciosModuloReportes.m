@@ -23,6 +23,49 @@
     
 @implementation ServiciosModuloReportes
 
++(void) buscarConfiguracionesEventosPersonalizados:(SolicitudBuscarConfiguracionesEventosPersonalizados*)solicitudBuscarConfiguracionesEventosPersonalizados completionBlock:(SuccessBlock)completionBlock failureBlock:(FailureBlock)failureBlock {
+    
+    
+}
 
++(void) mostrarConfiguracionEventoPersonalizado:(SolicitudMostrarConfiguracionEventoPersonalizado*)solicitudMostrarConfiguracionEventoPersonalizado completionBlock:(SuccessBlock)completionBlock failureBlock:(FailureBlock)failureBlock{
+    
+    
+}
+
++(void) obtenerEstadoActualSector:(SolicitudObtenerEstadoActualSector*)solicitudObtenerEstadoActualSector completionBlock:(SuccessBlock)completionBlock failureBlock:(FailureBlock)failureBlock {
+    
+    
+}
+
++(void) obtenerInformeHistoricoSector:(SolicitudObtenerInformeHistoricoSector*)solicitudObtenerInformeHistoricoSector completionBlock:(SuccessBlock)completionBlock failureBlock:(FailureBlock)failureBlock {
+    
+    
+}
+
++(void) obtenerInformeRiegoEjecucionSector:(SolicitudObtenerInformeRiegoEjecucionSector*)solicitudObtenerInformeRiegoEjecucionSector completionBlock:(SuccessBlock)completionBlock failureBlock:(FailureBlock)failureBlock {
+    
+    
+}
+
++(void) obtenerInformeRiegoHistoricoSector:(SolicitudObtenerInformeRiegoHistoricoSector*)solicitudObtenerInformeRiegoHistoricoSector completionBlock:(SuccessBlock)completionBlock failureBlock:(FailureBlock)failureBlock {
+    
+    
+}
+
++(void) obtenerInformeEventosPersonalizados:(SolicitudObtenerInformeEventosPersonalizados*)solicitudObtenerInformeEventosPersonalizados completionBlock:(SuccessBlock)completionBlock failureBlock:(FailureBlock)failureBlock {
+    
+    
+}
+
++(void) obtenerInformeHistoricoHeladas:(SolicitudObtenerInformeHistoricoHeladas*)solicitudObtenerInformeHistoricoHeladas completionBlock:(SuccessBlock)completionBlock failureBlock:(FailureBlock)failureBlock {
+    
+    
+}
+
++(void) obtenerInformeCruzadoRiegoMediciones:(SolicitudObtenerInformeCruzadoRiegoMediciones*)solicitudObtenerInformeCruzadoRiegoMediciones completionBlock:(SuccessBlock)completionBlock failureBlock:(FailureBlock)failureBlock {
+    
+    
+}
 
 @end

@@ -8,6 +8,12 @@
 
 #import "RespuestaServicioBase.h"
 
+#import "DTOMedicionClimatica.h"
+#import "DTOComponenteMedicion.h"
+
 @interface RespuestaObtenerInformeHistoricoSector : RespuestaServicioBase
+
+@property (strong, nonatomic) NSArray<DTOComponenteMedicion*> *listaComponenteMediciones; //componenteMedicionListaMediciones
+@property (strong, nonatomic) NSArray<DTOMedicionClimatica*> *listaMedicionesClimaticas;
 
 @end

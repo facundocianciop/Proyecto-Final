@@ -8,6 +8,10 @@
 
 #import "RespuestaServicioBase.h"
 
+#import "DTOInformeCruzadoRiegoMediciones.h"
+
 @interface RespuestaObtenerInformeCruzadoRiegoMediciones : RespuestaServicioBase
+
+@property (strong, nonatomic) NSArray<DTOInformeCruzadoRiegoMediciones*> *listaDatosCruzados;
 
 @end

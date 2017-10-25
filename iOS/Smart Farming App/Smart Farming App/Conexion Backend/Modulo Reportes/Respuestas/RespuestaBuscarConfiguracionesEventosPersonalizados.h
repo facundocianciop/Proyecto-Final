@@ -8,6 +8,10 @@
 
 #import "RespuestaServicioBase.h"
 
+#import "SFConfiguracionEvento.h"
+
 @interface RespuestaBuscarConfiguracionesEventosPersonalizados : RespuestaServicioBase
+
+@property (strong, nonatomic) NSArray<SFConfiguracionEvento*> *configuracionesEvento;
 
 @end

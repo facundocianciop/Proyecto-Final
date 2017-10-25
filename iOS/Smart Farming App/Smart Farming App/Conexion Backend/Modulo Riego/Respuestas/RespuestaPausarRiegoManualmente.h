@@ -7,7 +7,10 @@
 //
 
 #import "RespuestaServicioBase.h"
+#import "SFEjecucionRiego.h"
 
 @interface RespuestaPausarRiegoManualmente : RespuestaServicioBase
+
+@property (strong, nonatomic) SFEjecucionRiego *ejecucionRiego;
 
 @end

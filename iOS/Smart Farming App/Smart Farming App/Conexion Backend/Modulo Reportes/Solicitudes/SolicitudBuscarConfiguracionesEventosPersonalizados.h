@@ -10,4 +10,7 @@
 
 @interface SolicitudBuscarConfiguracionesEventosPersonalizados : SolicitudServicioBase
 
+@property (assign, nonatomic) long idFinca;
+@property (assign, nonatomic) long idUsuarioFinca;
+
 @end

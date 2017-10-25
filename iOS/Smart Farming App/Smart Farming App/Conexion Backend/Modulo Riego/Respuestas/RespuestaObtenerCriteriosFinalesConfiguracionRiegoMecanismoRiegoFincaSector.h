@@ -8,6 +8,10 @@
 
 #import "RespuestaServicioBase.h"
 
+#import "SFConfiguracionRiego.h"
+
 @interface RespuestaObtenerCriteriosFinalesConfiguracionRiegoMecanismoRiegoFincaSector : RespuestaServicioBase
+
+@property (strong, nonatomic) NSArray<SFConfiguracionRiego*> *criteriosFinalesConfiguracionRiego;
 
 @end

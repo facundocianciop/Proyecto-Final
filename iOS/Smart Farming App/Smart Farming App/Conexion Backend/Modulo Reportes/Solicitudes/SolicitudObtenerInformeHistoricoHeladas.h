@@ -10,4 +10,10 @@
 
 @interface SolicitudObtenerInformeHistoricoHeladas : SolicitudServicioBase
 
+@property (assign, nonatomic) long idFinca;
+@property (assign, nonatomic) long idSector;
+
+@property (strong, nonatomic) NSDate *fechaInicioSector;
+@property (strong, nonatomic) NSDate *fechaFinSector;
+
 @end

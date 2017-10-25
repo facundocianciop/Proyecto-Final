@@ -10,4 +10,6 @@
 
 @interface SolicitudMostrarSensoresFinca : SolicitudServicioBase
 
+@property (assign, nonatomic) long idFinca;
+
 @end

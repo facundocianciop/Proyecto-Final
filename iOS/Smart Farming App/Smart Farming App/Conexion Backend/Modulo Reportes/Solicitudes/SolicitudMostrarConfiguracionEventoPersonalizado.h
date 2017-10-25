@@ -10,4 +10,7 @@
 
 @interface SolicitudMostrarConfiguracionEventoPersonalizado : SolicitudServicioBase
 
+@property (assign, nonatomic) long idFinca;
+@property (assign, nonatomic) long idConfiguracionEvento;
+
 @end

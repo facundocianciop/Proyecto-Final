@@ -7,7 +7,10 @@
 //
 
 #import "RespuestaServicioBase.h"
+#import "SFConfiguracionRiego.h"
 
 @interface RespuestaObtenerConfiguracionesRiegoMecanismoRiegoFincaSector : RespuestaServicioBase
+
+@property (strong, nonatomic) NSArray<SFConfiguracionRiego*> *configuracionesRiego;
 
 @end

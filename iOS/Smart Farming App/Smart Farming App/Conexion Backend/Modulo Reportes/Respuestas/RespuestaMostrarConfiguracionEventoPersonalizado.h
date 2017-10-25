@@ -8,6 +8,10 @@
 
 #import "RespuestaServicioBase.h"
 
+#import "SFConfiguracionEvento.h"
+
 @interface RespuestaMostrarConfiguracionEventoPersonalizado : RespuestaServicioBase
+
+@property (strong, nonatomic) SFConfiguracionEvento *configuracionEvento;
 
 @end

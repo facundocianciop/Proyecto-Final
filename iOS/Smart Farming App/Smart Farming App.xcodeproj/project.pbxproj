@@ -146,6 +146,25 @@
 		A1C56F221F9FC4DE0083D95D /* SFConjuntoPermisos.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F211F9FC4DE0083D95D /* SFConjuntoPermisos.m */; };
 		A1C56F251F9FC9880083D95D /* SFTipoMedicionClimatica.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F241F9FC9880083D95D /* SFTipoMedicionClimatica.m */; };
 		A1C56F281F9FC99C0083D95D /* SFProveedorInformacionClimatica.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F271F9FC99C0083D95D /* SFProveedorInformacionClimatica.m */; };
+		A1C56F2B1FA0C7EF0083D95D /* SFTipoMedicion.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F2A1FA0C7EF0083D95D /* SFTipoMedicion.m */; };
+		A1C56F2E1FA0C8A50083D95D /* SFSensor.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F2D1FA0C8A50083D95D /* SFSensor.m */; };
+		A1C56F311FA0CDA90083D95D /* SFEjecucionRiego.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F301FA0CDA90083D95D /* SFEjecucionRiego.m */; };
+		A1C56F341FA0CDBA0083D95D /* SFConfiguracionRiego.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F331FA0CDBA0083D95D /* SFConfiguracionRiego.m */; };
+		A1C56F371FA0CDE60083D95D /* SFCriterioConfiguracionRiego.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F361FA0CDE60083D95D /* SFCriterioConfiguracionRiego.m */; };
+		A1C56F3A1FA0D1750083D95D /* SFCriterioConfiguracionRiegoHora.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F391FA0D1750083D95D /* SFCriterioConfiguracionRiegoHora.m */; };
+		A1C56F3D1FA0D18F0083D95D /* SFCriterioConfiguracionRiegoMedicion.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F3C1FA0D18F0083D95D /* SFCriterioConfiguracionRiegoMedicion.m */; };
+		A1C56F401FA0D19F0083D95D /* SFCriterioConfiguracionRiegoVolumenAgua.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F3F1FA0D19F0083D95D /* SFCriterioConfiguracionRiegoVolumenAgua.m */; };
+		A1C56F431FA0DD8A0083D95D /* SFConfiguracionEvento.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F421FA0DD8A0083D95D /* SFConfiguracionEvento.m */; };
+		A1C56F461FA0DEFA0083D95D /* SFMedicionFuenteInterna.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F451FA0DEFA0083D95D /* SFMedicionFuenteInterna.m */; };
+		A1C56F491FA0DF140083D95D /* SFMedicionFuenteExterna.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F481FA0DF140083D95D /* SFMedicionFuenteExterna.m */; };
+		A1C56F4C1FA0E7590083D95D /* SFMedicionSensorCabecera.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F4B1FA0E7590083D95D /* SFMedicionSensorCabecera.m */; };
+		A1C56F4F1FA0E76E0083D95D /* SFMedicionSensorDetalle.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F4E1FA0E76E0083D95D /* SFMedicionSensorDetalle.m */; };
+		A1C56F531FA0ED8F0083D95D /* DTOComponenteMedicion.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F521FA0ED8F0083D95D /* DTOComponenteMedicion.m */; };
+		A1C56F561FA0EDA40083D95D /* DTOMedicionClimatica.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F551FA0EDA40083D95D /* DTOMedicionClimatica.m */; };
+		A1C56F591FA0EED10083D95D /* SFMedicionInformacionClimaticaCabecera.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F581FA0EED10083D95D /* SFMedicionInformacionClimaticaCabecera.m */; };
+		A1C56F5C1FA0EEEA0083D95D /* SFMedicionInformacionClimaticaDetalle.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F5B1FA0EEEA0083D95D /* SFMedicionInformacionClimaticaDetalle.m */; };
+		A1C56F5F1FA100350083D95D /* SFOcurrenciaEventoPersonalizado.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F5E1FA100350083D95D /* SFOcurrenciaEventoPersonalizado.m */; };
+		A1C56F621FA103E70083D95D /* DTOInformeCruzadoRiegoMediciones.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F611FA103E70083D95D /* DTOInformeCruzadoRiegoMediciones.m */; };
 		E597039ECA16D820156C1A75 /* libPods-Smart Farming AppUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A8F455D29AC3820A5F7AE8 /* libPods-Smart Farming AppUITests.a */; };
 		F9DB669270910874EEE9C455 /* libPods-Smart Farming App.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 678B84909B9700662B8D806F /* libPods-Smart Farming App.a */; };
 /* End PBXBuildFile section */
@@ -448,6 +467,44 @@
 		A1C56F241F9FC9880083D95D /* SFTipoMedicionClimatica.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFTipoMedicionClimatica.m; sourceTree = "<group>"; };
 		A1C56F261F9FC99C0083D95D /* SFProveedorInformacionClimatica.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFProveedorInformacionClimatica.h; sourceTree = "<group>"; };
 		A1C56F271F9FC99C0083D95D /* SFProveedorInformacionClimatica.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFProveedorInformacionClimatica.m; sourceTree = "<group>"; };
+		A1C56F291FA0C7EF0083D95D /* SFTipoMedicion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFTipoMedicion.h; sourceTree = "<group>"; };
+		A1C56F2A1FA0C7EF0083D95D /* SFTipoMedicion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFTipoMedicion.m; sourceTree = "<group>"; };
+		A1C56F2C1FA0C8A50083D95D /* SFSensor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFSensor.h; sourceTree = "<group>"; };
+		A1C56F2D1FA0C8A50083D95D /* SFSensor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFSensor.m; sourceTree = "<group>"; };
+		A1C56F2F1FA0CDA90083D95D /* SFEjecucionRiego.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFEjecucionRiego.h; sourceTree = "<group>"; };
+		A1C56F301FA0CDA90083D95D /* SFEjecucionRiego.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFEjecucionRiego.m; sourceTree = "<group>"; };
+		A1C56F321FA0CDBA0083D95D /* SFConfiguracionRiego.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFConfiguracionRiego.h; sourceTree = "<group>"; };
+		A1C56F331FA0CDBA0083D95D /* SFConfiguracionRiego.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFConfiguracionRiego.m; sourceTree = "<group>"; };
+		A1C56F351FA0CDE60083D95D /* SFCriterioConfiguracionRiego.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFCriterioConfiguracionRiego.h; sourceTree = "<group>"; };
+		A1C56F361FA0CDE60083D95D /* SFCriterioConfiguracionRiego.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFCriterioConfiguracionRiego.m; sourceTree = "<group>"; };
+		A1C56F381FA0D1750083D95D /* SFCriterioConfiguracionRiegoHora.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFCriterioConfiguracionRiegoHora.h; sourceTree = "<group>"; };
+		A1C56F391FA0D1750083D95D /* SFCriterioConfiguracionRiegoHora.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFCriterioConfiguracionRiegoHora.m; sourceTree = "<group>"; };
+		A1C56F3B1FA0D18F0083D95D /* SFCriterioConfiguracionRiegoMedicion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFCriterioConfiguracionRiegoMedicion.h; sourceTree = "<group>"; };
+		A1C56F3C1FA0D18F0083D95D /* SFCriterioConfiguracionRiegoMedicion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFCriterioConfiguracionRiegoMedicion.m; sourceTree = "<group>"; };
+		A1C56F3E1FA0D19F0083D95D /* SFCriterioConfiguracionRiegoVolumenAgua.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFCriterioConfiguracionRiegoVolumenAgua.h; sourceTree = "<group>"; };
+		A1C56F3F1FA0D19F0083D95D /* SFCriterioConfiguracionRiegoVolumenAgua.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFCriterioConfiguracionRiegoVolumenAgua.m; sourceTree = "<group>"; };
+		A1C56F411FA0DD8A0083D95D /* SFConfiguracionEvento.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFConfiguracionEvento.h; sourceTree = "<group>"; };
+		A1C56F421FA0DD8A0083D95D /* SFConfiguracionEvento.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFConfiguracionEvento.m; sourceTree = "<group>"; };
+		A1C56F441FA0DEFA0083D95D /* SFMedicionFuenteInterna.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFMedicionFuenteInterna.h; sourceTree = "<group>"; };
+		A1C56F451FA0DEFA0083D95D /* SFMedicionFuenteInterna.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFMedicionFuenteInterna.m; sourceTree = "<group>"; };
+		A1C56F471FA0DF140083D95D /* SFMedicionFuenteExterna.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFMedicionFuenteExterna.h; sourceTree = "<group>"; };
+		A1C56F481FA0DF140083D95D /* SFMedicionFuenteExterna.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFMedicionFuenteExterna.m; sourceTree = "<group>"; };
+		A1C56F4A1FA0E7590083D95D /* SFMedicionSensorCabecera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFMedicionSensorCabecera.h; sourceTree = "<group>"; };
+		A1C56F4B1FA0E7590083D95D /* SFMedicionSensorCabecera.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFMedicionSensorCabecera.m; sourceTree = "<group>"; };
+		A1C56F4D1FA0E76E0083D95D /* SFMedicionSensorDetalle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFMedicionSensorDetalle.h; sourceTree = "<group>"; };
+		A1C56F4E1FA0E76E0083D95D /* SFMedicionSensorDetalle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFMedicionSensorDetalle.m; sourceTree = "<group>"; };
+		A1C56F511FA0ED8F0083D95D /* DTOComponenteMedicion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DTOComponenteMedicion.h; sourceTree = "<group>"; };
+		A1C56F521FA0ED8F0083D95D /* DTOComponenteMedicion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DTOComponenteMedicion.m; sourceTree = "<group>"; };
+		A1C56F541FA0EDA40083D95D /* DTOMedicionClimatica.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DTOMedicionClimatica.h; sourceTree = "<group>"; };
+		A1C56F551FA0EDA40083D95D /* DTOMedicionClimatica.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DTOMedicionClimatica.m; sourceTree = "<group>"; };
+		A1C56F571FA0EED10083D95D /* SFMedicionInformacionClimaticaCabecera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFMedicionInformacionClimaticaCabecera.h; sourceTree = "<group>"; };
+		A1C56F581FA0EED10083D95D /* SFMedicionInformacionClimaticaCabecera.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFMedicionInformacionClimaticaCabecera.m; sourceTree = "<group>"; };
+		A1C56F5A1FA0EEEA0083D95D /* SFMedicionInformacionClimaticaDetalle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFMedicionInformacionClimaticaDetalle.h; sourceTree = "<group>"; };
+		A1C56F5B1FA0EEEA0083D95D /* SFMedicionInformacionClimaticaDetalle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFMedicionInformacionClimaticaDetalle.m; sourceTree = "<group>"; };
+		A1C56F5D1FA100350083D95D /* SFOcurrenciaEventoPersonalizado.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFOcurrenciaEventoPersonalizado.h; sourceTree = "<group>"; };
+		A1C56F5E1FA100350083D95D /* SFOcurrenciaEventoPersonalizado.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFOcurrenciaEventoPersonalizado.m; sourceTree = "<group>"; };
+		A1C56F601FA103E70083D95D /* DTOInformeCruzadoRiegoMediciones.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DTOInformeCruzadoRiegoMediciones.h; sourceTree = "<group>"; };
+		A1C56F611FA103E70083D95D /* DTOInformeCruzadoRiegoMediciones.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DTOInformeCruzadoRiegoMediciones.m; sourceTree = "<group>"; };
 		A31BF76F63193F1D17D68FEC /* Pods-Smart Farming AppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Smart Farming AppUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Smart Farming AppUITests/Pods-Smart Farming AppUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		AA27972AF7A47216E490E53A /* Pods-Smart Farming App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Smart Farming App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Smart Farming App/Pods-Smart Farming App.debug.xcconfig"; sourceTree = "<group>"; };
 		ADF4D971DF49EE7504D8D4CC /* Pods-Smart Farming App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Smart Farming App.release.xcconfig"; path = "Pods/Target Support Files/Pods-Smart Farming App/Pods-Smart Farming App.release.xcconfig"; sourceTree = "<group>"; };
@@ -640,8 +697,8 @@
 		1116BA8F1F8C6E95005C9AFF /* Modulo Seguridad */ = {
 			isa = PBXGroup;
 			children = (
-				1116DA971F906A3F0057A048 /* Respuestas */,
 				11CD00911F8F176800C58C49 /* Solicitudes */,
+				1116DA971F906A3F0057A048 /* Respuestas */,
 				1116BA741F8C5A2C005C9AFF /* ServiciosModuloSeguridad.h */,
 				1116BA6B1F8C5A2C005C9AFF /* ServiciosModuloSeguridad.m */,
 			);
@@ -789,6 +846,38 @@
 				A1C56F271F9FC99C0083D95D /* SFProveedorInformacionClimatica.m */,
 				A1C56F231F9FC9880083D95D /* SFTipoMedicionClimatica.h */,
 				A1C56F241F9FC9880083D95D /* SFTipoMedicionClimatica.m */,
+				A1C56F291FA0C7EF0083D95D /* SFTipoMedicion.h */,
+				A1C56F2A1FA0C7EF0083D95D /* SFTipoMedicion.m */,
+				A1C56F2C1FA0C8A50083D95D /* SFSensor.h */,
+				A1C56F2D1FA0C8A50083D95D /* SFSensor.m */,
+				A1C56F2F1FA0CDA90083D95D /* SFEjecucionRiego.h */,
+				A1C56F301FA0CDA90083D95D /* SFEjecucionRiego.m */,
+				A1C56F321FA0CDBA0083D95D /* SFConfiguracionRiego.h */,
+				A1C56F331FA0CDBA0083D95D /* SFConfiguracionRiego.m */,
+				A1C56F351FA0CDE60083D95D /* SFCriterioConfiguracionRiego.h */,
+				A1C56F361FA0CDE60083D95D /* SFCriterioConfiguracionRiego.m */,
+				A1C56F3B1FA0D18F0083D95D /* SFCriterioConfiguracionRiegoMedicion.h */,
+				A1C56F3C1FA0D18F0083D95D /* SFCriterioConfiguracionRiegoMedicion.m */,
+				A1C56F3E1FA0D19F0083D95D /* SFCriterioConfiguracionRiegoVolumenAgua.h */,
+				A1C56F3F1FA0D19F0083D95D /* SFCriterioConfiguracionRiegoVolumenAgua.m */,
+				A1C56F381FA0D1750083D95D /* SFCriterioConfiguracionRiegoHora.h */,
+				A1C56F391FA0D1750083D95D /* SFCriterioConfiguracionRiegoHora.m */,
+				A1C56F411FA0DD8A0083D95D /* SFConfiguracionEvento.h */,
+				A1C56F421FA0DD8A0083D95D /* SFConfiguracionEvento.m */,
+				A1C56F441FA0DEFA0083D95D /* SFMedicionFuenteInterna.h */,
+				A1C56F451FA0DEFA0083D95D /* SFMedicionFuenteInterna.m */,
+				A1C56F471FA0DF140083D95D /* SFMedicionFuenteExterna.h */,
+				A1C56F481FA0DF140083D95D /* SFMedicionFuenteExterna.m */,
+				A1C56F4A1FA0E7590083D95D /* SFMedicionSensorCabecera.h */,
+				A1C56F4B1FA0E7590083D95D /* SFMedicionSensorCabecera.m */,
+				A1C56F4D1FA0E76E0083D95D /* SFMedicionSensorDetalle.h */,
+				A1C56F4E1FA0E76E0083D95D /* SFMedicionSensorDetalle.m */,
+				A1C56F571FA0EED10083D95D /* SFMedicionInformacionClimaticaCabecera.h */,
+				A1C56F581FA0EED10083D95D /* SFMedicionInformacionClimaticaCabecera.m */,
+				A1C56F5A1FA0EEEA0083D95D /* SFMedicionInformacionClimaticaDetalle.h */,
+				A1C56F5B1FA0EEEA0083D95D /* SFMedicionInformacionClimaticaDetalle.m */,
+				A1C56F5D1FA100350083D95D /* SFOcurrenciaEventoPersonalizado.h */,
+				A1C56F5E1FA100350083D95D /* SFOcurrenciaEventoPersonalizado.m */,
 			);
 			path = Clases;
 			sourceTree = "<group>";
@@ -953,6 +1042,7 @@
 		A142C1141F9F7B86009822A4 /* Modulo Reportes */ = {
 			isa = PBXGroup;
 			children = (
+				A1C56F501FA0ED6F0083D95D /* DTORespuesta */,
 				A142C1181F9F8B98009822A4 /* Solicitudes */,
 				A142C1191F9F8BA7009822A4 /* Respuestas */,
 				A142C1151F9F7BC3009822A4 /* ServiciosModuloReportes.h */,
@@ -1119,6 +1209,19 @@
 				A1BD86941F97ABDF0077C91E /* SFMecanismoRiegoHabilitadoTableViewCell.m */,
 			);
 			path = "Modulo Riego";
+			sourceTree = "<group>";
+		};
+		A1C56F501FA0ED6F0083D95D /* DTORespuesta */ = {
+			isa = PBXGroup;
+			children = (
+				A1C56F511FA0ED8F0083D95D /* DTOComponenteMedicion.h */,
+				A1C56F521FA0ED8F0083D95D /* DTOComponenteMedicion.m */,
+				A1C56F541FA0EDA40083D95D /* DTOMedicionClimatica.h */,
+				A1C56F551FA0EDA40083D95D /* DTOMedicionClimatica.m */,
+				A1C56F601FA103E70083D95D /* DTOInformeCruzadoRiegoMediciones.h */,
+				A1C56F611FA103E70083D95D /* DTOInformeCruzadoRiegoMediciones.m */,
+			);
+			path = DTORespuesta;
 			sourceTree = "<group>";
 		};
 		B0305F0AC2144FEB6B2E1558 /* Pods */ = {
@@ -1436,12 +1539,14 @@
 				A120BB421F9A939700240383 /* SFDetallesSectorViewController.m in Sources */,
 				A142C0D11F9E91BE009822A4 /* RespuestaIniciarRiegoManualmente.m in Sources */,
 				1116D6DF1F94424F0088D61B /* LGSideMenuBorderView.m in Sources */,
+				A1C56F4C1FA0E7590083D95D /* SFMedicionSensorCabecera.m in Sources */,
 				1116D6DC1F94424F0088D61B /* LGSideMenuHelper.m in Sources */,
 				1116D6C81F9433020088D61B /* SFFincaTableViewCell.m in Sources */,
 				A142C0C81F9E9175009822A4 /* SolicitudObtenerCriteriosInicialesConfiguracionRiegoMecanismoRiegoFincaSector.m in Sources */,
 				A120BB451F9A93D100240383 /* SFDetallesMecanismoRiegoViewController.m in Sources */,
 				111F7E111F951459002615D5 /* SFNavegarEstadoNoAutenticadoSegue.m in Sources */,
 				1116D6C01F9390DE0088D61B /* SFFincasPendientesViewController.m in Sources */,
+				A1C56F531FA0ED8F0083D95D /* DTOComponenteMedicion.m in Sources */,
 				1116BA8B1F8C6D09005C9AFF /* SFViewControllerBase.m in Sources */,
 				A1BD86851F9777520077C91E /* ServiciosModuloSectores.m in Sources */,
 				A1AE0B891F8E8CFD009B4494 /* RespuestaServicioBase.m in Sources */,
@@ -1449,9 +1554,11 @@
 				1116BA771F8C5A2C005C9AFF /* ContextoUsuario.m in Sources */,
 				11F020811F8F078D00DBC1DC /* SFTextInputBaseViewController.m in Sources */,
 				110CC7621F9854200090C6C0 /* SolicitudRegistrarUsuario.m in Sources */,
+				A1C56F3A1FA0D1750083D95D /* SFCriterioConfiguracionRiegoHora.m in Sources */,
 				A142C0CB1F9E918A009822A4 /* SolicitudObtenerCriteriosFinalesConfiguracionRiegoMecanismoRiegoFincaSector.m in Sources */,
 				A142C1251F9F8CD9009822A4 /* SolicitudObtenerInformeHistoricoSector.m in Sources */,
 				A142C1071F9F79D0009822A4 /* SolicitudDevolverPermisos.m in Sources */,
+				A1C56F311FA0CDA90083D95D /* SFEjecucionRiego.m in Sources */,
 				A1BD86901F97AB0E0077C91E /* SFMecanismosRiegoHabilitadosViewController.m in Sources */,
 				A142C1311F9F8D1F009822A4 /* SolicitudObtenerInformeHistoricoHeladas.m in Sources */,
 				A142C0B91F9E90FF009822A4 /* SolicitudObtenerRiegoEnEjecucionMecanismoRiegoFincaSector.m in Sources */,
@@ -1459,6 +1566,7 @@
 				A142C0F31F9F7440009822A4 /* SolicitudMostrarSensoresFinca.m in Sources */,
 				1116DA9B1F906F8C0057A048 /* RespuestaMostrarFincas.m in Sources */,
 				1116BA7A1F8C5A2C005C9AFF /* ServiciosModuloSeguridad.m in Sources */,
+				A1C56F5C1FA0EEEA0083D95D /* SFMedicionInformacionClimaticaDetalle.m in Sources */,
 				A142C0DE1F9E9210009822A4 /* RespuestaObtenerCriteriosInicialesConfiguracionRiegoMecanismoRiegoFincaSector.m in Sources */,
 				1116BA7E1F8C5A2C005C9AFF /* ServiciosModuloFinca.m in Sources */,
 				A142C09C1F9E44FD009822A4 /* SFCultivoSector.m in Sources */,
@@ -1475,22 +1583,28 @@
 				A142C0FF1F9F758E009822A4 /* RespuestaMostrarSensoresFinca.m in Sources */,
 				A142C0F61F9F747E009822A4 /* RespuestaMostrarComponentesSensorFinca.m in Sources */,
 				1116BA7D1F8C5A2C005C9AFF /* HTTPConector.m in Sources */,
+				A1C56F2B1FA0C7EF0083D95D /* SFTipoMedicion.m in Sources */,
 				1116D6DE1F94424F0088D61B /* LGSideMenuView.m in Sources */,
+				A1C56F3D1FA0D18F0083D95D /* SFCriterioConfiguracionRiegoMedicion.m in Sources */,
 				1116BA401F8C5866005C9AFF /* main.m in Sources */,
 				1116BA7B1F8C5A2C005C9AFF /* SFConstantesComunes.m in Sources */,
 				110CC75F1F9849030090C6C0 /* SFMenuReportesViewController.m in Sources */,
 				A1893E181F994A5A0060DC8A /* SFControladorEstadoSesion.m in Sources */,
+				A1C56F561FA0EDA40083D95D /* DTOMedicionClimatica.m in Sources */,
 				A142C0991F9E43A6009822A4 /* SolicitudMostrarCultivoSector.m in Sources */,
 				1116D6EB1F9451F70088D61B /* SFInformacionFincaActivadaViewController.m in Sources */,
 				A142C1101F9F7AA7009822A4 /* RespuestaDevolverPermisos.m in Sources */,
 				111D1DBD1F92DE9E00E3A168 /* SFFincasEncargadoViewController.m in Sources */,
 				1116DA9F1F90726C0057A048 /* ServiciosModuloRiego.m in Sources */,
+				A1C56F341FA0CDBA0083D95D /* SFConfiguracionRiego.m in Sources */,
 				A142C1221F9F8CC4009822A4 /* SolicitudObtenerEstadoActualSector.m in Sources */,
 				A142C11C1F9F8C41009822A4 /* SolicitudBuscarConfiguracionesEventosPersonalizados.m in Sources */,
+				A1C56F5F1FA100350083D95D /* SFOcurrenciaEventoPersonalizado.m in Sources */,
 				111D1DC31F92E01100E3A168 /* SFTableViewControllerBase.m in Sources */,
 				A142C11F1F9F8C53009822A4 /* SolicitudMostrarConfiguracionEventoPersonalizado.m in Sources */,
 				11F020841F8F083F00DBC1DC /* SFTextField.m in Sources */,
 				111F8F151F95B2E600AB7E8F /* SFModificarUsuarioViewController.m in Sources */,
+				A1C56F621FA103E70083D95D /* DTOInformeCruzadoRiegoMediciones.m in Sources */,
 				A142C09F1F9E4609009822A4 /* RespuestaMostrarCultivoSector.m in Sources */,
 				A142C1461F9F8DE2009822A4 /* RespuestaObtenerInformeRiegoHistoricoSector.m in Sources */,
 				1116D6EE1F94565F0088D61B /* SFNavegarASeccionFincaSegue.m in Sources */,
@@ -1508,6 +1622,7 @@
 				1116D6C41F940E310088D61B /* RespuestaBuscarRoles.m in Sources */,
 				A142C10D1F9F7A7F009822A4 /* RespuestaBuscarFincaId.m in Sources */,
 				A142C0E11F9E9224009822A4 /* RespuestaObtenerCriteriosFinalesConfiguracionRiegoMecanismoRiegoFincaSector.m in Sources */,
+				A1C56F491FA0DF140083D95D /* SFMedicionFuenteExterna.m in Sources */,
 				A142C14F1F9F8E09009822A4 /* RespuestaObtenerInformeCruzadoRiegoMediciones.m in Sources */,
 				A1BD86951F97ABDF0077C91E /* SFMecanismoRiegoHabilitadoTableViewCell.m in Sources */,
 				A142C1131F9F7ADA009822A4 /* RespuestaObtenerProveedorFinca.m in Sources */,
@@ -1515,6 +1630,7 @@
 				A142C0D41F9E91CE009822A4 /* RespuestaPausarRiegoManualmente.m in Sources */,
 				1116BA931F8C7490005C9AFF /* SFUtils.m in Sources */,
 				A10157171F9003BE00179ED7 /* SFFormularioBaseViewController.m in Sources */,
+				A1C56F401FA0D19F0083D95D /* SFCriterioConfiguracionRiegoVolumenAgua.m in Sources */,
 				A142C1491F9F8DEF009822A4 /* RespuestaObtenerInformeEventosPersonalizados.m in Sources */,
 				A142C0ED1F9F73F3009822A4 /* SolicitudMostrarComponentesSensorFincaHabilitados.m in Sources */,
 				A142C10A1F9F79F8009822A4 /* SolicitudObtenerProveedorFinca.m in Sources */,
@@ -1526,14 +1642,17 @@
 				11CD00941F8F178D00C58C49 /* SolicitudInicioSesion.m in Sources */,
 				A142C0C51F9E9160009822A4 /* SolicitudObtenerConfiguracionesRiegoMecanismoRiegoFincaSector.m in Sources */,
 				A1893E1E1F9A89400060DC8A /* SFReportesViewControllerBase.m in Sources */,
+				A1C56F461FA0DEFA0083D95D /* SFMedicionFuenteInterna.m in Sources */,
 				A142C0E51F9F7078009822A4 /* ServiciosModuloSensores.m in Sources */,
 				A142C13A1F9F8DB4009822A4 /* RespuestaMostrarConfiguracionEventoPersonalizado.m in Sources */,
 				A1C56F251F9FC9880083D95D /* SFTipoMedicionClimatica.m in Sources */,
 				A142C0FC1F9F756D009822A4 /* RespuestaMostrarTipoMedicion.m in Sources */,
+				A1C56F431FA0DD8A0083D95D /* SFConfiguracionEvento.m in Sources */,
 				A1893E0C1F9900020060DC8A /* SolicitudCambiarContrasenia.m in Sources */,
 				111D1DCA1F92FA7500E3A168 /* SFSectorFinca.m in Sources */,
 				A1AE0B921F8E9011009B4494 /* SolicitudServicioBase.m in Sources */,
 				A142C12B1F9F8CFD009822A4 /* SolicitudObtenerInformeRiegoHistoricoSector.m in Sources */,
+				A1C56F591FA0EED10083D95D /* SFMedicionInformacionClimaticaCabecera.m in Sources */,
 				A142C0A51F9E470F009822A4 /* RespuestaMostrarCultivoSectorHistorico.m in Sources */,
 				1116D6DD1F94424F0088D61B /* LGSideMenuSegue.m in Sources */,
 				11F0207E1F8F057900DBC1DC /* SFInicioSesionViewController.m in Sources */,
@@ -1547,6 +1666,9 @@
 				A142C1041F9F79AB009822A4 /* SolicitudBuscarFincaId.m in Sources */,
 				A142C1401F9F8DCC009822A4 /* RespuestaObtenerInformeHistoricoSector.m in Sources */,
 				1116D6E21F9444890088D61B /* FincaLeftMenuTableViewController.m in Sources */,
+				A1C56F4F1FA0E76E0083D95D /* SFMedicionSensorDetalle.m in Sources */,
+				A1C56F2E1FA0C8A50083D95D /* SFSensor.m in Sources */,
+				A1C56F371FA0CDE60083D95D /* SFCriterioConfiguracionRiego.m in Sources */,
 				A1893E151F9933580060DC8A /* RespuestaRecuperarCuenta.m in Sources */,
 				A1BD86981F97AC650077C91E /* SFMecanismoRiegoFincaSector.m in Sources */,
 				A142C0A21F9E46BD009822A4 /* SolicitudMostrarCultivoSectorHistorico.m in Sources */,

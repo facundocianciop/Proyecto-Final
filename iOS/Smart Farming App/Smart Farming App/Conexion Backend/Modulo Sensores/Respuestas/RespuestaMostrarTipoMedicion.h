@@ -8,6 +8,10 @@
 
 #import "RespuestaServicioBase.h"
 
+#import "SFTipoMedicion.h"
+
 @interface RespuestaMostrarTipoMedicion : RespuestaServicioBase
+
+@property (strong, nonatomic) NSArray<SFTipoMedicion*> *tiposMedicion;
 
 @end

@@ -8,6 +8,10 @@
 
 #import "RespuestaServicioBase.h"
 
+#import "SFOcurrenciaEventoPersonalizado.h"
+
 @interface RespuestaObtenerInformeEventosPersonalizados : RespuestaServicioBase
+
+@property (strong, nonatomic) NSArray<SFOcurrenciaEventoPersonalizado*> *listaOcurrenciasEventoPersonalizado;
 
 @end

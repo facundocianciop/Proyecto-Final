@@ -10,6 +10,7 @@
 
 @interface SolicitudMostrarCultivoSectorHistorico : SolicitudServicioBase
 
+@property (assign, nonatomic) long idFinca;
 @property (assign, nonatomic) long idSector;
 
 @end

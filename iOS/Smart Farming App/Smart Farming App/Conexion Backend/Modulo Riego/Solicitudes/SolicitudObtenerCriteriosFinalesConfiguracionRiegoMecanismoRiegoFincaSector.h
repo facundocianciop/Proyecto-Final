@@ -10,4 +10,8 @@
 
 @interface SolicitudObtenerCriteriosFinalesConfiguracionRiegoMecanismoRiegoFincaSector : SolicitudServicioBase
 
+@property (assign, nonatomic) long idFinca;
+@property (assign, nonatomic) long idMecanismoRiegoFincaSector;
+@property (assign, nonatomic) long idConfiguracionRiego;
+
 @end

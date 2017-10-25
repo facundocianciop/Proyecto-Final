@@ -10,15 +10,15 @@
 
 @interface SFComponenteSensor : NSObject
 
-@property (assign, nonatomic) long idComponenteSensor;
-@property (assign, nonatomic) long idFinca;
+@property (assign, nonatomic) long idComponenteSensor; // idComponenteSensor
+@property (assign, nonatomic) long idFinca; // finca
 
-@property (strong, nonatomic) NSString *modelo;
-@property (strong, nonatomic) NSString *descripcion;
+@property (strong, nonatomic) NSString *modelo; // modelo
+@property (strong, nonatomic) NSString *descripcion; // descripcion
 
-@property (strong, nonatomic) NSString *estadoComponenteSensor;
+@property (strong, nonatomic) NSString *estadoComponenteSensor; // estado
 
-@property (assign, nonatomic) NSInteger cantidadMaximaSensores;
-@property (assign, nonatomic) NSInteger cantidadSensoresAsignados;
+@property (assign, nonatomic) NSInteger cantidadMaximaSensores; // cantidadMaximaSensores
+@property (assign, nonatomic) NSInteger cantidadSensoresAsignados; // cantidadSensoresAsignados
 
 @end
