@@ -1,8 +1,8 @@
 from __future__ import absolute_import, unicode_literals
-import os
-from celery import Celery
-from celery.schedules import crontab
 
+import os
+
+from celery import Celery
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'proyectoRiego.settings')
@@ -41,7 +41,7 @@ def setup_periodic_tasks(sender, **kwargs):
 
 @app.task
 def obtener_mediciones_climaticas():
-    from riegoInteligente.views.supportClases.procesos_background import *
+    from riegoInteligente.views.supportClases.procesosBackground.procesos_background import *
     obtener_mediciones_climaticas()
 
 

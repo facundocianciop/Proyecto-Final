@@ -1298,7 +1298,7 @@ class MedicionDetalle(models.Model):
 
 class MedicionEvento(models.Model):
     OIDMedicionEvento = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    #idMedicionEvento = models.IntegerField(default=1, unique=True, editable=False)
+    # idMedicionEvento = models.IntegerField(default=1, unique=True, editable=False)
     valorMaximo = models.FloatField()
     valorMinimo = models.FloatField()
     # class Meta:
@@ -1322,6 +1322,7 @@ class MedicionEvento(models.Model):
     #             ultimaMedicionEvento = MedicionEvento.objects.order_by('-idMedicionEvento')[0]
     #             self.idMedicionEvento = ultimaMedicionEvento.idMedicionEvento+ 1
     #             super(MedicionEvento, self).save(*args, **kwargs)
+
 
 class MedicionFuenteInterna(MedicionEvento):
     # RECIBE COMO PARAMETRO A LA CLASE MEDICION EVENTO PORQUE HEREDA DE ELLA

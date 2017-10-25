@@ -6,7 +6,7 @@ from riegoInteligente.views.supportClases.informacionClimatica import adaptadorO
 
 
 @transaction.atomic()
-def obtener_mediciones_finca(id_finca):
+def obtener_mediciones_climaticas_finca(id_finca):
 
     # noinspection PyBroadException
     try:

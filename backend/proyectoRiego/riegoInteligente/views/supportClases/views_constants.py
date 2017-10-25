@@ -201,6 +201,7 @@ ESTADO_NO_APROBADO = 'no_aprobado'
 ESTADO_EN_EJECUCION = 'en_ejecucion'
 ESTADO_CANCELADO = 'cancelado'
 ESTADO_PAUSADO = 'pausado'
+ESTADO_FINALIZADO = 'finalizado'
 
 
 # Tipos configuracion riego
