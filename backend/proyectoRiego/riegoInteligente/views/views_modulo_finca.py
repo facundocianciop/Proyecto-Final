@@ -169,7 +169,7 @@ def crear_finca(request):
             proveedorSeleccionado = ProveedorInformacionClimatica.objects.get(
                 nombreProveedor=datos[KEY_NOMBRE_PROVEEDOR])
                 #se obtiene al proveedor deseado
-            if int(datos[KEY_FRECUENCIA]) < proveedorSeleccionado.frecuenciaMaxPosible:
+            if int(datos[KEY_FRECUENCIA]) > proveedorSeleccionado.frecuenciaMaxPosible:
                 #si la frecuencia de actualización es mayor a la permitida por el proveedor se retorna un error
                 raise ValueError(ERROR_FRECUENCIA_MAXIMA_SUPERADA,
                                  "No se puede colocar esa frecuencia, ya que es mayor a la permitida por el proveedor")
