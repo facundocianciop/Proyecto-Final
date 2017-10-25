@@ -225,7 +225,8 @@ def crear_componente_sensor(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_ID_FINCA and KEY_MODELO_COMPONENTE and KEY_DESCRIPCION_COMPONENTE and KEY_CANTIDAD_MAXIMA_SENSORES) in datos:
+        if (KEY_ID_FINCA in datos) and (KEY_MODELO_COMPONENTE in datos) and (KEY_DESCRIPCION_COMPONENTE in datos) \
+                and (KEY_CANTIDAD_MAXIMA_SENSORES in datos):
             if datos[KEY_ID_FINCA] == '' or datos[KEY_MODELO_COMPONENTE] == '' \
                     or datos[KEY_DESCRIPCION_COMPONENTE] == '' or datos[KEY_CANTIDAD_MAXIMA_SENSORES] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
