@@ -13,7 +13,7 @@
 
 @interface DTOComponenteMedicion : NSObject
 
-@property (strong, nonatomic) SFComponenteSensor *componenteSensor;
-@property (strong, nonatomic) SFMedicionSensorCabecera *medicionCabecera;
+@property (strong, nonatomic) SFComponenteSensor *componenteSensor; //componente
+@property (strong, nonatomic) SFMedicionSensorCabecera *medicionCabecera; //medicionCabecera
 
 @end

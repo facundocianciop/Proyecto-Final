@@ -14,7 +14,7 @@
 @interface SFMedicionInformacionClimaticaDetalle : NSObject
 
 @property (assign, nonatomic) NSInteger nroRenglon; // nroRenglon
-@property (assign, nonatomic) CGFloat *valorMedicion; // valor
+@property (assign, nonatomic) CGFloat valorMedicion; // valor
 
 @property (strong, nonatomic) NSString *nombreTipoMedicion; // tipoMedicionClimatica
 

@@ -133,6 +133,13 @@ typedef void(^SuccessBlock)(RespuestaServicioBase *respuesta);
 #define KEY_HORA_INICIO_CRITERIO_RIEGO      @"horaInicioCriterioRiego"
 #define KEY_DIA_INICIO_CRITERIO_RIEGO       @"diaInicioCriterioRiego"
 
+#define TIPO_CONFIGURACION_RIEGO_PROGRAMADO @"programado'
+#define TIPO_CONFIGURACION_RIEGO_AUTOMATICO @"automatico"
+
+#define TIPO_CRITERIO_RIEGO_MEDICION        @"criterio_riego_medicion"
+#define TIPO_CRITERIO_RIEGO_VOLUMEN_AGUA    @"criterio_riego_volumen_agua"
+#define TIPO_CRITERIO_RIEGO_HORA            @"criterio_riego_hora"
+
 // Obtencion informacion externa
 #define KEY_PROVEEDOR_INFO_EXTERNA_NOMBRE_PROVEEDOR             @"nombreProveedor"
 #define KEY_PROVEEDOR_INFO_EXTERNA_FRECUENCIA_MAXIMA_POSIBLE    @"frecuenciaMaximaPosible"
@@ -151,6 +158,12 @@ typedef void(^SuccessBlock)(RespuestaServicioBase *respuesta);
 // Mediciones
 #define KEY_LISTA_MEDICIONES        @"listaMediciones"
 #define KEY_VALOR_MEDICION_SENSOR   @"valorMedicion"
+
+// Reportes
+#define  KEY_FECHA_INICIO_SECTOR    @"fechaInicioSector"
+#define  KEY_FECHA_FIN_SECTOR       @"fechaFinSector"
+#define  KEY_HELADA                 @"helada"
+
 
 // Evento personalizado
 #define KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO   @"idConfiguracionEvento"

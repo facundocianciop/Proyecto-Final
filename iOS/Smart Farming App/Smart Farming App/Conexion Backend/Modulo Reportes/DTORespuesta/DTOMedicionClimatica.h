@@ -12,6 +12,6 @@
 
 @interface DTOMedicionClimatica : NSObject
 
-@property (strong, nonatomic) SFMedicionInformacionClimaticaCabecera *MedicionInformacionClimaticaCabecera;
+@property (strong, nonatomic) SFMedicionInformacionClimaticaCabecera *medicionInformacionClimaticaCabecera; //medicionClimatica
 
 @end

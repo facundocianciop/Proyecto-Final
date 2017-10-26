@@ -12,8 +12,8 @@
 @interface SFMedicionSensorDetalle : NSObject
 
 @property (assign, nonatomic) NSInteger nroRenglon; // nro_renglon
-@property (assign, nonatomic) CGFloat *valorMedicion; // valor
+@property (assign, nonatomic) CGFloat valorMedicion; // valor
 
-@property (strong, nonatomic) NSArray<SFMedicionSensorDetalle*> *listaDetallesMedicion; // tipo_medicion
+@property (strong, nonatomic) NSString *nombreTipoMedicion; // tipo_medicion
 
 @end

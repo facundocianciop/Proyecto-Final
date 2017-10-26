@@ -14,6 +14,6 @@
 @interface RespuestaObtenerInformeHistoricoSector : RespuestaServicioBase
 
 @property (strong, nonatomic) NSArray<DTOComponenteMedicion*> *listaComponenteMediciones; //componenteMedicionListaMediciones
-@property (strong, nonatomic) NSArray<DTOMedicionClimatica*> *listaMedicionesClimaticas;
+@property (strong, nonatomic) NSArray<DTOMedicionClimatica*> *listaMedicionesClimaticas; //medicionClimaticaList
 
 @end

@@ -42,29 +42,29 @@
                     SFComponenteSensor *componenteSensor = [SFComponenteSensor new];
                     
                     if ([datos objectForKey:@"idComponenteSensor"] != [NSNull null]) {
-                        componenteSensor.idComponenteSensor = [[datosOperacion objectForKey:@"idComponenteSensor"] longLongValue];
+                        componenteSensor.idComponenteSensor = [[datos objectForKey:@"idComponenteSensor"] longLongValue];
                     }
                     
                     if ([datos objectForKey:@"finca"] != [NSNull null]) {
-                        componenteSensor.idFinca = [[datosOperacion objectForKey:@"finca"] longLongValue];
+                        componenteSensor.idFinca = [[datos objectForKey:@"finca"] longLongValue];
                     }
                     
                     if ([datos objectForKey:@"modelo"] != [NSNull null]) {
-                        componenteSensor.modelo = [datosOperacion objectForKey:@"modelo"];
+                        componenteSensor.modelo = [datos objectForKey:@"modelo"];
                     }
                     if ([datos objectForKey:@"descripcion"] != [NSNull null]) {
-                        componenteSensor.descripcion = [datosOperacion objectForKey:@"descripcion"];
+                        componenteSensor.descripcion = [datos objectForKey:@"descripcion"];
                     }
                     
                     if ([datos objectForKey:@"estado"] != [NSNull null]) {
-                        componenteSensor.estadoComponenteSensor = [datosOperacion objectForKey:@"estado"];
+                        componenteSensor.estadoComponenteSensor = [datos objectForKey:@"estado"];
                     }
 
                     if ([datos objectForKey:@"cantidadMaximaSensores"] != [NSNull null]) {
-                        componenteSensor.cantidadMaximaSensores = [[datosOperacion objectForKey:@"cantidadMaximaSensores"] integerValue];
+                        componenteSensor.cantidadMaximaSensores = [[datos objectForKey:@"cantidadMaximaSensores"] integerValue];
                     }
                     if ([datos objectForKey:@"cantidadSensoresAsignados"] != [NSNull null]) {
-                        componenteSensor.cantidadSensoresAsignados = [[datosOperacion objectForKey:@"cantidadSensoresAsignados"] integerValue];
+                        componenteSensor.cantidadSensoresAsignados = [[datos objectForKey:@"cantidadSensoresAsignados"] integerValue];
                     }
                     
                     [listaComponentesSensor addObject:componenteSensor];
@@ -108,29 +108,29 @@
                     SFComponenteSensor *componenteSensor = [SFComponenteSensor new];
                     
                     if ([datos objectForKey:@"idComponenteSensor"] != [NSNull null]) {
-                        componenteSensor.idComponenteSensor = [[datosOperacion objectForKey:@"idComponenteSensor"] longLongValue];
+                        componenteSensor.idComponenteSensor = [[datos objectForKey:@"idComponenteSensor"] longLongValue];
                     }
                     
                     if ([datos objectForKey:@"finca"] != [NSNull null]) {
-                        componenteSensor.idFinca = [[datosOperacion objectForKey:@"finca"] longLongValue];
+                        componenteSensor.idFinca = [[datos objectForKey:@"finca"] longLongValue];
                     }
                     
                     if ([datos objectForKey:@"modelo"] != [NSNull null]) {
-                        componenteSensor.modelo = [datosOperacion objectForKey:@"modelo"];
+                        componenteSensor.modelo = [datos objectForKey:@"modelo"];
                     }
                     if ([datos objectForKey:@"descripcion"] != [NSNull null]) {
-                        componenteSensor.descripcion = [datosOperacion objectForKey:@"descripcion"];
+                        componenteSensor.descripcion = [datos objectForKey:@"descripcion"];
                     }
                     
                     if ([datos objectForKey:@"estado"] != [NSNull null]) {
-                        componenteSensor.estadoComponenteSensor = [datosOperacion objectForKey:@"estado"];
+                        componenteSensor.estadoComponenteSensor = [datos objectForKey:@"estado"];
                     }
                     
                     if ([datos objectForKey:@"cantidadMaximaSensores"] != [NSNull null]) {
-                        componenteSensor.cantidadMaximaSensores = [[datosOperacion objectForKey:@"cantidadMaximaSensores"] integerValue];
+                        componenteSensor.cantidadMaximaSensores = [[datos objectForKey:@"cantidadMaximaSensores"] integerValue];
                     }
                     if ([datos objectForKey:@"cantidadSensoresAsignados"] != [NSNull null]) {
-                        componenteSensor.cantidadSensoresAsignados = [[datosOperacion objectForKey:@"cantidadSensoresAsignados"] integerValue];
+                        componenteSensor.cantidadSensoresAsignados = [[datos objectForKey:@"cantidadSensoresAsignados"] integerValue];
                     }
                     
                     [listaComponentesSensor addObject:componenteSensor];
@@ -168,25 +168,25 @@
                     SFTipoMedicion *tipoMedicion = [SFTipoMedicion new];
                     
                     if ([datos objectForKey:@"idTipoMedicion"] != [NSNull null]) {
-                        tipoMedicion.idTipoMedicion = [[datosOperacion objectForKey:@"idTipoMedicion"] longLongValue];
+                        tipoMedicion.idTipoMedicion = [[datos objectForKey:@"idTipoMedicion"] longLongValue];
                     }
                     
                     if ([datos objectForKey:@"nombreTipoMedicion"] != [NSNull null]) {
-                        tipoMedicion.nombreTipoMedicion = [datosOperacion objectForKey:@"nombreTipoMedicion"];
+                        tipoMedicion.nombreTipoMedicion = [datos objectForKey:@"nombreTipoMedicion"];
                     }
                     if ([datos objectForKey:@"unidadMedicion"] != [NSNull null]) {
-                        tipoMedicion.unidadMedicion = [datosOperacion objectForKey:@"unidadMedicion"];
+                        tipoMedicion.unidadMedicion = [datos objectForKey:@"unidadMedicion"];
                     }
                     
                     if ([datos objectForKey:@"fechaAltaTipoMedicion"] != [NSNull null]) {
-                        tipoMedicion.fechaAltaTipoMedicion = [SFUtils dateFromStringYYYYMMDD:datosOperacion[@"fechaAltaTipoMedicion"]];
+                        tipoMedicion.fechaAltaTipoMedicion = [SFUtils dateFromStringYYYYMMDD:datos[@"fechaAltaTipoMedicion"]];
                     }
                     if ([datos objectForKey:@"fechaBajaTipoMedicion"] != [NSNull null]) {
-                        tipoMedicion.fechaBajaTipoMedicion = [SFUtils dateFromStringYYYYMMDD:datosOperacion[@"fechaBajaTipoMedicion"]];
+                        tipoMedicion.fechaBajaTipoMedicion = [SFUtils dateFromStringYYYYMMDD:datos[@"fechaBajaTipoMedicion"]];
                     }
                     
                     if ([datos objectForKey:@"habilitado"] != [NSNull null]) {
-                        tipoMedicion.habilitado = [[datosOperacion objectForKey:@"habilitado"] boolValue];
+                        tipoMedicion.habilitado = [[datos objectForKey:@"habilitado"] boolValue];
                     }
 
                     [listaTiposMedicion addObject:tipoMedicion];
@@ -229,25 +229,25 @@
                     SFSensor *sensor = [SFSensor new];
                     
                     if ([datos objectForKey:@"idSensor"] != [NSNull null]) {
-                        sensor.idSensor = [[datosOperacion objectForKey:@"idSensor"] longLongValue];
+                        sensor.idSensor = [[datos objectForKey:@"idSensor"] longLongValue];
                     }
                     
                     if ([datos objectForKey:@"tipoMedicion"] != [NSNull null]) {
-                        sensor.nombreTipoMedicion = [datosOperacion objectForKey:@"tipoMedicion"];
+                        sensor.nombreTipoMedicion = [datos objectForKey:@"tipoMedicion"];
                     }
                     if ([datos objectForKey:@"modelo"] != [NSNull null]) {
-                        sensor.modelo = [datosOperacion objectForKey:@"modelo"];
+                        sensor.modelo = [datos objectForKey:@"modelo"];
                     }
                     
                     if ([datos objectForKey:@"fechaAltaSensor"] != [NSNull null]) {
-                        sensor.fechaAltaSensor = [SFUtils dateFromStringYYYYMMDD:datosOperacion[@"fechaAltaSensor"]];
+                        sensor.fechaAltaSensor = [SFUtils dateFromStringYYYYMMDD:datos[@"fechaAltaSensor"]];
                     }
                     if ([datos objectForKey:@"fechaBajaSensor"] != [NSNull null]) {
-                        sensor.fechaBajaSensor = [SFUtils dateFromStringYYYYMMDD:datosOperacion[@"fechaBajaSensor"]];
+                        sensor.fechaBajaSensor = [SFUtils dateFromStringYYYYMMDD:datos[@"fechaBajaSensor"]];
                     }
                     
                     if ([datos objectForKey:@"habilitado"] != [NSNull null]) {
-                        sensor.habilitado = [[datosOperacion objectForKey:@"habilitado"] boolValue];
+                        sensor.habilitado = [[datos objectForKey:@"habilitado"] boolValue];
                     }
                     
                     [listaSensores addObject:sensor];
