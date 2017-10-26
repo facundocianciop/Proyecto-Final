@@ -27,6 +27,16 @@ class DtoConfiguracionEventoPersonalizado:
             lista_mediciones_internas=self.lista_mediciones_internas,
             id_usuario_finca=self.id_usuario_finca)
 
+class DtoConfiguracionEventoPersonalizadoFinal:
+    def __init__(self, dto_evento_lista, cantidad):
+        self.dto_evento_lista = dto_evento_lista
+        self.cantidad =cantidad
+
+    def as_json(self):
+        return dict(
+           dto_evento_lista=[dto_evento.as_json() for dto_evento in self.dto_evento_lista],
+            cantidad=self.cantidad)
+
 
 class DtoEstadoActualSector:
     def __init__(self, idSector, numeroSector, superficieSector, descripcionSector, componenteSector, mecanismoSector,
