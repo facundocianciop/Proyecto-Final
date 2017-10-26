@@ -45,15 +45,15 @@ def crear_sector(request):
                     if sector.historicoEstadoSectorList.filter(fechaFinEstadoSector__isnull=True,
                                                                estado_sector=estado_habilitado).__len__() == 1:
                         raise ValueError(ERROR_SECTOR_YA_EXISTENTE, "Ya existe un sector con ese nombre.")
-            if finca_actual.tamanio < int(datos[KEY_SUPERFICIE_SECTOR]):
+            if finca_actual.tamanio < float(datos[KEY_SUPERFICIE_SECTOR]):
                 raise ValueError(ERROR_SECTOR_SUPERA_TAMANIO_FINCA, "El sector no puede ser mas grande que la finca.")
             superficie_ocupada = 0
             sectores_finca = Sector.objects.filter(finca=finca_actual)
             for sector in sectores_finca:
                 if sector.historicoEstadoSectorList.filter(fechaFinEstadoSector__isnull=True,
                                                            estado_sector=estado_habilitado).__len__() == 1:
-                    superficie_ocupada += int(sector.superficie)
-            superficie_ocupada += int(datos[KEY_SUPERFICIE_SECTOR])
+                    superficie_ocupada += float(sector.superficie)
+            superficie_ocupada += float(datos[KEY_SUPERFICIE_SECTOR])
             if superficie_ocupada > finca_actual.tamanio:
                 raise ValueError(ERROR_SECTORES_SUPERAN_TAMANIO_FINCA, "La suma de las superficies superan el tamanio"
                                                                        "de la finca.")
@@ -114,15 +114,15 @@ def modificar_sector(request):
                                                     fechaFinEstadoSector__isnull=True).__len__() != 1:
                 raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
             finca_actual = sector_seleccionado.finca
-            if finca_actual.tamanio < int(datos[KEY_SUPERFICIE_SECTOR]):
+            if finca_actual.tamanio < float(datos[KEY_SUPERFICIE_SECTOR]):
                 raise ValueError(ERROR_SECTOR_SUPERA_TAMANIO_FINCA, "El sector no puede ser mas grande que la finca.")
             superficie_ocupada = 0
             sectores_finca = Sector.objects.filter(finca=finca_actual)
             for sector in sectores_finca:
                 if sector.historicoEstadoSectorList.filter(fechaFinEstadoSector__isnull=True,
                                                            estado_sector=estado_habilitado).__len__() == 1:
-                    superficie_ocupada += int(sector.superficie)
-            superficie_ocupada += int(datos[KEY_SUPERFICIE_SECTOR])
+                    superficie_ocupada += float(sector.superficie)
+            superficie_ocupada += float(datos[KEY_SUPERFICIE_SECTOR])-sector.superficie
             if superficie_ocupada > finca_actual.tamanio:
                 raise ValueError(ERROR_SECTORES_SUPERAN_TAMANIO_FINCA, "La suma de las superficies superan el tamanio"
                                                                        "de la finca.")
