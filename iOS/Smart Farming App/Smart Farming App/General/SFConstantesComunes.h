@@ -63,4 +63,6 @@ extern NSString *const kErrorCambioContrasenia;
 extern NSString *const kErrorObteniendoRoles;
 extern NSString *const kErrorObteniendoFincas;
 
+extern NSString *const kErrorObteniendoDatosFinca;
+
 @end

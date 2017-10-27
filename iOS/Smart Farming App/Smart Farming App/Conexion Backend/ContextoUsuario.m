@@ -13,7 +13,9 @@
 @interface ContextoUsuario ()
 
 @property (strong, nonatomic) NSString  *username;
-@property (assign, nonatomic) long      fincaId;
+@property (assign, nonatomic) long      fincaElegidaId;
+
+@property (strong, nonatomic) SFConjuntoPermisos *conjuntoPermisosFincaElegida;
 
 @end
 
@@ -51,11 +53,19 @@ static ContextoUsuario *userContext = nil;
 }
 
 -(void)seleccionarFinca:(long)fincaId {
-    self.fincaId = fincaId;
+    self.fincaElegidaId = fincaId;
 }
 
 -(long)fincaSeleccionada{
-    return self.fincaId;
+    return self.fincaElegidaId;
+}
+
+-(void)setPermisosFincaSeleccionada:(SFConjuntoPermisos*)conjuntoPermisos {
+    self.conjuntoPermisosFincaElegida = conjuntoPermisos;
+}
+
+-(SFConjuntoPermisos*)permisosFincaSeleccionada{
+    return self.conjuntoPermisosFincaElegida;
 }
 
 -(void)invalidateContext {
@@ -63,7 +73,8 @@ static ContextoUsuario *userContext = nil;
     [[HTTPConector instance] endSession];
     
     self.username = nil;
-    self.fincaId = NSNotFound;
+    self.fincaElegidaId = NSNotFound;
+    self.conjuntoPermisosFincaElegida = nil;
     userContext = nil;
 }
 
