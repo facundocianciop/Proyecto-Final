@@ -30,6 +30,7 @@ def fincas_por_aprobar(request):
         template = loader.get_template('admin/riegoInteligente/fincasPorAprobar.html')
         context = {
             'fincas': fincas_pendientes,
+            'user': request.user,
         }
         return HttpResponse(template.render(context, request))
 
