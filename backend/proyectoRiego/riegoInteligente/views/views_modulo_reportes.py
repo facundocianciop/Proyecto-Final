@@ -1049,6 +1049,10 @@ def obtener_informe_cruzado_riego_mediciones_(request):
                                     .order_by("-fechaYHora").last()
                         if mecanismo != "":
                             mecanismo = mecanismo.as_json()
+                        if ejecucion.configuracion_riego is None :
+                            configuracion = ""
+                        else:
+                            configuracion = ejecucion.configuracion_riego.as_json(),
                         if medicion_climatica_antes != "":
                             medicion_climatica_antes = medicion_climatica_antes.as_json()
                         if medicion_cabecera_antes != "":
@@ -1058,10 +1062,10 @@ def obtener_informe_cruzado_riego_mediciones_(request):
                         lista_dto_medicion_cruzada_riego.append(DtoMedicionCruzadaRiego(
                             mecanismo_riego_finca_sector=mecanismo,
                             ejecucion=ejecucion.as_json(),
-                            configuracion=ejecucion.configuracion_riego.as_json(),
-                            mediciones_componente_antes=medicion_cabecera_antes.as_json(),
-                            mediciones_componente_despues=medicion_cabecera_despues.as_json(),
-                            mediciones_climaticas_antes=medicion_climatica_antes.as_json()))
+                            configuracion=configuracion,
+                            mediciones_componente_antes=medicion_cabecera_antes,
+                            mediciones_componente_despues=medicion_cabecera_despues,
+                            mediciones_climaticas_antes=medicion_climatica_antes))
 
                     response.content = armar_response_list_content(lista_dto_medicion_cruzada_riego)
                     response.status_code = 200
