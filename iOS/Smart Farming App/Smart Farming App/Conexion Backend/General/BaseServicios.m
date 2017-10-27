@@ -14,12 +14,16 @@
 
 +(id)armarRespuestaServicio:(RespuestaServicioBase *)respuesta withResponseObject:(NSDictionary *)responseObject {
     
-    NSString *resultado = [responseObject objectForKey:KEY_RESULTADO_OPERACION];
-    if (resultado) {
-        respuesta.resultado = [resultado boolValue];
+    if ([responseObject objectForKey:KEY_RESULTADO_OPERACION] != [NSNull null])  {
+        NSString *resultado = [responseObject objectForKey:KEY_RESULTADO_OPERACION];
+        if (resultado) {
+            respuesta.resultado = [resultado boolValue];
+        }
     }
     
-    respuesta.detalleOperacion = [responseObject objectForKey:KEY_DETALLE_OPERACION];
+    if ([responseObject objectForKey:KEY_DETALLE_OPERACION] != [NSNull null]) {
+        respuesta.detalleOperacion = [responseObject objectForKey:KEY_DETALLE_OPERACION];
+    }
     
     return [responseObject objectForKey:KEY_DATOS_OPERACION];
 }

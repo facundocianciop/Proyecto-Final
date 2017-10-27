@@ -1,18 +1,24 @@
 from datetime import datetime
 import pytz
 
+from django.core.exceptions import ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned
+
 from ...models import EjecucionRiego, EstadoEjecucionRiego, ConfiguracionRiego, EstadoConfiguracionRiego, \
     HistoricoEstadoConfiguracionRiego, TipoConfiguracionRiego, MecanismoRiegoFincaSector
 from views_constants import *
 
 
-def iniciar_ejecucion_riego(mecanismo_riego_finca_sector, detalle_riego):
+def iniciar_ejecucion_riego(mecanismo_riego_finca_sector, detalle_riego, configuracion_riego=None):
     """
     Iniciar una ejecucion de riego de un mecanismo_riego_finca_sector
     :param mecanismo_riego_finca_sector:
     :param detalle_riego:
+    :param configuracion_riego:
     :return:
     """
+
+    cancelar_todos_las_ejecuciones_mecanismo_riego_finca_sector(mecanismo_riego_finca_sector)
+
     estado_ejecucion_riego_en_ejecucion = EstadoEjecucionRiego.objects.get(
         nombreEstadoEjecucionRiego=ESTADO_EN_EJECUCION)
 
@@ -20,7 +26,8 @@ def iniciar_ejecucion_riego(mecanismo_riego_finca_sector, detalle_riego):
         mecanismo_riego_finca_sector=mecanismo_riego_finca_sector,
         fecha_hora_inicio=datetime.now(pytz.utc),
         detalle=detalle_riego,
-        estado_ejecucion_riego=estado_ejecucion_riego_en_ejecucion
+        estado_ejecucion_riego=estado_ejecucion_riego_en_ejecucion,
+        configuracion_riego=configuracion_riego
     )
     # TODO llamar a adaptador mecanismo riego y ejecutar riego
     ejecucion_riego_nuevo.save()
@@ -100,12 +107,78 @@ def cancelar_riego(ejecucion_riego):
         # TODO llamar a adaptador mecanismo riego y detener riego
         ejecucion_riego.save()
 
-    if ejecucion_riego.estado_ejecucion_riego == estado_ejecucion_riego_pausado:
+    elif ejecucion_riego.estado_ejecucion_riego == estado_ejecucion_riego_pausado:
         ejecucion_riego.fecha_hora_finalizacion = ejecucion_riego.fecha_hora_ultima_pausa
         ejecucion_riego.fecha_hora_ultimo_reinicio = ejecucion_riego.fecha_hora_ultima_pausa
         ejecucion_riego.estado_ejecucion_riego = estado_ejecucion_riego_cancelado
         # TODO llamar a adaptador mecanismo riego y detener riego
         ejecucion_riego.save()
+
+
+def detener_riego(ejecucion_riego):
+    """
+    Detener una ejecucion de riego de un mecanismo_riego_finca_sector
+    :param ejecucion_riego:
+    :return:
+    """
+    estado_ejecucion_riego_en_ejecucion = EstadoEjecucionRiego.objects.get(
+        nombreEstadoEjecucionRiego=ESTADO_EN_EJECUCION)
+
+    estado_ejecucion_riego_pausado = EstadoEjecucionRiego.objects.get(
+        nombreEstadoEjecucionRiego=ESTADO_PAUSADO)
+
+    estado_ejecucion_riego_finalizado = EstadoEjecucionRiego.objects.get(
+        nombreEstadoEjecucionRiego=ESTADO_FINALIZADO)
+
+    if ejecucion_riego.estado_ejecucion_riego == estado_ejecucion_riego_en_ejecucion:
+        ejecucion_riego.fecha_hora_finalizacion = datetime.now(pytz.utc)
+        ejecucion_riego.estado_ejecucion_riego = estado_ejecucion_riego_finalizado
+        # TODO llamar a adaptador mecanismo riego y detener riego
+        ejecucion_riego.save()
+
+    elif ejecucion_riego.estado_ejecucion_riego == estado_ejecucion_riego_pausado:
+        ejecucion_riego.fecha_hora_finalizacion = ejecucion_riego.fecha_hora_ultima_pausa
+        ejecucion_riego.fecha_hora_ultimo_reinicio = ejecucion_riego.fecha_hora_ultima_pausa
+        ejecucion_riego.estado_ejecucion_riego = estado_ejecucion_riego_finalizado
+        # TODO llamar a adaptador mecanismo riego y detener riego
+        ejecucion_riego.save()
+
+
+def cancelar_todos_las_ejecuciones_mecanismo_riego_finca_sector(mecanismo_riego_finca_sector):
+    """
+    Detener todas las ejecuciones para controlar que no haya mas de una activa al mismo tiempo
+    :param mecanismo_riego_finca_sector:
+    :return:
+    """
+    try:
+        estado_ejecucion_riego_en_ejecucion = EstadoEjecucionRiego.objects.get(
+            nombreEstadoEjecucionRiego=ESTADO_EN_EJECUCION)
+
+        ejecuciones_riego_activas = EjecucionRiego.objects.filter(
+            mecanismo_riego_finca_sector=mecanismo_riego_finca_sector,
+            estado_ejecucion_riego=estado_ejecucion_riego_en_ejecucion
+        )
+
+        for ejecucion_riego in ejecuciones_riego_activas:
+            cancelar_riego(ejecucion_riego)
+
+    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned):
+        pass
+
+    try:
+        estado_ejecucion_riego_pausado = EstadoEjecucionRiego.objects.get(
+            nombreEstadoEjecucionRiego=ESTADO_PAUSADO)
+
+        ejecuciones_riego_pausadas = EjecucionRiego.objects.filter(
+            mecanismo_riego_finca_sector=mecanismo_riego_finca_sector,
+            estado_ejecucion_riego=estado_ejecucion_riego_pausado
+        )
+
+        for ejecucion_riego in ejecuciones_riego_pausadas:
+            cancelar_riego(ejecucion_riego)
+
+    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned):
+        pass
 
 
 def crear_configuracion_riego(nombre, descripcion, duracion_maxima, nombre_tipo_configuracion_riego,
@@ -181,3 +254,40 @@ def eliminar_configuracion_riego(configuracion_riego):
         return True
 
     return False
+
+
+def configuracion_tiene_riego_activo(configuracion_riego):
+
+    try:
+        estado_ejecucion_riego_en_ejecucion = EstadoEjecucionRiego.objects.get(
+            nombreEstadoEjecucionRiego=ESTADO_EN_EJECUCION)
+
+        estado_ejecucion_riego_pausado = EstadoEjecucionRiego.objects.get(
+            nombreEstadoEjecucionRiego=ESTADO_PAUSADO)
+
+        try:
+            ejecucion_riego = EjecucionRiego.objects.filter(configuracion_riego=configuracion_riego,
+                                                            estado_ejecucion_riego=estado_ejecucion_riego_en_ejecucion,
+                                                            fecha_hora_finalizacion__isnull=True
+                                                            )
+            if ejecucion_riego:
+                return True
+
+        except ObjectDoesNotExist:
+            pass
+
+        try:
+            ejecucion_riego = EjecucionRiego.objects.filter(configuracion_riego=configuracion_riego,
+                                                            estado_ejecucion_riego=estado_ejecucion_riego_pausado,
+                                                            fecha_hora_finalizacion__isnull=True
+                                                            )
+            if ejecucion_riego:
+                return True
+
+        except ObjectDoesNotExist:
+            pass
+
+        return False
+
+    except ObjectDoesNotExist:
+        return False

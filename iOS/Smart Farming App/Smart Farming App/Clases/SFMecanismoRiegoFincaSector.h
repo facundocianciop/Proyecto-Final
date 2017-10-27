@@ -7,7 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface SFMecanismoRiegoFincaSector : NSObject
+
+@property (assign, nonatomic) long idMecanismoRiegoFincaSector;
+
+@property (assign, nonatomic) long idFinca;
+@property (assign, nonatomic) long idMecanismoRiegoFinca;
+@property (assign, nonatomic) long idSector;
+
+@property (strong, nonatomic) NSString *nombreTipoMecanismo;
+
+@property (assign, nonatomic) CGFloat caudal;
+@property (assign, nonatomic) CGFloat presion;
 
 @end

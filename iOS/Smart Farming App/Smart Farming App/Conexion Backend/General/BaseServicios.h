@@ -13,6 +13,8 @@
 #import "SolicitudServicioBase.h"
 #import "RespuestaServicioBase.h"
 
+#import "SFUtils.h"
+
 #pragma mark - Definicion de bloques
 
 typedef void(^WorkBlock)(void);
@@ -57,7 +59,7 @@ typedef void(^SuccessBlock)(RespuestaServicioBase *respuesta);
 // Datos finca
 #define KEY_ID_FINCA                @"idFinca"
 #define KEY_NOMBRE_FINCA            @"nombreFinca"
-#define  KEY_NOMBRE_FINCA_RESPUESTA @"nombre"
+#define KEY_NOMBRE_FINCA_RESPUESTA @"nombre"
 #define KEY_DIRECCION_LEGAL         @"direccionLegal"
 #define KEY_UBICACION               @"ubicacion"
 #define KEY_TAMANIO                 @"tamanio"
@@ -67,28 +69,37 @@ typedef void(^SuccessBlock)(RespuestaServicioBase *respuesta);
 #define KEY_NOMBRE_ROL              @"nombreRol"
 
 // Mecanismo riego
-#define KEY_NOMBRE_TIPO_MECANISMO           @"nombreTipoMecanismo"
-#define KEY_ID_MECANISMO_RIEGO_FINCA        @"idMecanismoRiegoFinca"
-#define KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR @"idMecanismoRiegoFincaSector"
-#define KEY_NOMBRE_PROVEEDOR                @"nombreProveedor"
-#define KEY_MECANISMO_RIEGO_CAUDAL          @"caudalMecanismoRiego"
-#define KEY_MECANISMO_RIEGO_PRESION         @"presionMecanismoRiego"
+#define KEY_NOMBRE_TIPO_MECANISMO               @"nombreTipoMecanismo"
+#define KEY_ID_MECANISMO_RIEGO_FINCA            @"idMecanismoRiegoFinca"
+#define KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR     @"idMecanismoRiegoFincaSector"
+#define KEY_NOMBRE_PROVEEDOR                    @"nombreProveedor"
+#define KEY_MECANISMO_RIEGO_CAUDAL              @"caudalMecanismoRiego"
+#define KEY_MECANISMO_RIEGO_PRESION             @"presionMecanismoRiego"
+#define KEY_MECANISMO_RIEGO_CAUDAL_RESPUESTA    @"caudal"
+#define KEY_MECANISMO_RIEGO_PRESION_RESPUESTA   @"presion"
 
 // Sector
-#define KEY_NUMERO_SECTOR       @"numeroSector"
-#define KEY_NOMBRE_SECTOR       @"nombreSector"
-#define KEY_DESCRIPCION_SECTOR  @"descripcionSector"
-#define KEY_SUPERFICIE_SECTOR   @"superficieSector"
-#define KEY_ID_SECTOR           @"idSector"
+#define KEY_NUMERO_SECTOR               @"numeroSector"
+#define KEY_NOMBRE_SECTOR               @"nombreSector"
+#define KEY_DESCRIPCION_SECTOR          @"descripcionSector"
+#define KEY_SUPERFICIE_SECTOR           @"superficieSector"
+#define KEY_ID_SECTOR                   @"idSector"
 
 // Subtipo Cultivos
 #define KEY_NOMBRE_SUBTIPO_CULTIVO  @"nombreSubtipoCultivo"
 
 // Cultivo
-#define KEY_NOMBRE_CULTIVO      @"nombreCultivo"
-#define KEY_DESCRIPCION_CULTIVO @"descripcionCultivo"
-#define KEY_FECHA_PLANTACION    @"fechaPlantacion"
-#define KEY_ID_CULTIVO          @"idCultivo"
+#define KEY_NOMBRE_CULTIVO                  @"nombreCultivo"
+#define KEY_DESCRIPCION_CULTIVO             @"descripcionCultivo"
+#define KEY_ID_CULTIVO                      @"idCultivo"
+
+#define KEY_NOMBRE_CULTIVO_SECTOR               @"nombre"
+#define KEY_DESCRIPCION_CULTIVO_SECTOR          @"descripcion"
+#define KEY_FECHA_PLANTACION_CULTIVO_SECTOR     @"fechaPlantacion"
+#define KEY_FECHA_ELIMINACION_CULTIVO_SECTOR    @"fechaEliminacion"
+#define KEY_TIPO_CULTIVO_SECTOR                 @"tipo"
+#define KEY_SUBTIPO_CULTIVO_SECTOR              @"subtipo"
+#define KEY_HABILITADO_CULTIVO_SECTOR           @"habilitado"
 
 // Sensores
 #define KEY_ID_TIPO_MEDICION    @"idTipoMedicion"
@@ -99,6 +110,12 @@ typedef void(^SuccessBlock)(RespuestaServicioBase *respuesta);
 #define KEY_MODELO_COMPONENTE           @"modeloComponente"
 #define KEY_DESCRIPCION_COMPONENTE      @"descripcionComponente"
 #define KEY_CANTIDAD_MAXIMA_SENSORES    @"cantidadMaximaSensores"
+#define KEY_CANTIDAD_SENSORES_ASIGNADOS @"cantidadSensoresAsignados"
+
+#define KEY_MODELO_COMPONENTE_SENSOR_RESPUESTA      @"modelo"
+#define KEY_DESCRIPCION_COMPONENTE_SENSOR_RESPUESTA @"descripcion"
+#define KEY_FINCA_COMPONENTE_SENSOR_RESPUESTA       @"finca"
+#define KEY_ESTADO_COMPONENTE_SENSOR_RESPUESTA      @"estado"
 
 // Configuracion riego
 #define KEY_ID_CONFIGURACION_RIEGO              @"idConfiguracionRiego"
@@ -116,12 +133,37 @@ typedef void(^SuccessBlock)(RespuestaServicioBase *respuesta);
 #define KEY_HORA_INICIO_CRITERIO_RIEGO      @"horaInicioCriterioRiego"
 #define KEY_DIA_INICIO_CRITERIO_RIEGO       @"diaInicioCriterioRiego"
 
+#define TIPO_CONFIGURACION_RIEGO_PROGRAMADO @"programado'
+#define TIPO_CONFIGURACION_RIEGO_AUTOMATICO @"automatico"
+
+#define TIPO_CRITERIO_RIEGO_MEDICION        @"criterio_riego_medicion"
+#define TIPO_CRITERIO_RIEGO_VOLUMEN_AGUA    @"criterio_riego_volumen_agua"
+#define TIPO_CRITERIO_RIEGO_HORA            @"criterio_riego_hora"
+
 // Obtencion informacion externa
-#define KEY_FRECUENCIA      @"frecuencia"
+#define KEY_PROVEEDOR_INFO_EXTERNA_NOMBRE_PROVEEDOR             @"nombreProveedor"
+#define KEY_PROVEEDOR_INFO_EXTERNA_FRECUENCIA_MAXIMA_POSIBLE    @"frecuenciaMaximaPosible"
+#define KEY_PROVEEDOR_INFO_EXTERNA_FRECUENCIA_ACTUAL            @"frecuenciaActual"
+#define KEY_PROVEEDOR_INFO_EXTERNA_FECHA_ALTA_PROVEEDOR_FINCA   @"fechaAltaProveedorFinca"
+#define KEY_PROVEEDOR_INFO_EXTERNA_URL_API                      @"urlApi"
+#define KEY_PROVEEDOR_INFO_EXTERNA_LISTA_TIPO_MEDICION          @"listaTipoMedicion"
+
+#define KEY_MEDICION_CLIMATICA_ID_TIPO_MEDICION_CLIMATICA            @"idTipoMedicionClimatica"
+#define KEY_MEDICION_CLIMATICA_NOMBRE_TIPO_MEDICION_CLIMATICA        @"nombreTipoMedicionClimatica"
+#define KEY_MEDICION_CLIMATICA_UNIDAD_MEDICION                       @"unidadMedicion"
+#define KEY_MEDICION_CLIMATICA_FECHA_ALTA_TIPO_MEDICION_CLIMATICA    @"fechaAltaTipoMedicionClimatica"
+#define KEY_MEDICION_CLIMATICA_FECHA_BAJA_TIPO_MEDICION_CLIMATICA    @"fechaBajaTipoMedicionClimatica"
+#define KEY_MEDICION_CLIMATICA_HABILITADA                            @"habilitada"
 
 // Mediciones
 #define KEY_LISTA_MEDICIONES        @"listaMediciones"
 #define KEY_VALOR_MEDICION_SENSOR   @"valorMedicion"
+
+// Reportes
+#define  KEY_FECHA_INICIO_SECTOR    @"fechaInicioSector"
+#define  KEY_FECHA_FIN_SECTOR       @"fechaFinSector"
+#define  KEY_HELADA                 @"helada"
+
 
 // Evento personalizado
 #define KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO   @"idConfiguracionEvento"
@@ -134,6 +176,32 @@ typedef void(^SuccessBlock)(RespuestaServicioBase *respuesta);
 #define KEY_NOTIFICACION_ACTIVADA                   @"notificacionActivada"
 #define KEY_CONFIGURACION_ACTIVADA                  @"configuracionActivada"
 #define KEY_DESCRIPCION_CONFIGURACION_EVENTO        @"descripcionConfiguracionEvento"
+
+// Permisos
+#define KEY_PERMISO_PUEDE_ASIGNAR_COMPONENTE_SENSOR                         @"puedeAsignarComponenteSensor"
+#define KEY_PERMISO_PUEDE_ASIGNAR_CULTIVO                                   @"puedeAsignarCultivo"
+#define KEY_PERMISO_PUEDE_ASIGNAR_MECRIEGO_A_FINCA                          @"puedeAsignarMecRiegoAFinca"
+#define KEY_PERMISO_PUEDE_ASIGNAR_MECRIEGO_A_SECTOR                         @"puedeAsignarMecRiegoASector"
+#define KEY_PERMISO_PUEDE_CONFIGURAR_OBTENCION_INFO_EXTERNA                 @"puedeConfigurarObtencionInfoExterna"
+#define KEY_PERMISO_PUEDE_CREAR_COMPONENTE_SENSOR                           @"puedeCrearComponenteSensor"
+#define KEY_PERMISO_PUEDE_CREAR_CONFIGURACION_RIEGO                         @"puedeCrearConfiguracionRiego"
+#define KEY_PERMISO_PUEDE_CREAR_SECTOR                                      @"puedeCrearSector"
+#define KEY_PERMISO_PUEDE_GENERAR_INFORME_CRUZADO_RIEGO_MEDICION            @"puedeGenerarInformeCruzadoRiegoMedicion"
+#define KEY_PERMISO_PUEDE_GENERAR_INFORME_ESTADO_ACTUAL_SECTORES            @"puedeGenerarInformeEstadoActualSectores"
+#define KEY_PERMISO_PUEDE_GENERAR_INFORME_ESTADO_HISTORICO_SECTORES_FINCA   @"puedeGenerarInformeEstadoHistoricoSectoresFinca"
+#define KEY_PERMISO_PUEDE_GENERAR_INFORME_EVENTO_PERSONALIZADO              @"puedeGenerarInformeEventoPersonalizado"
+#define KEY_PERMISO_PUEDE_GENERAR_INFORME_HELADAS_HISTORICO                 @"puedeGenerarInformeHeladasHistorico"
+#define KEY_PERMISO_PUEDE_GENERAR_INFORME_RIEGO_EN_EJECUCION                @"puedeGenerarInformeRiegoEnEjecucion"
+#define KEY_PERMISO_PUEDE_GENERAR_INFORME_RIEGO_POR_SECTORES_HISTORICO      @"puedeGenerarInformeRiegoPorSectoresHistorico"
+#define KEY_PERMISO_PUEDE_GESTIONAR_COMPONENTE_SENSOR                       @"puedeGestionarComponenteSensor"
+#define KEY_PERMISO_PUEDE_GESTIONAR_CULTIVO_SECTOR                          @"puedeGestionarCultivoSector"
+#define KEY_PERMISO_PUEDE_GESTIONAR_EVENTO_PERSONALIZADO                    @"puedeGestionarEventoPersonalizado"
+#define KEY_PERMISO_PUEDE_GESTIONAR_FINCA                                   @"puedeGestionarFinca"
+#define KEY_PERMISO_PUEDE_GESTIONAR_SECTOR                                  @"puedeGestionarSector"
+#define KEY_PERMISO_PUEDE_GESTIONAR_SENSORES                                @"puedeGestionarSensores"
+#define KEY_PERMISO_PUEDE_GESTIONAR_USUARIOS_FINCA                          @"puedeGestionarUsuariosFinca"
+#define KEY_PERMISO_PUEDE_INICIAR_O_DETENER_RIEGO_MANUALMENTE               @"puedeIniciarODetenerRiegoManualmente"
+#define KEY_PERMISO_PUEDE_MODIFICAR_CONFIGURACION_RIEGO                     @"puedeModificarConfiguracionRiego"
 
 @interface BaseServicios : NSObject
 

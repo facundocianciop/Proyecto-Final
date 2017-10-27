@@ -22,7 +22,6 @@
 
 #define OPERATION_RECUPERAR_CUENTA                      @"recuperarCuenta"
 #define OPERATION_CAMBIAR_CONTRASENIA_RECUPERAR_CUENTA  @"cambiarContraseniaRecuperarCuenta"
-#define OPERATION_ELIMINAR_USUARIO                      @"eliminarUsuario"
 
 
 @interface ServiciosModuloSeguridad()
@@ -149,7 +148,7 @@
                 respuesta.nombre = [datosOperacion objectForKey:KEY_NOMBRE_USUARIO];
                 respuesta.apellido = [datosOperacion objectForKey:KEY_APELLIDO_USUARIO];
                 
-                if ([datosOperacion objectForKey:KEY_FECHA_NACIMIENTO]) {
+                if ([datosOperacion objectForKey:KEY_FECHA_NACIMIENTO]!= [NSNull null]) {
                     respuesta.fechaNacimiento = [SFUtils dateFromStringYYYYMMDD:datosOperacion[KEY_FECHA_NACIMIENTO]];
                 }
                 if ([datosOperacion objectForKey:KEY_DNI] != [NSNull null]) {

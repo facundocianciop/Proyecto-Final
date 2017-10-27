@@ -1,13 +1,15 @@
 import string
 import random
 import re
-from django.core.mail import EmailMessage
-
 
 # noinspection PyUnresolvedReferences
 from json import loads, dumps
 from datetime import datetime
+from dateutil import parser
+from dateutil.tz import *
+from pytz import timezone, utc
 
+from django.core.mail import EmailMessage
 # noinspection PyUnresolvedReferences
 from django.core.serializers.json import DjangoJSONEncoder
 
@@ -87,6 +89,19 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
 
 def parsear_datos_fecha(fecha_string):
     return datetime.strptime(fecha_string, "%Y-%m-%d")
+
+
+def parsear_datos_hora(hora_string):
+
+    datetime_hora_elegida = parser.parse(hora_string)
+
+    tz = timezone('America/Argentina/Buenos_Aires')
+    datetime_hora_argentina = datetime.now(tz).replace(hour=datetime_hora_elegida.hour,
+                                                       minute=datetime_hora_elegida.minute,
+                                                       second=datetime_hora_elegida.second
+                                                       )
+    # Convierto la hora a UTC
+    return datetime_hora_argentina.astimezone(utc)
 
 
 def validate_regex(expresion_a_evaluar, pattern, detalle_error):
