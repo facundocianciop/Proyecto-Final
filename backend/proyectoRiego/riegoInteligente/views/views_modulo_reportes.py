@@ -62,7 +62,11 @@ def buscar_configuraciones_eventos_personalizados(request):
                     usuarioFincaId=configuracion.usuariofinca_set.first().idUsuarioFinca
                 )
                 lista_dto_configuracion_eventos.append(dto_configuracion_evento)
-            response.content = armar_response_list_content(lista_dto_configuracion_eventos)
+                dto_configuracion_evento_final = DtoConfiguracionEventoPersonalizadoFinal(
+                    dto_evento_lista=lista_dto_configuracion_eventos,
+                    cantidad=lista_dto_configuracion_eventos.__len__())
+            #response.content = armar_response_list_content(lista_dto_configuracion_eventos, lista_dto_configuracion_eventos.__len__())
+            response.content = armar_response_content(dto_configuracion_evento_final)
             response.status_code = 200
             return response
         else:
@@ -939,8 +943,12 @@ def obtener_informe_historico_heladas(request):
             lista_eventos = configuracion_evento.eventopersonalizado_set.filter(fechaHora__gte=fecha_inicio_sector,
                                                                                 fechaHora__lte=fecha_fin_sector,
                                                                                 sector=sector)
+            dto_configuracion_evento_final = DtoConfiguracionEventoPersonalizadoFinal(
+                dto_evento_lista=lista_eventos,
+                cantidad=lista_eventos.__len__())
 
-            response.content = armar_response_list_content(lista_eventos)
+            response.content = armar_response_content(dto_configuracion_evento_final)
+            #response.content = armar_response_list_content(lista_eventos)
             response.status_code = 200
             return response
         else:
