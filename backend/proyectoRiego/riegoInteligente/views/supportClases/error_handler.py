@@ -152,6 +152,7 @@ DETALLE_ERROR_TIPO_CRITERIO_RIEGO_INICIAL_INCORRECTO = 'El tipo de criterio rieg
 DETALLE_ERROR_TIPO_CRITERIO_RIEGO_FINAL_INCORRECTO = 'El tipo de criterio riego no es valido como criterio final'
 DETALLE_ERROR_CRITERIO_RIEGO_INEXISTENTE = 'El criterio de riego seleccionado no existe'
 DETALLE_ERROR_CRITERIO_RIEGO_VALOR_MEDICION_INEXISTENTE = 'Falta ingresar valor de medicion'
+DETALLE_ERROR_CRITERIO_RIEGO_OPERADOR_MEDICION_INEXISTENTE = 'Falta ingresar operador criterio por medicion'
 DETALLE_ERROR_CRITERIO_RIEGO_TIPO_MEDICION_INEXISTENTE = 'Falta ingresar tipo de medicion'
 DETALLE_ERROR_CRITERIO_RIEGO_HORA_INICIO_INEXISTENTE = 'Falta ingresar hora de inicio'
 DETALLE_ERROR_CRITERIO_RIEGO_DIA_INICIO_INEXISTENTE = 'Falta ingresar dia de inicio'

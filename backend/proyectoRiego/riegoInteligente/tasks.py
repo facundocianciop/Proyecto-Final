@@ -20,5 +20,20 @@ def mul(x, y):
 
 
 @shared_task
-def controlar_configuracion_riego_medicion(id_finca, detalles_mediciones):
-    print "Controlar configuraciones riego por medicion"
+def accion_recepcion_medicion_sensor(oid_sector, oid_medicion_cabecera):
+    from riegoInteligente.views.supportClases.procesosBackground.procesos_background import procesar_medicion_sensor
+    print "Acciones recepcion medicion"
+    procesar_medicion_sensor(oid_sector, oid_medicion_cabecera)
+
+
+@shared_task
+def accion_recepcion_medicion_externa(oid_finca, oid_medicion_informacion_climatica_cabecera):
+    from riegoInteligente.views.supportClases.procesosBackground.procesos_background import \
+        procesar_medicion_informacion_climatica
+    print "Acciones recepcion medicion externa"
+    procesar_medicion_informacion_climatica(oid_finca, oid_medicion_informacion_climatica_cabecera)
+
+
+@shared_task
+def envio_notificacion(id_usuario, mensaje):
+    print "Envio notificacion"

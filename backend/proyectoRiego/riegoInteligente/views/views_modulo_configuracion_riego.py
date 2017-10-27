@@ -903,6 +903,12 @@ def agregar_criterio_inicial_configuracion_riego_mecanismo_riego_finca_sector(re
             if datos[KEY_VALOR_MEDICION_CRITERIO_RIEGO] == "":
                 raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_VALOR_MEDICION_INEXISTENTE)
 
+            if KEY_OPERADOR_MEDICION_CRITERIO_RIEGO not in datos:
+                raise KeyError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_OPERADOR_MEDICION_INEXISTENTE)
+
+            if datos[KEY_OPERADOR_MEDICION_CRITERIO_RIEGO] == "":
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_OPERADOR_MEDICION_INEXISTENTE)
+
             if KEY_ID_TIPO_MEDICION not in datos:
                 raise KeyError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_TIPO_MEDICION_INEXISTENTE)
 
@@ -975,6 +981,7 @@ def agregar_criterio_inicial_configuracion_riego_mecanismo_riego_finca_sector(re
                     descripcion=datos[KEY_DESCRIPCION_CRITERIO_RIEGO],
                     fecha_creacion_criterio=datetime.now(pytz.utc),
                     valor=datos[KEY_VALOR_MEDICION_CRITERIO_RIEGO],
+                    operador=datos[KEY_OPERADOR_MEDICION_CRITERIO_RIEGO],
                     tipo_medicion=tipo_medicion_elegido,
                     configuracionRiegoInicial=configuracion_riego_elegida
                 )
@@ -1080,6 +1087,12 @@ def agregar_criterio_final_configuracion_riego_mecanismo_riego_finca_sector(requ
             if datos[KEY_VALOR_MEDICION_CRITERIO_RIEGO] == "":
                 raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_VALOR_MEDICION_INEXISTENTE)
 
+            if KEY_OPERADOR_MEDICION_CRITERIO_RIEGO not in datos:
+                raise KeyError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_OPERADOR_MEDICION_INEXISTENTE)
+
+            if datos[KEY_OPERADOR_MEDICION_CRITERIO_RIEGO] == "":
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_OPERADOR_MEDICION_INEXISTENTE)
+
             if KEY_ID_TIPO_MEDICION not in datos:
                 raise KeyError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_TIPO_MEDICION_INEXISTENTE)
 
@@ -1157,6 +1170,7 @@ def agregar_criterio_final_configuracion_riego_mecanismo_riego_finca_sector(requ
                     descripcion=datos[KEY_DESCRIPCION_CRITERIO_RIEGO],
                     fecha_creacion_criterio=datetime.now(pytz.utc),
                     valor=datos[KEY_VALOR_MEDICION_CRITERIO_RIEGO],
+                    operador=datos[KEY_OPERADOR_MEDICION_CRITERIO_RIEGO],
                     tipo_medicion=tipo_medicion_elegido,
                     configuracionRiegoFinal=configuracion_riego_elegida
                 )
@@ -1375,6 +1389,12 @@ def modificar_criterio_configuracion_riego_mecanismo_riego_finca_sector(request)
             if datos[KEY_VALOR_MEDICION_CRITERIO_RIEGO] == "":
                 raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_VALOR_MEDICION_INEXISTENTE)
 
+            if KEY_OPERADOR_MEDICION_CRITERIO_RIEGO not in datos:
+                raise KeyError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_OPERADOR_MEDICION_INEXISTENTE)
+
+            if datos[KEY_OPERADOR_MEDICION_CRITERIO_RIEGO] == "":
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_OPERADOR_MEDICION_INEXISTENTE)
+
             if KEY_ID_TIPO_MEDICION not in datos:
                 raise KeyError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_CRITERIO_RIEGO_TIPO_MEDICION_INEXISTENTE)
 
@@ -1460,6 +1480,7 @@ def modificar_criterio_configuracion_riego_mecanismo_riego_finca_sector(request)
                 criterio_riego_medicion_elegido.nombre = datos[KEY_NOMBRE_CRITERIO_RIEGO]
                 criterio_riego_medicion_elegido.descripcion = datos[KEY_DESCRIPCION_CRITERIO_RIEGO]
                 criterio_riego_medicion_elegido.valor = datos[KEY_VALOR_MEDICION_CRITERIO_RIEGO]
+                criterio_riego_medicion_elegido.operador = datos[KEY_OPERADOR_MEDICION_CRITERIO_RIEGO],
                 criterio_riego_medicion_elegido.tipo_medicion = tipo_medicion_elegido
 
                 criterio_riego_medicion_elegido.save()
@@ -1500,7 +1521,7 @@ def modificar_criterio_configuracion_riego_mecanismo_riego_finca_sector(request)
 
                 criterio_riego_hora_elegido.nombre = datos[KEY_NOMBRE_CRITERIO_RIEGO]
                 criterio_riego_hora_elegido.descripcion = datos[KEY_DESCRIPCION_CRITERIO_RIEGO]
-                criterio_riego_hora_elegido.hora = parser.parse(datos[KEY_HORA_INICIO_CRITERIO_RIEGO])
+                criterio_riego_hora_elegido.hora = parsear_datos_hora(datos[KEY_HORA_INICIO_CRITERIO_RIEGO])
                 criterio_riego_hora_elegido.numeroDia = datos[KEY_DIA_INICIO_CRITERIO_RIEGO]
 
                 criterio_riego_hora_elegido.save()

@@ -17,7 +17,7 @@ def iniciar_ejecucion_riego(mecanismo_riego_finca_sector, detalle_riego, configu
     :return:
     """
 
-    detener_todos_las_ejecuciones_mecanismo_riego_finca_sector(mecanismo_riego_finca_sector)
+    cancelar_todos_las_ejecuciones_mecanismo_riego_finca_sector(mecanismo_riego_finca_sector)
 
     estado_ejecucion_riego_en_ejecucion = EstadoEjecucionRiego.objects.get(
         nombreEstadoEjecucionRiego=ESTADO_EN_EJECUCION)
@@ -144,7 +144,7 @@ def detener_riego(ejecucion_riego):
         ejecucion_riego.save()
 
 
-def detener_todos_las_ejecuciones_mecanismo_riego_finca_sector(mecanismo_riego_finca_sector):
+def cancelar_todos_las_ejecuciones_mecanismo_riego_finca_sector(mecanismo_riego_finca_sector):
     """
     Detener todas las ejecuciones para controlar que no haya mas de una activa al mismo tiempo
     :param mecanismo_riego_finca_sector:

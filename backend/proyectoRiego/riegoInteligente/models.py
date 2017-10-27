@@ -1050,7 +1050,8 @@ class CriterioRiego(models.Model):
 
 
 class CriterioRiegoPorMedicion(CriterioRiego):
-    valor = models.FloatField()
+    valor = models.FloatField(default=0)
+    operador = models.IntegerField(default=0)
     tipo_medicion = models.ForeignKey('TipoMedicion', db_column="OIDTipoMedicion",
                                       related_name="criterios_riego_medicion_list", null=True)
 
@@ -1059,6 +1060,13 @@ class CriterioRiegoPorMedicion(CriterioRiego):
         if self.fecha_creacion_criterio:
             fecha_creacion_date = self.fecha_creacion_criterio.date()
 
+        if self.operador == 0:
+            operador_string = 'Menor o igual'
+        elif self.operador == 1:
+            operador_string = 'Mayor o igual'
+        else:
+            operador_string = 'Operador incorrecto'
+
         return dict(
             id_criterio_riego=self.id_criterio_riego,
             tipo_criterio_riego="criterio_riego_medicion",
@@ -1066,6 +1074,7 @@ class CriterioRiegoPorMedicion(CriterioRiego):
             descripcion=self.descripcion,
             fechaCreacionCriterio=fecha_creacion_date,
             valor=self.valor,
+            operador=operador_string,
             tipoMedicion=self.tipo_medicion.nombreTipoMedicion,
             unidadMedicion=self.tipo_medicion.unidadMedicion
         )
@@ -1098,13 +1107,15 @@ class CriterioRiegoPorHora(CriterioRiego):
         if self.fecha_creacion_criterio:
             fecha_creacion_date = self.fecha_creacion_criterio.date()
 
+        hora_argentina = self.hora.astimezone(pytz.timezone('America/Argentina/Buenos_Aires'))
+
         return dict(
             id_criterio_riego=self.id_criterio_riego,
             nombre=self.nombre,
             tipo_criterio_riego="criterio_riego_hora",
             descripcion=self.descripcion,
             fechaCreacionCriterio=fecha_creacion_date,
-            hora=self.hora.time(),
+            hora=hora_argentina.strftime('%H:%M'),
             numeroDia=self.numeroDia
         )
 
@@ -1366,9 +1377,10 @@ class ConfiguracionEventoPersonalizado(models.Model):
                 self.idConfiguracion = ultima_configuracion_evento_personalizado.idConfiguracion + 1
                 super(ConfiguracionEventoPersonalizado, self).save(*args, **kwargs)
 
-
     def __str__(self):
         return "Evento: " + self.nombre
+
+
 class EventoPersonalizado(models.Model):
     OIDEventoPersonalizado = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nroEvento = models.IntegerField(default=1, unique=True)

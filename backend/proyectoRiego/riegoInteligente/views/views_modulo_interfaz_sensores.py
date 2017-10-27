@@ -13,6 +13,8 @@ from supportClases.views_util_functions import *
 from supportClases.views_constants import *
 from supportClases.error_handler import *
 
+import riegoInteligente.tasks
+
 
 @transaction.atomic()
 @metodos_requeridos([METHOD_POST])
@@ -59,6 +61,11 @@ def recibir_medicion(request):
                                                        medicionCabecera=medicion_cabecera)
                     medicion_detalle.save()
                     i += 1
+
+                riegoInteligente.tasks.accion_recepcion_medicion_sensor.delay(
+                    oid_sector=componente_sensor_sector.sector.OIDSector,
+                    oid_medicion_cabecera=medicion_cabecera.OIDMedicionCabecera
+                )
 
                 response.content = armar_response_content(None)
                 response.status_code = 200
