@@ -157,11 +157,31 @@ def eliminar_sector(request):
         if KEY_ID_SECTOR in datos:
             if datos[KEY_ID_SECTOR] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
+                raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encontro a un sector con ese id")
             sector_seleccionado = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
             estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
             if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
                                                     fechaFinEstadoSector__isnull=True).__len__() != 1:
                 raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
+            estado_mecanismo_riego_finca_sector_habilitado = EstadoMecanismoRiegoFincaSector.objects.get(
+                nombreEstadoMecanismoRiegoFincaSector=ESTADO_HABILITADO)
+            mecanismo_riego_sector_a_deshabilitar = ""
+            if sector_seleccionado.mecanismoRiegoFincaSector.all().__len__() > 0:
+                for mecanismo in sector_seleccionado.mecanismoRiegoFincaSector.all():
+                    if mecanismo.historicoMecanismoRiegoFincaSector.filter(
+                            estado_mecanismo_riego_finca_sector=estado_mecanismo_riego_finca_sector_habilitado,
+                            fechaFinEstadoMecanismoRiegoFincaSector__isnull=True).__len__() == 1:
+                        mecanismo_riego_sector_a_deshabilitar = mecanismo
+
+            if mecanismo_riego_sector_a_deshabilitar != "":
+                estado_ejecucion_riego = EstadoEjecucionRiego.objects.get(nombreEstadoEjecucionRiego=ESTADO_EN_EJECUCION)
+                lista_riegos = mecanismo_riego_sector_a_deshabilitar.ejecucionRiegoList.filter(
+                    estado_ejecucion_riego=estado_ejecucion_riego)
+                if lista_riegos.__len__() > 0:
+                    raise ValueError(ERROR_RIEGO_EN_EJECUCION, "No se puede eliminar el sector porque hay un riego "
+                                                               "en ejecucion, espere a que termine el riego.")
+
             historico_viejo = HistoricoEstadoSector.objects.get(sector=sector_seleccionado,
                                                                 estado_sector=estado_habilitado,
                                                                 fechaFinEstadoSector__isnull=True)
@@ -420,6 +440,12 @@ def deshabilitar_mecanismo_riego_sector(request):
                     estado_mecanismo_riego_finca_sector=estado_mecanismo_sector_habilitado).__len__() != 1:
                 raise ValueError(ERROR_MECANISMO_RIEGO_FINCA_SECTOR_NO_HABILITADO, "El mecanismo sector no se encuentra"
                                                                                    " habilitado")
+            estado_ejecucion_riego = EstadoEjecucionRiego.objects.get(nombreEstadoEjecucionRiego=ESTADO_EN_EJECUCION)
+            lista_riegos = mecanismo_riego_finca_sector.ejecucionRiegoList.filter(
+                estado_ejecucion_riego=estado_ejecucion_riego)
+            if lista_riegos.__len__() > 0:
+                raise ValueError(ERROR_RIEGO_EN_EJECUCION, "No se puede desasignar el mecanismo porque hay un riego "
+                                                           "en ejecucion, espere a que termine el riego.")
             ultimo_historico_mecanismo_finca_sector = HistoricoMecanismoRiegoFincaSector.objects.get(
                 mecanismo_riego_finca_sector=mecanismo_riego_finca_sector,
                 fechaFinEstadoMecanismoRiegoFincaSector__isnull=True,
