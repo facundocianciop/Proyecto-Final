@@ -10,7 +10,8 @@ from supportClases.security_decorators import *
 from supportClases.views_util_functions import *
 from supportClases.views_constants import *
 from supportClases.error_handler import *
-
+from django.template import loader
+from django.http import HttpResponseRedirect
 
 @transaction.atomic()
 @login_requerido
@@ -270,10 +271,14 @@ def obtener_fincas_estado_pendiente(request):
 
 @transaction.atomic()
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def aprobar_finca(request, idFinca):
     response = HttpResponse()
-    print request.user.username
-    if request.user.is_staff == False:
+    admin = request.POST.get("administrador",)
+    if User.objects.filter(username=admin).__len__() == 0:
+        raise ValueError(ERROR_USUARIO_NO_ADMINISTRADOR, "No tiene permisos para acceder a este sitio")
+    user = User.objects.get(username=admin)
+    if user.is_staff == False:
         raise ValueError(ERROR_NO_TIENE_PERMISOS, "El usuario no tiene permisos para acceder a esta pagina")
     try:
             if Finca.objects.filter(idFinca=idFinca).__len__() == 1:
@@ -299,6 +304,8 @@ def aprobar_finca(request, idFinca):
                     rol_usuario_finca.rol = rol_encargado
                     rol_usuario_finca.save()
                     usuario_finca.rolUsuarioFincaList.add(rol_usuario_finca)
+
+                    return HttpResponseRedirect('http://localhost:8000/admin/')
                     response.content = armar_response_content(None)
                     response.status_code = 200
                     return response
@@ -313,9 +320,14 @@ def aprobar_finca(request, idFinca):
 
 @transaction.atomic()
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def no_aprobar_finca(request, idFinca):
     response = HttpResponse()
-    if not request.user.is_staff:
+    admin = request.POST.get("administrador", )
+    if User.objects.filter(username=admin).__len__() == 0:
+        raise ValueError(ERROR_USUARIO_NO_ADMINISTRADOR, "No tiene permisos para acceder a este sitio")
+    user = User.objects.get(username=admin)
+    if user.is_staff == False:
         raise ValueError(ERROR_NO_TIENE_PERMISOS, "El usuario no tiene permisos para acceder a esta pagina")
     try:
             if Finca.objects.filter(idFinca=idFinca).__len__() == 1:
@@ -333,6 +345,7 @@ def no_aprobar_finca(request, idFinca):
                                                          fechaInicioEstadoFinca=datetime.now(pytz.utc))
                     historico_nuevo.save()
                     finca_por_aprobar.save()
+                    return HttpResponseRedirect('http://localhost:8000/admin/')
                     response.content = armar_response_content(None)
                     response.status_code = 200
                     return response
