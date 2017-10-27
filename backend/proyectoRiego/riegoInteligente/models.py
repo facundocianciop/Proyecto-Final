@@ -1365,9 +1365,10 @@ class ConfiguracionEventoPersonalizado(models.Model):
                 self.idConfiguracion = ultima_configuracion_evento_personalizado.idConfiguracion + 1
                 super(ConfiguracionEventoPersonalizado, self).save(*args, **kwargs)
 
-
     def __str__(self):
         return "Evento: " + self.nombre
+
+
 class EventoPersonalizado(models.Model):
     OIDEventoPersonalizado = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nroEvento = models.IntegerField(default=1, unique=True)
