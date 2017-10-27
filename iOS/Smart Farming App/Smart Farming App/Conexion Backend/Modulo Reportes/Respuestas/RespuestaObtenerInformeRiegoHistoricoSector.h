@@ -8,14 +8,10 @@
 
 #import "RespuestaServicioBase.h"
 
-#import "SFMecanismoRiegoFincaSector.h"
-#import "SFEjecucionRiego.h"
-#import "SFConfiguracionRiego.h"
+#import "DTOMecanismoRiegoConfiguracion.h"
 
 @interface RespuestaObtenerInformeRiegoHistoricoSector : RespuestaServicioBase
 
-@property (strong, nonatomic) SFMecanismoRiegoFincaSector *mecanismoRiegoFincaSector; // mecanismo_riego_finca_sector
-@property (strong, nonatomic) SFEjecucionRiego *ejecucionRiego; // ejecucion
-@property (strong, nonatomic) SFConfiguracionRiego *configuracionRiego; // configuracion
+@property (strong, nonatomic) NSArray<DTOMecanismoRiegoConfiguracion*> *listaDTOMecanismoRiegoConfiguracion;
 
 @end

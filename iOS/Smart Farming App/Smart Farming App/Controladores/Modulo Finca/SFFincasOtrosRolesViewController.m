@@ -177,4 +177,36 @@
     return cell;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    SFFinca *finca = self.tableViewItemsArray[indexPath.row];
+    
+    SolicitudDevolverPermisos *solicitud = [SolicitudDevolverPermisos new];
+    solicitud.idFinca = finca.idFinca;
+    
+    __weak typeof(self) weakSelf = self;
+    [ServiciosModuloFinca devolverPermisos:solicitud completionBlock:^(RespuestaServicioBase *respuesta) {
+        [weakSelf hideActivityIndicator];
+        
+        if ([respuesta isKindOfClass:[RespuestaDevolverPermisos class]]) {
+            RespuestaDevolverPermisos *respuestaDevolverPermisos = (RespuestaDevolverPermisos *)respuesta;
+            
+            if (respuestaDevolverPermisos.resultado) {
+                
+                [[ContextoUsuario instance] seleccionarFinca:finca.idFinca];
+                [[ContextoUsuario instance] setPermisosFincaSeleccionada:respuestaDevolverPermisos.conjuntoPermisos];
+                
+                [self performSegueWithIdentifier:kSFNavegarASeccionFincaSegue sender:self];
+            } else {
+                [weakSelf handleErrorWithPromptTitle:kErrorObteniendoDatosFinca message:kErrorDesconocido withCompletion:^{
+                }];
+            }
+        }
+    } failureBlock:^(ErrorServicioBase *error) {
+        [weakSelf hideActivityIndicator];
+        [weakSelf handleErrorWithPromptTitle:kErrorObteniendoDatosFinca message:error.detalleError withCompletion:^{
+        }];
+    }];
+}
+
 @end
