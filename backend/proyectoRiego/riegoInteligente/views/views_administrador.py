@@ -37,3 +37,4 @@ def fincas_por_aprobar(request):
     except (IntegrityError, TypeError, KeyError):
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
+

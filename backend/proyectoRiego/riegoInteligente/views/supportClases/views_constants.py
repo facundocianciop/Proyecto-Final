@@ -123,6 +123,7 @@ KEY_NOMBRE_CRITERIO_RIEGO = 'nombreCriterioRiego'
 KEY_DESCRIPCION_CRITERIO_RIEGO = 'descripcionCriterioRiego'
 KEY_TIPO_CRITERIO_RIEGO = 'tipoCriterioRiego'  # TIPO_CONFIGURACION_RIEGO_PROGRAMADO/TIPO_CONFIGURACION_RIEGO_AUTOMATICO
 KEY_VALOR_MEDICION_CRITERIO_RIEGO = 'valorMedicionCriterioRiego'
+KEY_OPERADOR_MEDICION_CRITERIO_RIEGO = 'operador'
 KEY_VOLUMEN_AGUA_CRITERIO_RIEGO = 'volumenAguaCriterioRiego'
 KEY_HORA_INICIO_CRITERIO_RIEGO = 'horaInicioCriterioRiego'
 KEY_DIA_INICIO_CRITERIO_RIEGO = 'diaInicioCriterioRiego'
@@ -201,6 +202,7 @@ ESTADO_NO_APROBADO = 'no_aprobado'
 ESTADO_EN_EJECUCION = 'en_ejecucion'
 ESTADO_CANCELADO = 'cancelado'
 ESTADO_PAUSADO = 'pausado'
+ESTADO_FINALIZADO = 'finalizado'
 
 
 # Tipos configuracion riego
@@ -213,3 +215,11 @@ TIPO_CONFIGURACION_RIEGO_AUTOMATICO = 'automatico'
 TIPO_CRITERIO_RIEGO_MEDICION = "criterio_riego_medicion"
 TIPO_CRITERIO_RIEGO_VOLUMEN_AGUA = "criterio_riego_volumen_agua"
 TIPO_CRITERIO_RIEGO_HORA = "criterio_riego_hora"
+
+# Tipos de medicion
+
+TIPO_MEDICION_TEMPERATURA_AIRE = 'Temperatura aire'
+TIPO_MEDICION_TEMPERATURA_SUELO = 'Temperatura suelo'
+TIPO_MEDICION_HUMEDAD_AIRE = 'Humedad aire'
+TIPO_MEDICION_HUMEDAD_SUELO = 'Humedad suelo'
+TIPO_MEDICION_RADIACION_SOLAR = 'Radiacion solar'

@@ -983,7 +983,7 @@ class EjecucionRiego(models.Model):
         # Si existe, se define id configuracion riego
         id_configuracion_riego = None
         if self.configuracion_riego:
-            id_configuracion_riego = self.configuracion_riego.id
+            id_configuracion_riego = self.configuracion_riego.id_configuracion_riego
 
         return dict(
             mecanismoRiegoFincaSector=self.mecanismo_riego_finca_sector.idMecanismoRiegoFincaSector,
@@ -1050,7 +1050,8 @@ class CriterioRiego(models.Model):
 
 
 class CriterioRiegoPorMedicion(CriterioRiego):
-    valor = models.FloatField()
+    valor = models.FloatField(default=0)
+    operador = models.IntegerField(default=0)
     tipo_medicion = models.ForeignKey('TipoMedicion', db_column="OIDTipoMedicion",
                                       related_name="criterios_riego_medicion_list", null=True)
 
@@ -1059,6 +1060,13 @@ class CriterioRiegoPorMedicion(CriterioRiego):
         if self.fecha_creacion_criterio:
             fecha_creacion_date = self.fecha_creacion_criterio.date()
 
+        if self.operador == 0:
+            operador_string = 'Menor o igual'
+        elif self.operador == 1:
+            operador_string = 'Mayor o igual'
+        else:
+            operador_string = 'Operador incorrecto'
+
         return dict(
             id_criterio_riego=self.id_criterio_riego,
             tipo_criterio_riego="criterio_riego_medicion",
@@ -1066,6 +1074,7 @@ class CriterioRiegoPorMedicion(CriterioRiego):
             descripcion=self.descripcion,
             fechaCreacionCriterio=fecha_creacion_date,
             valor=self.valor,
+            operador=operador_string,
             tipoMedicion=self.tipo_medicion.nombreTipoMedicion,
             unidadMedicion=self.tipo_medicion.unidadMedicion
         )
@@ -1098,13 +1107,15 @@ class CriterioRiegoPorHora(CriterioRiego):
         if self.fecha_creacion_criterio:
             fecha_creacion_date = self.fecha_creacion_criterio.date()
 
+        hora_argentina = self.hora.astimezone(pytz.timezone('America/Argentina/Buenos_Aires'))
+
         return dict(
             id_criterio_riego=self.id_criterio_riego,
             nombre=self.nombre,
             tipo_criterio_riego="criterio_riego_hora",
             descripcion=self.descripcion,
             fechaCreacionCriterio=fecha_creacion_date,
-            hora=self.hora.time(),
+            hora=hora_argentina.strftime('%H:%M'),
             numeroDia=self.numeroDia
         )
 
@@ -1121,7 +1132,7 @@ class TipoMedicion(models.Model):
     fechaBajaTipoMedicion = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        verbose_name_plural = "Tipos de mediciones"
+        verbose_name_plural = "_Tipos de mediciones"
 
     def save(self, *args, **kwargs):
         """Get last value of Code and Number from database, and increment before save"""
@@ -1298,7 +1309,7 @@ class MedicionDetalle(models.Model):
 
 class MedicionEvento(models.Model):
     OIDMedicionEvento = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    #idMedicionEvento = models.IntegerField(default=1, unique=True, editable=False)
+    # idMedicionEvento = models.IntegerField(default=1, unique=True, editable=False)
     valorMaximo = models.FloatField()
     valorMinimo = models.FloatField()
     # class Meta:
@@ -1322,6 +1333,7 @@ class MedicionEvento(models.Model):
     #             ultimaMedicionEvento = MedicionEvento.objects.order_by('-idMedicionEvento')[0]
     #             self.idMedicionEvento = ultimaMedicionEvento.idMedicionEvento+ 1
     #             super(MedicionEvento, self).save(*args, **kwargs)
+
 
 class MedicionFuenteInterna(MedicionEvento):
     # RECIBE COMO PARAMETRO A LA CLASE MEDICION EVENTO PORQUE HEREDA DE ELLA
@@ -1410,7 +1422,7 @@ class TipoMedicionClimatica(models.Model):
     fechaBajaTipoMedicionClimatica = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        verbose_name_plural = "Tipos de mediciones climaticas"
+        verbose_name_plural = "_Tipos de mediciones climaticas"
 
     def save(self, *args, **kwargs):
         """Get last value of Code and Number from database, and increment before save"""
@@ -1443,7 +1455,8 @@ class ProveedorInformacionClimatica(models.Model):
     OIDProveedorInformacionClimatica = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     nombreProveedor = models.CharField(max_length=20, unique=True)
     habilitado = models.BooleanField()
-    urlAPI = models.CharField(max_length=100, null=True)
+    urlAPI = models.CharField(max_length=150, null=True)
+    apiKey = models.CharField(max_length=150, null=True)
     frecuenciaMaxPosible = models.IntegerField(null=True)
     tipoMedicionClimatica = models.ManyToManyField(TipoMedicionClimatica)
     fechaAltaProveedorInfoClimatica = models.DateTimeField()
@@ -1492,12 +1505,26 @@ class MedicionEstadoExterno(MedicionEvento):
 
 class MedicionInformacionClimaticaCabecera(models.Model):
     OIDMedicionInformacionClimaticaCabecera = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    nroMedicion = models.IntegerField(unique=True)
+    nroMedicion = models.IntegerField(unique=True, default=1, editable=False)
     fechaHora = models.DateTimeField()
 
     proveedor_informacion_climatica_externa = models.ForeignKey(ProveedorInformacionClimaticaFinca,
                                                                 db_column="OIDProveedorInformacionClimaticaFinca",
                                                                 related_name="medicionInformacionClimaticaCabeceraList")
+
+    def save(self, *args, **kwargs):
+        """Get last value of Code and Number from database, and increment before save"""
+        if MedicionInformacionClimaticaCabecera.objects.all().__len__() == 0:
+            self.nroMedicion = 1
+            super(MedicionInformacionClimaticaCabecera, self).save(*args, **kwargs)
+        else:
+            if MedicionInformacionClimaticaCabecera.objects.get(nroMedicion=self.nroMedicion) == self:
+                super(MedicionInformacionClimaticaCabecera, self).save(*args, **kwargs)
+            else:
+                ultima_medicion_cabecera = \
+                    MedicionInformacionClimaticaCabecera.objects.order_by('-nroMedicion')[0]
+                self.nroMedicion = ultima_medicion_cabecera.nroMedicion + 1
+                super(MedicionInformacionClimaticaCabecera, self).save(*args, **kwargs)
 
     def as_json(self):
         return dict(
