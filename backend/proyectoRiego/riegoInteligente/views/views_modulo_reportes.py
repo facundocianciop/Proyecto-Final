@@ -1046,7 +1046,8 @@ def obtener_informe_cruzado_riego_mediciones_(request):
                             if proveedor_finca.medicionInformacionClimaticaCabeceraList.filter(
                                 fechaHora__lte=ejecucion.fecha_hora_inicio,
                                 fechaHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30)).__len__() > 0:
-                                medicion_climatica_antes = proveedor_finca.medicionInformacionClimaticaCabeceraList.filter(
+                                medicion_climatica_antes = proveedor_finca.medicionInformacionClimaticaCabeceraList.\
+                                    filter(
                                 fechaHora__lte=ejecucion.fecha_hora_inicio,
                                 fechaHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30))\
                                     .order_by("-fechaHora").last()
