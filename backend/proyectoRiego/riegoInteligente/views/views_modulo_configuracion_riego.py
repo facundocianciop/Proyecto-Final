@@ -1480,7 +1480,7 @@ def modificar_criterio_configuracion_riego_mecanismo_riego_finca_sector(request)
                 criterio_riego_medicion_elegido.nombre = datos[KEY_NOMBRE_CRITERIO_RIEGO]
                 criterio_riego_medicion_elegido.descripcion = datos[KEY_DESCRIPCION_CRITERIO_RIEGO]
                 criterio_riego_medicion_elegido.valor = datos[KEY_VALOR_MEDICION_CRITERIO_RIEGO]
-                criterio_riego_medicion_elegido.operador = datos[KEY_OPERADOR_MEDICION_CRITERIO_RIEGO],
+                criterio_riego_medicion_elegido.operador = datos[KEY_OPERADOR_MEDICION_CRITERIO_RIEGO]
                 criterio_riego_medicion_elegido.tipo_medicion = tipo_medicion_elegido
 
                 criterio_riego_medicion_elegido.save()
