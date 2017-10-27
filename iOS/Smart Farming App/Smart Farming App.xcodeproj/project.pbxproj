@@ -166,6 +166,7 @@
 		A1C56F5F1FA100350083D95D /* SFOcurrenciaEventoPersonalizado.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F5E1FA100350083D95D /* SFOcurrenciaEventoPersonalizado.m */; };
 		A1C56F621FA103E70083D95D /* DTOInformeCruzadoRiegoMediciones.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C56F611FA103E70083D95D /* DTOInformeCruzadoRiegoMediciones.m */; };
 		A1D884E71FA37A85003BA945 /* DTOMecanismoRiegoConfiguracion.m in Sources */ = {isa = PBXBuildFile; fileRef = A1D884E61FA37A85003BA945 /* DTOMecanismoRiegoConfiguracion.m */; };
+		A1D884F21FA3C82A003BA945 /* SFProveedorInformacionClimaticaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1D884F11FA3C82A003BA945 /* SFProveedorInformacionClimaticaViewController.m */; };
 		E597039ECA16D820156C1A75 /* libPods-Smart Farming AppUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A8F455D29AC3820A5F7AE8 /* libPods-Smart Farming AppUITests.a */; };
 		F9DB669270910874EEE9C455 /* libPods-Smart Farming App.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 678B84909B9700662B8D806F /* libPods-Smart Farming App.a */; };
 /* End PBXBuildFile section */
@@ -508,6 +509,8 @@
 		A1C56F611FA103E70083D95D /* DTOInformeCruzadoRiegoMediciones.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DTOInformeCruzadoRiegoMediciones.m; sourceTree = "<group>"; };
 		A1D884E51FA37A85003BA945 /* DTOMecanismoRiegoConfiguracion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DTOMecanismoRiegoConfiguracion.h; sourceTree = "<group>"; };
 		A1D884E61FA37A85003BA945 /* DTOMecanismoRiegoConfiguracion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DTOMecanismoRiegoConfiguracion.m; sourceTree = "<group>"; };
+		A1D884F01FA3C82A003BA945 /* SFProveedorInformacionClimaticaViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFProveedorInformacionClimaticaViewController.h; sourceTree = "<group>"; };
+		A1D884F11FA3C82A003BA945 /* SFProveedorInformacionClimaticaViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFProveedorInformacionClimaticaViewController.m; sourceTree = "<group>"; };
 		A31BF76F63193F1D17D68FEC /* Pods-Smart Farming AppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Smart Farming AppUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Smart Farming AppUITests/Pods-Smart Farming AppUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		AA27972AF7A47216E490E53A /* Pods-Smart Farming App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Smart Farming App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Smart Farming App/Pods-Smart Farming App.debug.xcconfig"; sourceTree = "<group>"; };
 		ADF4D971DF49EE7504D8D4CC /* Pods-Smart Farming App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Smart Farming App.release.xcconfig"; path = "Pods/Target Support Files/Pods-Smart Farming App/Pods-Smart Farming App.release.xcconfig"; sourceTree = "<group>"; };
@@ -1140,6 +1143,8 @@
 				1116D6E41F94449A0088D61B /* FincaRightMenuTableViewController.m */,
 				1116D6E91F9451F70088D61B /* SFInformacionFincaActivadaViewController.h */,
 				1116D6EA1F9451F70088D61B /* SFInformacionFincaActivadaViewController.m */,
+				A1D884F01FA3C82A003BA945 /* SFProveedorInformacionClimaticaViewController.h */,
+				A1D884F11FA3C82A003BA945 /* SFProveedorInformacionClimaticaViewController.m */,
 			);
 			path = "Modulo Finca";
 			sourceTree = "<group>";
@@ -1591,6 +1596,7 @@
 				A1C56F2B1FA0C7EF0083D95D /* SFTipoMedicion.m in Sources */,
 				1116D6DE1F94424F0088D61B /* LGSideMenuView.m in Sources */,
 				A1C56F3D1FA0D18F0083D95D /* SFCriterioConfiguracionRiegoMedicion.m in Sources */,
+				A1D884F21FA3C82A003BA945 /* SFProveedorInformacionClimaticaViewController.m in Sources */,
 				1116BA401F8C5866005C9AFF /* main.m in Sources */,
 				1116BA7B1F8C5A2C005C9AFF /* SFConstantesComunes.m in Sources */,
 				110CC75F1F9849030090C6C0 /* SFMenuReportesViewController.m in Sources */,

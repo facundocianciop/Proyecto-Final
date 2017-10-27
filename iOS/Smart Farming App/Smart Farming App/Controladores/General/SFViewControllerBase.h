@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#import "ContextoUsuario.h"
+
 #import "SFUtils.h"
 #import "SFConstantesComunes.h"
 #import "IdentificadoresSegue.h"
