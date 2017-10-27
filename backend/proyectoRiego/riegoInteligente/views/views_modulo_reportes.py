@@ -1008,12 +1008,13 @@ def obtener_informe_cruzado_riego_mediciones_(request):
                                     fechaBajaComponenteSensorSector__isnull=True).__len__() \
                                     == 1:
                                 componente_sensor_sector_asignado = componente_sensor_sector
-                            if componente_sensor_sector.historicoEstadoComponenteSensorSector.filter(
+                            else:
+                                if componente_sensor_sector.historicoEstadoComponenteSensorSector.filter(
                                     estadoComponenteSensorSector=estado_componente_sensor_sector_habilitado,
                                     fechaAltaComponenteSensorSector__lte=ejecucion.fecha_hora_inicio,
                                     fechaBajaComponenteSensorSector__gte=ejecucion.fecha_hora_finalizacion).__len__() \
                                     == 1:
-                                componente_sensor_sector_asignado = componente_sensor_sector
+                                    componente_sensor_sector_asignado = componente_sensor_sector
                         if componente_sensor_sector_asignado == "":
                             break
                         """PARA OBTENER LA MEDICION ANTERIOR AL RIEGO"""
