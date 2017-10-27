@@ -1034,7 +1034,10 @@ def obtener_informe_cruzado_riego_mediciones_(request):
                                 fechaYHora__lte=ejecucion.fecha_hora_inicio,
                                 fechaYHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30)).order_by(
                                 "-fechaYHora").first()
-                        if mecanismo.mecanismoRiegoFinca.finca.proveedorinformacionclimaticafinca_set.filter(
+                        mecanismo_riego_finca = mecanismo.mecanismoRiegoFinca
+                        finca = mecanismo_riego_finca.finca
+
+                        if finca.proveedorinformacionclimaticafinca_set.filter(
                             fechaAltaProveedorInfoClimaticaFinca__lte=ejecucion.fecha_hora_inicio,
                             fechaBajaProveedorInfoClimaticaFinca__gte=ejecucion.fecha_hora_finalizacion).__len__() == 1:
                             proveedor_finca = mecanismo.mecanismoRiegoFinca.finca.proveedorinformacionclimaticafinca_set. \
