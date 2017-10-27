@@ -254,3 +254,40 @@ def eliminar_configuracion_riego(configuracion_riego):
         return True
 
     return False
+
+
+def configuracion_tiene_riego_activo(configuracion_riego):
+
+    try:
+        estado_ejecucion_riego_en_ejecucion = EstadoEjecucionRiego.objects.get(
+            nombreEstadoEjecucionRiego=ESTADO_EN_EJECUCION)
+
+        estado_ejecucion_riego_pausado = EstadoEjecucionRiego.objects.get(
+            nombreEstadoEjecucionRiego=ESTADO_PAUSADO)
+
+        try:
+            ejecucion_riego = EjecucionRiego.objects.filter(configuracion_riego=configuracion_riego,
+                                                            estado_ejecucion_riego=estado_ejecucion_riego_en_ejecucion,
+                                                            fecha_hora_finalizacion__isnull=True
+                                                            )
+            if ejecucion_riego:
+                return True
+
+        except ObjectDoesNotExist:
+            pass
+
+        try:
+            ejecucion_riego = EjecucionRiego.objects.filter(configuracion_riego=configuracion_riego,
+                                                            estado_ejecucion_riego=estado_ejecucion_riego_pausado,
+                                                            fecha_hora_finalizacion__isnull=True
+                                                            )
+            if ejecucion_riego:
+                return True
+
+        except ObjectDoesNotExist:
+            pass
+
+        return False
+
+    except ObjectDoesNotExist:
+        return False

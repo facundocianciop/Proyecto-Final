@@ -1,5 +1,4 @@
 # -*- coding: UTF-8 -*-
-from dateutil import parser
 
 from django.db import transaction
 # noinspection PyUnresolvedReferences
@@ -643,6 +642,10 @@ def cambiar_estado_configuracion_riego_mecanismo_riego_finca_sector(request):
         if not configuracion_riego_elegida.mecanismoRiegoFincaSector == mecanismo_riego_finca_sector_seleccionado:
             raise ValueError
 
+        # Comprobar que no se este ejecutando el riego para esta configuracion
+        if configuracion_tiene_riego_activo(configuracion_riego_elegida):
+            raise ValueError(ERROR_MODIFICACION_CONFIGURACION_RIEGO, DETALLE_ERROR_CONFIGURACION_RIEGO_EN_EJECUCION)
+
         # Se obtienen objetos necesarios para cambiar estado a la configuracion
         estado_configuracion_riego_habilitado = EstadoConfiguracionRiego.objects.get(
             nombreEstadoConfiguracionRiego=ESTADO_HABILITADO)
@@ -819,9 +822,13 @@ def eliminar_configuracion_riego_mecanismo_riego_finca_sector(request):
         configuracion_riego_elegida = ConfiguracionRiego.objects.get(
             id_configuracion_riego=datos[KEY_ID_CONFIGURACION_RIEGO])
 
+        # Comprobar que no se este ejecutando el riego para esta configuracion
+        if configuracion_tiene_riego_activo(configuracion_riego_elegida):
+            raise ValueError(ERROR_MODIFICACION_CONFIGURACION_RIEGO, DETALLE_ERROR_CONFIGURACION_RIEGO_EN_EJECUCION)
+
         # Comprobar que la configuracion elegida se corresponde con el mecanismo finca sector seleccionado
         if not configuracion_riego_elegida.mecanismoRiegoFincaSector == mecanismo_riego_finca_sector_seleccionado:
-            raise ValueError
+            raise ValueError()
 
         if eliminar_configuracion_riego(configuracion_riego_elegida):
             response.content = armar_response_content(configuracion_riego_elegida)
@@ -987,7 +994,7 @@ def agregar_criterio_inicial_configuracion_riego_mecanismo_riego_finca_sector(re
                     nombre=datos[KEY_NOMBRE_CRITERIO_RIEGO],
                     descripcion=datos[KEY_DESCRIPCION_CRITERIO_RIEGO],
                     fecha_creacion_criterio=datetime.now(pytz.utc),
-                    hora=parser.parse(datos[KEY_HORA_INICIO_CRITERIO_RIEGO]),
+                    hora=parsear_datos_hora(datos[KEY_HORA_INICIO_CRITERIO_RIEGO]),
                     numeroDia=datos[KEY_DIA_INICIO_CRITERIO_RIEGO],
                     configuracionRiegoInicial=configuracion_riego_elegida
                 )
@@ -1181,7 +1188,7 @@ def agregar_criterio_final_configuracion_riego_mecanismo_riego_finca_sector(requ
                     nombre=datos[KEY_NOMBRE_CRITERIO_RIEGO],
                     descripcion=datos[KEY_DESCRIPCION_CRITERIO_RIEGO],
                     fecha_creacion_criterio=datetime.now(pytz.utc),
-                    hora=parser.parse(datos[KEY_HORA_INICIO_CRITERIO_RIEGO]),
+                    hora=parsear_datos_hora(datos[KEY_HORA_INICIO_CRITERIO_RIEGO]),
                     numeroDia=datos[KEY_DIA_INICIO_CRITERIO_RIEGO],
                     configuracionRiegoFinal=configuracion_riego_elegida
                 )
@@ -1263,6 +1270,10 @@ def eliminar_criterio_configuracion_riego_mecanismo_riego_finca_sector(request):
             get(nombre=TIPO_CONFIGURACION_RIEGO_PROGRAMADO)
         if not configuracion_riego_elegida.tipoConfiguracionRiego == tipo_configuracion_riego_programada:
             raise ValueError(ERROR_DATOS_INCORRECTOS, DETALLE_ERROR_CONFIGURACION_RIEGO_AUTOMATICA_CRITERIO)
+
+        # Comprobar que no se este ejecutando el riego para esta configuracion
+        if configuracion_tiene_riego_activo(configuracion_riego_elegida):
+            raise ValueError(ERROR_MODIFICACION_CONFIGURACION_RIEGO, DETALLE_ERROR_CONFIGURACION_RIEGO_EN_EJECUCION)
 
         # Se comprueba que la configuracion elegida no haya sido eliminada
         ultimo_estado_historico = HistoricoEstadoConfiguracionRiego.objects.get(

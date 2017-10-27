@@ -168,7 +168,7 @@ def obtener_riego_en_ejecucion_mecanismo_riego_finca_sector(id_mecanismo_riego_f
         return None
 
 
-def obtener_configuraciones_riego_mecanismo_finca_sector(id_mecanismo_riego_finca_sector):
+def obtener_configuraciones_riego_mecanismo_finca_sector_habilitados(id_mecanismo_riego_finca_sector):
     try:
         mecanismo_riego_finca_sector = MecanismoRiegoFincaSector.objects.get(
             idMecanismoRiegoFincaSector=id_mecanismo_riego_finca_sector)
@@ -180,7 +180,10 @@ def obtener_configuraciones_riego_mecanismo_finca_sector(id_mecanismo_riego_finc
         configuraciones_riego_habilitadas = []
 
         configuraciones_riego_mecanismo = ConfiguracionRiego.objects.filter(
-            mecanismoRiegoFincaSector=mecanismo_riego_finca_sector)
+            mecanismoRiegoFincaSector=mecanismo_riego_finca_sector,
+            criterioRiegoFinal__isnull=False,
+            criterioRiegoInicial__isnull=False
+        )
         for configuracion_riego in configuraciones_riego_mecanismo:
             try:
                 historico_configuracion_riego_habilitado = HistoricoEstadoConfiguracionRiego.objects.get(
@@ -290,3 +293,24 @@ def obtener_criterios_fin_volumen_configuracion_riego(id_configuracion_riego):
 
     except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned):
         return criterios_volumen
+
+
+# noinspection PyBroadException
+def comparar_hora_riego(hora_elegida):
+
+    try:
+        ahora = datetime.now(pytz.utc)
+        hora = ahora.replace(hour=hora_elegida.hour,
+                             minute=hora_elegida.minute,
+                             second=hora_elegida.second
+                             )
+
+        diferencia_hora = datetime.now(pytz.utc) - hora
+
+        if diferencia_hora.seconds < 10:
+            return True
+        else:
+            return False
+
+    except Exception:
+        return False

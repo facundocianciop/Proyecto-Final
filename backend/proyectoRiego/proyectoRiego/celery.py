@@ -29,6 +29,8 @@ def setup_periodic_tasks(sender, **kwargs):
     # Calls test('hello') every 10 seconds.
     sender.add_periodic_task(30.0, obtener_mediciones_climaticas.s(), name='Obtener mediciones climaticas')
 
+    sender.add_periodic_task(1.0, comprobar_riego_hora.s(), name='Comprobar inicio y fin riego por hora')
+
     # Calls test('world') every 30 seconds
     # sender.add_periodic_task(30.0, test.s('world'), expires=10)
 
@@ -43,6 +45,13 @@ def setup_periodic_tasks(sender, **kwargs):
 def obtener_mediciones_climaticas():
     from riegoInteligente.views.supportClases.procesosBackground.procesos_background import *
     obtener_mediciones_climaticas()
+
+
+@app.task
+def comprobar_riego_hora():
+    from riegoInteligente.views.supportClases.procesosBackground.procesos_background import *
+    comprobar_incio_riego_criterio_hora()
+    comprobar_fin_riego_criterio_hora()
 
 
 @app.task(bind=True)

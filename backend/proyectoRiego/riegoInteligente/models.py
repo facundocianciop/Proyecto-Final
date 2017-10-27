@@ -983,7 +983,7 @@ class EjecucionRiego(models.Model):
         # Si existe, se define id configuracion riego
         id_configuracion_riego = None
         if self.configuracion_riego:
-            id_configuracion_riego = self.configuracion_riego.id
+            id_configuracion_riego = self.configuracion_riego.id_configuracion_riego
 
         return dict(
             mecanismoRiegoFincaSector=self.mecanismo_riego_finca_sector.idMecanismoRiegoFincaSector,
