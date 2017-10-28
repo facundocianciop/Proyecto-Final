@@ -6,6 +6,7 @@ from riegoInteligente.models import *
 
 # noinspection PyUnresolvedReferences
 from riegoInteligente.views.supportClases.views_constants import *
+from riegoInteligente.views.supportClases.views_util_functions import enviar_email
 from riegoInteligente.views.supportClases.informacionClimatica.informacionClimatica import \
     obtener_mediciones_climaticas_finca
 from riegoInteligente.views.supportClases.configuracion_riego_util_functions import *
@@ -248,7 +249,7 @@ def comprobar_ocurrencia_evento_medicion_interna(sector, detalle_medicion):
 
 
 def procesar_medicion_informacion_climatica(oid_finca, oid_medicion_informacion_climatica_cabecera):
-    print ""
+    print "Procesando informacion climatica"
     try:
 
         comprobar_ocurrencia_evento_medicion_externa(oid_finca, oid_medicion_informacion_climatica_cabecera)
@@ -259,3 +260,48 @@ def procesar_medicion_informacion_climatica(oid_finca, oid_medicion_informacion_
 
 def comprobar_ocurrencia_evento_medicion_externa(oid_finca, oid_medicion_informacion_climatica_cabecera):
     print "Comprobando ocurrencia evento medicion externa"
+
+    cabecera_medicion_externa = MedicionInformacionClimaticaCabecera.objects.get(
+        OIDMedicionInformacionClimaticaCabecera=oid_medicion_informacion_climatica_cabecera
+    )
+
+    finca = Finca.objects.get(OIDFinca=oid_finca)
+    lista_sectores = obtener_sectores_habilitados_finca(id_finca=finca.idFinca)
+
+    for sector in lista_sectores:
+        lista_configuraciones_habilitadas = obtener_configuraciones_eventos_personalizados_habilitados(sector)
+
+        for configuracion_evento in lista_configuraciones_habilitadas:
+
+            lista_mediciones_evento_externas = MedicionEstadoExterno.objects.filter(
+                configuracionEventoPersonalizado=configuracion_evento
+            )
+
+            for medicion_evento in lista_mediciones_evento_externas:
+                for detalle_medicion_externa in cabecera_medicion_externa.medicionInformacionClimaticaDetalle.all():
+
+                    if detalle_medicion_externa.tipo_medicion_climatica == medicion_evento.tipoMedicion:
+
+                        if medicion_evento.valorMinimo < detalle_medicion_externa.valor < medicion_evento.valorMaximo:
+
+                            crear_suceso_evento_personalizado(
+                                sector=sector,
+                                configuracion_evento_personalizado=configuracion_evento
+                            )
+
+
+def enviar_notificacion_evento_personalizado(oid_configuracion_evento, mensaje=None):
+
+    configuracion_evento_personalizado = ConfiguracionEventoPersonalizado.objects.get(
+        OIDConfiguracionEventoPersonalizado=oid_configuracion_evento
+    )
+
+    if configuracion_evento_personalizado.notificacionActivada:
+        for usuario_finca in configuracion_evento_personalizado.usuariofinca_set.all():
+            email = usuario_finca.usuario.user.email
+            if mensaje is not None:
+                enviar_email(titulo="Notificacion Evento Personalizado", mensaje=mensaje, destino=email)
+            else:
+                mensaje = "Notificacion de evento: " + configuracion_evento_personalizado.nombre
+                enviar_email(titulo="Notificacion Evento Personalizado", mensaje=mensaje, destino=email)
+            print "email enviado"

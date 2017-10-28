@@ -4,6 +4,8 @@ from django.core.exceptions import ObjectDoesNotExist, EmptyResultSet, MultipleO
 from riegoInteligente.models import *
 from riegoInteligente.views.supportClases.informacionClimatica import adaptadorOpenWeather
 
+import riegoInteligente.tasks
+
 
 @transaction.atomic()
 def obtener_mediciones_climaticas_finca(id_finca):
@@ -49,6 +51,12 @@ def obtener_mediciones_climaticas_finca(id_finca):
         for detalle in detalles:
             detalle.save()
         cabecera.save()
+
+        riegoInteligente.tasks.accion_recepcion_medicion_externa.delay(
+            oid_finca=finca.OIDFinca,
+            oid_medicion_informacion_climatica_cabecera=cabecera.OIDMedicionInformacionClimaticaCabecera,
+        )
+
         return True
 
     except Exception:

@@ -61,7 +61,6 @@
     SolicitudObtenerProveedorFinca *solicitud = [SolicitudObtenerProveedorFinca new];
     solicitud.idFinca = [[ContextoUsuario instance] fincaSeleccionada];
     
-    [self showActivityIndicator];
     [ServiciosModuloFinca obtenerProveedorFinca:solicitud completionBlock:^(RespuestaServicioBase *respuesta) {
         [weakSelf hideActivityIndicator];
         
@@ -70,7 +69,12 @@
             
             if (respuestaObtenerProveedorFinca.resultado) {
                 
+                self.nombreProveedorLabel.text = respuestaObtenerProveedorFinca.proveedorInformacionClimatica.nombreProveedor;
+                self.urlLabel.text = respuestaObtenerProveedorFinca.proveedorInformacionClimatica.urlApi;
+                self.frecuenciaElegidaLabel.text = [NSString stringWithFormat:@"%li", respuestaObtenerProveedorFinca.proveedorInformacionClimatica.frecuenciaActual] ;
+                self.frecuenciaMaximaLabel.text = [NSString stringWithFormat:@"%li", respuestaObtenerProveedorFinca.proveedorInformacionClimatica.frecuenciaMaximaPosible];
                 
+                self.tableViewItemsArray = respuestaObtenerProveedorFinca.proveedorInformacionClimatica.listaTipoMedicion;
                 
                 weakSelf.tableViewItemsArray = respuestaObtenerProveedorFinca.proveedorInformacionClimatica.listaTipoMedicion;
                 [weakSelf loadingTableViewDataDidEnd];
