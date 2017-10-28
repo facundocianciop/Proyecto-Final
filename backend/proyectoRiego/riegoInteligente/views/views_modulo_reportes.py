@@ -1040,16 +1040,17 @@ def obtener_informe_cruzado_riego_mediciones_(request):
                         if finca.proveedorinformacionclimaticafinca_set.filter(
                             fechaAltaProveedorInfoClimaticaFinca__lte=ejecucion.fecha_hora_inicio,
                             fechaBajaProveedorInfoClimaticaFinca__gte=ejecucion.fecha_hora_finalizacion).__len__() == 1:
-                            proveedor_finca = mecanismo.mecanismoRiegoFinca.finca.proveedorinformacionclimaticafinca_set. \
+                            proveedor_finca = finca.proveedorinformacionclimaticafinca_set. \
                                 get(fechaAltaProveedorInfoClimaticaFinca__lte=ejecucion.fecha_hora_inicio,
                                     fechaBajaProveedorInfoClimaticaFinca__gte=ejecucion.fecha_hora_finalizacion)
                             if proveedor_finca.medicionInformacionClimaticaCabeceraList.filter(
-                                fechaYHora__lte=ejecucion.fecha_hora_inicio,
-                                fechaYHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30)).__len__() > 0:
-                                medicion_climatica_antes = proveedor_finca.medicionInformacionClimaticaCabeceraList.filter(
-                                fechaYHora__lte=ejecucion.fecha_hora_inicio,
-                                fechaYHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30))\
-                                    .order_by("-fechaYHora").last()
+                                fechaHora__lte=ejecucion.fecha_hora_inicio,
+                                fechaHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30)).__len__() > 0:
+                                medicion_climatica_antes = proveedor_finca.medicionInformacionClimaticaCabeceraList.\
+                                    filter(
+                                fechaHora__lte=ejecucion.fecha_hora_inicio,
+                                fechaHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30))\
+                                    .order_by("-fechaHora").last()
                         if mecanismo != "":
                             mecanismo = mecanismo.as_json()
                         if ejecucion.configuracion_riego is None :
