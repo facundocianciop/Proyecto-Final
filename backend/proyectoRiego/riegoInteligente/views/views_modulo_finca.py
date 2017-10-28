@@ -846,17 +846,31 @@ def modificar_rol_usuario(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def buscar_finca_id(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_ID_FINCA) in datos:
+        if KEY_ID_FINCA in datos:
             if datos[KEY_ID_FINCA] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
-            response.content = armar_response_content(finca)
+            try:
+                usuario_finca = UsuarioFinca.objects.get(finca=finca, usuario=request.user.datosusuario)
+                rol_usuario_finca = RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,
+                                                                fechaBajaRolUsuarioFinca__isnull=True
+                                                                )
+                rol = rol_usuario_finca.rol.nombreRol
+            except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError):
+                pass
+
+            if usuario_finca and rol:
+                dto_finca = DtoFinca(finca=finca, nombre_rol=rol, id_usuario_finca=usuario_finca.idUsuarioFinca)
+                response.content = armar_response_content(dto_finca)
+            else:
+                response.content = armar_response_content(finca)
             return response
         else:
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")

@@ -1018,7 +1018,7 @@ def obtener_informe_cruzado_riego_mediciones_(request):
                                     == 1:
                                     componente_sensor_sector_asignado = componente_sensor_sector
                         if componente_sensor_sector_asignado == "":
-                            break
+                            continue
                         """PARA OBTENER LA MEDICION ANTERIOR AL RIEGO"""
                         if componente_sensor_sector_asignado.medicionCabeceraList.filter(
                                 fechaYHora__lte=ejecucion.fecha_hora_inicio,
@@ -1054,7 +1054,7 @@ def obtener_informe_cruzado_riego_mediciones_(request):
                                 fechaHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30))\
                                     .order_by("-fechaHora").last()
                         if mecanismo != "":
-                            mecanismo = mecanismo.as_json()
+                            mecanismo_json = mecanismo.as_json()
                         if ejecucion.configuracion_riego is None :
                             configuracion = ""
                         else:
@@ -1066,7 +1066,7 @@ def obtener_informe_cruzado_riego_mediciones_(request):
                         if medicion_cabecera_despues != "":
                             medicion_cabecera_despues = medicion_cabecera_despues.as_json()
                         lista_dto_medicion_cruzada_riego.append(DtoMedicionCruzadaRiego(
-                            mecanismo_riego_finca_sector=mecanismo,
+                            mecanismo_riego_finca_sector=mecanismo_json,
                             ejecucion=ejecucion.as_json(),
                             configuracion=configuracion,
                             mediciones_componente_antes=medicion_cabecera_antes,
