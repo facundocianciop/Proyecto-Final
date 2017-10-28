@@ -935,6 +935,7 @@ def modificar_rol_usuario(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def buscar_usuario_finca_id(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -961,6 +962,7 @@ def buscar_usuario_finca_id(request):
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
+@manejar_errores()
 def buscar_finca_id(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
