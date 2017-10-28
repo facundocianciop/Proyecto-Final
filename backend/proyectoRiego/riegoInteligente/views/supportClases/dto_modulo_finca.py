@@ -39,3 +39,17 @@ class DtoUsuarioFinca:
             # imagenUsuario=self.imagen_usuario,
             rol=self.rol
         )
+
+
+
+class DtoFincaIdUsuarioFinca:
+    def __init__(self, idUsuarioFinca, finca):
+        self.id_usuario_finca = idUsuarioFinca
+        self.finca = finca
+
+    def as_json(self):
+        return dict(
+
+            idUsuarioFinca=self.id_usuario_finca,
+            finca = self.finca
+        )

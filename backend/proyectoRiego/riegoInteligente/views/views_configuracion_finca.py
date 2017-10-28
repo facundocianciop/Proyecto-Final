@@ -237,6 +237,10 @@ def deshabilitar_mecanismo_riego_finca(request):
             mecanismo_riego_finca.save()
             estado_mecanismo_sector_deshabilitado = EstadoMecanismoRiegoFincaSector.objects.get(
                 nombreEstadoMecanismoRiegoFincaSector=ESTADO_DESHABILITADO)
+            estado_configuracion_riego_habilitada = EstadoConfiguracionRiego.objects.get(
+                nombreEstadoConfiguracionRiego=ESTADO_HABILITADO)
+            estado_configuracion_riego_deshabilitada = EstadoConfiguracionRiego.objects.get(
+                nombreEstadoConfiguracionRiego=ESTADO_DESHABILITADO)
 
             mecanismo_riego_sector_lista = mecanismo_riego_finca.mecanismoRiegoSectorList.all()
             for mecanismo_sector in mecanismo_riego_sector_lista:
@@ -244,6 +248,22 @@ def deshabilitar_mecanismo_riego_finca(request):
                                                                      estado_mecanismo_sector_habilitado,
                                                                      fechaFinEstadoMecanismoRiegoFincaSector__isnull=
                                                                      True).__len__() == 1:
+                    lista_configuraciones_riego = mecanismo_sector.configuracionriego_set.all()
+                    for configuracion in lista_configuraciones_riego:
+                        if configuracion.historicoEstadoConfiguracionRiegoList.filter(
+                                estado_configuracion_riego=estado_configuracion_riego_habilitada,
+                                fechaFinEstadoConfiguracionRiego__isnull=True).__len__() == 1:
+                            ultimo_historico_configuracion_riego = configuracion.historicoEstadoConfiguracionRiegoList.\
+                                get(estado_configuracion_riego=estado_configuracion_riego_habilitada,
+                                    fechaFinEstadoConfiguracionRiego__isnull=True)
+                            ultimo_historico_configuracion_riego.fechaFinEstadoConfiguracionRiego = \
+                                datetime.now(pytz.utc)
+                            ultimo_historico_configuracion_riego.save()
+                            nuevo_historico_configuracion_riego = HistoricoEstadoConfiguracionRiego(
+                                configuracion_riego=configuracion,
+                                fechaInicioEstadoConfiguracionRiego=datetime.now(pytz.utc),
+                                estado_configuracion_riego=estado_configuracion_riego_deshabilitada)
+                            nuevo_historico_configuracion_riego.save()
                     ultimo_historico_mecanismo_sector = HistoricoMecanismoRiegoFincaSector.objects.get(
                         estado_mecanismo_riego_finca_sector=estado_mecanismo_sector_habilitado,
                         fechaFinEstadoMecanismoRiegoFincaSector__isnull=True)
