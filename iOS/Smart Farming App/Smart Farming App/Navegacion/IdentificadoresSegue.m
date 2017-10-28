@@ -24,6 +24,7 @@ NSString *const kSFNavegarModificarUsuarioSegue = @"SFNavegarModificarUsuarioSeg
 NSString *const kSFNavegarASeccionFincaSegue = @"SFNavegarASeccionFincaSegue";
 
 NSString *const kSFNavegarASectoresFincaSegue = @"SFNavegarASectoresFincaSegue";
+NSString *const kSFNavegarASensoresFincaSegue = @"SFNavegarASensoresFincaSegue";
 NSString *const kSFNavegarAMecanismosRiegoFincaSegue = @"SFNavegarAMecanismosRiegoFincaSegue";
 NSString *const kSFNavegarReportesFincaSegue = @"SFNavegarReportesFincaSegue";
 

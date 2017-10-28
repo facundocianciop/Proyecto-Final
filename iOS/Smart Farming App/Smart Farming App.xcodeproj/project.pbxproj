@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		110209921FA5393E0044B751 /* SFFincaMainNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 110209911FA5393E0044B751 /* SFFincaMainNavigationViewController.m */; };
 		110CC75F1F9849030090C6C0 /* SFMenuReportesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 110CC75E1F9849030090C6C0 /* SFMenuReportesViewController.m */; };
 		110CC7621F9854200090C6C0 /* SolicitudRegistrarUsuario.m in Sources */ = {isa = PBXBuildFile; fileRef = 110CC7611F9854200090C6C0 /* SolicitudRegistrarUsuario.m */; };
 		1116BA321F8C5866005C9AFF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1116BA311F8C5866005C9AFF /* AppDelegate.m */; };
@@ -191,6 +192,8 @@
 /* Begin PBXFileReference section */
 		01A8F455D29AC3820A5F7AE8 /* libPods-Smart Farming AppUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Smart Farming AppUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		02958B0F78B72D3983C840CA /* Pods-Smart Farming AppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Smart Farming AppUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Smart Farming AppUITests/Pods-Smart Farming AppUITests.release.xcconfig"; sourceTree = "<group>"; };
+		110209901FA5393E0044B751 /* SFFincaMainNavigationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFFincaMainNavigationViewController.h; sourceTree = "<group>"; };
+		110209911FA5393E0044B751 /* SFFincaMainNavigationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFFincaMainNavigationViewController.m; sourceTree = "<group>"; };
 		110CC75D1F9849030090C6C0 /* SFMenuReportesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFMenuReportesViewController.h; sourceTree = "<group>"; };
 		110CC75E1F9849030090C6C0 /* SFMenuReportesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFMenuReportesViewController.m; sourceTree = "<group>"; };
 		110CC7601F9854200090C6C0 /* SolicitudRegistrarUsuario.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SolicitudRegistrarUsuario.h; sourceTree = "<group>"; };
@@ -1145,6 +1148,8 @@
 				1116D6EA1F9451F70088D61B /* SFInformacionFincaActivadaViewController.m */,
 				A1D884F01FA3C82A003BA945 /* SFProveedorInformacionClimaticaViewController.h */,
 				A1D884F11FA3C82A003BA945 /* SFProveedorInformacionClimaticaViewController.m */,
+				110209901FA5393E0044B751 /* SFFincaMainNavigationViewController.h */,
+				110209911FA5393E0044B751 /* SFFincaMainNavigationViewController.m */,
 			);
 			path = "Modulo Finca";
 			sourceTree = "<group>";
@@ -1622,6 +1627,7 @@
 				A142C1431F9F8DD7009822A4 /* RespuestaObtenerInformeRiegoEjecucionSector.m in Sources */,
 				A142C0B41F9E5B8A009822A4 /* RespuestaMostrarComponenteSensorSector.m in Sources */,
 				A142C0961F9E3E6C009822A4 /* RespuestaBuscarSectorId.m in Sources */,
+				110209921FA5393E0044B751 /* SFFincaMainNavigationViewController.m in Sources */,
 				A142C1341F9F8D33009822A4 /* SolicitudObtenerInformeCruzadoRiegoMediciones.m in Sources */,
 				A142C0DB1F9E91FE009822A4 /* RespuestaObtenerConfiguracionesRiegoMecanismoRiegoFincaSector.m in Sources */,
 				A142C0D71F9E91DF009822A4 /* RespuestaCancelarRiegoManualmente.m in Sources */,

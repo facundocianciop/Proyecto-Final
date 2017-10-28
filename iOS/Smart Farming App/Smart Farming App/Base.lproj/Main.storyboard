@@ -354,14 +354,14 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellMecanismosRiego" rowHeight="50" id="J4A-7C-BHn">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellSensores" rowHeight="50" id="J4A-7C-BHn">
                                         <rect key="frame" x="0.0" y="316" width="200" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="J4A-7C-BHn" id="U8b-gt-aNY">
                                             <rect key="frame" x="0.0" y="0.0" width="200" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mecanismos Riego" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="WtT-UW-QX5">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sensores" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="WtT-UW-QX5">
                                                     <rect key="frame" x="32" y="8" width="160" height="34"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
                                                     <color key="textColor" name="VerdeClaro"/>
@@ -685,7 +685,7 @@
         <!--Finca-->
         <scene sceneID="pya-2U-80d">
             <objects>
-                <viewController id="Unn-nE-UYj" customClass="LGSideMenuController" sceneMemberID="viewController">
+                <viewController id="Unn-nE-UYj" customClass="SFFincaMainNavigationViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="NKk-Mr-YKo">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -731,8 +731,9 @@
                         <segue destination="adm-qy-jCX" kind="custom" identifier="right" customClass="LGSideMenuSegue" id="q8Y-nW-8RP"/>
                         <segue destination="UvP-5Z-EFv" kind="custom" identifier="root" customClass="LGSideMenuSegue" id="mfi-xA-jKe"/>
                         <segue destination="E08-SY-gJB" kind="show" identifier="SFNavegarASectoresFincaSegue" id="etx-Xz-BZa"/>
-                        <segue destination="dvm-S2-qd2" kind="show" id="pNf-ZB-Y9h"/>
+                        <segue destination="dvm-S2-qd2" kind="show" identifier="SFNavegarAMecanismosRiegoFincaSegue" id="pNf-ZB-Y9h"/>
                         <segue destination="lCO-5V-Ubu" kind="show" identifier="SFNavegarReportesFincaSegue" id="XAz-c9-5JD"/>
+                        <segue destination="HBB-QE-bCZ" kind="show" identifier="SFNavegarASensoresFincaSegue" id="lUz-9Q-xoF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q4b-bI-jCd" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -930,7 +931,7 @@
                                 <rect key="frame" x="0.0" y="70" width="320" height="498"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" indentationWidth="10" textLabel="t93-wd-gW4" detailTextLabel="5pg-p6-KJJ" style="IBUITableViewCellStyleSubtitle" id="axJ-2e-Emr" customClass="SFSectorTableViewCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" indentationWidth="10" reuseIdentifier="Cell" textLabel="t93-wd-gW4" detailTextLabel="5pg-p6-KJJ" style="IBUITableViewCellStyleSubtitle" id="axJ-2e-Emr" customClass="SFSectorTableViewCell">
                                         <rect key="frame" x="0.0" y="28" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="axJ-2e-Emr" id="SoL-nG-DCT">
@@ -983,7 +984,22 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VEd-9F-Xow" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5014" y="-2129"/>
+            <point key="canvasLocation" x="5014" y="-2788"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="XUP-nY-ORq">
+            <objects>
+                <viewController id="HBB-QE-bCZ" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="xWl-Vb-lJh">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="Fs5-ob-ob6"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NSO-04-EWo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5021" y="-2093"/>
         </scene>
         <!--Información sector-->
         <scene sceneID="cHI-9l-yu5">
@@ -1079,7 +1095,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Lz-M3-TBI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6335.625" y="-2130.6338028169016"/>
+            <point key="canvasLocation" x="5850" y="-2789"/>
         </scene>
         <!--Estado mecanismo de riego-->
         <scene sceneID="mIc-2z-SQh">
@@ -1156,7 +1172,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tamaño:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fgw-8g-zXp">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tamaño (ha):" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fgw-8g-zXp">
                                 <rect key="frame" x="16" y="272" width="106" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="106" id="gkl-se-jeX"/>

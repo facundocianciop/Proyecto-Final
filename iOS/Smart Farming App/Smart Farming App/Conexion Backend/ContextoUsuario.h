@@ -24,6 +24,9 @@
 -(void)seleccionarFinca:(long)fincaId;
 -(long)fincaSeleccionada;
 
+-(void)seleccionarUsuarioFinca:(long)usuarioFincaId;
+-(long)usuarioFincaIdSeleccionado;
+
 -(void)setPermisosFincaSeleccionada:(SFConjuntoPermisos*)conjuntoPermisos;
 -(SFConjuntoPermisos*)permisosFincaSeleccionada;
 

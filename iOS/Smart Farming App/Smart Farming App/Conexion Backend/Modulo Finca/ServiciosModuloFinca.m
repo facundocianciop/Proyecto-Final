@@ -227,6 +227,13 @@
                     finca.direccionLegal = [datosOperacion objectForKey:KEY_DIRECCION_LEGAL];
                 }
                 
+                if ([datosOperacion objectForKey:KEY_NOMBRE_ROL] != [NSNull null]) {
+                    finca.rolUsuario = [datosOperacion objectForKey:KEY_NOMBRE_ROL];
+                }
+                if ([datosOperacion objectForKey:KEY_ID_USUARIO_FINCA] != [NSNull null]) {
+                    finca.idUsuarioFinca = [[datosOperacion objectForKey:KEY_ID_USUARIO_FINCA] longLongValue];
+                }
+                
                 respuesta.finca = finca;
                 
             } @catch (NSException *exception) {

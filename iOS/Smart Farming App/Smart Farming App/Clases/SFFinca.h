@@ -18,5 +18,6 @@
 @property (strong, nonatomic) NSString *direccionLegal;
 
 @property (strong, nonatomic) NSString *rolUsuario;
+@property (assign, nonatomic) long idUsuarioFinca;
 
 @end
