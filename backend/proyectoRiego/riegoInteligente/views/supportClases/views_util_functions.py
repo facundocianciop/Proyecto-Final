@@ -6,10 +6,10 @@ import re
 from json import loads, dumps
 from datetime import datetime
 from dateutil import parser
-from dateutil.tz import *
 from pytz import timezone, utc
 
 from django.core.mail import EmailMessage
+from smtplib import SMTPException, SMTPConnectError, SMTPAuthenticationError
 # noinspection PyUnresolvedReferences
 from django.core.serializers.json import DjangoJSONEncoder
 
@@ -116,5 +116,13 @@ def validate_regex(expresion_a_evaluar, pattern, detalle_error):
 
 def enviar_email(titulo, mensaje, destino):
 
-    email = EmailMessage(subject=titulo, body=mensaje, to=[destino])
-    email.send()
+    try:
+        email = EmailMessage(subject=titulo, body=mensaje, to=[destino])
+        email.send()
+    except (SMTPException, SMTPConnectError, SMTPAuthenticationError):
+        try:
+            print "Reintento envio email"
+            email = EmailMessage(subject=titulo, body=mensaje, to=[destino])
+            email.send()
+        except (SMTPException, SMTPConnectError, SMTPAuthenticationError):
+            print "Error enviando email"

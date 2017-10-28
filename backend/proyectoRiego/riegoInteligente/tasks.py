@@ -35,5 +35,14 @@ def accion_recepcion_medicion_externa(oid_finca, oid_medicion_informacion_climat
 
 
 @shared_task
-def envio_notificacion(id_usuario, mensaje):
-    print "Envio notificacion"
+def envio_notificacion_evento(oid_configuracion_evento, mensaje=None):
+    from riegoInteligente.views.supportClases.procesosBackground.procesos_background import \
+        enviar_notificacion_evento_personalizado
+    print "Envio notificacion evento"
+    enviar_notificacion_evento_personalizado(oid_configuracion_evento, mensaje=mensaje)
+
+
+# noinspection PyUnusedLocal
+@shared_task
+def envio_notificacion_riego(oid_ejecucion_riego, mensaje):
+    print "Envio notificacion riego"
