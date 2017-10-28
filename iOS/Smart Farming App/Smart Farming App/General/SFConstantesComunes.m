@@ -63,4 +63,6 @@ NSString *const kErrorCambioContrasenia = @"Error cambiando contraseña";
 NSString *const kErrorObteniendoRoles = @"Error obteniendo roles";
 NSString *const kErrorObteniendoFincas = @"Error obteniendo fincas";
 
+NSString *const kErrorObteniendoDatosFinca = @"Error obteniendo datos de finca";
+
 @end

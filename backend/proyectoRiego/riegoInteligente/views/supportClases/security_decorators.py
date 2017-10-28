@@ -2,7 +2,6 @@
 from datetime import datetime
 import pytz
 from functools import wraps
-from smtplib import SMTPException
 
 from django.http import HttpResponse
 from django.utils.decorators import available_attrs

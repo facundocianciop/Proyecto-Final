@@ -1450,6 +1450,10 @@ def modificar_criterio_configuracion_riego_mecanismo_riego_finca_sector(request)
         ultimo_estado_historico = HistoricoEstadoConfiguracionRiego.objects.get(
             configuracion_riego=configuracion_riego_elegida, fechaFinEstadoConfiguracionRiego=None)
 
+        # Comprobar que no se este ejecutando el riego para esta configuracion
+        if configuracion_tiene_riego_activo(configuracion_riego_elegida):
+            raise ValueError(ERROR_MODIFICACION_CONFIGURACION_RIEGO, DETALLE_ERROR_CONFIGURACION_RIEGO_EN_EJECUCION)
+
         if ultimo_estado_historico.estado_configuracion_riego == estado_configuracion_riego_habilitado \
                 or ultimo_estado_historico.estado_configuracion_riego == estado_configuracion_riego_deshabilitado:
 
@@ -1480,7 +1484,7 @@ def modificar_criterio_configuracion_riego_mecanismo_riego_finca_sector(request)
                 criterio_riego_medicion_elegido.nombre = datos[KEY_NOMBRE_CRITERIO_RIEGO]
                 criterio_riego_medicion_elegido.descripcion = datos[KEY_DESCRIPCION_CRITERIO_RIEGO]
                 criterio_riego_medicion_elegido.valor = datos[KEY_VALOR_MEDICION_CRITERIO_RIEGO]
-                criterio_riego_medicion_elegido.operador = datos[KEY_OPERADOR_MEDICION_CRITERIO_RIEGO],
+                criterio_riego_medicion_elegido.operador = datos[KEY_OPERADOR_MEDICION_CRITERIO_RIEGO]
                 criterio_riego_medicion_elegido.tipo_medicion = tipo_medicion_elegido
 
                 criterio_riego_medicion_elegido.save()

@@ -84,7 +84,7 @@
         [parametrosLlamada setObject:[NSNumber numberWithLong:solicitudBuscarSectorId.idSector] forKey:KEY_ID_SECTOR];
     }
     
-    [[HTTPConector instance] httpOperation:OPERATION_BUSCAR_SECTOR_ID method:METHOD_POST withParameters:nil completionBlock:^(NSDictionary *responseObject) {
+    [[HTTPConector instance] httpOperation:OPERATION_BUSCAR_SECTOR_ID method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
         
         RespuestaBuscarSectorId *respuesta = [RespuestaBuscarSectorId new];
         
@@ -133,7 +133,7 @@
         [parametrosLlamada setObject:[NSNumber numberWithLong:solicitudMostrarCultivoSector.idSector] forKey:KEY_ID_SECTOR];
     }
     
-    [[HTTPConector instance] httpOperation:OPERATION_MOSTRAR_CULTIVO_SECTOR method:METHOD_POST withParameters:nil completionBlock:^(NSDictionary *responseObject) {
+    [[HTTPConector instance] httpOperation:OPERATION_MOSTRAR_CULTIVO_SECTOR method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
         
         RespuestaMostrarCultivoSector *respuesta = [RespuestaMostrarCultivoSector new];
         
@@ -194,7 +194,7 @@
         [parametrosLlamada setObject:[NSNumber numberWithLong:solicitudMostrarCultivoSectorHistorico.idSector] forKey:KEY_ID_SECTOR];
     }
     
-    [[HTTPConector instance] httpOperation:OPERATION_MOSTRAR_CULTIVO_SECTOR_HISTORICO method:METHOD_POST withParameters:nil completionBlock:^(NSDictionary *responseObject) {
+    [[HTTPConector instance] httpOperation:OPERATION_MOSTRAR_CULTIVO_SECTOR_HISTORICO method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
         
         RespuestaMostrarCultivoSectorHistorico *respuesta = [RespuestaMostrarCultivoSectorHistorico new];
         
@@ -262,7 +262,7 @@
         [parametrosLlamada setObject:[NSNumber numberWithLong:solicitudMostrarMecanismoRiegoSector.idSector] forKey:KEY_ID_SECTOR];
     }
     
-    [[HTTPConector instance] httpOperation:OPERATION_MOSTRAR_MECANISMO_RIEGO_SECTOR method:METHOD_POST withParameters:nil completionBlock:^(NSDictionary *responseObject) {
+    [[HTTPConector instance] httpOperation:OPERATION_MOSTRAR_MECANISMO_RIEGO_SECTOR method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
         
         RespuestaMostrarMecanismoRiegoSector *respuesta = [RespuestaMostrarMecanismoRiegoSector new];
         
@@ -317,7 +317,7 @@
         [parametrosLlamada setObject:[NSNumber numberWithLong:solcitudMostrarComponenteSensorSector.idSector] forKey:KEY_ID_SECTOR];
     }
     
-    [[HTTPConector instance] httpOperation:OPERATION_MOSTRAR_COMPONENTE_SENSOR_SECTOR method:METHOD_POST withParameters:nil completionBlock:^(NSDictionary *responseObject) {
+    [[HTTPConector instance] httpOperation:OPERATION_MOSTRAR_COMPONENTE_SENSOR_SECTOR method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
         
         RespuestaMostrarComponenteSensorSector *respuesta = [RespuestaMostrarComponenteSensorSector new];
         

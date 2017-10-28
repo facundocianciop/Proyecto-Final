@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "SFConjuntoPermisos.h"
+
 @interface ContextoUsuario : NSObject
 
 #pragma mark - Initialization
@@ -21,6 +23,9 @@
 
 -(void)seleccionarFinca:(long)fincaId;
 -(long)fincaSeleccionada;
+
+-(void)setPermisosFincaSeleccionada:(SFConjuntoPermisos*)conjuntoPermisos;
+-(SFConjuntoPermisos*)permisosFincaSeleccionada;
 
 -(void)invalidateContext;
 

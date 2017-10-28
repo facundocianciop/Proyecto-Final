@@ -8,6 +8,8 @@
 
 #import "SFInformacionFincaActivadaViewController.h"
 
+#import "ServiciosModuloFinca.h"
+
 @interface SFInformacionFincaActivadaViewController ()
 
 @property (strong, nonatomic) IBOutlet UILabel *nombreFincaLabel;
@@ -23,6 +25,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    [self obtenerDatosFinca];
+    
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    [self.navigationItem setBackBarButtonItem:backButton];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -39,5 +46,49 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+#pragma mark - Privado
+
+-(void) obtenerDatosFinca {
+    
+    SolicitudBuscarFincaId *solitud = [SolicitudBuscarFincaId new];
+    solitud.idFinca = [[ContextoUsuario instance] fincaSeleccionada];
+    
+    __weak typeof (self)weakSelf = self;
+    
+    [self showActivityIndicator];
+    [ServiciosModuloFinca buscarFincaId:solitud completionBlock:^(RespuestaServicioBase *respuesta) {
+        [weakSelf hideActivityIndicator];
+        
+        if ([respuesta isKindOfClass:[RespuestaBuscarFincaId class]]) {
+            RespuestaBuscarFincaId *respuestaBuscarFincaId = (RespuestaBuscarFincaId *)respuesta;
+            
+            if (respuestaBuscarFincaId.resultado) {
+                
+                self.nombreFincaLabel.text = respuestaBuscarFincaId.finca.nombre;
+                self.rolUsuarioLabel.text = respuestaBuscarFincaId.finca.rolUsuario;
+                self.ubicacionFincaLabel.text = respuestaBuscarFincaId.finca.ubicacion;
+                self.direccionLegalLabel.text = respuestaBuscarFincaId.finca.direccionLegal;
+                self.tamanioFincaLabel.text = [NSString stringWithFormat:@"%li",respuestaBuscarFincaId.finca.tamanio];
+                
+            } else {
+                [weakSelf handleErrorWithPromptTitle:kErrorObteniendoDatosFinca message:kErrorDesconocido withCompletion:^{
+                    [self.navigationController popViewControllerAnimated:YES];
+                }];
+            }
+        }
+    } failureBlock:^(ErrorServicioBase *error) {
+        [weakSelf hideActivityIndicator];
+        [weakSelf handleErrorWithPromptTitle:kErrorObteniendoDatosFinca message:error.detalleError withCompletion:^{
+            [self.navigationController popViewControllerAnimated:YES];
+        }];
+    }];
+}
+
+#pragma mark - Acciones
+
+- (IBAction)accionVolver:(UIBarButtonItem *)sender {
+}
+
 
 @end

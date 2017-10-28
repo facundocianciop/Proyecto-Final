@@ -694,9 +694,9 @@
         [parametrosLlamada setObject:[NSNumber numberWithLong:solicitudObtenerInformeRiegoEjecucionSector.idSector] forKey:KEY_ID_SECTOR];
     }
     
-    [[HTTPConector instance] httpOperation:OPERATION_ method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
+    [[HTTPConector instance] httpOperation:OPERATION_OBTENER_INFORME_RIEGO_EJECUCION_SECTOR method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
         
-        Respuesta *respuesta = [Respuesta new];
+        RespuestaObtenerInformeRiegoEjecucionSector *respuesta = [RespuestaObtenerInformeRiegoEjecucionSector new];
         
         NSDictionary *datosOperacion = [ServiciosModuloReportes armarRespuestaServicio:respuesta withResponseObject:responseObject];
         
@@ -704,20 +704,140 @@
             
             @try {
                 
-                NSMutableArray *listaInstancias = [NSMutableArray new];
-                
-                for (NSDictionary *datos in datosOperacion) {
-                    
-                    Item *nuevaInstancia = [Item new];
-                    
-                    
-                    
-                    
-                    [listaInstancias addObject:nuevaInstancia];
+                if ([datosOperacion objectForKey:@"id_sector"] != [NSNull null]) {
+                    respuesta.idSector = [[datosOperacion objectForKey:@"id_sector"] longLongValue];
                 }
                 
-                respuesta. = listaInstancias;
+                if ([datosOperacion objectForKey:@"numero_sector"] != [NSNull null]) {
+                    respuesta.nroSector = [[datosOperacion objectForKey:@"numero_sector"] integerValue];
+                }
                 
+                if ([datosOperacion objectForKey:@"mecanismo_sector"] != [NSNull null]) {
+                    NSDictionary *infoMecanismoSector = [datosOperacion objectForKey:@"mecanismo_sector"];
+                    
+                    SFMecanismoRiegoFincaSector *mecanismoRiegoFincaSector = [SFMecanismoRiegoFincaSector new];
+                    
+                    if ([infoMecanismoSector objectForKey:KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR] != [NSNull null]) {
+                        mecanismoRiegoFincaSector.idMecanismoRiegoFincaSector = [[infoMecanismoSector objectForKey:KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR] longLongValue];
+                    }
+                    
+                    if ([infoMecanismoSector objectForKey:KEY_ID_FINCA] != [NSNull null]) {
+                        mecanismoRiegoFincaSector.idFinca = [[infoMecanismoSector objectForKey:KEY_ID_FINCA] longLongValue];
+                    }
+                    if ([infoMecanismoSector objectForKey:KEY_ID_MECANISMO_RIEGO_FINCA] != [NSNull null]) {
+                        mecanismoRiegoFincaSector.idMecanismoRiegoFinca = [[infoMecanismoSector objectForKey:KEY_ID_MECANISMO_RIEGO_FINCA] longLongValue];
+                    }
+                    if ([infoMecanismoSector objectForKey:KEY_ID_SECTOR] != [NSNull null]) {
+                        mecanismoRiegoFincaSector.idSector = [[infoMecanismoSector objectForKey:KEY_ID_SECTOR] longLongValue];
+                    }
+                    
+                    if ([infoMecanismoSector objectForKey:KEY_NOMBRE_TIPO_MECANISMO] != [NSNull null]) {
+                        mecanismoRiegoFincaSector.nombreTipoMecanismo = [infoMecanismoSector objectForKey:KEY_NOMBRE_TIPO_MECANISMO];
+                    }
+                    
+                    if ([infoMecanismoSector objectForKey:KEY_MECANISMO_RIEGO_CAUDAL_RESPUESTA] != [NSNull null]) {
+                        mecanismoRiegoFincaSector.caudal = [[infoMecanismoSector objectForKey:KEY_MECANISMO_RIEGO_CAUDAL_RESPUESTA] floatValue];
+                    }
+                    if ([infoMecanismoSector objectForKey:KEY_MECANISMO_RIEGO_PRESION_RESPUESTA] != [NSNull null]) {
+                        mecanismoRiegoFincaSector.presion = [[infoMecanismoSector objectForKey:KEY_MECANISMO_RIEGO_PRESION_RESPUESTA] floatValue];
+                    }
+                    
+                    respuesta.mecanismoRiegoFincaSector = mecanismoRiegoFincaSector;
+                }
+
+                if ([datosOperacion objectForKey:@"ejecucion_riego"] != [NSNull null]) {
+                    NSDictionary *infoEjecucionRiego = [datosOperacion objectForKey:@"ejecucion_riego"];
+                    
+                    SFEjecucionRiego *ejecucionRiego = [SFEjecucionRiego new];
+                    
+                    if ([infoEjecucionRiego objectForKey:@"mecanismoRiegoFincaSector"] != [NSNull null]) {
+                        ejecucionRiego.idMecanismoRiegoFincaSector = [[infoEjecucionRiego objectForKey:@"mecanismoRiegoFincaSector"] longLongValue];
+                    }
+                    if ([infoEjecucionRiego objectForKey:@"configuracion_riego"] != [NSNull null]) {
+                        ejecucionRiego.idConfiguracionRiego = [[infoEjecucionRiego objectForKey:@"configuracion_riego"] longLongValue];
+                    }
+                    
+                    if ([infoEjecucionRiego objectForKey:@"estado_ejecucion_riego"] != [NSNull null]) {
+                        ejecucionRiego.nombreEstadoEjecucionRiego = [infoEjecucionRiego objectForKey:@"estado_ejecucion_riego"];
+                    }
+                    if ([infoEjecucionRiego objectForKey:@"detalle"] != [NSNull null]) {
+                        ejecucionRiego.detalle = [infoEjecucionRiego objectForKey:@"detalle"];
+                    }
+                    
+                    if ([infoEjecucionRiego objectForKey:@"cantidadAguaUtilizadaLitros"] != [NSNull null]) {
+                        ejecucionRiego.cantidadAguaUtilizadaLitros = [[infoEjecucionRiego objectForKey:@"cantidadAguaUtilizadaLitros"] floatValue];
+                    }
+                    
+                    if ([infoEjecucionRiego objectForKey:@"duracionActualMinutos"] != [NSNull null]) {
+                        ejecucionRiego.duracionActualMinutos = [[infoEjecucionRiego objectForKey:@"duracionActualMinutos"] floatValue];
+                    }
+                    if ([infoEjecucionRiego objectForKey:@"duracionActualSegundos"] != [NSNull null]) {
+                        ejecucionRiego.duracionActualSegundos = [[infoEjecucionRiego objectForKey:@"duracionActualSegundos"] floatValue];
+                    }
+                    
+                    if ([infoEjecucionRiego objectForKey:@"fechaHoraFinalizacion"]!= [NSNull null]) {
+                        ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraFinalizacion"]];
+                    }
+                    if ([infoEjecucionRiego objectForKey:@""]!= [NSNull null]) {
+                        ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraFinalProgramada"]];
+                    }
+                    
+                    if ([infoEjecucionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
+                        ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraInicio"]];
+                    }
+                    if ([infoEjecucionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
+                        ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraInicioProgramada"]];
+                    }
+                    
+                    respuesta.ejecucionRiego = ejecucionRiego;
+                }
+                    
+                if ([datosOperacion objectForKey:@"configuracion_riego"] != [NSNull null]) {
+                    NSDictionary *infoConfiguracionRiego = [datosOperacion objectForKey:@"configuracion_riego"];
+                    
+                    SFConfiguracionRiego *configuracionRiego = [SFConfiguracionRiego new];
+                    
+                    if ([infoConfiguracionRiego objectForKey:@"idConfiguracionRiego"] != [NSNull null]) {
+                        configuracionRiego.idConfiguracionRiego = [[infoConfiguracionRiego objectForKey:@"idConfiguracionRiego"] longLongValue];
+                    }
+                    if ([infoConfiguracionRiego objectForKey:@"mecanismoRiegoFincaSector"] != [NSNull null]) {
+                        configuracionRiego.idMecanismoRiegoFincaSector = [[infoConfiguracionRiego objectForKey:@"mecanismoRiegoFincaSector"] longLongValue];
+                    }
+                    
+                    if ([infoConfiguracionRiego objectForKey:@"nombre"] != [NSNull null]) {
+                        configuracionRiego.nombreConfiguracionRiego = [infoConfiguracionRiego objectForKey:@"nombre"];
+                    }
+                    if ([infoConfiguracionRiego objectForKey:@"descripcion"] != [NSNull null]) {
+                        configuracionRiego.descripcionConfiguracionRiego = [infoConfiguracionRiego objectForKey:@"descripcion"];
+                    }
+                    
+                    if ([infoConfiguracionRiego objectForKey:@"duracionMaxima"] != [NSNull null]) {
+                        configuracionRiego.duracionMaxima = [[infoConfiguracionRiego objectForKey:@"duracionMaxima"] floatValue];
+                    }
+                    
+                    if ([infoConfiguracionRiego objectForKey:@"fechaCreacion"]!= [NSNull null]) {
+                        configuracionRiego.fechaCreacion = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaCreacion"]];
+                    }
+                    if ([infoConfiguracionRiego objectForKey:@"fechaFinalizacion"]!= [NSNull null]) {
+                        configuracionRiego.fechaFinalizacion = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaFinalizacion"]];
+                    }
+                    
+                    if ([infoConfiguracionRiego objectForKey:@"tipoConfiguracionRiego"] != [NSNull null]) {
+                        configuracionRiego.nombreTipoConfiguracionRiego = [infoConfiguracionRiego objectForKey:@"tipoConfiguracionRiego"];
+                    }
+                    if ([infoConfiguracionRiego objectForKey:@"estado_configuracion"] != [NSNull null]) {
+                        configuracionRiego.nombreEstadoConfiguracionRiego = [infoConfiguracionRiego objectForKey:@"estado_configuracion"];
+                    }
+                    
+                    if ([infoConfiguracionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
+                        configuracionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaHoraInicio"]];
+                    }
+                    if ([infoConfiguracionRiego objectForKey:@"fechaHoraInicioProgramada"]!= [NSNull null]) {
+                        configuracionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaHoraInicioProgramada"]];
+                    }
+                    
+                    respuesta.configuracionRiego = configuracionRiego;
+                }
             } @catch (NSException *exception) {
                 completionBlock(respuesta);
             }
@@ -727,7 +847,6 @@
     } failureBlock:^(NSError *error) {
         failureBlock([BaseServicios armarErrorServicio:error]);
     }];
-    
 }
 
 +(void) obtenerInformeRiegoHistoricoSector:(SolicitudObtenerInformeRiegoHistoricoSector*)solicitudObtenerInformeRiegoHistoricoSector completionBlock:(SuccessBlock)completionBlock failureBlock:(FailureBlock)failureBlock {
@@ -737,33 +856,157 @@
         [parametrosLlamada setObject:[NSNumber numberWithLong:solicitudObtenerInformeRiegoHistoricoSector.idFinca] forKey:KEY_ID_FINCA];
         [parametrosLlamada setObject:[NSNumber numberWithLong:solicitudObtenerInformeRiegoHistoricoSector.idSector] forKey:KEY_ID_SECTOR];
         
-        [parametrosLlamada setObject:[SFUtils formatDateYYYYMMDD: solicitudObtenerInformeHistoricoSector.fechaInicioSector] forKey:KEY_FECHA_INICIO_SECTOR];
-        [parametrosLlamada setObject:[SFUtils formatDateYYYYMMDD: solicitudObtenerInformeHistoricoSector.fechaFinSector] forKey:KEY_FECHA_FIN_SECTOR];
+        [parametrosLlamada setObject:[SFUtils formatDateYYYYMMDD: solicitudObtenerInformeRiegoHistoricoSector.fechaInicioSector] forKey:KEY_FECHA_INICIO_SECTOR];
+        [parametrosLlamada setObject:[SFUtils formatDateYYYYMMDD: solicitudObtenerInformeRiegoHistoricoSector.fechaFinSector] forKey:KEY_FECHA_FIN_SECTOR];
     }
     
-    [[HTTPConector instance] httpOperation:OPERATION_ method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
+    [[HTTPConector instance] httpOperation:OPERATION_OBTENER_INFORME_RIEGO_HISTORICO_SECTOR method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
         
-        Respuesta *respuesta = [Respuesta new];
+        RespuestaObtenerInformeRiegoHistoricoSector *respuesta = [RespuestaObtenerInformeRiegoHistoricoSector new];
         
         NSDictionary *datosOperacion = [ServiciosModuloReportes armarRespuestaServicio:respuesta withResponseObject:responseObject];
         
         if (respuesta.resultado && datosOperacion) {
             
             @try {
-                
+
                 NSMutableArray *listaInstancias = [NSMutableArray new];
                 
                 for (NSDictionary *datos in datosOperacion) {
                     
-                    Item *nuevaInstancia = [Item new];
+                    DTOMecanismoRiegoConfiguracion *nuevaInstancia = [DTOMecanismoRiegoConfiguracion new];
                     
+                    if ([datos objectForKey:@"mecanismo_riego_finca_sector"] != [NSNull null]) {
+                        NSDictionary *infoMecanismoSector = [datos objectForKey:@"mecanismo_riego_finca_sector"];
+                        
+                        SFMecanismoRiegoFincaSector *mecanismoRiegoFincaSector = [SFMecanismoRiegoFincaSector new];
+                        
+                        if ([infoMecanismoSector objectForKey:KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR] != [NSNull null]) {
+                            mecanismoRiegoFincaSector.idMecanismoRiegoFincaSector = [[infoMecanismoSector objectForKey:KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR] longLongValue];
+                        }
+                        
+                        if ([infoMecanismoSector objectForKey:KEY_ID_FINCA] != [NSNull null]) {
+                            mecanismoRiegoFincaSector.idFinca = [[infoMecanismoSector objectForKey:KEY_ID_FINCA] longLongValue];
+                        }
+                        if ([infoMecanismoSector objectForKey:KEY_ID_MECANISMO_RIEGO_FINCA] != [NSNull null]) {
+                            mecanismoRiegoFincaSector.idMecanismoRiegoFinca = [[infoMecanismoSector objectForKey:KEY_ID_MECANISMO_RIEGO_FINCA] longLongValue];
+                        }
+                        if ([infoMecanismoSector objectForKey:KEY_ID_SECTOR] != [NSNull null]) {
+                            mecanismoRiegoFincaSector.idSector = [[infoMecanismoSector objectForKey:KEY_ID_SECTOR] longLongValue];
+                        }
+                        
+                        if ([infoMecanismoSector objectForKey:KEY_NOMBRE_TIPO_MECANISMO] != [NSNull null]) {
+                            mecanismoRiegoFincaSector.nombreTipoMecanismo = [infoMecanismoSector objectForKey:KEY_NOMBRE_TIPO_MECANISMO];
+                        }
+                        
+                        if ([infoMecanismoSector objectForKey:KEY_MECANISMO_RIEGO_CAUDAL_RESPUESTA] != [NSNull null]) {
+                            mecanismoRiegoFincaSector.caudal = [[infoMecanismoSector objectForKey:KEY_MECANISMO_RIEGO_CAUDAL_RESPUESTA] floatValue];
+                        }
+                        if ([infoMecanismoSector objectForKey:KEY_MECANISMO_RIEGO_PRESION_RESPUESTA] != [NSNull null]) {
+                            mecanismoRiegoFincaSector.presion = [[infoMecanismoSector objectForKey:KEY_MECANISMO_RIEGO_PRESION_RESPUESTA] floatValue];
+                        }
+                        
+                        nuevaInstancia.mecanismoRiegoFincaSector = mecanismoRiegoFincaSector;
+                    }
                     
+                    if ([datos objectForKey:@"ejecucion"] != [NSNull null]) {
+                        NSDictionary *infoEjecucionRiego = [datos objectForKey:@"ejecucion"];
+                        
+                        SFEjecucionRiego *ejecucionRiego = [SFEjecucionRiego new];
                     
+                        if ([infoEjecucionRiego objectForKey:@"mecanismoRiegoFincaSector"] != [NSNull null]) {
+                            ejecucionRiego.idMecanismoRiegoFincaSector = [[infoEjecucionRiego objectForKey:@"mecanismoRiegoFincaSector"] longLongValue];
+                        }
+                        if ([infoEjecucionRiego objectForKey:@"configuracion_riego"] != [NSNull null]) {
+                            ejecucionRiego.idConfiguracionRiego = [[infoEjecucionRiego objectForKey:@"configuracion_riego"] longLongValue];
+                        }
+                        
+                        if ([infoEjecucionRiego objectForKey:@"estado_ejecucion_riego"] != [NSNull null]) {
+                            ejecucionRiego.nombreEstadoEjecucionRiego = [infoEjecucionRiego objectForKey:@"estado_ejecucion_riego"];
+                        }
+                        if ([infoEjecucionRiego objectForKey:@"detalle"] != [NSNull null]) {
+                            ejecucionRiego.detalle = [infoEjecucionRiego objectForKey:@"detalle"];
+                        }
+                        
+                        if ([infoEjecucionRiego objectForKey:@"cantidadAguaUtilizadaLitros"] != [NSNull null]) {
+                            ejecucionRiego.cantidadAguaUtilizadaLitros = [[infoEjecucionRiego objectForKey:@"cantidadAguaUtilizadaLitros"] floatValue];
+                        }
+                        
+                        if ([infoEjecucionRiego objectForKey:@"duracionActualMinutos"] != [NSNull null]) {
+                            ejecucionRiego.duracionActualMinutos = [[infoEjecucionRiego objectForKey:@"duracionActualMinutos"] floatValue];
+                        }
+                        if ([infoEjecucionRiego objectForKey:@"duracionActualSegundos"] != [NSNull null]) {
+                            ejecucionRiego.duracionActualSegundos = [[infoEjecucionRiego objectForKey:@"duracionActualSegundos"] floatValue];
+                        }
+                        
+                        if ([infoEjecucionRiego objectForKey:@"fechaHoraFinalizacion"]!= [NSNull null]) {
+                            ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraFinalizacion"]];
+                        }
+                        if ([infoEjecucionRiego objectForKey:@""]!= [NSNull null]) {
+                            ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraFinalProgramada"]];
+                        }
+                        
+                        if ([infoEjecucionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
+                            ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraInicio"]];
+                        }
+                        if ([infoEjecucionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
+                            ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraInicioProgramada"]];
+                        }
+                        
+                        nuevaInstancia.ejecucionRiego = ejecucionRiego;
+                    }
+                    
+                    if ([datos objectForKey:@"configuracion"] != [NSNull null]) {
+                        NSDictionary *infoConfiguracionRiego = [datos objectForKey:@"configuracion"];
+                        
+                        SFConfiguracionRiego *configuracionRiego = [SFConfiguracionRiego new];
+                        
+                        if ([infoConfiguracionRiego objectForKey:@"idConfiguracionRiego"] != [NSNull null]) {
+                            configuracionRiego.idConfiguracionRiego = [[infoConfiguracionRiego objectForKey:@"idConfiguracionRiego"] longLongValue];
+                        }
+                        if ([infoConfiguracionRiego objectForKey:@"mecanismoRiegoFincaSector"] != [NSNull null]) {
+                            configuracionRiego.idMecanismoRiegoFincaSector = [[infoConfiguracionRiego objectForKey:@"mecanismoRiegoFincaSector"] longLongValue];
+                        }
+                        
+                        if ([infoConfiguracionRiego objectForKey:@"nombre"] != [NSNull null]) {
+                            configuracionRiego.nombreConfiguracionRiego = [infoConfiguracionRiego objectForKey:@"nombre"];
+                        }
+                        if ([infoConfiguracionRiego objectForKey:@"descripcion"] != [NSNull null]) {
+                            configuracionRiego.descripcionConfiguracionRiego = [infoConfiguracionRiego objectForKey:@"descripcion"];
+                        }
+                        
+                        if ([infoConfiguracionRiego objectForKey:@"duracionMaxima"] != [NSNull null]) {
+                            configuracionRiego.duracionMaxima = [[infoConfiguracionRiego objectForKey:@"duracionMaxima"] floatValue];
+                        }
+                        
+                        if ([infoConfiguracionRiego objectForKey:@"fechaCreacion"]!= [NSNull null]) {
+                            configuracionRiego.fechaCreacion = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaCreacion"]];
+                        }
+                        if ([infoConfiguracionRiego objectForKey:@"fechaFinalizacion"]!= [NSNull null]) {
+                            configuracionRiego.fechaFinalizacion = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaFinalizacion"]];
+                        }
+                        
+                        if ([infoConfiguracionRiego objectForKey:@"tipoConfiguracionRiego"] != [NSNull null]) {
+                            configuracionRiego.nombreTipoConfiguracionRiego = [infoConfiguracionRiego objectForKey:@"tipoConfiguracionRiego"];
+                        }
+                        if ([infoConfiguracionRiego objectForKey:@"estado_configuracion"] != [NSNull null]) {
+                            configuracionRiego.nombreEstadoConfiguracionRiego = [infoConfiguracionRiego objectForKey:@"estado_configuracion"];
+                        }
+                        
+                        if ([infoConfiguracionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
+                            configuracionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaHoraInicio"]];
+                        }
+                        if ([infoConfiguracionRiego objectForKey:@"fechaHoraInicioProgramada"]!= [NSNull null]) {
+                            configuracionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaHoraInicioProgramada"]];
+                        }
+                        
+                        nuevaInstancia.configuracionRiego = configuracionRiego;
+                    }
                     
                     [listaInstancias addObject:nuevaInstancia];
                 }
                 
-                respuesta. = listaInstancias;
+                respuesta.listaDTOMecanismoRiegoConfiguracion = listaInstancias;
                 
             } @catch (NSException *exception) {
                 completionBlock(respuesta);
@@ -785,9 +1028,9 @@
         [parametrosLlamada setObject:[NSNumber numberWithLong:solicitudObtenerInformeEventosPersonalizados.idConfiguracionEvento] forKey:KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO];
     }
     
-    [[HTTPConector instance] httpOperation:OPERATION_ method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
+    [[HTTPConector instance] httpOperation:OPERATION_OBTENER_INFORME_EVENTOS_PERSONALIZADOS method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
         
-        Respuesta *respuesta = [Respuesta new];
+        RespuestaObtenerInformeEventosPersonalizados *respuesta = [RespuestaObtenerInformeEventosPersonalizados new];
         
         NSDictionary *datosOperacion = [ServiciosModuloReportes armarRespuestaServicio:respuesta withResponseObject:responseObject];
         
@@ -799,15 +1042,24 @@
                 
                 for (NSDictionary *datos in datosOperacion) {
                     
-                    Item *nuevaInstancia = [Item new];
+                    SFOcurrenciaEventoPersonalizado *nuevaInstancia = [SFOcurrenciaEventoPersonalizado new];
                     
+                    if ([datos objectForKey:@"nroEvento"] != [NSNull null]) {
+                        nuevaInstancia.nroEvento = [[datos objectForKey:@"nroEvento"] integerValue];
+                    }
                     
+                    if ([datos objectForKey:@"numeroSector"] != [NSNull null]) {
+                        nuevaInstancia.numeroSector = [[datos objectForKey:@"numeroSector"] integerValue];
+                    }
                     
+                    if ([datos objectForKey:@"fechaHora"] != [NSNull null]) {
+                        nuevaInstancia.fechaYHora = [SFUtils dateFromStringYYYYMMDD: datos[@"fechaHora"]];
+                    }
                     
                     [listaInstancias addObject:nuevaInstancia];
                 }
                 
-                respuesta. = listaInstancias;
+                respuesta.listaOcurrenciasEventoPersonalizado = listaInstancias;
                 
             } @catch (NSException *exception) {
                 completionBlock(respuesta);
@@ -832,9 +1084,9 @@
         [parametrosLlamada setObject:[SFUtils formatDateYYYYMMDD: solicitudObtenerInformeHistoricoHeladas.fechaFinSector] forKey:KEY_FECHA_FIN_SECTOR];
     }
     
-    [[HTTPConector instance] httpOperation:OPERATION_ method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
+    [[HTTPConector instance] httpOperation:OPERATION_OBTENER_INFORME_HISTORICO_HELADAS method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
         
-        Respuesta *respuesta = [Respuesta new];
+        RespuestaObtenerInformeHistoricoHeladas *respuesta = [RespuestaObtenerInformeHistoricoHeladas new];
         
         NSDictionary *datosOperacion = [ServiciosModuloReportes armarRespuestaServicio:respuesta withResponseObject:responseObject];
         
@@ -846,15 +1098,24 @@
                 
                 for (NSDictionary *datos in datosOperacion) {
                     
-                    Item *nuevaInstancia = [Item new];
+                    SFOcurrenciaEventoPersonalizado *nuevaInstancia = [SFOcurrenciaEventoPersonalizado new];
                     
+                    if ([datos objectForKey:@"nroEvento"] != [NSNull null]) {
+                        nuevaInstancia.nroEvento = [[datos objectForKey:@"nroEvento"] integerValue];
+                    }
                     
+                    if ([datos objectForKey:@"numeroSector"] != [NSNull null]) {
+                        nuevaInstancia.numeroSector = [[datos objectForKey:@"numeroSector"] integerValue];
+                    }
                     
+                    if ([datos objectForKey:@"fechaHora"] != [NSNull null]) {
+                        nuevaInstancia.fechaYHora = [SFUtils dateFromStringYYYYMMDD: datos[@"fechaHora"]];
+                    }
                     
                     [listaInstancias addObject:nuevaInstancia];
                 }
                 
-                respuesta. = listaInstancias;
+                respuesta.listaOcurrenciasHelada = listaInstancias;
                 
             } @catch (NSException *exception) {
                 completionBlock(respuesta);
@@ -879,9 +1140,9 @@
         [parametrosLlamada setObject:[SFUtils formatDateYYYYMMDD: solicitudObtenerInformeCruzadoRiegoMediciones.fechaFinSector] forKey:KEY_FECHA_FIN_SECTOR];
     }
     
-    [[HTTPConector instance] httpOperation:OPERATION_ method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
+    [[HTTPConector instance] httpOperation:OPERATION_OBTENER_INFORME_CRUZADO_RIEGO_MEDICIONES method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
         
-        Respuesta *respuesta = [Respuesta new];
+        RespuestaObtenerInformeCruzadoRiegoMediciones *respuesta = [RespuestaObtenerInformeCruzadoRiegoMediciones new];
         
         NSDictionary *datosOperacion = [ServiciosModuloReportes armarRespuestaServicio:respuesta withResponseObject:responseObject];
         
@@ -893,15 +1154,282 @@
                 
                 for (NSDictionary *datos in datosOperacion) {
                     
-                    Item *nuevaInstancia = [Item new];
+                    DTOInformeCruzadoRiegoMediciones *nuevaInstancia = [DTOInformeCruzadoRiegoMediciones new];
                     
+                    if ([datos objectForKey:@"mecanismo_riego_finca_sector"] != [NSNull null]) {
+                        NSDictionary *infoMecanismoSector = [datos objectForKey:@"mecanismo_riego_finca_sector"];
+                        
+                        SFMecanismoRiegoFincaSector *mecanismoRiegoFincaSector = [SFMecanismoRiegoFincaSector new];
+                        
+                        if ([infoMecanismoSector objectForKey:KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR] != [NSNull null]) {
+                            mecanismoRiegoFincaSector.idMecanismoRiegoFincaSector = [[infoMecanismoSector objectForKey:KEY_ID_MECANISMO_RIEGO_FINCA_SECTOR] longLongValue];
+                        }
+                        
+                        if ([infoMecanismoSector objectForKey:KEY_ID_FINCA] != [NSNull null]) {
+                            mecanismoRiegoFincaSector.idFinca = [[infoMecanismoSector objectForKey:KEY_ID_FINCA] longLongValue];
+                        }
+                        if ([infoMecanismoSector objectForKey:KEY_ID_MECANISMO_RIEGO_FINCA] != [NSNull null]) {
+                            mecanismoRiegoFincaSector.idMecanismoRiegoFinca = [[infoMecanismoSector objectForKey:KEY_ID_MECANISMO_RIEGO_FINCA] longLongValue];
+                        }
+                        if ([infoMecanismoSector objectForKey:KEY_ID_SECTOR] != [NSNull null]) {
+                            mecanismoRiegoFincaSector.idSector = [[infoMecanismoSector objectForKey:KEY_ID_SECTOR] longLongValue];
+                        }
+                        
+                        if ([infoMecanismoSector objectForKey:KEY_NOMBRE_TIPO_MECANISMO] != [NSNull null]) {
+                            mecanismoRiegoFincaSector.nombreTipoMecanismo = [infoMecanismoSector objectForKey:KEY_NOMBRE_TIPO_MECANISMO];
+                        }
+                        
+                        if ([infoMecanismoSector objectForKey:KEY_MECANISMO_RIEGO_CAUDAL_RESPUESTA] != [NSNull null]) {
+                            mecanismoRiegoFincaSector.caudal = [[infoMecanismoSector objectForKey:KEY_MECANISMO_RIEGO_CAUDAL_RESPUESTA] floatValue];
+                        }
+                        if ([infoMecanismoSector objectForKey:KEY_MECANISMO_RIEGO_PRESION_RESPUESTA] != [NSNull null]) {
+                            mecanismoRiegoFincaSector.presion = [[infoMecanismoSector objectForKey:KEY_MECANISMO_RIEGO_PRESION_RESPUESTA] floatValue];
+                        }
+                        
+                        nuevaInstancia.mecanismoRiegoFincaSector = mecanismoRiegoFincaSector;
+                    }
                     
+                    if ([datos objectForKey:@"ejecucion"] != [NSNull null]) {
+                        NSDictionary *infoEjecucionRiego = [datos objectForKey:@"ejecucion"];
+                        
+                        SFEjecucionRiego *ejecucionRiego = [SFEjecucionRiego new];
+                        
+                        if ([infoEjecucionRiego objectForKey:@"mecanismoRiegoFincaSector"] != [NSNull null]) {
+                            ejecucionRiego.idMecanismoRiegoFincaSector = [[infoEjecucionRiego objectForKey:@"mecanismoRiegoFincaSector"] longLongValue];
+                        }
+                        if ([infoEjecucionRiego objectForKey:@"configuracion_riego"] != [NSNull null]) {
+                            ejecucionRiego.idConfiguracionRiego = [[infoEjecucionRiego objectForKey:@"configuracion_riego"] longLongValue];
+                        }
+                        
+                        if ([infoEjecucionRiego objectForKey:@"estado_ejecucion_riego"] != [NSNull null]) {
+                            ejecucionRiego.nombreEstadoEjecucionRiego = [infoEjecucionRiego objectForKey:@"estado_ejecucion_riego"];
+                        }
+                        if ([infoEjecucionRiego objectForKey:@"detalle"] != [NSNull null]) {
+                            ejecucionRiego.detalle = [infoEjecucionRiego objectForKey:@"detalle"];
+                        }
+                        
+                        if ([infoEjecucionRiego objectForKey:@"cantidadAguaUtilizadaLitros"] != [NSNull null]) {
+                            ejecucionRiego.cantidadAguaUtilizadaLitros = [[infoEjecucionRiego objectForKey:@"cantidadAguaUtilizadaLitros"] floatValue];
+                        }
+                        
+                        if ([infoEjecucionRiego objectForKey:@"duracionActualMinutos"] != [NSNull null]) {
+                            ejecucionRiego.duracionActualMinutos = [[infoEjecucionRiego objectForKey:@"duracionActualMinutos"] floatValue];
+                        }
+                        if ([infoEjecucionRiego objectForKey:@"duracionActualSegundos"] != [NSNull null]) {
+                            ejecucionRiego.duracionActualSegundos = [[infoEjecucionRiego objectForKey:@"duracionActualSegundos"] floatValue];
+                        }
+                        
+                        if ([infoEjecucionRiego objectForKey:@"fechaHoraFinalizacion"]!= [NSNull null]) {
+                            ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraFinalizacion"]];
+                        }
+                        if ([infoEjecucionRiego objectForKey:@""]!= [NSNull null]) {
+                            ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraFinalProgramada"]];
+                        }
+                        
+                        if ([infoEjecucionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
+                            ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraInicio"]];
+                        }
+                        if ([infoEjecucionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
+                            ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraInicioProgramada"]];
+                        }
+                        
+                        nuevaInstancia.ejecucionRiego = ejecucionRiego;
+                    }
                     
+                    if ([datos objectForKey:@"configuracion"] != [NSNull null]) {
+                        NSDictionary *infoConfiguracionRiego = [datos objectForKey:@"configuracion"];
+                        
+                        SFConfiguracionRiego *configuracionRiego = [SFConfiguracionRiego new];
+                        
+                        if ([infoConfiguracionRiego objectForKey:@"idConfiguracionRiego"] != [NSNull null]) {
+                            configuracionRiego.idConfiguracionRiego = [[infoConfiguracionRiego objectForKey:@"idConfiguracionRiego"] longLongValue];
+                        }
+                        if ([infoConfiguracionRiego objectForKey:@"mecanismoRiegoFincaSector"] != [NSNull null]) {
+                            configuracionRiego.idMecanismoRiegoFincaSector = [[infoConfiguracionRiego objectForKey:@"mecanismoRiegoFincaSector"] longLongValue];
+                        }
+                        
+                        if ([infoConfiguracionRiego objectForKey:@"nombre"] != [NSNull null]) {
+                            configuracionRiego.nombreConfiguracionRiego = [infoConfiguracionRiego objectForKey:@"nombre"];
+                        }
+                        if ([infoConfiguracionRiego objectForKey:@"descripcion"] != [NSNull null]) {
+                            configuracionRiego.descripcionConfiguracionRiego = [infoConfiguracionRiego objectForKey:@"descripcion"];
+                        }
+                        
+                        if ([infoConfiguracionRiego objectForKey:@"duracionMaxima"] != [NSNull null]) {
+                            configuracionRiego.duracionMaxima = [[infoConfiguracionRiego objectForKey:@"duracionMaxima"] floatValue];
+                        }
+                        
+                        if ([infoConfiguracionRiego objectForKey:@"fechaCreacion"]!= [NSNull null]) {
+                            configuracionRiego.fechaCreacion = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaCreacion"]];
+                        }
+                        if ([infoConfiguracionRiego objectForKey:@"fechaFinalizacion"]!= [NSNull null]) {
+                            configuracionRiego.fechaFinalizacion = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaFinalizacion"]];
+                        }
+                        
+                        if ([infoConfiguracionRiego objectForKey:@"tipoConfiguracionRiego"] != [NSNull null]) {
+                            configuracionRiego.nombreTipoConfiguracionRiego = [infoConfiguracionRiego objectForKey:@"tipoConfiguracionRiego"];
+                        }
+                        if ([infoConfiguracionRiego objectForKey:@"estado_configuracion"] != [NSNull null]) {
+                            configuracionRiego.nombreEstadoConfiguracionRiego = [infoConfiguracionRiego objectForKey:@"estado_configuracion"];
+                        }
+                        
+                        if ([infoConfiguracionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
+                            configuracionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaHoraInicio"]];
+                        }
+                        if ([infoConfiguracionRiego objectForKey:@"fechaHoraInicioProgramada"]!= [NSNull null]) {
+                            configuracionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaHoraInicioProgramada"]];
+                        }
+ 
+                        nuevaInstancia.configuracionRiego = configuracionRiego;
+                    }
+
+                    if ([datos objectForKey:@"medicionesComponenteAntes"] != [NSNull null]) {
+                        NSDictionary *listaInfoMedicionesComponenteAntes = [datos objectForKey:@"medicionesComponenteAntes"];
+                        
+                        NSMutableArray *listaMedicionesComponenteAntes = [NSMutableArray new];
+                        
+                        for (NSDictionary *infoMedicionCabecera in listaInfoMedicionesComponenteAntes) {
+                            
+                            SFMedicionSensorCabecera *medicionCabecera = [SFMedicionSensorCabecera new];
+                            
+                            if ([infoMedicionCabecera objectForKey:@"nro_medicion"] != [NSNull null]) {
+                                medicionCabecera.nroMedicion = [[infoMedicionCabecera objectForKey:@"nro_medicion"] integerValue];
+                            }
+                            
+                            if ([infoMedicionCabecera objectForKey:@"fecha_y_hora"]!= [NSNull null]) {
+                                medicionCabecera.fechaYHora = [SFUtils dateFromStringYYYYMMDD: infoMedicionCabecera[@"fecha_y_hora"]];
+                            }
+                            
+                            if ([infoMedicionCabecera objectForKey:@"lista_mediciones_detalle"]!= [NSNull null]) {
+                                NSDictionary *listaInfoDetallesMediones = [infoMedicionCabecera objectForKey:@"lista_mediciones_detalle"];
+                                
+                                NSMutableArray *listaDetallesMediciones = [NSMutableArray new];
+                                
+                                for (NSDictionary *infoDetalleMedion  in listaInfoDetallesMediones) {
+                                    
+                                    SFMedicionSensorDetalle *medicionSensorDetalle = [SFMedicionSensorDetalle new];
+                                    
+                                    if ([infoDetalleMedion objectForKey:@"nro_renglon"] != [NSNull null]) {
+                                        medicionSensorDetalle.nroRenglon = [[infoDetalleMedion objectForKey:@"nro_renglon"] integerValue];
+                                    }
+                                    if ([infoDetalleMedion objectForKey:@"valor"] != [NSNull null]) {
+                                        medicionSensorDetalle.valorMedicion = [[infoDetalleMedion objectForKey:@"valor"] floatValue];
+                                    }
+                                    
+                                    if ([infoDetalleMedion objectForKey:@"tipo_medicion"] != [NSNull null]) {
+                                        medicionSensorDetalle.nombreTipoMedicion = [infoDetalleMedion objectForKey:@"tipo_medicion"];
+                                    }
+                                    
+                                    [listaDetallesMediciones addObject:medicionSensorDetalle];
+                                }
+                                medicionCabecera.listaDetallesMedicion = listaDetallesMediciones;
+                            }
+
+                            [listaMedicionesComponenteAntes addObject:medicionCabecera];
+                        }
+                        nuevaInstancia.medicionesComponenteAntes = listaMedicionesComponenteAntes;
+                    }
+                    
+                    if ([datos objectForKey:@"medicionesComponenteDespues"] != [NSNull null]) {
+                        NSDictionary *listaInfoMedicionesComponenteDespues = [datos objectForKey:@"medicionesComponenteDespues"];
+                        
+                        NSMutableArray *listaMedicionesComponenteDespues = [NSMutableArray new];
+                        
+                        for (NSDictionary *infoMedicionCabecera in listaInfoMedicionesComponenteDespues) {
+                            
+                            SFMedicionSensorCabecera *medicionCabecera = [SFMedicionSensorCabecera new];
+                            
+                            if ([infoMedicionCabecera objectForKey:@"nro_medicion"] != [NSNull null]) {
+                                medicionCabecera.nroMedicion = [[infoMedicionCabecera objectForKey:@"nro_medicion"] integerValue];
+                            }
+                            
+                            if ([infoMedicionCabecera objectForKey:@"fecha_y_hora"]!= [NSNull null]) {
+                                medicionCabecera.fechaYHora = [SFUtils dateFromStringYYYYMMDD: infoMedicionCabecera[@"fecha_y_hora"]];
+                            }
+                            
+                            if ([infoMedicionCabecera objectForKey:@"lista_mediciones_detalle"]!= [NSNull null]) {
+                                NSDictionary *listaInfoDetallesMediones = [infoMedicionCabecera objectForKey:@"lista_mediciones_detalle"];
+                                
+                                NSMutableArray *listaDetallesMediciones = [NSMutableArray new];
+                                
+                                for (NSDictionary *infoDetalleMedion  in listaInfoDetallesMediones) {
+                                    
+                                    SFMedicionSensorDetalle *medicionSensorDetalle = [SFMedicionSensorDetalle new];
+                                    
+                                    if ([infoDetalleMedion objectForKey:@"nro_renglon"] != [NSNull null]) {
+                                        medicionSensorDetalle.nroRenglon = [[infoDetalleMedion objectForKey:@"nro_renglon"] integerValue];
+                                    }
+                                    if ([infoDetalleMedion objectForKey:@"valor"] != [NSNull null]) {
+                                        medicionSensorDetalle.valorMedicion = [[infoDetalleMedion objectForKey:@"valor"] floatValue];
+                                    }
+                                    
+                                    if ([infoDetalleMedion objectForKey:@"tipo_medicion"] != [NSNull null]) {
+                                        medicionSensorDetalle.nombreTipoMedicion = [infoDetalleMedion objectForKey:@"tipo_medicion"];
+                                    }
+                                    
+                                    [listaDetallesMediciones addObject:medicionSensorDetalle];
+                                }
+                                medicionCabecera.listaDetallesMedicion = listaDetallesMediciones;
+                            }
+                            
+                            [listaMedicionesComponenteDespues addObject:medicionCabecera];
+                        }
+                        nuevaInstancia.medicionesComponenteDespues = listaMedicionesComponenteDespues;
+                    }
+                    
+                    if ([datos objectForKey:@"medicionesClimaticasAntes"] != [NSNull null]) {
+                        NSDictionary *listaInfoMedicionesClimaticas = [datos objectForKey:@"medicionesClimaticasAntes"];
+                        
+                        NSMutableArray *listaMedicionesClimaticas = [NSMutableArray new];
+                        
+                        for (NSDictionary *infoMedicionClimaticaCabecera in listaInfoMedicionesClimaticas) {
+                            
+                            SFMedicionInformacionClimaticaCabecera *medicionInformacionClimaticaCabecera = [SFMedicionInformacionClimaticaCabecera new];
+                            
+                            if ([infoMedicionClimaticaCabecera objectForKey:@"nroMedicion"] != [NSNull null]) {
+                                medicionInformacionClimaticaCabecera.nroMedicion = [[infoMedicionClimaticaCabecera objectForKey:@"nroMedicion"] integerValue];
+                            }
+                            if ([infoMedicionClimaticaCabecera objectForKey:@"fechaHora"]!= [NSNull null]) {
+                                medicionInformacionClimaticaCabecera.fechaYHora = [SFUtils dateFromStringYYYYMMDD: infoMedicionClimaticaCabecera[@"fechaHora"]];
+                            }
+                            if ([infoMedicionClimaticaCabecera objectForKey:@"proveedorInformacion"] != [NSNull null]) {
+                                medicionInformacionClimaticaCabecera.nombreProveedor = [infoMedicionClimaticaCabecera objectForKey:@"proveedorInformacion"];
+                            }
+                            
+                            if ([infoMedicionClimaticaCabecera objectForKey:@"mediciones_detalles"] != [NSNull null]) {
+                                NSDictionary *listaInfoDetallesMedicionClimatica = [infoMedicionClimaticaCabecera objectForKey:@"mediciones_detalles"];
+                                
+                                NSMutableArray *listaInstanciasDetalleMedicionClimatica = [NSMutableArray new];
+                                
+                                for (NSDictionary *infoDetalleMedicionClimatica in listaInfoDetallesMedicionClimatica) {
+                                    
+                                    SFMedicionInformacionClimaticaDetalle *medicionInformacionClimaticaDetalle = [SFMedicionInformacionClimaticaDetalle new];
+                                    
+                                    if ([infoDetalleMedicionClimatica objectForKey:@"nroRenglon"] != [NSNull null]) {
+                                        medicionInformacionClimaticaDetalle.nroRenglon = [[infoDetalleMedicionClimatica objectForKey:@"nroRenglon"] integerValue];
+                                    }
+                                    if ([infoDetalleMedicionClimatica objectForKey:@"valor"] != [NSNull null]) {
+                                        medicionInformacionClimaticaDetalle.valorMedicion = [[infoDetalleMedicionClimatica objectForKey:@"valor"] floatValue];
+                                    }
+                                    
+                                    if ([infoDetalleMedicionClimatica objectForKey:@"tipoMedicionClimatica"] != [NSNull null]) {
+                                        medicionInformacionClimaticaDetalle.nombreTipoMedicion = [infoDetalleMedicionClimatica objectForKey:@"tipoMedicionClimatica"];
+                                    }
+                                    [listaInstanciasDetalleMedicionClimatica addObject:medicionInformacionClimaticaDetalle];
+                                }
+                                
+                                medicionInformacionClimaticaCabecera.listaDetallesMedicionInformacionClimatica = listaInstanciasDetalleMedicionClimatica;
+                            }
+                            
+                            [listaMedicionesClimaticas addObject:medicionInformacionClimaticaCabecera];
+                        }
+                        nuevaInstancia.medicionesClimaticasAntes = listaMedicionesClimaticas;
+                    }
                     
                     [listaInstancias addObject:nuevaInstancia];
                 }
                 
-                respuesta. = listaInstancias;
+                respuesta.listaDatosCruzados = listaInstancias;
                 
             } @catch (NSException *exception) {
                 completionBlock(respuesta);
@@ -912,7 +1440,6 @@
     } failureBlock:^(NSError *error) {
         failureBlock([BaseServicios armarErrorServicio:error]);
     }];
-    
 }
 
 @end

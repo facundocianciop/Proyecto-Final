@@ -109,7 +109,7 @@
     
     SFFinca *finca = self.tableViewItemsArray[indexPath.row];
     cell.textLabel.text = finca.nombre;
-    cell.detailTextLabel.text = finca.ubicacion;
+    cell.detailTextLabel.text = finca.direccionLegal;
     
     return cell;
 }

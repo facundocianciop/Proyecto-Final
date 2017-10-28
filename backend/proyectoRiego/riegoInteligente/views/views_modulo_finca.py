@@ -972,11 +972,24 @@ def buscar_finca_id(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if (KEY_ID_FINCA) in datos:
+        if KEY_ID_FINCA in datos:
             if datos[KEY_ID_FINCA] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
-            response.content = armar_response_content(finca)
+            try:
+                usuario_finca = UsuarioFinca.objects.get(finca=finca, usuario=request.user.datosusuario)
+                rol_usuario_finca = RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,
+                                                                fechaBajaRolUsuarioFinca__isnull=True
+                                                                )
+                rol = rol_usuario_finca.rol.nombreRol
+            except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, DatabaseError):
+                pass
+
+            if usuario_finca and rol:
+                dto_finca = DtoFinca(finca=finca, nombre_rol=rol, id_usuario_finca=usuario_finca.idUsuarioFinca)
+                response.content = armar_response_content(dto_finca)
+            else:
+                response.content = armar_response_content(finca)
             return response
         else:
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
@@ -1003,7 +1016,7 @@ def devolver_permisos(request):
             usuario_finca = UsuarioFinca.objects.get(usuario=usuario, finca=finca)
             rol_usuario = RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca, fechaBajaRolUsuarioFinca__isnull=True)
             rol = rol_usuario.rol
-            permisos = rol.conjuntoPermisos
+            permisos = rol.conjuntoPermisos.all().last()
             response.content = armar_response_content(permisos)
             response.status_code=200
             return response

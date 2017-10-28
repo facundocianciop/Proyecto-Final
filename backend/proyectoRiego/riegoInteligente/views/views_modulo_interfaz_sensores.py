@@ -1,10 +1,8 @@
 # -*- coding: UTF-8 -*-
-from django.db import IntegrityError, DataError, DatabaseError
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned
-
+import redis
 # noinspection PyUnresolvedReferences
+from kombu.exceptions import OperationalError
+
 from ..models import *
 
 from supportClases.security_util_functions import *  # Se importa para que se ejecuten los handlers de sesion
@@ -13,7 +11,7 @@ from supportClases.views_util_functions import *
 from supportClases.views_constants import *
 from supportClases.error_handler import *
 
-import riegoInteligente.tasks
+from ..import tasks
 
 
 @transaction.atomic()
@@ -62,10 +60,13 @@ def recibir_medicion(request):
                     medicion_detalle.save()
                     i += 1
 
-                riegoInteligente.tasks.accion_recepcion_medicion_sensor.delay(
-                    oid_sector=componente_sensor_sector.sector.OIDSector,
-                    oid_medicion_cabecera=medicion_cabecera.OIDMedicionCabecera
-                )
+                try:
+                    tasks.accion_recepcion_medicion_sensor.delay(
+                        oid_sector=componente_sensor_sector.sector.OIDSector,
+                        oid_medicion_cabecera=medicion_cabecera.OIDMedicionCabecera
+                    )
+                except (redis.exceptions.ConnectionError, redis.exceptions.BusyLoadingError, OperationalError):
+                    pass
 
                 response.content = armar_response_content(None)
                 response.status_code = 200
