@@ -43,6 +43,8 @@ urlpatterns = [
 
 
     url(r'^buscarFincaId/$', views_modulo_finca.buscar_finca_id, name='buscarFincaId'),
+    url(r'^buscarUsuarioFincaId/$', views_modulo_finca.buscar_usuario_finca_id, name='buscarUsuarioFincaId'),
+
     url(r'^devolverPermisos/$', views_modulo_finca.devolver_permisos, name='devolverPermisos'),
 
     url(r'^crearSector/$', views_configuracion_sectores.crear_sector, name='crearSector'),

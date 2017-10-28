@@ -22,12 +22,12 @@ class DtoUsuarioFinca:
     def __init__(self, idUsuarioFinca, usuario, nombreUsuario, apellidoUsuario, email, imagenUsuario,
                  rol):
         self.id_usuario_finca = idUsuarioFinca
-        self.usuario=usuario
-        self.nombre_usuario=nombreUsuario
-        self.apellido_usuario=apellidoUsuario
-        self.email=email
+        self.usuario = usuario
+        self.nombre_usuario = nombreUsuario
+        self.apellido_usuario = apellidoUsuario
+        self.email = email
         # self.imagen_usuario=imagenUsuario
-        self.rol=rol
+        self.rol = rol
 
     def as_json(self):
         return dict(
@@ -39,6 +39,18 @@ class DtoUsuarioFinca:
             # imagenUsuario=self.imagen_usuario,
             rol=self.rol
         )
+
+
+class DtoFincaIdUsuarioFinca:
+    def __init__(self, idUsuarioFinca, finca):
+        self.id_usuario_finca = idUsuarioFinca
+        self.finca = finca
+
+    def as_json(self):
+        return dict(
+
+            idUsuarioFinca=self.id_usuario_finca,
+            finca = self.finca)
 
 
 class DtoFinca:

@@ -11,7 +11,7 @@ from supportClases.views_util_functions import *
 from supportClases.views_constants import *
 from supportClases.error_handler import *
 
-import riegoInteligente.tasks
+from ..import tasks
 
 
 @transaction.atomic()
@@ -61,7 +61,7 @@ def recibir_medicion(request):
                     i += 1
 
                 try:
-                    riegoInteligente.tasks.accion_recepcion_medicion_sensor.delay(
+                    tasks.accion_recepcion_medicion_sensor.delay(
                         oid_sector=componente_sensor_sector.sector.OIDSector,
                         oid_medicion_cabecera=medicion_cabecera.OIDMedicionCabecera
                     )
