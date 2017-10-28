@@ -467,26 +467,28 @@ def modificar_configuracion_evento_personalizado(request):
             configuracion_evento.sector = sector
             configuracion_evento.medicionEventoList.all().delete()
             configuracion_evento.save()
-            datos_configuracion_medicion_interna = datos[KEY_CONFIGURACION_MEDICION_INTERNA]
-            for configuracion_interna in datos_configuracion_medicion_interna:
-                tipo_medicion_interna = TipoMedicion.objects.get(
-                    idTipoMedicion=configuracion_interna[KEY_ID_TIPO_MEDICION])
-                medicion_fuente_interna = MedicionFuenteInterna(
-                    valorMaximo=configuracion_interna[KEY_VALOR_MAXIMO],
-                    valorMinimo=configuracion_interna[KEY_VALOR_MINIMO],
-                    tipoMedicion=tipo_medicion_interna,
-                    configuracionEventoPersonalizado=configuracion_evento)
-                medicion_fuente_interna.save()
-            datos_configuracion_medicion_externa = datos[KEY_CONFIGURACION_MEDICION_EXTERNA]
-            for configuracion_externa in datos_configuracion_medicion_externa:
-                tipo_medicion_externa = TipoMedicionClimatica.objects.get(
-                    idTipoMedicionClimatica=configuracion_externa[KEY_ID_TIPO_MEDICION_CLIMATICA])
-                medicion_estado_externo = MedicionEstadoExterno(
-                    valorMaximo=configuracion_externa[KEY_VALOR_MAXIMO],
-                    valorMinimo=configuracion_externa[KEY_VALOR_MINIMO],
-                    tipoMedicion=tipo_medicion_externa,
-                    configuracionEventoPersonalizado=configuracion_evento)
-                medicion_estado_externo.save()
+            if datos[KEY_CONFIGURACION_MEDICION_INTERNA] != '':
+                datos_configuracion_medicion_interna = datos[KEY_CONFIGURACION_MEDICION_INTERNA]
+                for configuracion_interna in datos_configuracion_medicion_interna:
+                    tipo_medicion_interna = TipoMedicion.objects.get(
+                        idTipoMedicion=configuracion_interna[KEY_ID_TIPO_MEDICION])
+                    medicion_fuente_interna = MedicionFuenteInterna(
+                        valorMaximo=configuracion_interna[KEY_VALOR_MAXIMO],
+                        valorMinimo=configuracion_interna[KEY_VALOR_MINIMO],
+                        tipoMedicion=tipo_medicion_interna,
+                        configuracionEventoPersonalizado=configuracion_evento)
+                    medicion_fuente_interna.save()
+            if datos[KEY_CONFIGURACION_MEDICION_EXTERNA] != '':
+                datos_configuracion_medicion_externa = datos[KEY_CONFIGURACION_MEDICION_EXTERNA]
+                for configuracion_externa in datos_configuracion_medicion_externa:
+                    tipo_medicion_externa = TipoMedicionClimatica.objects.get(
+                        idTipoMedicionClimatica=configuracion_externa[KEY_ID_TIPO_MEDICION_CLIMATICA])
+                    medicion_estado_externo = MedicionEstadoExterno(
+                        valorMaximo=configuracion_externa[KEY_VALOR_MAXIMO],
+                        valorMinimo=configuracion_externa[KEY_VALOR_MINIMO],
+                        tipoMedicion=tipo_medicion_externa,
+                        configuracionEventoPersonalizado=configuracion_evento)
+                    medicion_estado_externo.save()
             response.content = armar_response_content(None)
             response.status_code = 200
             return response
