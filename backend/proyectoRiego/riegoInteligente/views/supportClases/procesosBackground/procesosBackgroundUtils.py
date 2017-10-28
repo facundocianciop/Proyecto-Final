@@ -5,6 +5,8 @@ from riegoInteligente.views.supportClases.views_constants import *
 from django.db import IntegrityError, DataError, DatabaseError
 from django.core.exceptions import ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned
 
+import riegoInteligente.tasks
+
 
 def obtener_fincas_habilitadas():
 
@@ -364,6 +366,9 @@ def crear_suceso_evento_personalizado(sector, configuracion_evento_personalizado
             fechaHora=datetime.now(pytz.utc)
         )
         evento_personalizado.save()
+
+        riegoInteligente.tasks.envio_notificacion_evento.delay(configuracion_evento_personalizado.
+                                                               OIDConfiguracionEventoPersonalizado)
 
         return evento_personalizado
 

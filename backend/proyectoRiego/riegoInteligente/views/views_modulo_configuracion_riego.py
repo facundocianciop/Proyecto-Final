@@ -1450,6 +1450,10 @@ def modificar_criterio_configuracion_riego_mecanismo_riego_finca_sector(request)
         ultimo_estado_historico = HistoricoEstadoConfiguracionRiego.objects.get(
             configuracion_riego=configuracion_riego_elegida, fechaFinEstadoConfiguracionRiego=None)
 
+        # Comprobar que no se este ejecutando el riego para esta configuracion
+        if configuracion_tiene_riego_activo(configuracion_riego_elegida):
+            raise ValueError(ERROR_MODIFICACION_CONFIGURACION_RIEGO, DETALLE_ERROR_CONFIGURACION_RIEGO_EN_EJECUCION)
+
         if ultimo_estado_historico.estado_configuracion_riego == estado_configuracion_riego_habilitado \
                 or ultimo_estado_historico.estado_configuracion_riego == estado_configuracion_riego_deshabilitado:
 

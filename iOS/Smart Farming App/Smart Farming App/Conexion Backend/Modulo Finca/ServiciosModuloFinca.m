@@ -199,7 +199,7 @@
         [parametrosLlamada setObject:[NSNumber numberWithLong:solicitudBuscarFincaId.idFinca] forKey:KEY_ID_FINCA];
     }
     
-    [[HTTPConector instance] httpOperation:OPERATION_BUSCAR_FINCA_ID method:METHOD_POST withParameters:nil completionBlock:^(NSDictionary *responseObject) {
+    [[HTTPConector instance] httpOperation:OPERATION_BUSCAR_FINCA_ID method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
         
         RespuestaBuscarFincaId *respuesta = [RespuestaBuscarFincaId new];
         
@@ -246,7 +246,7 @@
         [parametrosLlamada setObject:[NSNumber numberWithLong:solicitudDevolverPermisos.idFinca] forKey:KEY_ID_FINCA];
     }
     
-    [[HTTPConector instance] httpOperation:OPERATION_DEVOLVER_PERMISOS method:METHOD_POST withParameters:nil completionBlock:^(NSDictionary *responseObject) {
+    [[HTTPConector instance] httpOperation:OPERATION_DEVOLVER_PERMISOS method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
         
         RespuestaDevolverPermisos *respuesta = [RespuestaDevolverPermisos new];
         
@@ -349,7 +349,7 @@
         [parametrosLlamada setObject:[NSNumber numberWithLong:solicitudObtenerProveedorFinca.idFinca] forKey:KEY_ID_FINCA];
     }
     
-    [[HTTPConector instance] httpOperation:OPERATION_BUSCAR_FINCA_ID method:METHOD_POST withParameters:nil completionBlock:^(NSDictionary *responseObject) {
+    [[HTTPConector instance] httpOperation:OPERATION_OBTENER_PROVEEDOR_FINCA method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
         
         RespuestaObtenerProveedorFinca *respuesta = [RespuestaObtenerProveedorFinca new];
         
