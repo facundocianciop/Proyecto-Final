@@ -2,8 +2,7 @@
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 
-from ..models import Finca, ProveedorInformacionClimaticaFinca, ProveedorInformacionClimatica, \
-    EstadoFinca, HistoricoEstadoFinca, UsuarioFinca, DatosUsuario, Rol, RolUsuarioFinca
+from ..models import *
 from supportClases.dto_modulo_finca import *
 from supportClases.security_util_functions import *  # Se importa para que se ejecuten los handlers de sesion
 from supportClases.security_decorators import *
@@ -470,6 +469,67 @@ def eliminar_finca(request):
                 if finca_a_eliminar.historicoEstadoFincaList.filter(fechaFinEstadoFinca__isnull=True,
                                                                     estadoFinca=estado_finca_deshabilitado):
                     raise ValueError(ERROR_FINCA_YA_DESHABILITADA, "La finca ya esta deshabilitada")
+                estado_mecanismo_finca_habilitado = EstadoMecanismoRiegoFinca.objects.get(
+                    nombreEstadoMecanismoRiegoFinca=ESTADO_HABILITADO)
+                estado_mecanismo_finca_deshabilitado = EstadoMecanismoRiegoFinca.objects.get(
+                    nombreEstadoMecanismoRiegoFinca=ESTADO_DESHABILITADO)
+                estado_mecanismo_sector_habilitado = EstadoMecanismoRiegoFincaSector.objects.get(
+                    nombreEstadoMecanismoRiegoFincaSector=ESTADO_HABILITADO)
+                estado_mecanismo_sector_deshabilitado = EstadoMecanismoRiegoFincaSector.objects.get(
+                    nombreEstadoMecanismoRiegoFincaSector=ESTADO_DESHABILITADO)
+                if finca_a_eliminar.mecanismoriegofinca_set.all().__len__() != 0:
+                    for mecanismo in finca_a_eliminar.mecanismoriegofinca_set.all():
+                        if mecanismo.historicoMecanismoRiegoFincaList.filter(
+                                estado_mecanismo_riego_finca=estado_mecanismo_finca_habilitado,
+                                fechaFinEstadoMecanismoRiegoFinca__isnull=True).__len__() == 1:
+                            lista_mecanismo_riego_sector = mecanismo.mecanismoRiegoSectorList.all()
+                            estado_riego_en_ejecucion = EstadoEjecucionRiego(nombreEstadoEjecucionRiego=ESTADO_EN_EJECUCION)
+                            for mecanismo_riego_sector in lista_mecanismo_riego_sector:
+                                if mecanismo_riego_sector.historicoMecanismoRiegoFincaSector.filter(
+                                        estado_mecanismo_riego_finca_sector=estado_mecanismo_sector_habilitado,
+                                        fechaFinEstadoMecanismoRiegoFincaSector__isnull=True).__len__() == 1:
+                                    if mecanismo_riego_sector.ejecucionRiegoList.all().__len__() != 0:
+                                        for ejecucion_riego in mecanismo_riego_sector.ejecucionRiegoList.all():
+                                            if ejecucion_riego.estado_ejecucion_riego == estado_riego_en_ejecucion:
+                                                raise ValueError(ERROR_RIEGO_EN_EJECUCION,
+                                                                 "Actualmente el mecanismo esta regando en "
+                                                                 "el sector " +
+                                                                 mecanismo_riego_sector.sector.numeroSector
+                                                                 + ", detenga el riego para poder eliminar "
+                                                                   "la finca"
+                                                                 )
+                        if mecanismo.historicoMecanismoRiegoFincaList.filter(
+                                estado_mecanismo_riego_finca=estado_mecanismo_finca_habilitado,
+                                fechaFinEstadoMecanismoRiegoFinca__isnull=True).__len__() == 1:
+                            lista_mecanismo_riego_sector = mecanismo.mecanismoRiegoSectorList.all()
+                            estado_mecanismo_sector_habilitado = EstadoMecanismoRiegoFincaSector.objects.get(
+                                nombreEstadoMecanismoRiegoFincaSector=ESTADO_HABILITADO)
+                            ultimo_historico = mecanismo.historicoMecanismoRiegoFincaList.get(
+                                estado_mecanismo_riego_finca=estado_mecanismo_finca_habilitado,
+                                fechaFinEstadoMecanismoRiegoFinca__isnull=True)
+                            ultimo_historico.fechaFinEstadoMecanismoRiegoFinca = datetime.now(pytz.utc)
+                            ultimo_historico.save()
+                            nuevo_historico = HistoricoMecanismoRiegoFinca(
+                                mecanismo_riego_finca=mecanismo,
+                                fechaInicioEstadoMecanismoRiegoFinca=datetime.now(pytz.utc),
+                                estado_mecanismo_riego_finca=estado_mecanismo_finca_deshabilitado)
+                            nuevo_historico.save()
+                            for mecanismo_riego_sector in lista_mecanismo_riego_sector:
+                                if mecanismo_riego_sector.historicoMecanismoRiegoFincaSector.filter(
+                                        estado_mecanismo_riego_finca_sector=estado_mecanismo_sector_habilitado,
+                                        fechaFinEstadoMecanismoRiegoFincaSector__isnull=True).__len__() == 1:
+                                    ultimo_historico_mecanismo_sector = mecanismo_riego_sector.\
+                                        historicoMecanismoRiegoFincaSector.get(
+                                        estado_mecanismo_riego_finca_sector=estado_mecanismo_sector_habilitado,
+                                        fechaFinEstadoMecanismoRiegoFincaSector__isnull=True)
+                                    ultimo_historico_mecanismo_sector.fechaFinEstadoMecanismoRiegoFincaSector = \
+                                        datetime.now(pytz.utc)
+                                    ultimo_historico_mecanismo_sector.save()
+                                    historico_mecanismo_sector_nuevo = HistoricoMecanismoRiegoFincaSector(
+                                        estado_mecanismo_riego_finca_sector=estado_mecanismo_sector_deshabilitado,
+                                        mecanismo_riego_finca_sector=mecanismo_riego_sector,
+                                        fechaInicioEstadoMecanismoRiegoFincaSector=datetime.now(pytz.utc))
+                                    historico_mecanismo_sector_nuevo.save()
                 user = request.user
                 usuario = user.datosusuario
                 usuario_finca = UsuarioFinca.objects.get(usuario=usuario, finca=finca_a_eliminar,
