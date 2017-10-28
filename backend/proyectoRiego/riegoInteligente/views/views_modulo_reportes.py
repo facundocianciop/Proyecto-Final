@@ -875,7 +875,7 @@ def obtener_informe_eventos_personalizados(request):
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
         if (KEY_ID_SECTOR in datos) and (KEY_FECHA_INICIO_SECTOR in datos) and (KEY_FECHA_FIN_SECTOR in datos) and \
-                (KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO):
+                (KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO in datos):
             if datos[KEY_ID_SECTOR] == '' or datos[KEY_FECHA_INICIO_SECTOR] == '' or datos[KEY_FECHA_FIN_SECTOR] == '' \
                     or datos[KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")

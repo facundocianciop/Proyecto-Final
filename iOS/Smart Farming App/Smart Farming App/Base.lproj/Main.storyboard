@@ -467,7 +467,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="geJ-ot-ny6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4193" y="147"/>
+            <point key="canvasLocation" x="3911" y="147"/>
         </scene>
         <!--Reportes-->
         <scene sceneID="9KX-r8-OEy">
@@ -478,7 +478,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="79W-vl-K1J">
-                                <rect key="frame" x="40" y="64" width="240" height="411"/>
+                                <rect key="frame" x="40" y="64" width="240" height="504"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="9" minimumInteritemSpacing="10" id="but-tX-Oww">
                                     <size key="itemSize" width="230" height="60"/>
                                     <size key="headerReferenceSize" width="50" height="25"/>
@@ -693,6 +693,7 @@
                         <viewLayoutGuide key="safeArea" id="eKl-ut-1UO"/>
                     </view>
                     <navigationItem key="navigationItem" title="Finca" id="dsC-Lb-ryV">
+                        <barButtonItem key="backBarButtonItem" title=" " id="2PP-x8-1sk"/>
                         <barButtonItem key="leftBarButtonItem" style="plain" id="jvY-aX-qgs">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="lVm-Fh-3HG">
                                 <rect key="frame" x="16" y="7" width="46" height="30"/>
@@ -761,7 +762,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="k6t-MR-ghF">
-                                <rect key="frame" x="0.0" y="70" width="320" height="405"/>
+                                <rect key="frame" x="0.0" y="70" width="320" height="498"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="N06-tN-ORQ" detailTextLabel="iw8-tu-oiL" style="IBUITableViewCellStyleSubtitle" id="Jht-sI-JUJ" customClass="SFMecanismoRiegoHabilitadoTableViewCell">
@@ -913,7 +914,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="La finca no tiene sectores" textAlignment="center" lineBreakMode="wordWrap" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xim-0n-Cjs">
-                                <rect key="frame" x="0.0" y="70" width="320" height="405"/>
+                                <rect key="frame" x="0.0" y="70" width="320" height="498"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -926,7 +927,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="GxT-52-Chd">
-                                <rect key="frame" x="0.0" y="70" width="320" height="405"/>
+                                <rect key="frame" x="0.0" y="70" width="320" height="498"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" indentationWidth="10" textLabel="t93-wd-gW4" detailTextLabel="5pg-p6-KJJ" style="IBUITableViewCellStyleSubtitle" id="axJ-2e-Emr" customClass="SFSectorTableViewCell">
@@ -1232,12 +1233,13 @@
                         <viewLayoutGuide key="safeArea" id="egX-I4-0kp"/>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Title" id="daK-fa-T5e"/>
+                    <navigationItem key="navigationItem" title="Title" id="daK-fa-T5e">
+                        <barButtonItem key="backBarButtonItem" title=" " id="DGH-5G-l31"/>
+                    </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="direccionLegalLabel" destination="FcX-Q6-aK0" id="olb-pb-tPf"/>
                         <outlet property="nombreFincaLabel" destination="l0Q-pM-WNh" id="71m-wu-8gN"/>
-                        <outlet property="proveedorInfoButton" destination="643-yG-4AQ" id="i7n-la-n9i"/>
                         <outlet property="rolUsuarioLabel" destination="BMx-D1-cqi" id="Un6-KS-IdN"/>
                         <outlet property="tamanioFincaLabel" destination="gyH-p1-ZAN" id="cWA-k7-msf"/>
                         <outlet property="ubicacionFincaLabel" destination="Lg3-qc-C1S" id="Kl4-JH-aNX"/>
@@ -1245,9 +1247,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ylz-oo-Y1B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4192.5" y="835.56338028169012"/>
+            <point key="canvasLocation" x="4461" y="147"/>
         </scene>
-        <!--Proveedor Informacion Climatica View Controller-->
+        <!--Informacion Clima-->
         <scene sceneID="QLG-dG-pEi">
             <objects>
                 <viewController id="1SY-AK-QWi" customClass="SFProveedorInformacionClimaticaViewController" sceneMemberID="viewController">
@@ -1255,7 +1257,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="El proveedor no tiene tipos de mediciones" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L5a-LH-OWo">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="El proveedor no tiene tipos de mediciones" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L5a-LH-OWo">
                                 <rect key="frame" x="0.0" y="234" width="320" height="290"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
@@ -1268,13 +1270,7 @@
                                     <color key="textColor" name="Verde"/>
                                 </textAttributes>
                                 <items>
-                                    <navigationItem title="Información climática" id="nj8-xI-2jH">
-                                        <barButtonItem key="leftBarButtonItem" title="Volver" id="OEj-HE-SiJ">
-                                            <connections>
-                                                <action selector="accionVolver:" destination="1SY-AK-QWi" id="5WD-5x-JKS"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
+                                    <navigationItem id="nj8-xI-2jH"/>
                                 </items>
                             </navigationBar>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Proveedor:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uwu-fi-9rF">
@@ -1294,10 +1290,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="URL:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2PB-QI-cUx">
-                                <rect key="frame" x="16" y="101" width="106" height="21"/>
+                                <rect key="frame" x="16" y="101" width="46" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="h6i-po-Wku"/>
-                                    <constraint firstAttribute="width" constant="106" id="n1d-0E-ptC"/>
+                                    <constraint firstAttribute="width" constant="46" id="n1d-0E-ptC"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                 <color key="textColor" name="VerdeClaro"/>
@@ -1338,6 +1334,32 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tLx-cy-6JO">
                                 <rect key="frame" x="0.0" y="234" width="320" height="290"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="lFC-s7-G6O" detailTextLabel="wOM-8o-VRk" style="IBUITableViewCellStyleValue1" id="DfJ-9y-Vv3">
+                                        <rect key="frame" x="0.0" y="28" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DfJ-9y-Vv3" id="88Q-u9-9WI">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lFC-s7-G6O">
+                                                    <rect key="frame" x="15" y="12" width="33.5" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wOM-8o-VRk">
+                                                    <rect key="frame" x="246" y="12" width="59" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r8F-sF-2RS">
                                 <rect key="frame" x="0.0" y="228" width="320" height="6"/>
@@ -1346,8 +1368,8 @@
                                     <constraint firstAttribute="height" constant="6" id="9ZO-EK-LAM"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KIq-Hd-Iu4">
-                                <rect key="frame" x="134" y="101" width="170" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="15" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KIq-Hd-Iu4">
+                                <rect key="frame" x="70" y="101" width="234" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -1360,7 +1382,7 @@
                             <constraint firstItem="0F8-tH-drR" firstAttribute="top" secondItem="OjL-3C-PEl" secondAttribute="top" id="6v1-gz-ltM"/>
                             <constraint firstItem="2PB-QI-cUx" firstAttribute="top" secondItem="uwu-fi-9rF" secondAttribute="bottom" constant="8" id="8cb-zZ-iR7"/>
                             <constraint firstItem="L5a-LH-OWo" firstAttribute="top" secondItem="tLx-cy-6JO" secondAttribute="top" id="8l5-8E-PPL"/>
-                            <constraint firstItem="L5a-LH-OWo" firstAttribute="bottom" secondItem="tLx-cy-6JO" secondAttribute="bottom" id="ADX-Ct-YGL"/>
+                            <constraint firstItem="L5a-LH-OWo" firstAttribute="bottom" secondItem="UaS-vL-FYJ" secondAttribute="bottom" id="ADX-Ct-YGL"/>
                             <constraint firstItem="r8F-sF-2RS" firstAttribute="top" secondItem="96Q-C4-Yl0" secondAttribute="bottom" constant="8" id="AGx-x6-L7e"/>
                             <constraint firstItem="UaS-vL-FYJ" firstAttribute="trailing" secondItem="KIq-Hd-Iu4" secondAttribute="trailing" constant="16" id="COZ-4z-Fqn"/>
                             <constraint firstItem="96Q-C4-Yl0" firstAttribute="top" secondItem="9je-YX-blH" secondAttribute="bottom" constant="6" id="Czn-gs-kij"/>
@@ -1370,10 +1392,10 @@
                             <constraint firstItem="KIq-Hd-Iu4" firstAttribute="baseline" secondItem="2PB-QI-cUx" secondAttribute="baseline" id="LZk-nA-tk6"/>
                             <constraint firstItem="UaS-vL-FYJ" firstAttribute="trailing" secondItem="TXM-gP-Ltz" secondAttribute="trailing" constant="16" id="LoV-dy-IYr"/>
                             <constraint firstItem="TXM-gP-Ltz" firstAttribute="centerY" secondItem="uwu-fi-9rF" secondAttribute="centerY" id="MPm-hG-zwK"/>
-                            <constraint firstItem="L5a-LH-OWo" firstAttribute="trailing" secondItem="tLx-cy-6JO" secondAttribute="trailing" id="RUZ-sK-hnS"/>
+                            <constraint firstItem="L5a-LH-OWo" firstAttribute="trailing" secondItem="UaS-vL-FYJ" secondAttribute="trailing" id="RUZ-sK-hnS"/>
                             <constraint firstItem="Egl-Bl-1SR" firstAttribute="baseline" secondItem="96Q-C4-Yl0" secondAttribute="baseline" id="Sf7-rb-83Q"/>
                             <constraint firstItem="UaS-vL-FYJ" firstAttribute="trailing" secondItem="Egl-Bl-1SR" secondAttribute="trailing" constant="16" id="Xmf-xZ-Rri"/>
-                            <constraint firstItem="KIq-Hd-Iu4" firstAttribute="leading" secondItem="2PB-QI-cUx" secondAttribute="trailing" constant="12" id="Y0p-ol-mrf"/>
+                            <constraint firstItem="KIq-Hd-Iu4" firstAttribute="leading" secondItem="2PB-QI-cUx" secondAttribute="trailing" constant="8" id="Y0p-ol-mrf"/>
                             <constraint firstItem="tLx-cy-6JO" firstAttribute="trailing" secondItem="UaS-vL-FYJ" secondAttribute="trailing" id="Y52-8h-GCM"/>
                             <constraint firstItem="r8F-sF-2RS" firstAttribute="leading" secondItem="UaS-vL-FYJ" secondAttribute="leading" id="YJa-wh-pY2"/>
                             <constraint firstItem="96Q-C4-Yl0" firstAttribute="leading" secondItem="UaS-vL-FYJ" secondAttribute="leading" constant="16" id="Yiv-XO-MQL"/>
@@ -1383,7 +1405,7 @@
                             <constraint firstItem="VB9-1k-oRX" firstAttribute="leading" secondItem="9je-YX-blH" secondAttribute="trailing" constant="4" id="bay-OX-8SX"/>
                             <constraint firstItem="uwu-fi-9rF" firstAttribute="leading" secondItem="UaS-vL-FYJ" secondAttribute="leading" constant="16" id="e4e-3n-p1U"/>
                             <constraint firstItem="tLx-cy-6JO" firstAttribute="bottom" secondItem="UaS-vL-FYJ" secondAttribute="bottom" id="lgK-gx-VUp"/>
-                            <constraint firstItem="L5a-LH-OWo" firstAttribute="leading" secondItem="tLx-cy-6JO" secondAttribute="leading" id="lvk-jw-cH5"/>
+                            <constraint firstItem="L5a-LH-OWo" firstAttribute="leading" secondItem="UaS-vL-FYJ" secondAttribute="leading" id="lvk-jw-cH5"/>
                             <constraint firstItem="tLx-cy-6JO" firstAttribute="top" secondItem="r8F-sF-2RS" secondAttribute="bottom" id="pNG-Sp-tpX"/>
                             <constraint firstItem="Egl-Bl-1SR" firstAttribute="leading" secondItem="96Q-C4-Yl0" secondAttribute="trailing" constant="4" id="rLn-kf-kwr"/>
                             <constraint firstItem="tLx-cy-6JO" firstAttribute="leading" secondItem="UaS-vL-FYJ" secondAttribute="leading" id="sv0-pd-0LA"/>
@@ -1392,6 +1414,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="UaS-vL-FYJ"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Informacion Clima" id="3DK-RW-rBB"/>
                     <connections>
                         <outlet property="frecuenciaElegidaLabel" destination="VB9-1k-oRX" id="tGe-NK-Bxp"/>
                         <outlet property="frecuenciaMaximaLabel" destination="Egl-Bl-1SR" id="bwA-Jq-Grr"/>
@@ -1403,7 +1426,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eV3-ic-BBf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4192.5" y="1577.1126760563379"/>
+            <point key="canvasLocation" x="4460.625" y="913.73239436619724"/>
         </scene>
         <!--Finca Right Menu Table View Controller-->
         <scene sceneID="U0x-DR-mOw">
@@ -1432,13 +1455,14 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="STB-7c-SzR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3767" y="147"/>
+            <point key="canvasLocation" x="3503" y="147"/>
         </scene>
         <!--Fincas-->
         <scene sceneID="U4O-kV-Y1y">
             <objects>
                 <tabBarController id="3Kv-CR-BZh" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" title="Fincas" id="odV-z3-UHL">
+                        <barButtonItem key="backBarButtonItem" title=" " id="4Xw-1B-hcy"/>
                         <barButtonItem key="leftBarButtonItem" title="Perfil" id="DEV-W0-8RS">
                             <color key="tintColor" name="VerdeClaro"/>
                             <connections>
@@ -1947,6 +1971,6 @@
         </namedColor>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="aTS-j3-8Uj"/>
+        <segue reference="RKl-JI-kgQ"/>
     </inferredMetricsTieBreakers>
 </document>

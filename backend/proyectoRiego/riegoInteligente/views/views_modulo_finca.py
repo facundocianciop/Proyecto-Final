@@ -823,7 +823,7 @@ def devolver_permisos(request):
             usuario_finca = UsuarioFinca.objects.get(usuario=usuario, finca=finca)
             rol_usuario = RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca, fechaBajaRolUsuarioFinca__isnull=True)
             rol = rol_usuario.rol
-            permisos = rol.conjuntoPermisos
+            permisos = rol.conjuntoPermisos.all().last()
             response.content = armar_response_content(permisos)
             response.status_code=200
             return response

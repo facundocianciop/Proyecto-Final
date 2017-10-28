@@ -27,6 +27,9 @@
     // Do any additional setup after loading the view.
     
     [self obtenerDatosFinca];
+    
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    [self.navigationItem setBackBarButtonItem:backButton];
 }
 
 - (void)didReceiveMemoryWarning {
