@@ -614,7 +614,10 @@ def eliminar_finca(request):
 
 
 
-
+                proveedor_finca = finca_a_eliminar.proveedorinformacionclimaticafinca_set.get(
+                    fechaBajaProveedorInfoClimaticaFinca__isnull=True)
+                proveedor_finca.fechaBajaProveedorInfoClimaticaFinca = datetime.now(pytz.utc)
+                proveedor_finca.save()
                 user = request.user
                 usuario = user.datosusuario
                 usuario_finca = UsuarioFinca.objects.get(usuario=usuario, finca=finca_a_eliminar,
