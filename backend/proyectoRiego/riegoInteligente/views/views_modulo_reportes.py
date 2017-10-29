@@ -1145,9 +1145,9 @@ def obtener_informe_cruzado_riego_mediciones_(request):
                             configuracion = ""
                         else:
                             configuracion = ejecucion.configuracion_riego.as_json(),
-                        if medicion_climatica_antes != "":
+                        if medicion_climatica_antes:
                             medicion_climatica_antes = medicion_climatica_antes.as_json()
-                        if medicion_cabecera_antes != "":
+                        if medicion_cabecera_antes:
                             medicion_cabecera_antes = medicion_cabecera_antes.as_json()
                         if medicion_cabecera_despues != "":
                             medicion_cabecera_despues = medicion_cabecera_despues.as_json()
