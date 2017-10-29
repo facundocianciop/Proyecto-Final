@@ -487,7 +487,8 @@ def eliminar_finca(request):
                                 estado_mecanismo_riego_finca=estado_mecanismo_finca_habilitado,
                                 fechaFinEstadoMecanismoRiegoFinca__isnull=True).__len__() == 1:
                             lista_mecanismo_riego_sector = mecanismo.mecanismoRiegoSectorList.all()
-                            estado_riego_en_ejecucion = EstadoEjecucionRiego(nombreEstadoEjecucionRiego=ESTADO_EN_EJECUCION)
+                            estado_riego_en_ejecucion = EstadoEjecucionRiego.objects.get(
+                                nombreEstadoEjecucionRiego=ESTADO_EN_EJECUCION)
                             for mecanismo_riego_sector in lista_mecanismo_riego_sector:
                                 if mecanismo_riego_sector.historicoMecanismoRiegoFincaSector.filter(
                                         estado_mecanismo_riego_finca_sector=estado_mecanismo_sector_habilitado,
@@ -498,7 +499,7 @@ def eliminar_finca(request):
                                                 raise ValueError(ERROR_RIEGO_EN_EJECUCION,
                                                                  "Actualmente el mecanismo esta regando en "
                                                                  "el sector " +
-                                                                 mecanismo_riego_sector.sector.numeroSector
+                                                                 str(mecanismo_riego_sector.sector.numeroSector)
                                                                  + ", detenga el riego para poder eliminar "
                                                                    "la finca"
                                                                  )
@@ -614,10 +615,10 @@ def eliminar_finca(request):
 
 
 
-                proveedor_finca = finca_a_eliminar.proveedorinformacionclimaticafinca_set.get(
-                    fechaBajaProveedorInfoClimaticaFinca__isnull=True)
-                proveedor_finca.fechaBajaProveedorInfoClimaticaFinca = datetime.now(pytz.utc)
-                proveedor_finca.save()
+                #proveedor_finca = finca_a_eliminar.proveedorinformacionclimaticafinca_set.get(
+                #   fechaBajaProveedorInfoClimaticaFinca__isnull=True)
+                #proveedor_finca.fechaBajaProveedorInfoClimaticaFinca = datetime.now(pytz.utc)
+                #proveedor_finca.save()
                 user = request.user
                 usuario = user.datosusuario
                 usuario_finca = UsuarioFinca.objects.get(usuario=usuario, finca=finca_a_eliminar,
