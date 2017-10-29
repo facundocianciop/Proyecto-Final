@@ -1030,12 +1030,12 @@ def obtener_informe_cruzado_riego_mediciones_(request):
                                 order_by("-fechaYHora").last()
                         """PARA OBTENER LA MEDICION POSTERIOR AL RIEGO"""
                         if componente_sensor_sector_asignado.medicionCabeceraList.filter(
-                                    fechaYHora__lte=ejecucion.fecha_hora_finalizacion,
-                                    fechaYHora__gte=ejecucion.fecha_hora_finalizacion + timedelta(minutes=30))\
+                                    fechaYHora__gte=ejecucion.fecha_hora_finalizacion,
+                                    fechaYHora__lte=ejecucion.fecha_hora_finalizacion + timedelta(minutes=30))\
                                 .__len__() > 0:
                             medicion_cabecera_despues = componente_sensor_sector_asignado.medicionCabeceraList.filter(
-                                fechaYHora__lte=ejecucion.fecha_hora_inicio,
-                                fechaYHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30)).order_by(
+                                fechaYHora__gte=ejecucion.fecha_hora_inicio,
+                                fechaYHora__lte=ejecucion.fecha_hora_inicio - timedelta(minutes=30)).order_by(
                                 "-fechaYHora").first()
                         mecanismo_riego_finca = mecanismo.mecanismoRiegoFinca
                         finca = mecanismo_riego_finca.finca
@@ -1054,9 +1054,10 @@ def obtener_informe_cruzado_riego_mediciones_(request):
                                 fechaHora__lte=ejecucion.fecha_hora_inicio,
                                 fechaHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30))\
                                     .order_by("-fechaHora").last()
+                        mecanismo_json = ""
                         if mecanismo != "":
                             mecanismo_json = mecanismo.as_json()
-                        if ejecucion.configuracion_riego is None :
+                        if ejecucion.configuracion_riego is None:
                             configuracion = ""
                         else:
                             configuracion = ejecucion.configuracion_riego.as_json(),
