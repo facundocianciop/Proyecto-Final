@@ -164,7 +164,7 @@ def crear_finca(request):
                 #en caso de que exista una finca con ese nombre y con esa dirección legal se retorna un error
                 raise ValueError(ERROR_FINCA_YA_EXISTENTE, "Ya existe una finca con ese nombre")
             if ProveedorInformacionClimatica.objects.filter(nombreProveedor=datos[KEY_NOMBRE_PROVEEDOR]).__len__() == 0:
-                #en caso de que no exista un proveedor con ese nombre y con esa dirección legal se retorna un error
+                #en caso de que no exista un proveedor con ese nombre se retorna un error
                 raise ValueError(ERROR_PROVEEDOR_NO_ENCONTRADO, "No se encontro el proveedor seleccionado")
             proveedorSeleccionado = ProveedorInformacionClimatica.objects.get(
                 nombreProveedor=datos[KEY_NOMBRE_PROVEEDOR])
@@ -477,13 +477,18 @@ def eliminar_finca(request):
                     nombreEstadoMecanismoRiegoFincaSector=ESTADO_HABILITADO)
                 estado_mecanismo_sector_deshabilitado = EstadoMecanismoRiegoFincaSector.objects.get(
                     nombreEstadoMecanismoRiegoFincaSector=ESTADO_DESHABILITADO)
+                estado_configuracion_riego_habilitada = EstadoConfiguracionRiego.objects.get(
+                    nombreEstadoConfiguracionRiego=ESTADO_HABILITADO)
+                estado_configuracion_riego_deshabilitada = EstadoConfiguracionRiego.objects.get(
+                    nombreEstadoConfiguracionRiego=ESTADO_DESHABILITADO)
                 if finca_a_eliminar.mecanismoriegofinca_set.all().__len__() != 0:
                     for mecanismo in finca_a_eliminar.mecanismoriegofinca_set.all():
                         if mecanismo.historicoMecanismoRiegoFincaList.filter(
                                 estado_mecanismo_riego_finca=estado_mecanismo_finca_habilitado,
                                 fechaFinEstadoMecanismoRiegoFinca__isnull=True).__len__() == 1:
                             lista_mecanismo_riego_sector = mecanismo.mecanismoRiegoSectorList.all()
-                            estado_riego_en_ejecucion = EstadoEjecucionRiego(nombreEstadoEjecucionRiego=ESTADO_EN_EJECUCION)
+                            estado_riego_en_ejecucion = EstadoEjecucionRiego(
+                                nombreEstadoEjecucionRiego=ESTADO_EN_EJECUCION)
                             for mecanismo_riego_sector in lista_mecanismo_riego_sector:
                                 if mecanismo_riego_sector.historicoMecanismoRiegoFincaSector.filter(
                                         estado_mecanismo_riego_finca_sector=estado_mecanismo_sector_habilitado,
@@ -494,7 +499,7 @@ def eliminar_finca(request):
                                                 raise ValueError(ERROR_RIEGO_EN_EJECUCION,
                                                                  "Actualmente el mecanismo esta regando en "
                                                                  "el sector " +
-                                                                 mecanismo_riego_sector.sector.numeroSector
+                                                                 str(mecanismo_riego_sector.sector.numeroSector)
                                                                  + ", detenga el riego para poder eliminar "
                                                                    "la finca"
                                                                  )
@@ -518,6 +523,24 @@ def eliminar_finca(request):
                                 if mecanismo_riego_sector.historicoMecanismoRiegoFincaSector.filter(
                                         estado_mecanismo_riego_finca_sector=estado_mecanismo_sector_habilitado,
                                         fechaFinEstadoMecanismoRiegoFincaSector__isnull=True).__len__() == 1:
+                                    lista_configuraciones_riego = mecanismo_riego_sector.configuracionriego_set.all()
+                                    for configuracion in lista_configuraciones_riego:
+                                        if configuracion.historicoEstadoConfiguracionRiegoList.filter(
+                                                estado_configuracion_riego=estado_configuracion_riego_habilitada,
+                                                fechaFinEstadoConfiguracionRiego__isnull=True).__len__() == 1:
+                                            ultimo_historico_configuracion_riego = configuracion.\
+                                                historicoEstadoConfiguracionRiegoList. \
+                                                get(estado_configuracion_riego=estado_configuracion_riego_habilitada,
+                                                    fechaFinEstadoConfiguracionRiego__isnull=True)
+                                            ultimo_historico_configuracion_riego.fechaFinEstadoConfiguracionRiego = \
+                                                datetime.now(pytz.utc)
+                                            ultimo_historico_configuracion_riego.save()
+                                            nuevo_historico_configuracion_riego = HistoricoEstadoConfiguracionRiego(
+                                                configuracion_riego=configuracion,
+                                                fechaInicioEstadoConfiguracionRiego=datetime.now(pytz.utc),
+                                                estado_configuracion_riego=estado_configuracion_riego_deshabilitada)
+                                            nuevo_historico_configuracion_riego.save()
+
                                     ultimo_historico_mecanismo_sector = mecanismo_riego_sector.\
                                         historicoMecanismoRiegoFincaSector.get(
                                         estado_mecanismo_riego_finca_sector=estado_mecanismo_sector_habilitado,
@@ -530,6 +553,72 @@ def eliminar_finca(request):
                                         mecanismo_riego_finca_sector=mecanismo_riego_sector,
                                         fechaInicioEstadoMecanismoRiegoFincaSector=datetime.now(pytz.utc))
                                     historico_mecanismo_sector_nuevo.save()
+                estado_sector_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
+                estado_sector_deshabilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_DESHABILITADO)
+                for sector in finca_a_eliminar.sectorList.all():
+                    if sector.historicoEstadoSectorList.filter(estado_sector=estado_sector_habilitado,
+                                                               fechaFinEstadoSector__isnull=True):
+
+                        if sector.componentesensorsector_set.filter(habilitado=True).__len__() == 1:
+                            componente_sensor_sector = sector.componentesensorsector_set.get(habilitado=True)
+                            ultimo_historico_componente_sensor_sector = componente_sensor_sector. \
+                                historicoEstadoComponenteSensorSector.get(fechaBajaComponenteSensorSector__isnull=True)
+                            estado_componente_sensor_sector_deshabilitado = EstadoComponenteSensorSector.objects.get(
+                                nombreEstadoComponenteSensorSector=ESTADO_DESHABILITADO)
+                            ultimo_historico_componente_sensor_sector.fechaBajaComponenteSensorSector =\
+                                datetime.now(pytz.utc)
+                            ultimo_historico_componente_sensor_sector.save()
+                            nuevo_historico = HistoricoEstadoComponenteSensorSector(
+                                estadoComponenteSensorSector=estado_componente_sensor_sector_deshabilitado,
+                                componenteSensorSector=componente_sensor_sector,
+                                fechaAltaComponenteSensorSector=datetime.now(pytz.utc))
+                            componente_sensor_sector.habilitado = False
+                            componente_sensor_sector.save()
+                            nuevo_historico.save()
+                            componente_sensor = componente_sensor_sector.componente_sensor
+                            estado_componente_sensor_habilitado = EstadoComponenteSensor.objects.get(
+                                nombreEstado=ESTADO_HABILITADO)
+
+                            estado_componente_sensor_deshabilitado = EstadoComponenteSensor.objects.get(
+                                nombreEstado=ESTADO_DESHABILITADO)
+                            if componente_sensor.historico_estado_componente_sensor_list.filter(
+                                    estadoComponenteSensor=estado_componente_sensor_habilitado,
+                                    fechaFinEstadoComponenteSensor__isnull=True).__len__() == 1:
+                                ultimo_historico_componente_sensor = componente_sensor.\
+                                    historico_estado_componente_sensor_list.get(
+                                    estadoComponenteSensor=estado_componente_sensor_habilitado,
+                                    fechaFinEstadoComponenteSensor__isnull=True)
+                                ultimo_historico_componente_sensor.fechaFinEstadoComponenteSensor = \
+                                    datetime.now(pytz.utc)
+                                ultimo_historico_componente_sensor.save()
+                                nuevo_historico_componente_sensor = HistoricoEstadoComponenteSensor(
+                                    componenteSensor=componente_sensor,
+                                    estadoComponenteSensor=estado_componente_sensor_deshabilitado,
+                                    fechaInicioEstadoComponenteSensor=datetime.now(pytz.utc))
+                                nuevo_historico_componente_sensor.save()
+                                lista_asignaciones = componente_sensor.asignaciones_list.filter(fechaBaja__isnull=True)
+                                for asignacion in lista_asignaciones:
+                                    asignacion.fechaBaja = datetime.now(pytz.utc)
+                                    asignacion.save()
+                                    sensor = asignacion.sensor
+                                    sensor.habilitado = False
+                                    sensor.save()
+                        ultimo_historico_sector = sector.historicoEstadoSectorList.get(
+                            estado_sector=estado_sector_habilitado,
+                            fechaFinEstadoSector__isnull=True)
+                        ultimo_historico_sector.fechaFinEstadoSector = datetime.now(pytz.utc)
+                        ultimo_historico_sector.save()
+                        nuevo_historico_sector = HistoricoEstadoSector(estado_sector=estado_sector_deshabilitado,
+                                                                       fechaInicioEstadoSector=datetime.now(pytz.utc),
+                                                                       sector=sector)
+                        nuevo_historico_sector.save()
+
+
+
+                # proveedor_finca = finca_a_eliminar.proveedorinformacionclimaticafinca_set.get(
+                #     fechaBajaProveedorInfoClimaticaFinca__isnull=True)
+                # proveedor_finca.fechaBajaProveedorInfoClimaticaFinca = datetime.now(pytz.utc)
+                # proveedor_finca.save()
                 user = request.user
                 usuario = user.datosusuario
                 usuario_finca = UsuarioFinca.objects.get(usuario=usuario, finca=finca_a_eliminar,
@@ -590,7 +679,8 @@ def rehabilitar_finca(request):
                 ultimo_historico = finca_a_rehabilitar.historicoEstadoFincaList.get(fechaFinEstadoFinca__isnull=True)
                 if ultimo_historico.estadoFinca.nombreEstadoFinca == ESTADO_HABILITADO:
                     raise ValueError(ERROR_FINCA_YA_HABILITADA, "Esta finca ya esta habilitada")
-                usuario_finca = UsuarioFinca.objects.filter(finca=finca_a_rehabilitar, usuario=request.user.datosusuario)\
+                usuario_finca = UsuarioFinca.objects.filter(finca=finca_a_rehabilitar,
+                                                            usuario=request.user.datosusuario)\
                     .order_by('-fechaAltaUsuarioFinca').first()
                 es_encargado = False
                 for rol_usuario_fin in usuario_finca.rolUsuarioFincaList.all():
@@ -827,10 +917,13 @@ def modificar_rol_usuario(request):
             rol_usuario_finca_viejo=RolUsuarioFinca.objects.get(usuarioFinca=usuario_finca,
                                                                 fechaBajaRolUsuarioFinca__isnull=True)
             if rol_ingresado == rol_usuario_finca_viejo.rol:
-                raise ValueError(ERROR_USUARIO_YA_TIENE_ESE_ROL, "El usuario ya dispone de ese rol, por favor intente con otro rol")
+                raise ValueError(ERROR_USUARIO_YA_TIENE_ESE_ROL, "El usuario ya dispone de ese rol, por favor intente"
+                                                                 " con otro rol")
             rol_usuario_finca_viejo.fechaBajaRolUsuarioFinca=datetime.now(pytz.utc)
             rol_usuario_finca_viejo.save()
-            rol_usuario_finca_nuevo = RolUsuarioFinca(usuarioFinca=usuario_finca,fechaAltaRolUsuarioFinca=datetime.now(pytz.utc),rol=rol_ingresado)
+            rol_usuario_finca_nuevo = RolUsuarioFinca(usuarioFinca=usuario_finca,
+                                                      fechaAltaRolUsuarioFinca=datetime.now(pytz.utc),
+                                                      rol=rol_ingresado)
             usuario_finca.rolUsuarioFincaList.add(rol_usuario_finca_nuevo,bulk=False)
             usuario_finca.save()
             response.content = armar_response_content(None)
@@ -841,6 +934,33 @@ def modificar_rol_usuario(request):
         print err.args
         response.content = err.args
         response.status_code = 401
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+@manejar_errores()
+def buscar_usuario_finca_id(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if KEY_ID_FINCA in datos:
+            if datos[KEY_ID_FINCA] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            usuario = request.user.datosusuario
+            finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+            usuario_finca = UsuarioFinca.objects.get(fechaBajaUsuarioFinca__isnull=True, usuario=usuario, finca= finca)
+            dto_finca_id_usuario_finca = DtoFincaIdUsuarioFinca(finca=finca.as_json(),
+                                                                idUsuarioFinca=usuario_finca.idUsuarioFinca)
+            response.content = armar_response_content(dto_finca_id_usuario_finca)
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except (ValueError,IntegrityError) as err:
+        print err.args
+        response.content=err.args
 
 
 @transaction.atomic()

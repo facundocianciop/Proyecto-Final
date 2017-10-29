@@ -20,17 +20,102 @@ def buscar_configuraciones_eventos_personalizados(request):
     try:
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-        if(KEY_ID_USUARIO_FINCA in datos):
-            if  datos[KEY_ID_USUARIO_FINCA] == '':
+        if(KEY_ID_USUARIO_FINCA in datos) and (KEY_ID_SECTOR in datos):
+            if  datos[KEY_ID_USUARIO_FINCA] == '' or datos[KEY_ID_SECTOR] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             if UsuarioFinca.objects.filter(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA]).__len__() == 0:
                 raise ValueError(ERROR_USUARIO_FINCA_NO_ENCONTRADO, "No se encuentra un usuario finca con ese id")
             if UsuarioFinca.objects.filter(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA],
                                            fechaBajaUsuarioFinca__isnull=True).__len__() == 0:
                 raise ValueError(ERROR_USUARIO_NO_HABILITADO_EN_FINCA, "El usuario no esta habilitado en esa finca")
+            if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]):
+                raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encuentra un sector con ese id")
+            sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
             usuario_finca = UsuarioFinca.objects.get(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA])
             lista_configuraciones_eventos_personalizados = usuario_finca.configuracionEventoPersonalizadoList.all()
             lista_dto_configuracion_eventos = []
+            dto_configuracion_evento_final = None
+            for configuracion in lista_configuraciones_eventos_personalizados:
+                esta_en_sector = False
+                for sector_conf in configuracion.sectorList.all():
+                    if sector_conf == sector:
+                        esta_en_sector = True
+                        break
+                if esta_en_sector:
+                    continue
+                lista_medicion_interna_json = []
+                lista_medicion_externa_json= []
+                lista_mediciones = MedicionEvento.objects.filter(
+                    configuracionEventoPersonalizado=configuracion).select_subclasses()
+                for medicion in lista_mediciones:
+                    if type(medicion) is MedicionFuenteInterna:
+                        lista_medicion_interna_json.append(medicion.as_json())
+                    elif type(medicion) is MedicionEstadoExterno:
+                        lista_medicion_externa_json.append(medicion.as_json())
+                lista_numeros_sectores = []
+                lista_id_sectores = []
+                finca = usuario_finca.finca
+                for sector in configuracion.sectorList.all():
+                    if finca.sectorList.filter(idSector=sector.idSector).__len__() == 1:
+                        lista_numeros_sectores.append(sector.numeroSector)
+                        lista_id_sectores.append(sector.idSector)
+                dto_configuracion_evento = DtoConfiguracionEventoPersonalizado(
+                    idConfiguracionEvento=configuracion.idConfiguracion,
+                    nombre=configuracion.nombre,
+                    descripcion=configuracion.descripcion,
+                    fechaHoraCreacion=configuracion.fechaHoraCreacion,
+                    activado=configuracion.activado,
+                    numeroSector=lista_numeros_sectores,
+                    idSector=lista_id_sectores,
+                    notificacionActivada=configuracion.notificacionActivada,
+                    listaMedicionesInterna=lista_medicion_interna_json,
+                    listaMedicionesExternas=lista_medicion_externa_json,
+                    usuarioFincaId=configuracion.usuariofinca_set.first().idUsuarioFinca
+                )
+                lista_dto_configuracion_eventos.append(dto_configuracion_evento)
+                dto_configuracion_evento_final = DtoConfiguracionEventoPersonalizadoFinal(
+                    dto_evento_lista=lista_dto_configuracion_eventos,
+                    cantidad=lista_dto_configuracion_eventos.__len__())
+            #response.content = armar_response_list_content(lista_dto_configuracion_eventos, lista_dto_configuracion_eventos.__len__())
+            response.content = armar_response_content(dto_configuracion_evento_final)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except ValueError as err:
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
+def buscar_configuraciones_eventos_personalizados_sector(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if(KEY_ID_USUARIO_FINCA in datos) and (KEY_ID_SECTOR in datos):
+            if  datos[KEY_ID_USUARIO_FINCA] == '' or datos[KEY_ID_SECTOR] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if UsuarioFinca.objects.filter(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA]).__len__() == 0:
+                raise ValueError(ERROR_USUARIO_FINCA_NO_ENCONTRADO, "No se encuentra un usuario finca con ese id")
+            if UsuarioFinca.objects.filter(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA],
+                                           fechaBajaUsuarioFinca__isnull=True).__len__() == 0:
+                raise ValueError(ERROR_USUARIO_NO_HABILITADO_EN_FINCA, "El usuario no esta habilitado en esa finca")
+            if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]):
+                raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encuentra un sector con ese id")
+            sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
+            usuario_finca = UsuarioFinca.objects.get(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA])
+            lista_configuraciones_eventos_personalizados = sector.configuracionEventoPersonalizadoList.filter(sector)
+            lista_dto_configuracion_eventos = []
+            dto_configuracion_evento_final = None
             for configuracion in lista_configuraciones_eventos_personalizados:
                 lista_medicion_interna_json = []
                 lista_medicion_externa_json= []
@@ -1029,12 +1114,12 @@ def obtener_informe_cruzado_riego_mediciones_(request):
                                 order_by("-fechaYHora").last()
                         """PARA OBTENER LA MEDICION POSTERIOR AL RIEGO"""
                         if componente_sensor_sector_asignado.medicionCabeceraList.filter(
-                                    fechaYHora__lte=ejecucion.fecha_hora_finalizacion,
-                                    fechaYHora__gte=ejecucion.fecha_hora_finalizacion + timedelta(minutes=30))\
+                                    fechaYHora__gte=ejecucion.fecha_hora_finalizacion,
+                                    fechaYHora__lte=ejecucion.fecha_hora_finalizacion + timedelta(minutes=30))\
                                 .__len__() > 0:
                             medicion_cabecera_despues = componente_sensor_sector_asignado.medicionCabeceraList.filter(
-                                fechaYHora__lte=ejecucion.fecha_hora_inicio,
-                                fechaYHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30)).order_by(
+                                fechaYHora__gte=ejecucion.fecha_hora_inicio,
+                                fechaYHora__lte=ejecucion.fecha_hora_inicio + timedelta(minutes=30)).order_by(
                                 "-fechaYHora").first()
                         mecanismo_riego_finca = mecanismo.mecanismoRiegoFinca
                         finca = mecanismo_riego_finca.finca
@@ -1053,15 +1138,16 @@ def obtener_informe_cruzado_riego_mediciones_(request):
                                 fechaHora__lte=ejecucion.fecha_hora_inicio,
                                 fechaHora__gte=ejecucion.fecha_hora_inicio - timedelta(minutes=30))\
                                     .order_by("-fechaHora").last()
+                        mecanismo_json = ""
                         if mecanismo != "":
                             mecanismo_json = mecanismo.as_json()
-                        if ejecucion.configuracion_riego is None :
+                        if ejecucion.configuracion_riego is None:
                             configuracion = ""
                         else:
                             configuracion = ejecucion.configuracion_riego.as_json(),
-                        if medicion_climatica_antes != "":
+                        if medicion_climatica_antes:
                             medicion_climatica_antes = medicion_climatica_antes.as_json()
-                        if medicion_cabecera_antes != "":
+                        if medicion_cabecera_antes:
                             medicion_cabecera_antes = medicion_cabecera_antes.as_json()
                         if medicion_cabecera_despues != "":
                             medicion_cabecera_despues = medicion_cabecera_despues.as_json()
