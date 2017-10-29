@@ -8,12 +8,14 @@ from ...models import EjecucionRiego, EstadoEjecucionRiego, ConfiguracionRiego, 
 from views_constants import *
 
 
-def iniciar_ejecucion_riego(mecanismo_riego_finca_sector, detalle_riego, configuracion_riego=None):
+def iniciar_ejecucion_riego(mecanismo_riego_finca_sector, detalle_riego, configuracion_riego=None,
+                            fecha_fin_programada=None):
     """
     Iniciar una ejecucion de riego de un mecanismo_riego_finca_sector
     :param mecanismo_riego_finca_sector:
     :param detalle_riego:
     :param configuracion_riego:
+    :param fecha_fin_programada:
     :return:
     """
 
@@ -27,7 +29,8 @@ def iniciar_ejecucion_riego(mecanismo_riego_finca_sector, detalle_riego, configu
         fecha_hora_inicio=datetime.now(pytz.utc),
         detalle=detalle_riego,
         estado_ejecucion_riego=estado_ejecucion_riego_en_ejecucion,
-        configuracion_riego=configuracion_riego
+        configuracion_riego=configuracion_riego,
+        fecha_hora_final_programada=fecha_fin_programada
     )
     # TODO llamar a adaptador mecanismo riego y ejecutar riego
     ejecucion_riego_nuevo.save()

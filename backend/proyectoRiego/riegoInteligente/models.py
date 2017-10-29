@@ -466,6 +466,7 @@ class Cultivo(models.Model):
     fechaPlantacion = models.DateTimeField()
     fechaEliminacion = models.DateTimeField(null=True)
     habilitado = models.BooleanField()
+    cantidad_plantas_hectarea = models.IntegerField(default=1)
 
     subtipo_cultivo = models.ForeignKey('SubtipoCultivo', db_column="OIDSubtipoCultivo")
     sector = models.ForeignKey(Sector, db_column="OIDSector")

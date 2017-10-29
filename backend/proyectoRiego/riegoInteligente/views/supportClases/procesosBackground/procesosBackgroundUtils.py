@@ -170,7 +170,7 @@ def obtener_riego_en_ejecucion_mecanismo_riego_finca_sector(id_mecanismo_riego_f
         return None
 
 
-def obtener_configuraciones_riego_mecanismo_finca_sector_habilitados(id_mecanismo_riego_finca_sector):
+def obtener_configuraciones_riego_mecanismo_finca_sector_programados_habilitados(id_mecanismo_riego_finca_sector):
     try:
         mecanismo_riego_finca_sector = MecanismoRiegoFincaSector.objects.get(
             idMecanismoRiegoFincaSector=id_mecanismo_riego_finca_sector)
@@ -334,6 +334,104 @@ def comparar_hora_riego(hora_elegida):
 
     except Exception:
         return False
+
+
+def obtener_configuraciones_riego_automaticas_habilitadas(id_mecanismo_riego_finca_sector):
+
+    mecanismo_riego_finca_sector = MecanismoRiegoFincaSector.objects.get(
+        idMecanismoRiegoFincaSector=id_mecanismo_riego_finca_sector)
+
+    estado_configuracion_riego_habilitado = EstadoConfiguracionRiego.objects.get(
+        nombreEstadoConfiguracionRiego=ESTADO_HABILITADO
+    )
+
+    tipo_configuracion_automatica = TipoConfiguracionRiego.objects.get(nombre=TIPO_CONFIGURACION_RIEGO_AUTOMATICO)
+
+    configuraciones_riego_habilitadas = []
+
+    configuraciones_riego_mecanismo = ConfiguracionRiego.objects.filter(
+        mecanismoRiegoFincaSector=mecanismo_riego_finca_sector,
+        fechaFinalizacion__isnull=True
+    )
+    for configuracion_riego in configuraciones_riego_mecanismo:
+
+        historico_configuracion_riego_habilitado = HistoricoEstadoConfiguracionRiego.objects.get(
+            configuracion_riego=configuracion_riego,
+            estado_configuracion_riego=estado_configuracion_riego_habilitado,
+            fechaFinEstadoConfiguracionRiego__isnull=True
+        )
+
+        if historico_configuracion_riego_habilitado:
+            if configuracion_riego.tipoConfiguracionRiego == tipo_configuracion_automatica:
+                configuraciones_riego_habilitadas.append(configuracion_riego)
+
+    return configuraciones_riego_habilitadas
+
+
+def obtener_componentes_sensor_sector_habiltiados(sector):
+
+    estado_componente_sensor_sector_habilitado = EstadoComponenteSensorSector.objects.get(
+        nombreEstadoComponenteSensorSector=ESTADO_HABILITADO)
+
+    lista_componente_sensor_sector = sector.componentesensorsector_set.all()
+
+    componentes_sensor_sector_asignados = []
+    for componente_sensor_sector in lista_componente_sensor_sector:
+
+        if componente_sensor_sector.historicoEstadoComponenteSensorSector.filter(
+                estadoComponenteSensorSector=estado_componente_sensor_sector_habilitado,
+                fechaBajaComponenteSensorSector__isnull=True
+        ).__len__() == 1:
+            componentes_sensor_sector_asignados.append(componente_sensor_sector)
+
+    return componentes_sensor_sector_asignados
+
+
+def obtener_ultima_medicion_cabecera(componentes_sensor_sector_asignados):
+
+    mediciones_cabecera = []
+
+    for componente_sensor in componentes_sensor_sector_asignados:
+        medicion_cabecera = MedicionCabecera.objects.filter(
+            componenteSensorSector=componente_sensor).order_by('-fechaYHora').first()
+        mediciones_cabecera.append(medicion_cabecera)
+
+    if mediciones_cabecera.__len__() > 0:
+        mediciones_cabecera.sort(key=lambda x: x.fechaYHora, reverse=True)
+        return mediciones_cabecera[0]
+
+    return None
+
+
+def obtener_cultivo_sector_habilitado(sector):
+
+    return Cultivo.objects.filter(sector=sector,
+                                  fechaEliminacion__isnull=True,
+                                  habilitado=True).order_by('-fechaPlantacion').first()
+
+
+def obtener_ultima_cabecera_informacion_climatica(sector):
+
+    finca = sector.finca
+
+    proveedor_info_climatica_finca = \
+        ProveedorInformacionClimaticaFinca.objects.get(finca=finca,
+                                                       fechaBajaProveedorInfoClimaticaFinca=None)
+
+    proveedor_informacion_climatica = proveedor_info_climatica_finca.proveedorInformacionClimatica
+
+    if not proveedor_informacion_climatica:
+        print "Finca no tiene proveedor informacion climatica definido"
+        return False
+
+    ultima_medicion = None
+    try:
+        ultima_medicion = MedicionInformacionClimaticaCabecera. \
+            objects.filter(proveedor_informacion_climatica_externa=proveedor_info_climatica_finca). \
+            order_by('-fechaHora').first()
+        return ultima_medicion
+    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned):
+        return None
 
 
 def obtener_configuraciones_eventos_personalizados_habilitados(sector):
