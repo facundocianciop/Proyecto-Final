@@ -487,8 +487,8 @@ def eliminar_finca(request):
                                 estado_mecanismo_riego_finca=estado_mecanismo_finca_habilitado,
                                 fechaFinEstadoMecanismoRiegoFinca__isnull=True).__len__() == 1:
                             lista_mecanismo_riego_sector = mecanismo.mecanismoRiegoSectorList.all()
-                            estado_riego_en_ejecucion = EstadoEjecucionRiego.objects.get(
-                                nombreEstadoEjecucionRiego=ESTADO_EN_EJECUCION)
+
+                            estado_riego_en_ejecucion = EstadoEjecucionRiego.objects.get(nombreEstadoEjecucionRiego=ESTADO_EN_EJECUCION)
                             for mecanismo_riego_sector in lista_mecanismo_riego_sector:
                                 if mecanismo_riego_sector.historicoMecanismoRiegoFincaSector.filter(
                                         estado_mecanismo_riego_finca_sector=estado_mecanismo_sector_habilitado,
@@ -612,8 +612,6 @@ def eliminar_finca(request):
                                                                        fechaInicioEstadoSector=datetime.now(pytz.utc),
                                                                        sector=sector)
                         nuevo_historico_sector.save()
-
-
 
                 #proveedor_finca = finca_a_eliminar.proveedorinformacionclimaticafinca_set.get(
                 #   fechaBajaProveedorInfoClimaticaFinca__isnull=True)
