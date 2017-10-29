@@ -31,6 +31,7 @@ def buscar_configuraciones_eventos_personalizados(request):
             usuario_finca = UsuarioFinca.objects.get(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA])
             lista_configuraciones_eventos_personalizados = usuario_finca.configuracionEventoPersonalizadoList.all()
             lista_dto_configuracion_eventos = []
+            dto_configuracion_evento_final = None
             for configuracion in lista_configuraciones_eventos_personalizados:
                 lista_medicion_interna_json = []
                 lista_medicion_externa_json= []
