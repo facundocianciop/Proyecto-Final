@@ -1035,7 +1035,7 @@ def obtener_informe_cruzado_riego_mediciones_(request):
                                 .__len__() > 0:
                             medicion_cabecera_despues = componente_sensor_sector_asignado.medicionCabeceraList.filter(
                                 fechaYHora__gte=ejecucion.fecha_hora_inicio,
-                                fechaYHora__lte=ejecucion.fecha_hora_inicio - timedelta(minutes=30)).order_by(
+                                fechaYHora__lte=ejecucion.fecha_hora_inicio + timedelta(minutes=30)).order_by(
                                 "-fechaYHora").first()
                         mecanismo_riego_finca = mecanismo.mecanismoRiegoFinca
                         finca = mecanismo_riego_finca.finca
