@@ -137,7 +137,6 @@ def permisos_rol_requeridos(permisos_rol_list):
                     if finca.sectorList.filter(OIDSector=sector.OIDSector).__len__() == 1:
                             sector_pertenece_a_finca = True
                     if not sector_pertenece_a_finca:
-                        print "NO PERTENECE"
                         return build_unauthorized_error(response, ERROR_NO_TIENE_PERMISOS,
                                                         DETALLE_ERROR_NO_TIENE_PERMISOS)
             if KEY_ID_MECANISMO_RIEGO_FINCA in datos:
