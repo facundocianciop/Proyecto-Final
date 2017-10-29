@@ -57,15 +57,15 @@ def crear_sector(request):
             if superficie_ocupada > finca_actual.tamanio:
                 raise ValueError(ERROR_SECTORES_SUPERAN_TAMANIO_FINCA, "La suma de las superficies superan el tamanio"
                                                                        "de la finca.")
-            # if ConfiguracionEventoPersonalizado.objects.filter(nombre=HELADA).__len__() == 0:
-            #     raise ValueError(ERROR_HELADA_NO_CARGADA, "No se encuentra cargada la configuracion para heladas.")
-            # #helada = ConfiguracionEventoPersonalizado.objects.get(nombre=HELADA)
+            if ConfiguracionEventoPersonalizado.objects.filter(nombre=HELADA).__len__() == 0:
+                raise ValueError(ERROR_HELADA_NO_CARGADA, "No se encuentra cargada la configuracion para heladas.")
+            helada = ConfiguracionEventoPersonalizado.objects.get(nombre=HELADA)
             usuario = request.user
             datos_usuario = usuario.datosusuario
             usuario_finca = UsuarioFinca.objects.get(usuario=datos_usuario, finca=finca_actual)
-            #usuario_finca.configuracionEventoPersonalizadoList.add(helada)
+            usuario_finca.configuracionEventoPersonalizadoList.add(helada)
             usuario_finca.save()
-            #helada.save()
+            helada.save()
             sector_nuevo = Sector(numeroSector=datos[KEY_NUMERO_SECTOR], nombreSector=datos[KEY_NOMBRE_SECTOR],
                                   descripcionSector=datos[KEY_DESCRIPCION_SECTOR],
                                   superficie=int(datos[KEY_SUPERFICIE_SECTOR]),
@@ -75,8 +75,8 @@ def crear_sector(request):
             historico_nuevo = HistoricoEstadoSector(estado_sector=estado_habilitado, sector=sector_nuevo,
                                                     fechaInicioEstadoSector=datetime.now(pytz.utc))
             historico_nuevo.save()
-            #helada.sectorList.add(sector_nuevo)
-            #helada.save()
+            helada.sectorList.add(sector_nuevo)
+            helada.save()
             finca_actual.save()
             response.content = armar_response_content(None)
             response.status_code = 200
