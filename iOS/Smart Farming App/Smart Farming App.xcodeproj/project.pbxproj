@@ -64,6 +64,17 @@
 		A10157171F9003BE00179ED7 /* SFFormularioBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A10157161F9003BE00179ED7 /* SFFormularioBaseViewController.m */; };
 		A101571A1F9003E600179ED7 /* SFRegistrarUsuarioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A10157191F9003E600179ED7 /* SFRegistrarUsuarioViewController.m */; };
 		A101571D1F90041F00179ED7 /* SFRecuperarCuentaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A101571C1F90041F00179ED7 /* SFRecuperarCuentaViewController.m */; };
+		A1080A061FA7618400CD6397 /* SFCultivoSectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1080A051FA7618400CD6397 /* SFCultivoSectorViewController.m */; };
+		A1080A091FA7619800CD6397 /* SFMecanismoRiegoSectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1080A081FA7619800CD6397 /* SFMecanismoRiegoSectorViewController.m */; };
+		A1080A0C1FA7700500CD6397 /* SFConfiguracionesRiegoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1080A0B1FA7700500CD6397 /* SFConfiguracionesRiegoViewController.m */; };
+		A1080A0F1FA7701E00CD6397 /* SFCriteriosInicialesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1080A0E1FA7701E00CD6397 /* SFCriteriosInicialesViewController.m */; };
+		A1080A121FA7703000CD6397 /* SFCriteriosFinalesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1080A111FA7703000CD6397 /* SFCriteriosFinalesViewController.m */; };
+		A1080A151FA773CF00CD6397 /* SFCriteriosRiegoTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1080A141FA773CF00CD6397 /* SFCriteriosRiegoTabBarViewController.m */; };
+		A1080A201FA7B47800CD6397 /* SFComponenteSensorSectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1080A1F1FA7B47800CD6397 /* SFComponenteSensorSectorViewController.m */; };
+		A1080A241FA7BF5F00CD6397 /* SFConfiguracionesEventoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1080A231FA7BF5E00CD6397 /* SFConfiguracionesEventoViewController.m */; };
+		A1080A271FA7BF7B00CD6397 /* SFConfiguracionEventoMedicionesInternasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1080A261FA7BF7B00CD6397 /* SFConfiguracionEventoMedicionesInternasViewController.m */; };
+		A1080A2A1FA7BF9700CD6397 /* SFConfiguracionEventoMedicionesExternasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1080A291FA7BF9700CD6397 /* SFConfiguracionEventoMedicionesExternasViewController.m */; };
+		A1080A2D1FA7C2E100CD6397 /* SFConfiguracionEventoMedicionesTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1080A2C1FA7C2E100CD6397 /* SFConfiguracionEventoMedicionesTabBarViewController.m */; };
 		A120BB421F9A939700240383 /* SFDetallesSectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A120BB411F9A939700240383 /* SFDetallesSectorViewController.m */; };
 		A120BB451F9A93D100240383 /* SFDetallesMecanismoRiegoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A120BB441F9A93D100240383 /* SFDetallesMecanismoRiegoViewController.m */; };
 		A142C0901F9E3D0A009822A4 /* SolicitudMostrarSectores.m in Sources */ = {isa = PBXBuildFile; fileRef = A142C08F1F9E3D0A009822A4 /* SolicitudMostrarSectores.m */; };
@@ -306,6 +317,28 @@
 		A10157191F9003E600179ED7 /* SFRegistrarUsuarioViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFRegistrarUsuarioViewController.m; sourceTree = "<group>"; };
 		A101571B1F90041F00179ED7 /* SFRecuperarCuentaViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFRecuperarCuentaViewController.h; sourceTree = "<group>"; };
 		A101571C1F90041F00179ED7 /* SFRecuperarCuentaViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFRecuperarCuentaViewController.m; sourceTree = "<group>"; };
+		A1080A041FA7618400CD6397 /* SFCultivoSectorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFCultivoSectorViewController.h; sourceTree = "<group>"; };
+		A1080A051FA7618400CD6397 /* SFCultivoSectorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFCultivoSectorViewController.m; sourceTree = "<group>"; };
+		A1080A071FA7619800CD6397 /* SFMecanismoRiegoSectorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFMecanismoRiegoSectorViewController.h; sourceTree = "<group>"; };
+		A1080A081FA7619800CD6397 /* SFMecanismoRiegoSectorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFMecanismoRiegoSectorViewController.m; sourceTree = "<group>"; };
+		A1080A0A1FA7700500CD6397 /* SFConfiguracionesRiegoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFConfiguracionesRiegoViewController.h; sourceTree = "<group>"; };
+		A1080A0B1FA7700500CD6397 /* SFConfiguracionesRiegoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFConfiguracionesRiegoViewController.m; sourceTree = "<group>"; };
+		A1080A0D1FA7701E00CD6397 /* SFCriteriosInicialesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFCriteriosInicialesViewController.h; sourceTree = "<group>"; };
+		A1080A0E1FA7701E00CD6397 /* SFCriteriosInicialesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFCriteriosInicialesViewController.m; sourceTree = "<group>"; };
+		A1080A101FA7703000CD6397 /* SFCriteriosFinalesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFCriteriosFinalesViewController.h; sourceTree = "<group>"; };
+		A1080A111FA7703000CD6397 /* SFCriteriosFinalesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFCriteriosFinalesViewController.m; sourceTree = "<group>"; };
+		A1080A131FA773CF00CD6397 /* SFCriteriosRiegoTabBarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFCriteriosRiegoTabBarViewController.h; sourceTree = "<group>"; };
+		A1080A141FA773CF00CD6397 /* SFCriteriosRiegoTabBarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFCriteriosRiegoTabBarViewController.m; sourceTree = "<group>"; };
+		A1080A1E1FA7B47800CD6397 /* SFComponenteSensorSectorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFComponenteSensorSectorViewController.h; sourceTree = "<group>"; };
+		A1080A1F1FA7B47800CD6397 /* SFComponenteSensorSectorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFComponenteSensorSectorViewController.m; sourceTree = "<group>"; };
+		A1080A221FA7BF5E00CD6397 /* SFConfiguracionesEventoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFConfiguracionesEventoViewController.h; sourceTree = "<group>"; };
+		A1080A231FA7BF5E00CD6397 /* SFConfiguracionesEventoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFConfiguracionesEventoViewController.m; sourceTree = "<group>"; };
+		A1080A251FA7BF7B00CD6397 /* SFConfiguracionEventoMedicionesInternasViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFConfiguracionEventoMedicionesInternasViewController.h; sourceTree = "<group>"; };
+		A1080A261FA7BF7B00CD6397 /* SFConfiguracionEventoMedicionesInternasViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFConfiguracionEventoMedicionesInternasViewController.m; sourceTree = "<group>"; };
+		A1080A281FA7BF9700CD6397 /* SFConfiguracionEventoMedicionesExternasViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFConfiguracionEventoMedicionesExternasViewController.h; sourceTree = "<group>"; };
+		A1080A291FA7BF9700CD6397 /* SFConfiguracionEventoMedicionesExternasViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFConfiguracionEventoMedicionesExternasViewController.m; sourceTree = "<group>"; };
+		A1080A2B1FA7C2E100CD6397 /* SFConfiguracionEventoMedicionesTabBarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFConfiguracionEventoMedicionesTabBarViewController.h; sourceTree = "<group>"; };
+		A1080A2C1FA7C2E100CD6397 /* SFConfiguracionEventoMedicionesTabBarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFConfiguracionEventoMedicionesTabBarViewController.m; sourceTree = "<group>"; };
 		A120BB401F9A939700240383 /* SFDetallesSectorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFDetallesSectorViewController.h; sourceTree = "<group>"; };
 		A120BB411F9A939700240383 /* SFDetallesSectorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFDetallesSectorViewController.m; sourceTree = "<group>"; };
 		A120BB431F9A93D100240383 /* SFDetallesMecanismoRiegoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFDetallesMecanismoRiegoViewController.h; sourceTree = "<group>"; };
@@ -645,8 +678,10 @@
 				1116D6C11F940C490088D61B /* General */,
 				A1AE0B811F8E8BDF009B4494 /* Modulo Seguridad */,
 				A1AE0B821F8E8BF1009B4494 /* Modulo Finca */,
-				A1BD867E1F9776260077C91E /* Modulo Riego */,
 				A1BD867D1F9776180077C91E /* Modulo Sectores */,
+				A1080A171FA7ADBE00CD6397 /* Sensores */,
+				A1BD867E1F9776260077C91E /* Modulo Riego */,
+				A1080A211FA7BF2900CD6397 /* Modulo Reportes Configuraciones evento */,
 				110CC75C1F9848CD0090C6C0 /* Modulo Reportes */,
 			);
 			path = Controladores;
@@ -935,6 +970,28 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		A1080A171FA7ADBE00CD6397 /* Sensores */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Sensores;
+			sourceTree = "<group>";
+		};
+		A1080A211FA7BF2900CD6397 /* Modulo Reportes Configuraciones evento */ = {
+			isa = PBXGroup;
+			children = (
+				A1080A221FA7BF5E00CD6397 /* SFConfiguracionesEventoViewController.h */,
+				A1080A231FA7BF5E00CD6397 /* SFConfiguracionesEventoViewController.m */,
+				A1080A251FA7BF7B00CD6397 /* SFConfiguracionEventoMedicionesInternasViewController.h */,
+				A1080A261FA7BF7B00CD6397 /* SFConfiguracionEventoMedicionesInternasViewController.m */,
+				A1080A281FA7BF9700CD6397 /* SFConfiguracionEventoMedicionesExternasViewController.h */,
+				A1080A291FA7BF9700CD6397 /* SFConfiguracionEventoMedicionesExternasViewController.m */,
+				A1080A2B1FA7C2E100CD6397 /* SFConfiguracionEventoMedicionesTabBarViewController.h */,
+				A1080A2C1FA7C2E100CD6397 /* SFConfiguracionEventoMedicionesTabBarViewController.m */,
+			);
+			path = "Modulo Reportes Configuraciones evento";
+			sourceTree = "<group>";
+		};
 		A142C08D1F9E3CDF009822A4 /* Solicitudes */ = {
 			isa = PBXGroup;
 			children = (
@@ -1161,6 +1218,20 @@
 				A1BD86801F9776810077C91E /* SFSectoresTableViewController.m */,
 				A120BB401F9A939700240383 /* SFDetallesSectorViewController.h */,
 				A120BB411F9A939700240383 /* SFDetallesSectorViewController.m */,
+				A1080A041FA7618400CD6397 /* SFCultivoSectorViewController.h */,
+				A1080A051FA7618400CD6397 /* SFCultivoSectorViewController.m */,
+				A1080A071FA7619800CD6397 /* SFMecanismoRiegoSectorViewController.h */,
+				A1080A081FA7619800CD6397 /* SFMecanismoRiegoSectorViewController.m */,
+				A1080A0A1FA7700500CD6397 /* SFConfiguracionesRiegoViewController.h */,
+				A1080A0B1FA7700500CD6397 /* SFConfiguracionesRiegoViewController.m */,
+				A1080A0D1FA7701E00CD6397 /* SFCriteriosInicialesViewController.h */,
+				A1080A0E1FA7701E00CD6397 /* SFCriteriosInicialesViewController.m */,
+				A1080A101FA7703000CD6397 /* SFCriteriosFinalesViewController.h */,
+				A1080A111FA7703000CD6397 /* SFCriteriosFinalesViewController.m */,
+				A1080A131FA773CF00CD6397 /* SFCriteriosRiegoTabBarViewController.h */,
+				A1080A141FA773CF00CD6397 /* SFCriteriosRiegoTabBarViewController.m */,
+				A1080A1E1FA7B47800CD6397 /* SFComponenteSensorSectorViewController.h */,
+				A1080A1F1FA7B47800CD6397 /* SFComponenteSensorSectorViewController.m */,
 			);
 			path = "Modulo Sectores";
 			sourceTree = "<group>";
@@ -1547,8 +1618,11 @@
 			files = (
 				A142C0EA1F9F73AE009822A4 /* SolicitudMostrarComponentesSensorFinca.m in Sources */,
 				A142C1371F9F8DA8009822A4 /* RespuestaBuscarConfiguracionesEventosPersonalizados.m in Sources */,
+				A1080A151FA773CF00CD6397 /* SFCriteriosRiegoTabBarViewController.m in Sources */,
 				1116BA7F1F8C5A2C005C9AFF /* BaseServicios.m in Sources */,
 				111F7E0E1F94FE4F002615D5 /* RespuestaMostrarUsuario.m in Sources */,
+				A1080A061FA7618400CD6397 /* SFCultivoSectorViewController.m in Sources */,
+				A1080A2D1FA7C2E100CD6397 /* SFConfiguracionEventoMedicionesTabBarViewController.m in Sources */,
 				A142C0BC1F9E9114009822A4 /* SolicitudIniciarRiegoManualmente.m in Sources */,
 				1116D6E51F94449A0088D61B /* FincaRightMenuTableViewController.m in Sources */,
 				A120BB421F9A939700240383 /* SFDetallesSectorViewController.m in Sources */,
@@ -1580,23 +1654,29 @@
 				111F8F181F95B32E00AB7E8F /* SFCambiarContraseniaViewController.m in Sources */,
 				A142C0F31F9F7440009822A4 /* SolicitudMostrarSensoresFinca.m in Sources */,
 				1116DA9B1F906F8C0057A048 /* RespuestaMostrarFincas.m in Sources */,
+				A1080A2A1FA7BF9700CD6397 /* SFConfiguracionEventoMedicionesExternasViewController.m in Sources */,
+				A1080A0C1FA7700500CD6397 /* SFConfiguracionesRiegoViewController.m in Sources */,
 				1116BA7A1F8C5A2C005C9AFF /* ServiciosModuloSeguridad.m in Sources */,
 				A1C56F5C1FA0EEEA0083D95D /* SFMedicionInformacionClimaticaDetalle.m in Sources */,
 				A142C0DE1F9E9210009822A4 /* RespuestaObtenerCriteriosInicialesConfiguracionRiegoMecanismoRiegoFincaSector.m in Sources */,
 				1116BA7E1F8C5A2C005C9AFF /* ServiciosModuloFinca.m in Sources */,
 				A142C09C1F9E44FD009822A4 /* SFCultivoSector.m in Sources */,
+				A1080A241FA7BF5F00CD6397 /* SFConfiguracionesEventoViewController.m in Sources */,
 				111D1DC71F92F4B600E3A168 /* SFFinca.m in Sources */,
 				A1BD86811F9776810077C91E /* SFSectoresTableViewController.m in Sources */,
 				1116DA961F906A370057A048 /* RespuestaInicioSesion.m in Sources */,
 				1116D6DB1F94424F0088D61B /* LGSideMenuGesturesHandler.m in Sources */,
 				A101571D1F90041F00179ED7 /* SFRecuperarCuentaViewController.m in Sources */,
 				A142C13D1F9F8DC0009822A4 /* RespuestaObtenerEstadoActualSector.m in Sources */,
+				A1080A201FA7B47800CD6397 /* SFComponenteSensorSectorViewController.m in Sources */,
 				A142C0901F9E3D0A009822A4 /* SolicitudMostrarSectores.m in Sources */,
 				11CD00971F8F1B7700C58C49 /* IdentificadoresSegue.m in Sources */,
 				A101571A1F9003E600179ED7 /* SFRegistrarUsuarioViewController.m in Sources */,
 				A142C0BF1F9E9128009822A4 /* SolicitudPausarRiegoManualmente.m in Sources */,
+				A1080A091FA7619800CD6397 /* SFMecanismoRiegoSectorViewController.m in Sources */,
 				A142C0FF1F9F758E009822A4 /* RespuestaMostrarSensoresFinca.m in Sources */,
 				A142C0F61F9F747E009822A4 /* RespuestaMostrarComponentesSensorFinca.m in Sources */,
+				A1080A121FA7703000CD6397 /* SFCriteriosFinalesViewController.m in Sources */,
 				1116BA7D1F8C5A2C005C9AFF /* HTTPConector.m in Sources */,
 				A1C56F2B1FA0C7EF0083D95D /* SFTipoMedicion.m in Sources */,
 				1116D6DE1F94424F0088D61B /* LGSideMenuView.m in Sources */,
@@ -1647,6 +1727,7 @@
 				A142C0D41F9E91CE009822A4 /* RespuestaPausarRiegoManualmente.m in Sources */,
 				1116BA931F8C7490005C9AFF /* SFUtils.m in Sources */,
 				A10157171F9003BE00179ED7 /* SFFormularioBaseViewController.m in Sources */,
+				A1080A0F1FA7701E00CD6397 /* SFCriteriosInicialesViewController.m in Sources */,
 				A1C56F401FA0D19F0083D95D /* SFCriterioConfiguracionRiegoVolumenAgua.m in Sources */,
 				A142C1491F9F8DEF009822A4 /* RespuestaObtenerInformeEventosPersonalizados.m in Sources */,
 				A142C0ED1F9F73F3009822A4 /* SolicitudMostrarComponentesSensorFincaHabilitados.m in Sources */,
@@ -1672,6 +1753,7 @@
 				A142C12B1F9F8CFD009822A4 /* SolicitudObtenerInformeRiegoHistoricoSector.m in Sources */,
 				A1C56F591FA0EED10083D95D /* SFMedicionInformacionClimaticaCabecera.m in Sources */,
 				A142C0A51F9E470F009822A4 /* RespuestaMostrarCultivoSectorHistorico.m in Sources */,
+				A1080A271FA7BF7B00CD6397 /* SFConfiguracionEventoMedicionesInternasViewController.m in Sources */,
 				1116D6DD1F94424F0088D61B /* LGSideMenuSegue.m in Sources */,
 				11F0207E1F8F057900DBC1DC /* SFInicioSesionViewController.m in Sources */,
 				A142C14C1F9F8DFC009822A4 /* RespuestaObtenerInformeHistoricoHeladas.m in Sources */,

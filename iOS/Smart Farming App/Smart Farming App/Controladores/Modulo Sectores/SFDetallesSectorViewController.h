@@ -8,6 +8,10 @@
 
 #import "SFViewControllerBase.h"
 
+#import "SFSectorFinca.h"
+
 @interface SFDetallesSectorViewController : SFViewControllerBase
+
+@property (strong, nonatomic) SFSectorFinca *sector;
 
 @end

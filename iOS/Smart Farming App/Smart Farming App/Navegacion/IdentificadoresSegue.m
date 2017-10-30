@@ -25,13 +25,26 @@ NSString *const kSFNavegarASeccionFincaSegue = @"SFNavegarASeccionFincaSegue";
 
 NSString *const kSFNavegarASectoresFincaSegue = @"SFNavegarASectoresFincaSegue";
 NSString *const kSFNavegarASensoresFincaSegue = @"SFNavegarASensoresFincaSegue";
+NSString *const kSFNavegarAConfiguracionEventoSegue = @"SFNavegarAConfiguracionEventoSegue";
 NSString *const kSFNavegarAMecanismosRiegoFincaSegue = @"SFNavegarAMecanismosRiegoFincaSegue";
 NSString *const kSFNavegarReportesFincaSegue = @"SFNavegarReportesFincaSegue";
 
 #pragma mark - Modulo Sectores
 
 NSString *const kSFNavegarAInfoSectorSegue = @"SFNavegarAInfoSectorSegue";
+
+NSString *const kSFNavegarAInfoCultivoSectorSegue = @"SFNavegarAInfoCultivoSectorSegue";
 NSString *const kSFNavegarAInfoMecanismoRiegoSectorSegue = @"SFNavegarAInfoMecanismoRiegoSectorSegue";
+NSString *const kSFNavegarAInfoComponenteSensorSector = @"SFNavegarAInfoComponenteSensorSector";
+
+NSString *const kSFNavegarConfiguracionesRiegoSegue = @"SFNavegarConfiguracionesRiegoSegue";
+NSString *const kSFNavegarCriteriosRiegoSegue = @"SFNavegarCriteriosRiegoSegue";
+
+#pragma mark - Modulo Sensores
+
+#pragma mark - Modulo Reportes - Configuracion eventos
+
+NSString *const kSFNavegarAMedicionesConfiguracionEvento = @"SFNavegarAMedicionesConfiguracionEvento";
 
 #pragma mark - Modulo Reportes
 

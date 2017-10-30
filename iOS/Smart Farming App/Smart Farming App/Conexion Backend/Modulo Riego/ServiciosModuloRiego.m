@@ -445,7 +445,7 @@
                         }
                         
                         if ([datos objectForKey:@"operador"] != [NSNull null]) {
-                            criterioConfiguracion.operador = [[datos objectForKey:@"operador"] integerValue];
+                            criterioConfiguracion.operador = [datos objectForKey:@"operador"];
                         }
                         if ([datos objectForKey:@"valor"] != [NSNull null]) {
                             criterioConfiguracion.valor = [[datos objectForKey:@"valor"] floatValue];
@@ -587,7 +587,7 @@
                         }
                         
                         if ([datos objectForKey:@"operador"] != [NSNull null]) {
-                            criterioConfiguracion.operador = [[datos objectForKey:@"operador"] integerValue];
+                            criterioConfiguracion.operador = [datos objectForKey:@"operador"];
                         }
                         if ([datos objectForKey:@"valor"] != [NSNull null]) {
                             criterioConfiguracion.valor = [[datos objectForKey:@"valor"] floatValue];
