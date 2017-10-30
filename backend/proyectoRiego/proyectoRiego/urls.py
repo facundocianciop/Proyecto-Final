@@ -18,10 +18,12 @@ from django.conf.urls import include,url
 from django.contrib import admin
 
 from django.utils.translation import ugettext_lazy as _
+from riegoInteligente.views import views_administrador
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
     url(r'^riegoInteligente/', include('riegoInteligente.urls')),
+    url(r'^admin/riegoInteligente/fincasPorAprobar/', views_administrador.fincas_por_aprobar, name='fincasPorAprobar'),
+    url(r'^admin/', include(admin.site.urls)),
 ]
 
 admin.site.site_header = _("Smart Farming")

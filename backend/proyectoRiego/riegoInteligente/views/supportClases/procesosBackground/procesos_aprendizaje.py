@@ -109,7 +109,7 @@ def proceso_controlar_ejecucion_riego_por_aprendizaje():
 
                     for configuracion in configuraciones_automaticas:
 
-                        cantidad_agua_a_regar = evaluarNuevaMedicion(
+                        cantidad_agua_a_regar_por_planta = evaluarNuevaMedicion(
                             mes=datetime.now().month,
                             dia=datetime.now().day,
                             cultivo=cultivo.idCultivo,
@@ -123,9 +123,13 @@ def proceso_controlar_ejecucion_riego_por_aprendizaje():
                             humS=humedad_s
                         )
 
-                        print cantidad_agua_a_regar
-                        if cantidad_agua_a_regar > 0:
-                            minutos_a_regar = cantidad_agua_a_regar/mecanismo_riego_finca_sector.caudal
+                        print cantidad_agua_a_regar_por_planta
+                        if cantidad_agua_a_regar_por_planta > 0:
+
+                            cantidad_plantas = sector.superficie / cultivo.cantidad_plantas_hectarea
+                            total_a_regar = cantidad_plantas * cantidad_agua_a_regar_por_planta
+
+                            minutos_a_regar = total_a_regar/mecanismo_riego_finca_sector.caudal
 
                             fecha_fin_riego = datetime.now(pytz.utc) + timedelta(minutes=minutos_a_regar)
                             iniciar_ejecucion_riego(

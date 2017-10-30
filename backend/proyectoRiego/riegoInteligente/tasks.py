@@ -56,8 +56,10 @@ def envio_notificacion_evento(oid_configuracion_evento, mensaje=None):
 
 # noinspection PyUnusedLocal,PyBroadException
 @shared_task
-def envio_notificacion_riego(oid_ejecucion_riego, mensaje):
+def envio_notificacion_riego(oid_ejecucion_riego, mensaje=None):
     try:
+        from .views.supportClases.procesosBackground.procesos_background import enviar_notificacion_riego
         print "Envio notificacion riego"
+        enviar_notificacion_riego(oid_ejecucion_riego, mensaje=None)
     except Exception:
         pass

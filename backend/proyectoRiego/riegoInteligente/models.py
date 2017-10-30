@@ -84,9 +84,10 @@ class DatosUsuario(models.Model):
         return "Datos de usuario: " + self.user.username
 
     def as_json(self):
+        from views.supportClases.views_util_functions import parsear_fecha_a_hora_arg
         fecha_nacimiento = None
         if self.fechaNacimiento is not None:
-            fecha_nacimiento = self.fechaNacimiento.date()
+            fecha_nacimiento = parsear_fecha_a_hora_arg(self.fechaNacimiento).date()
 
         return dict(
             usuario=self.user.username,
@@ -156,10 +157,11 @@ class Rol(models.Model):
         return "Nombre rol: " + self.nombreRol
 
     def as_json(self):
+        from views.supportClases.views_util_functions import parsear_fecha_a_hora_arg
         return dict(
             nombreRol=self.nombreRol,
-            fechaAltaRol=self.fechaAltaRol,
-            fechaBajaRol=self.fechaBajaRol
+            fechaAltaRol=parsear_fecha_a_hora_arg(self.fechaAltaRol),
+            fechaBajaRol=parsear_fecha_a_hora_arg(self.fechaBajaRol)
         )
 
 
@@ -360,9 +362,10 @@ class MecanismoRiegoFinca(models.Model):
     tipoMecanismoRiego = models.ForeignKey("TipoMecanismoRiego", db_column="OIDTipoMecanismoRiego", null=True)
 
     def as_json(self):
+        from views.supportClases.views_util_functions import parsear_fecha_a_hora_arg
         return dict(
             direccionIP=self.direccionIP,
-            fechaInstalacion=self.fechaInstalacion,
+            fechaInstalacion=parsear_fecha_a_hora_arg(self.fechaInstalacion),
             idMecanismoRiegoFinca=self.idMecanismoRiegoFinca,
             tipoMecanismoRiego=self.tipoMecanismoRiego.nombreMecanismo
             # imagenUsuario=self.imagenUsuario
@@ -488,12 +491,13 @@ class Cultivo(models.Model):
         return "Nombre cultivo: %s" % self.nombre
 
     def as_json(self):
+        from views.supportClases.views_util_functions import parsear_fecha_a_hora_arg
         return dict(
             descripcion=self.descripcion,
             idCultivo=self.idCultivo,
             nombre=self.nombre,
-            fechaPlantacion=self.fechaPlantacion,
-            fechaEliminacion=self.fechaEliminacion,
+            fechaPlantacion=parsear_fecha_a_hora_arg(self.fechaPlantacion),
+            fechaEliminacion=parsear_fecha_a_hora_arg(self.fechaEliminacion),
             habilitado=self.habilitado,
             subtipo=self.subtipo_cultivo.nombreSubtipo,
             tipo=self.subtipo_cultivo.tipo_cultivo.nombreTipoCultivo
@@ -748,12 +752,13 @@ class TipoMecanismoRiego(models.Model):
         return "Tipo mecanismo: " + self.nombreMecanismo
 
     def as_json(self):
+        from views.supportClases.views_util_functions import parsear_fecha_a_hora_arg
         return dict(
             nombreMecanismo=self.nombreMecanismo,
             descripcion=self.descripcion,
             presionEstandar=self.presionEstandar,
             eficiencia=self.eficiencia,
-            fechaAltaTipoMecanismoRiego=self.fechaAltaTipoMecanismoRiego,
+            fechaAltaTipoMecanismoRiego=parsear_fecha_a_hora_arg(self.fechaAltaTipoMecanismoRiego),
             habilitado=self.habilitado
         )
 
@@ -814,12 +819,13 @@ class ConfiguracionRiego(models.Model):
                 super(ConfiguracionRiego, self).save(*args, **kwargs)
 
     def as_json(self):
+        from views.supportClases.views_util_functions import parsear_fecha_a_hora_arg
         fecha_creacion_date = ""
         fecha_finalizacion_date = ""
         if self.fechaCreacion:
-            fecha_creacion_date = self.fechaCreacion.date()
+            fecha_creacion_date = parsear_fecha_a_hora_arg(self.fechaCreacion).date()
         if self.fechaFinalizacion:
-            fecha_finalizacion_date = self.fechaFinalizacion.date()
+            fecha_finalizacion_date = parsear_fecha_a_hora_arg(self.fechaFinalizacion).date()
 
         ultimo_estado_historico = HistoricoEstadoConfiguracionRiego.objects.get(
             configuracion_riego=self, fechaFinEstadoConfiguracionRiego=None)
@@ -957,6 +963,7 @@ class EjecucionRiego(models.Model):
                str(self.mecanismo_riego_finca_sector.idMecanismoRiegoFincaSector) + " detalle: " + self.detalle
 
     def as_json(self):
+        from views.supportClases.views_util_functions import parsear_fecha_a_hora_arg
         # Se calcula duracion
         estado_pausado = EstadoEjecucionRiego.objects.get(nombreEstadoEjecucionRiego="pausado")
 
@@ -994,10 +1001,10 @@ class EjecucionRiego(models.Model):
             detalle=self.detalle,
             duracionActualMinutos=duracion_total/60.0,
             duracionActualSegundos=duracion_total,
-            fechaHoraFinalizacion=self.fecha_hora_finalizacion,
-            fechaHoraFinalProgramada=self.fecha_hora_final_programada,
-            fechaHoraInicio=self.fecha_hora_inicio,
-            fechaHoraInicioProgramada=self.fecha_hora_inicio_programada
+            fechaHoraFinalizacion=parsear_fecha_a_hora_arg(self.fecha_hora_finalizacion),
+            fechaHoraFinalProgramada=parsear_fecha_a_hora_arg(self.fecha_hora_final_programada),
+            fechaHoraInicio=parsear_fecha_a_hora_arg(self.fecha_hora_inicio),
+            fechaHoraInicioProgramada=parsear_fecha_a_hora_arg(self.fecha_hora_inicio_programada)
         )
 
 
@@ -1057,9 +1064,10 @@ class CriterioRiegoPorMedicion(CriterioRiego):
                                       related_name="criterios_riego_medicion_list", null=True)
 
     def as_json(self):
+        from views.supportClases.views_util_functions import parsear_fecha_a_hora_arg
         fecha_creacion_date = ""
         if self.fecha_creacion_criterio:
-            fecha_creacion_date = self.fecha_creacion_criterio.date()
+            fecha_creacion_date = parsear_fecha_a_hora_arg(self.fecha_creacion_criterio).date()
 
         if self.operador == 0:
             operador_string = 'Menor o igual'
@@ -1085,9 +1093,10 @@ class CriterioRiegoVolumenAgua(CriterioRiego):
     volumen = models.FloatField()
 
     def as_json(self):
+        from views.supportClases.views_util_functions import parsear_fecha_a_hora_arg
         fecha_creacion_date = ""
         if self.fecha_creacion_criterio:
-            fecha_creacion_date = self.fecha_creacion_criterio.date()
+            fecha_creacion_date = parsear_fecha_a_hora_arg(self.fecha_creacion_criterio).date()
 
         return dict(
             id_criterio_riego=self.id_criterio_riego,
@@ -1104,9 +1113,10 @@ class CriterioRiegoPorHora(CriterioRiego):
     numeroDia = models.IntegerField()
 
     def as_json(self):
+        from views.supportClases.views_util_functions import parsear_fecha_a_hora_arg
         fecha_creacion_date = ""
         if self.fecha_creacion_criterio:
-            fecha_creacion_date = self.fecha_creacion_criterio.date()
+            fecha_creacion_date = parsear_fecha_a_hora_arg(self.fecha_creacion_criterio).date()
 
         hora_argentina = self.hora.astimezone(pytz.timezone('America/Argentina/Buenos_Aires'))
 
@@ -1149,13 +1159,14 @@ class TipoMedicion(models.Model):
                 super(TipoMedicion, self).save(*args, **kwargs)
 
     def as_json(self):
+        from views.supportClases.views_util_functions import parsear_fecha_a_hora_arg
         return dict(
             idTipoMedicion=self.idTipoMedicion,
             nombreTipoMedicion=self.nombreTipoMedicion,
             unidadMedicion=self.unidadMedicion,
             habilitado=self.habilitado,
-            fechaAltaTipoMedicion=self.fechaAltaTipoMedicion,
-            fechaBajaTipoMedicion=self.fechaBajaTipoMedicion
+            fechaAltaTipoMedicion=parsear_fecha_a_hora_arg(self.fechaAltaTipoMedicion),
+            fechaBajaTipoMedicion=parsear_fecha_a_hora_arg(self.fechaBajaTipoMedicion)
         )
 
     def __str__(self):
@@ -1186,10 +1197,11 @@ class Sensor(models.Model):
                 super(Sensor, self).save(*args, **kwargs)
 
     def as_json(self):
+        from views.supportClases.views_util_functions import parsear_fecha_a_hora_arg
         return dict(
             idSensor=str(self.idSensor),
-            fechaAltaSensor=self.fechaAltaSensor,
-            fechaBajaSensor=self.fechaBajaSensor,
+            fechaAltaSensor=parsear_fecha_a_hora_arg(self.fechaAltaSensor),
+            fechaBajaSensor=parsear_fecha_a_hora_arg(self.fechaBajaSensor),
             habilitado=str(self.habilitado),
             modelo=str(self.modelo),
             tipoMedicion=self.tipoMedicion.nombreTipoMedicion
@@ -1283,9 +1295,10 @@ class MedicionCabecera(models.Model):
                 super(MedicionCabecera, self).save(*args, **kwargs)
 
     def as_json(self):
+        from views.supportClases.views_util_functions import parsear_fecha_a_hora_arg
         return dict(
             nro_medicion=self.nroMedicion,
-            fecha_y_hora=self.fechaYHora,
+            fecha_y_hora=parsear_fecha_a_hora_arg(self.fechaYHora),
             lista_mediciones_detalle=[medicion.as_json() for medicion in self.medicionDetalleList.all()]
         )
 
@@ -1358,7 +1371,7 @@ class ConfiguracionEventoPersonalizado(models.Model):
     descripcion = models.CharField(max_length=100)
     notificacionActivada = models.BooleanField()
     fechaAltaConfiguracionEventoPersonalizado = models.DateTimeField()
-    fechaBajaConfiguracionEventoPersonalizado = models.DateTimeField(null=True)
+    fechaBajaConfiguracionEventoPersonalizado = models.DateTimeField(null=True, blank=True)
     fechaHoraCreacion = models.DateTimeField()
     activado = models.BooleanField(default=False)
 
@@ -1404,9 +1417,10 @@ class EventoPersonalizado(models.Model):
                 super(EventoPersonalizado, self).save(*args, **kwargs)
 
     def as_json(self):
+        from views.supportClases.views_util_functions import parsear_fecha_a_hora_arg
         return dict(
             nroEvento=self.nroEvento,
-            fechaHora=self.fechaHora,
+            fechaHora=parsear_fecha_a_hora_arg(self.fechaHora),
             numeroSector=self.sector.numeroSector
         )
 
@@ -1439,12 +1453,13 @@ class TipoMedicionClimatica(models.Model):
                 super(TipoMedicionClimatica, self).save(*args, **kwargs)
 
     def as_json(self):
+        from views.supportClases.views_util_functions import parsear_fecha_a_hora_arg
         return dict(
             idTipoMedicionClimatica=self.idTipoMedicionClimatica,
             nombreTipoMedicionClimatica=self.nombreTipoMedicionClimatica,
             unidadMedicion=self.unidadMedicion,
-            fechaAltaTipoMedicionClimatica=self.fechaAltaTipoMedicionClimatica,
-            fechaBajaTipoMedicionClimatica=self.fechaBajaTipoMedicionClimatica,
+            fechaAltaTipoMedicionClimatica=parsear_fecha_a_hora_arg(self.fechaAltaTipoMedicionClimatica),
+            fechaBajaTipoMedicionClimatica=parsear_fecha_a_hora_arg(self.fechaBajaTipoMedicionClimatica),
             habilitada=self.habilitada
         )
 
@@ -1500,7 +1515,6 @@ class MedicionEstadoExterno(MedicionEvento):
             valor_minimo=self.valorMinimo,
             tipo_medicion=self.tipoMedicion.nombreTipoMedicionClimatica,
             unidad_medicion=self.tipoMedicion.unidadMedicion
-
         )
 
 
@@ -1528,9 +1542,10 @@ class MedicionInformacionClimaticaCabecera(models.Model):
                 super(MedicionInformacionClimaticaCabecera, self).save(*args, **kwargs)
 
     def as_json(self):
+        from views.supportClases.views_util_functions import parsear_fecha_a_hora_arg
         return dict(
             nroMedicion=self.nroMedicion,
-            fechaHora=self.fechaHora,
+            fechaHora=parsear_fecha_a_hora_arg(self.fechaHora),
             proveedorInformacion=self.proveedor_informacion_climatica_externa.proveedorInformacionClimatica.
             nombreProveedor,
             mediciones_detalles=[medicion.as_json() for medicion in self.medicionInformacionClimaticaDetalle.all()]
