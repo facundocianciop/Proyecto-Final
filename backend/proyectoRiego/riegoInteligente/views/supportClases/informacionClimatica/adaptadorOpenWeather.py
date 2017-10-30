@@ -6,6 +6,8 @@ from django.core.exceptions import ObjectDoesNotExist, EmptyResultSet, MultipleO
 from riegoInteligente.models import ProveedorInformacionClimatica, MedicionInformacionClimaticaDetalle, \
     TipoMedicionClimatica
 from riegoInteligente.views.supportClases.informacionClimatica.informacionClimaticaUtils import *
+from riegoInteligente.views.supportClases.views_constants import *
+
 
 NOMBRE_PROVEEDOR_OPEN_WEATHER = 'openweather'
 
@@ -124,7 +126,57 @@ def armar_lista_detalle_mediciones(cabecera_medicion, datos_respuesta):
             valor=codigo_condicion
         )
 
+        numero_renglon = numero_renglon + 1
         detalles_medicion_climatica.append(medicion_climatica_detalle)
+
+    except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, IndexError):
+        pass
+
+    try:
+
+        if 'rain' in datos_respuesta:
+            if '3h' in datos_respuesta['rain']:
+                valor = datos_respuesta['rain']['3h']
+
+                tipo_medicion_climatica = TipoMedicionClimatica.objects.get(
+                    nombreTipoMedicionClimatica=TIPO_MEDICION_CLIMATICA_PRECIPITACION)
+
+                medicion_climatica_detalle = MedicionInformacionClimaticaDetalle(
+                    medicion_informacion_climatica_cabecera=cabecera_medicion,
+                    nroRenglon=numero_renglon,
+                    tipo_medicion_climatica=tipo_medicion_climatica,
+                    valor=valor
+                )
+
+                detalles_medicion_climatica.append(medicion_climatica_detalle)
+            else:
+                valor = 0
+
+                tipo_medicion_climatica = TipoMedicionClimatica.objects.get(
+                    nombreTipoMedicionClimatica=TIPO_MEDICION_CLIMATICA_PRECIPITACION)
+
+                medicion_climatica_detalle = MedicionInformacionClimaticaDetalle(
+                    medicion_informacion_climatica_cabecera=cabecera_medicion,
+                    nroRenglon=numero_renglon,
+                    tipo_medicion_climatica=tipo_medicion_climatica,
+                    valor=valor
+                )
+
+                detalles_medicion_climatica.append(medicion_climatica_detalle)
+        else:
+            valor = 0
+
+            tipo_medicion_climatica = TipoMedicionClimatica.objects.get(
+                nombreTipoMedicionClimatica=TIPO_MEDICION_CLIMATICA_PRECIPITACION)
+
+            medicion_climatica_detalle = MedicionInformacionClimaticaDetalle(
+                medicion_informacion_climatica_cabecera=cabecera_medicion,
+                nroRenglon=numero_renglon,
+                tipo_medicion_climatica=tipo_medicion_climatica,
+                valor=valor
+            )
+
+            detalles_medicion_climatica.append(medicion_climatica_detalle)
 
     except (ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned, IndexError):
         pass

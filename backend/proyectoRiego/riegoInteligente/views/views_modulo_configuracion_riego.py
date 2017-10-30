@@ -1001,7 +1001,7 @@ def agregar_criterio_inicial_configuracion_riego_mecanismo_riego_finca_sector(re
                     nombre=datos[KEY_NOMBRE_CRITERIO_RIEGO],
                     descripcion=datos[KEY_DESCRIPCION_CRITERIO_RIEGO],
                     fecha_creacion_criterio=datetime.now(pytz.utc),
-                    hora=parsear_datos_hora(datos[KEY_HORA_INICIO_CRITERIO_RIEGO]),
+                    hora=parsear_datos_hora_a_utc(datos[KEY_HORA_INICIO_CRITERIO_RIEGO]),
                     numeroDia=datos[KEY_DIA_INICIO_CRITERIO_RIEGO],
                     configuracionRiegoInicial=configuracion_riego_elegida
                 )
@@ -1202,7 +1202,7 @@ def agregar_criterio_final_configuracion_riego_mecanismo_riego_finca_sector(requ
                     nombre=datos[KEY_NOMBRE_CRITERIO_RIEGO],
                     descripcion=datos[KEY_DESCRIPCION_CRITERIO_RIEGO],
                     fecha_creacion_criterio=datetime.now(pytz.utc),
-                    hora=parsear_datos_hora(datos[KEY_HORA_INICIO_CRITERIO_RIEGO]),
+                    hora=parsear_datos_hora_a_utc(datos[KEY_HORA_INICIO_CRITERIO_RIEGO]),
                     numeroDia=datos[KEY_DIA_INICIO_CRITERIO_RIEGO],
                     configuracionRiegoFinal=configuracion_riego_elegida
                 )
@@ -1525,7 +1525,7 @@ def modificar_criterio_configuracion_riego_mecanismo_riego_finca_sector(request)
 
                 criterio_riego_hora_elegido.nombre = datos[KEY_NOMBRE_CRITERIO_RIEGO]
                 criterio_riego_hora_elegido.descripcion = datos[KEY_DESCRIPCION_CRITERIO_RIEGO]
-                criterio_riego_hora_elegido.hora = parsear_datos_hora(datos[KEY_HORA_INICIO_CRITERIO_RIEGO])
+                criterio_riego_hora_elegido.hora = parsear_datos_hora_a_utc(datos[KEY_HORA_INICIO_CRITERIO_RIEGO])
                 criterio_riego_hora_elegido.numeroDia = datos[KEY_DIA_INICIO_CRITERIO_RIEGO]
 
                 criterio_riego_hora_elegido.save()

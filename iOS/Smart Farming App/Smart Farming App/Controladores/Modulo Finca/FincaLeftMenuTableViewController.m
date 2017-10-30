@@ -8,14 +8,18 @@
 
 #import "FincaLeftMenuTableViewController.h"
 
+#import "UIViewController+LGSideMenuController.h"
+#import "SFFincaMainNavigationViewController.h"
+#import "IdentificadoresSegue.h"
+
 @interface FincaLeftMenuTableViewController ()
 
 @end
 
 @implementation FincaLeftMenuTableViewController
 
-static NSString *kMenuItemMecanismosRiego = @"CellMecanismosRiego";
 static NSString *kMenuItemSectores = @"CellSectores";
+static NSString *kMenuItemSensores = @"CellSensores";
 static NSString *kMenuItemRiego = @"CellRiego";
 static NSString *kMenuItemReportes = @"CellReportes";
 static NSString *kMenuItemVolver = @"CellVolver";
@@ -49,19 +53,23 @@ static NSString *kMenuItemVolver = @"CellVolver";
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    SFFincaMainNavigationViewController *mainViewController = (SFFincaMainNavigationViewController *)self.sideMenuController;
+    
     UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
     
     if ([cell.reuseIdentifier isEqualToString:kMenuItemSectores]) {
         
-    }
-    else if ([cell.reuseIdentifier isEqualToString:kMenuItemMecanismosRiego]) {
+        [mainViewController performSegueWithIdentifier:kSFNavegarASectoresFincaSegue sender:self];
         
+    }
+    else if ([cell.reuseIdentifier isEqualToString:kMenuItemSensores]) {
+        [mainViewController performSegueWithIdentifier:kSFNavegarASensoresFincaSegue sender:self];
     }
     else if ([cell.reuseIdentifier isEqualToString:kMenuItemRiego]) {
-        
+        [mainViewController performSegueWithIdentifier:kSFNavegarAMecanismosRiegoFincaSegue sender:self];
     }
     else if ([cell.reuseIdentifier isEqualToString:kMenuItemReportes]) {
-        
+        [mainViewController performSegueWithIdentifier:kSFNavegarReportesFincaSegue sender:self];
     }
     else if ([cell.reuseIdentifier isEqualToString:kMenuItemVolver]) {
         [self.navigationController popViewControllerAnimated:YES];

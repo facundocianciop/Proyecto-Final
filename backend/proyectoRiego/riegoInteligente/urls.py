@@ -16,7 +16,6 @@ from views import views_modulo_configuracion_riego
 
 urlpatterns = [
 
-    url(r'^fincasPorAprobar/$', views_administrador.fincas_por_aprobar, name='fincasPorAprobar'),
     url(r'^buscarRoles/$', views_modulo_finca.buscar_roles,
         name='buscarRoles'),
 

@@ -40,7 +40,7 @@ def comprobar_incio_riego_criterio_hora():
             riego_en_ejecucion = obtener_riego_en_ejecucion_mecanismo_riego_finca_sector(
                 mecanismo_riego_finca_sector.idMecanismoRiegoFincaSector)
 
-            configuraciones_riego_habilitadas = obtener_configuraciones_riego_mecanismo_finca_sector_habilitados(
+            configuraciones_riego_habilitadas = obtener_configuraciones_riego_mecanismo_finca_sector_programados_habilitados(
                 mecanismo_riego_finca_sector.idMecanismoRiegoFincaSector)
 
             for configuracion_riego in configuraciones_riego_habilitadas:
@@ -97,39 +97,45 @@ def comprobar_fin_riego_criterio_hora_volumen():
 
             if configuracion_riego:
 
-                print "Comprobando configuraciones de riego: " + str(configuracion_riego)
+                if configuracion_riego.tipoConfiguracionRiego.nombre == TIPO_CONFIGURACION_RIEGO_PROGRAMADO:
 
-                # Controlar criterio hora
-                criterios_hora = obtener_criterios_fin_hora_configuracion_riego(
-                    configuracion_riego.id_configuracion_riego)
-                for criterio in criterios_hora:
-                    print "Comprobando criterio fin hora: " + criterio.nombre
+                    print "Comprobando configuraciones de riego: " + str(configuracion_riego)
 
-                    hora_elegida = criterio.hora
-                    numero_dia = criterio.numeroDia
+                    # Controlar criterio hora
+                    criterios_hora = obtener_criterios_fin_hora_configuracion_riego(
+                        configuracion_riego.id_configuracion_riego)
+                    for criterio in criterios_hora:
+                        print "Comprobando criterio fin hora: " + criterio.nombre
 
-                    if numero_dia == 0:
-                        if comparar_hora_riego(hora_elegida=hora_elegida):
+                        hora_elegida = criterio.hora
+                        numero_dia = criterio.numeroDia
+
+                        if numero_dia == 0:
+                            if comparar_hora_riego(hora_elegida=hora_elegida):
+                                print 'Detener riego'
+                                detener_riego(riego_en_ejecucion)
+
+                        elif numero_dia == datetime.now(timezone('America/Argentina/Buenos_Aires')).isocalendar()[2]:
+                            if comparar_hora_riego(hora_elegida=hora_elegida):
+                                print 'Detener riego'
+                                detener_riego(riego_en_ejecucion)
+
+                    # Controlar criterio volumen
+                    criterios_volumen = obtener_criterios_fin_volumen_configuracion_riego(
+                        configuracion_riego.id_configuracion_riego)
+                    for criterio in criterios_volumen:
+                        print "Comprobando criterio fin volumen: " + criterio.nombre
+
+                        cantidad_agua_utilizada = float(riego_en_ejecucion.as_json()['cantidadAguaUtilizadaLitros'])
+
+                        print cantidad_agua_utilizada
+                        if cantidad_agua_utilizada >= criterio.volumen:
                             print 'Detener riego'
                             detener_riego(riego_en_ejecucion)
 
-                    elif numero_dia == datetime.now(timezone('America/Argentina/Buenos_Aires')).isocalendar()[2]:
-                        if comparar_hora_riego(hora_elegida=hora_elegida):
-                            print 'Detener riego'
+                elif configuracion_riego.tipoConfiguracionRiego.nombre == TIPO_CONFIGURACION_RIEGO_AUTOMATICO:
+                        if datetime.now(pytz.utc) > riego_en_ejecucion.fecha_hora_final_programada:
                             detener_riego(riego_en_ejecucion)
-
-                # Controlar criterio volumen
-                criterios_volumen = obtener_criterios_fin_volumen_configuracion_riego(
-                    configuracion_riego.id_configuracion_riego)
-                for criterio in criterios_volumen:
-                    print "Comprobando criterio fin volumen: " + criterio.nombre
-
-                    cantidad_agua_utilizada = float(riego_en_ejecucion.as_json()['cantidadAguaUtilizadaLitros'])
-
-                    print cantidad_agua_utilizada
-                    if cantidad_agua_utilizada >= criterio.volumen:
-                        print 'Detener riego'
-                        detener_riego(riego_en_ejecucion)
 
 
 def procesar_medicion_sensor(oid_sector, oid_medicion_cabecera):
@@ -163,7 +169,7 @@ def procesar_medicion_sensor(oid_sector, oid_medicion_cabecera):
 def comprobar_inicio_riego_criterio_medicion(mecanismo_riego_finca_sector, detalle_medicion):
     print "Comprobando inicio de riego por medicion"
 
-    configuraciones_riego_habilitadas = obtener_configuraciones_riego_mecanismo_finca_sector_habilitados(
+    configuraciones_riego_habilitadas = obtener_configuraciones_riego_mecanismo_finca_sector_programados_habilitados(
         mecanismo_riego_finca_sector.idMecanismoRiegoFincaSector)
 
     riego_en_ejecucion = obtener_riego_en_ejecucion_mecanismo_riego_finca_sector(
@@ -242,7 +248,7 @@ def comprobar_ocurrencia_evento_medicion_interna(sector, detalle_medicion):
         )
         for medicion_evento in lista_mediciones_evento_internas:
             if detalle_medicion.tipoMedicion == medicion_evento.tipoMedicion:
-                if medicion_evento.valorMinimo < detalle_medicion.valor < medicion_evento.valorMaximo:
+                if medicion_evento.valorMinimo <= detalle_medicion.valor <= medicion_evento.valorMaximo:
                     crear_suceso_evento_personalizado(sector=sector,
                                                       configuracion_evento_personalizado=configuracion_evento
                                                       )
@@ -305,3 +311,21 @@ def enviar_notificacion_evento_personalizado(oid_configuracion_evento, mensaje=N
                 mensaje = "Notificacion de evento: " + configuracion_evento_personalizado.nombre
                 enviar_email(titulo="Notificacion Evento Personalizado", mensaje=mensaje, destino=email)
             print "email enviado"
+
+
+def enviar_notificacion_riego(oid_ejecucion_riego, mensaje=None):
+    ejecucion_riego = EjecucionRiego.objects.get(oid_ejecucion_riego=oid_ejecucion_riego)
+
+    finca = ejecucion_riego.mecanismo_riego_finca_sector.sector.finca
+    usuarios_finca = UsuarioFinca.objects.filter(finca=finca)
+
+    for usuario_finca in usuarios_finca:
+        email = usuario_finca.usuario.user.email
+
+        if mensaje is not None:
+            enviar_email(titulo="Notificacion Riego", mensaje=mensaje, destino=email)
+        else:
+            mensaje = "Notificacion Riego: " + ejecucion_riego.detalle
+            enviar_email(titulo="Notificacion Riego", mensaje=mensaje, destino=email)
+
+        print "email enviado"

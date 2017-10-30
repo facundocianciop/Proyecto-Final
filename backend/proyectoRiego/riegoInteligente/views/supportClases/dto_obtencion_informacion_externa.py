@@ -1,4 +1,7 @@
-class DtoProveedorFinca():
+from views_util_functions import parsear_fecha_a_hora_arg
+
+
+class DtoProveedorFinca:
     def __init__(self, nombre_proveedor, frecuencia_maxima_posible, frecuencia_actual, fecha_alta_proveedor_finca,
                  lista_tipo_medicion, url_api):
         self.nombre_proveedor = nombre_proveedor
@@ -8,13 +11,11 @@ class DtoProveedorFinca():
         self.lista_tipo_medicion = lista_tipo_medicion
         self.url_api = url_api
 
-
     def as_json(self):
         return dict(nombreProveedor=self.nombre_proveedor,
                     frecuenciaMaximaPosible=self.frecuencia_maxima_posible,
                     frecuenciaActual=self.frecuencia_actual,
-                    fechaAltaProveedorFinca=self.fecha_alta_proveedor_finca,
+                    fechaAltaProveedorFinca=parsear_fecha_a_hora_arg(self.fecha_alta_proveedor_finca),
                     urlApi=self.url_api,
-                    listaTipoMedicion=self.lista_tipo_medicion)
-
-
+                    listaTipoMedicion=self.lista_tipo_medicion
+                    )
