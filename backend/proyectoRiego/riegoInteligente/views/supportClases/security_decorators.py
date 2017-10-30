@@ -134,7 +134,6 @@ def permisos_rol_requeridos(permisos_rol_list):
                 sector_pertenece_a_finca = False
                 if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 1:
                     sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
-                    sect = finca.sectorList.all()
                     if finca.sectorList.filter(OIDSector=sector.OIDSector).__len__() == 1:
                             sector_pertenece_a_finca = True
                     if not sector_pertenece_a_finca:
