@@ -87,11 +87,22 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
 
-def parsear_datos_fecha(fecha_string):
-    return datetime.strptime(fecha_string, "%Y-%m-%d")
+def parsear_datos_fecha_a_utc(fecha_string):
+
+    fecha_elegida = parser.parse(fecha_string)
+
+    tz = timezone('America/Argentina/Buenos_Aires')
+    datetime_hora_argentina = datetime.now(tz).replace(year=fecha_elegida.year,
+                                                       month=fecha_elegida.month,
+                                                       day=fecha_elegida.day,
+                                                       hour=fecha_elegida.hour,
+                                                       minute=fecha_elegida.minute,
+                                                       second=fecha_elegida.second
+                                                       )
+    return datetime_hora_argentina.astimezone(utc)
 
 
-def parsear_datos_hora(hora_string):
+def parsear_datos_hora_a_utc(hora_string):
 
     datetime_hora_elegida = parser.parse(hora_string)
 
@@ -102,6 +113,21 @@ def parsear_datos_hora(hora_string):
                                                        )
     # Convierto la hora a UTC
     return datetime_hora_argentina.astimezone(utc)
+
+
+# noinspection PyBroadException
+def parsear_fecha_a_hora_arg(fecha_utc):
+    try:
+        tz = timezone('America/Argentina/Buenos_Aires')
+        if fecha_utc is not None:
+            if isinstance(fecha_utc, datetime):
+                return fecha_utc.astimezone(tz)
+            else:
+                return None
+        else:
+            return None
+    except Exception:
+        return None
 
 
 def validate_regex(expresion_a_evaluar, pattern, detalle_error):

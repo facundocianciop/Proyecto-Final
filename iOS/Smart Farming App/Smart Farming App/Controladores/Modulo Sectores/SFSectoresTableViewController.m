@@ -52,30 +52,31 @@
 
 -(void)obtenerSectores {
     __weak typeof(self) weakSelf = self;
-    /*
-    [ServiciosModuloFinca mostrarFincasEncargadoWithCompletionBlock:^(RespuestaServicioBase *respuesta) {
+    
+    SolicitudMostrarSectores *solicitud = [SolicitudMostrarSectores new];
+    solicitud.idFinca = [[ContextoUsuario instance] fincaSeleccionada];
+    
+    [ServiciosModuloSectores mostrarSectores:solicitud completionBlock:^(RespuestaServicioBase *respuesta) {
         [weakSelf hideActivityIndicator];
-        
-        if ([respuesta isKindOfClass:[RespuestaMostrarFincas class]]) {
-            RespuestaMostrarFincas *respuestaMostrarFincas = (RespuestaMostrarFincas *)respuesta;
+        if ([respuesta isKindOfClass:[RespuestaMostrarSectores class]]) {
+            RespuestaMostrarSectores *respuestaMostrarSectores = (RespuestaMostrarSectores *)respuesta;
             
-            if (respuestaMostrarFincas.resultado) {
-                weakSelf.tableViewItemsArray = respuestaMostrarFincas.fincas;
+            if (respuestaMostrarSectores.resultado) {
+                weakSelf.tableViewItemsArray = respuestaMostrarSectores.sectores;
                 [weakSelf loadingTableViewDataDidEnd];
             } else {
                 [weakSelf loadingTableViewDataFailed];
-                [weakSelf handleErrorWithPromptTitle:kErrorObteniendoFincas message:kErrorDesconocido withCompletion:^{
+                [weakSelf handleErrorWithPromptTitle:@"Error obteniendo sectores" message:kErrorDesconocido withCompletion:^{
                 }];
             }
         }
+        
     } failureBlock:^(ErrorServicioBase *error) {
         [weakSelf hideActivityIndicator];
-        [weakSelf handleErrorWithPromptTitle:kErrorObteniendoFincas message:error.detalleError withCompletion:^{
+        [weakSelf handleErrorWithPromptTitle:@"Error obteniendo sectores" message:error.detalleError withCompletion:^{
             [weakSelf loadingTableViewDataFailed];
         }];
-        
     }];
-     */
 }
 
 #pragma mark - Acciones

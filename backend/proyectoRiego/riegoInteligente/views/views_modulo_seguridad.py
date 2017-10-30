@@ -90,7 +90,7 @@ def registrar_usuario(request):
     fecha_nacimiento = None
     if KEY_FECHA_NACIMIENTO in datos and datos[KEY_FECHA_NACIMIENTO] is not None:
         if datos[KEY_FECHA_NACIMIENTO] != '':
-            fecha_nacimiento = parsear_datos_fecha(datos[KEY_FECHA_NACIMIENTO])
+            fecha_nacimiento = parsear_datos_fecha_a_utc(datos[KEY_FECHA_NACIMIENTO])
 
     imagen_usuario = None
     if KEY_IMAGEN_USUARIO in datos and datos[KEY_IMAGEN_USUARIO] is not None:
@@ -357,7 +357,7 @@ def modificar_usuario(request):
     fecha_nacimiento = None
     if KEY_FECHA_NACIMIENTO in datos and datos[KEY_FECHA_NACIMIENTO] is not None:
         if datos[KEY_FECHA_NACIMIENTO] != '':
-            fecha_nacimiento = parsear_datos_fecha(datos[KEY_FECHA_NACIMIENTO])
+            fecha_nacimiento = parsear_datos_fecha_a_utc(datos[KEY_FECHA_NACIMIENTO])
 
     imagen_usuario = None
     if KEY_IMAGEN_USUARIO in datos and datos[KEY_IMAGEN_USUARIO] is not None:

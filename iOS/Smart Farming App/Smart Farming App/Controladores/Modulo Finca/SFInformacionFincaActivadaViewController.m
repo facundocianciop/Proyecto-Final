@@ -71,6 +71,8 @@
                 self.direccionLegalLabel.text = respuestaBuscarFincaId.finca.direccionLegal;
                 self.tamanioFincaLabel.text = [NSString stringWithFormat:@"%li",respuestaBuscarFincaId.finca.tamanio];
                 
+                [[ContextoUsuario instance] seleccionarUsuarioFinca:respuestaBuscarFincaId.finca.idUsuarioFinca];
+                
             } else {
                 [weakSelf handleErrorWithPromptTitle:kErrorObteniendoDatosFinca message:kErrorDesconocido withCompletion:^{
                     [self.navigationController popViewControllerAnimated:YES];

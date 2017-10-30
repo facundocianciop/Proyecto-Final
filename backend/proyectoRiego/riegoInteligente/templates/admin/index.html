@@ -3,7 +3,13 @@
 
 {% block sidebar %}
     {{block.super}}
-    <div>
-       <a href="localhost:8000/riegoInteligente/fincasPorAprobar/">Fincas Pendientes</a>
+
+    <div class="module">
+        <h2>Admin tools</h2>
+            <ul class="actionlist">
+            <li class="changelink">
+            <a href="http://localhost:8000/admin/riegoInteligente/fincasPorAprobar/">Fincas pendientes de aprobacion</a>
+            </li>
+        </ul>
     </div>
 {% endblock %}

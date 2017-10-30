@@ -851,8 +851,8 @@ def obtener_informe_historico_sector(request):
             if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
                                                     fechaFinEstadoSector__isnull=True).__len__() != 1:
                 raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
-            fecha_inicio_sector = parsear_datos_fecha(datos[KEY_FECHA_INICIO_SECTOR])
-            fecha_fin_sector = parsear_datos_fecha(datos[KEY_FECHA_FIN_SECTOR])
+            fecha_inicio_sector = parsear_datos_fecha_a_utc(datos[KEY_FECHA_INICIO_SECTOR])
+            fecha_fin_sector = parsear_datos_fecha_a_utc(datos[KEY_FECHA_FIN_SECTOR])
             lista_dto_componente_medicion = []
             lista_dto_medicion_climatica = []
             componentes = sector_seleccionado.componentesensorsector_set.all()
@@ -919,8 +919,8 @@ def obtener_informe_riego_historico_sector(request):
             if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
                                                     fechaFinEstadoSector__isnull=True).__len__() != 1:
                 raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
-            fecha_inicio_sector = parsear_datos_fecha(datos[KEY_FECHA_INICIO_SECTOR])
-            fecha_fin_sector = parsear_datos_fecha(datos[KEY_FECHA_FIN_SECTOR])
+            fecha_inicio_sector = parsear_datos_fecha_a_utc(datos[KEY_FECHA_INICIO_SECTOR])
+            fecha_fin_sector = parsear_datos_fecha_a_utc(datos[KEY_FECHA_FIN_SECTOR])
             lista_dto_mecanismo_riego_configuracion = []
             mecanismos_riego_sector = sector_seleccionado.mecanismoRiegoFincaSector.all()
             for mecanismo in mecanismos_riego_sector:
@@ -979,8 +979,8 @@ def obtener_informe_eventos_personalizados(request):
             sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
             configuracion_evento = ConfiguracionEventoPersonalizado.objects.get(
                 idConfiguracion=datos[KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO])
-            fecha_inicio_sector = parsear_datos_fecha(datos[KEY_FECHA_INICIO_SECTOR])
-            fecha_fin_sector = parsear_datos_fecha(datos[KEY_FECHA_FIN_SECTOR])
+            fecha_inicio_sector = parsear_datos_fecha_a_utc(datos[KEY_FECHA_INICIO_SECTOR])
+            fecha_fin_sector = parsear_datos_fecha_a_utc(datos[KEY_FECHA_FIN_SECTOR])
             if configuracion_evento.eventopersonalizado_set.filter(fechaHora__gte=fecha_inicio_sector,
                                                                 fechaHora__lte=fecha_fin_sector).__len__() == 0:
                 response.content = armar_response_content(None)
@@ -1023,8 +1023,8 @@ def obtener_informe_historico_heladas(request):
             sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
             configuracion_evento = ConfiguracionEventoPersonalizado.objects.get(
                nombre=HELADA)
-            fecha_inicio_sector = parsear_datos_fecha(datos[KEY_FECHA_INICIO_SECTOR])
-            fecha_fin_sector = parsear_datos_fecha(datos[KEY_FECHA_FIN_SECTOR])
+            fecha_inicio_sector = parsear_datos_fecha_a_utc(datos[KEY_FECHA_INICIO_SECTOR])
+            fecha_fin_sector = parsear_datos_fecha_a_utc(datos[KEY_FECHA_FIN_SECTOR])
             if configuracion_evento.eventopersonalizado_set.filter(fechaHora__gte=fecha_inicio_sector,
                                                                 fechaHora__lte=fecha_fin_sector, sector=sector).\
                     __len__() == 0:
@@ -1074,8 +1074,8 @@ def obtener_informe_cruzado_riego_mediciones_(request):
             if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
                                                     fechaFinEstadoSector__isnull=True).__len__() != 1:
                 raise ValueError(ERROR_SECTOR_NO_HABILITADO, "El sector seleccionado no esta habilitado")
-            fecha_inicio_sector = parsear_datos_fecha(datos[KEY_FECHA_INICIO_SECTOR])
-            fecha_fin_sector = parsear_datos_fecha(datos[KEY_FECHA_FIN_SECTOR])
+            fecha_inicio_sector = parsear_datos_fecha_a_utc(datos[KEY_FECHA_INICIO_SECTOR])
+            fecha_fin_sector = parsear_datos_fecha_a_utc(datos[KEY_FECHA_FIN_SECTOR])
             lista_dto_medicion_cruzada_riego = []
             estado_componente_sensor_sector_habilitado = EstadoComponenteSensorSector.objects.get(
                 nombreEstadoComponenteSensorSector=ESTADO_HABILITADO)

@@ -1,3 +1,6 @@
+from views_util_functions import parsear_fecha_a_hora_arg
+
+
 class DtoConfiguracionEventoPersonalizado:
     def __init__(self, idConfiguracionEvento, nombre, descripcion, fechaHoraCreacion, activado, numeroSector, idSector,
                  notificacionActivada, listaMedicionesExternas, listaMedicionesInterna, usuarioFincaId):
@@ -18,7 +21,7 @@ class DtoConfiguracionEventoPersonalizado:
             id_configuracion_evento=self.id_configuracion_evento,
             nombre=self.nombre,
             descripcion=self.descripcion,
-            fecha_hora_creacion=self.fecha_hora_creacion,
+            fecha_hora_creacion=parsear_fecha_a_hora_arg(self.fecha_hora_creacion),
             activado=self.activado,
             numero_sector=self.numero_sector,
             id_sector=self.id_sector,
@@ -26,6 +29,7 @@ class DtoConfiguracionEventoPersonalizado:
             lista_mediciones_externas=self.lista_mediciones_externas,
             lista_mediciones_internas=self.lista_mediciones_internas,
             id_usuario_finca=self.id_usuario_finca)
+
 
 class DtoConfiguracionEventoPersonalizadoFinal:
     def __init__(self, dto_evento_lista, cantidad):
@@ -62,6 +66,7 @@ class DtoEstadoActualSector:
                     ejecucion_riego=self.ejecucion_riego,
                     configuracion_riego=self.configuracion_riego)
 
+
 class DtoRiegoEjecucionSector:
     def __init__(self, idSector, numeroSector, mecanismoSector, ejecucionRiego, configuracionRiego):
         self.id_sector = idSector
@@ -76,6 +81,8 @@ class DtoRiegoEjecucionSector:
                     mecanismo_sector=self.mecanismo_sector,
                     ejecucion_riego=self.ejecucion_riego,
                     configuracion_riego=self.configuracion_riego)
+
+
 class DtoMedicionClimatica:
     def __init__(self, medicion_climatica):
         self.medicion_climatica = medicion_climatica
@@ -92,7 +99,8 @@ class DtoHistoricoSector:
         return dict(
             componenteMedicionListaMediciones= [dto_componente.as_json() for dto_componente in
                                                 self.dto_componente_medicion_list],
-        medicionClimaticaList= [dto_medicion_climatica.as_json() for dto_medicion_climatica in self.dto_medicion_climatica_list]
+            medicionClimaticaList=[dto_medicion_climatica.as_json() for
+                                    dto_medicion_climatica in self.dto_medicion_climatica_list]
         )
 
 
@@ -131,7 +139,6 @@ class DtoMedicionCruzadaRiego:
         self.mediciones_componente_antes = mediciones_componente_antes
         self.mediciones_componente_despues = mediciones_componente_despues
         self.mediciones_climaticas_antes = mediciones_climaticas_antes
-
 
     def as_json(self):
         return dict(
