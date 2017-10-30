@@ -52,6 +52,72 @@ def obtener_proveedor_finca(request):
         response.status_code=401
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+@manejar_errores()
+def buscar_proveedor_nombre(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if (KEY_NOMBRE_PROVEEDOR) in datos:
+            if datos[KEY_NOMBRE_PROVEEDOR] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if ProveedorInformacionClimatica.objects.filter(nombreProveedor=datos[KEY_NOMBRE_PROVEEDOR]).__len__() != 1:
+                raise ValueError(ERROR_PROVEEDOR_NO_ENCONTRADO, "No existe el proveedor ingresado")
+            proveedor = ProveedorInformacionClimatica.objects.get(nombreProveedor=datos[KEY_NOMBRE_PROVEEDOR])
+            response.content = armar_response_content(proveedor)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except ValueError as err:
+        print err.args
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError,ValueError) as err:
+        print err.args
+        response.status_code=401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+@manejar_errores()
+def buscar_ultima_medicion(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if (KEY_ID_FINCA) in datos:
+            if datos[KEY_ID_FINCA] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if Finca.objects.filter(idFinca=datos[KEY_ID_FINCA]).__len__() != 1:
+                raise ValueError(ERROR_FINCA_NO_ENCONTRADA, "No existe el proveedor ingresado")
+            finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+            proveedor_informacion_finca = finca.proveedorinformacionclimaticafinca_set.get(
+                fechaBajaProveedorInfoClimaticaFinca__isnull=True)
+            ultima_medicion = proveedor_informacion_finca.medicionInformacionClimaticaCabeceraList.filter().\
+                order_by("-fechaHora").last()
+            response.content = armar_response_content(ultima_medicion)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except ValueError as err:
+        print err.args
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError,ValueError) as err:
+        print err.args
+        response.status_code=401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+
+
 
 @transaction.atomic()
 @login_requerido
