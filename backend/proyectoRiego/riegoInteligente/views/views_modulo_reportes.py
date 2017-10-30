@@ -28,8 +28,8 @@ def buscar_configuraciones_eventos_personalizados(request):
             if UsuarioFinca.objects.filter(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA],
                                            fechaBajaUsuarioFinca__isnull=True).__len__() == 0:
                 raise ValueError(ERROR_USUARIO_NO_HABILITADO_EN_FINCA, "El usuario no esta habilitado en esa finca")
-            if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]):
-                raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encuentra un sector con ese id")
+            if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
+                raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encontro a un sector con ese id")
             sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
             usuario_finca = UsuarioFinca.objects.get(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA])
             lista_configuraciones_eventos_personalizados = usuario_finca.configuracionEventoPersonalizadoList.all()
@@ -109,11 +109,11 @@ def buscar_configuraciones_eventos_personalizados_sector(request):
             if UsuarioFinca.objects.filter(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA],
                                            fechaBajaUsuarioFinca__isnull=True).__len__() == 0:
                 raise ValueError(ERROR_USUARIO_NO_HABILITADO_EN_FINCA, "El usuario no esta habilitado en esa finca")
-            if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]):
+            if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
                 raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encuentra un sector con ese id")
             sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
             usuario_finca = UsuarioFinca.objects.get(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA])
-            lista_configuraciones_eventos_personalizados = sector.configuracionEventoPersonalizadoList.filter(sector)
+            lista_configuraciones_eventos_personalizados = sector.configuracioneventopersonalizado_set.all()
             lista_dto_configuracion_eventos = []
             dto_configuracion_evento_final = None
             for configuracion in lista_configuraciones_eventos_personalizados:
@@ -144,7 +144,7 @@ def buscar_configuraciones_eventos_personalizados_sector(request):
                     notificacionActivada=configuracion.notificacionActivada,
                     listaMedicionesInterna=lista_medicion_interna_json,
                     listaMedicionesExternas=lista_medicion_externa_json,
-                    usuarioFincaId=configuracion.usuariofinca_set.first().idUsuarioFinca
+                    usuarioFincaId=usuario_finca.idUsuarioFinca
                 )
                 lista_dto_configuracion_eventos.append(dto_configuracion_evento)
                 dto_configuracion_evento_final = DtoConfiguracionEventoPersonalizadoFinal(
