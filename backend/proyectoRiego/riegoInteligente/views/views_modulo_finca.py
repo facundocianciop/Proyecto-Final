@@ -881,7 +881,8 @@ def agregar_usuario_finca(request):
         usuario_finca_nuevo = UsuarioFinca(usuario=usuario_ingresado, finca=finca, fechaAltaUsuarioFinca=datetime.now(pytz.utc))
         usuario_finca_nuevo.save()
         rol_usuario_finca.usuarioFinca = usuario_finca_nuevo
-        usuario_finca_nuevo.rolUsuarioFincaList.add(rol_usuario_finca,bulk=False)
+        rol_usuario_finca.save()
+        #usuario_finca_nuevo.rolUsuarioFincaList.add(rol_usuario_finca,bulk=False)
         response.content=armar_response_content(None)
         response.status_code=200
         return response
