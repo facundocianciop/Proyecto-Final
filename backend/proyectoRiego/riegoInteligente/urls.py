@@ -99,6 +99,7 @@ urlpatterns = [
         name='habilitarMecanismoRiegoFinca'),
 
     url(r'^crearSensor/$', views_modulo_sensores.crear_sensor, name='crearSensor'),
+    url(r'^buscarSensorId/$', views_modulo_sensores.buscar_sensor_id, name='buscarSensorId'),
     url(r'^deshabilitarSensor/$', views_modulo_sensores.deshabilitar_sensor, name='deshabilitarSensor'),
     url(r'^modificarSensor/$', views_modulo_sensores.modificar_sensor, name='modificarSensor'),
     url(r'^buscarSensoresNoAsignados/$', views_modulo_sensores.buscar_sensores_no_asignados,
