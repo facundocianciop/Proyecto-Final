@@ -28,8 +28,10 @@ def buscar_configuraciones_eventos_personalizados(request):
             if UsuarioFinca.objects.filter(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA],
                                            fechaBajaUsuarioFinca__isnull=True).__len__() == 0:
                 raise ValueError(ERROR_USUARIO_NO_HABILITADO_EN_FINCA, "El usuario no esta habilitado en esa finca")
+
             if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__()==0:
                 raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encuentra un sector con ese id")
+
             sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
             usuario_finca = UsuarioFinca.objects.get(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA])
             lista_configuraciones_eventos_personalizados = usuario_finca.configuracionEventoPersonalizadoList.all()
@@ -109,8 +111,10 @@ def buscar_configuraciones_eventos_personalizados_sector(request):
             if UsuarioFinca.objects.filter(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA],
                                            fechaBajaUsuarioFinca__isnull=True).__len__() == 0:
                 raise ValueError(ERROR_USUARIO_NO_HABILITADO_EN_FINCA, "El usuario no esta habilitado en esa finca")
+
             if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__()==0:
                raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encuentra un sector con ese id")
+
             sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
             usuario_finca = UsuarioFinca.objects.get(idUsuarioFinca=datos[KEY_ID_USUARIO_FINCA])
             lista_configuraciones_eventos_personalizados = sector.configuracioneventopersonalizado_set.all()
@@ -1118,8 +1122,8 @@ def obtener_informe_cruzado_riego_mediciones_(request):
                                     fechaYHora__lte=ejecucion.fecha_hora_finalizacion + timedelta(minutes=30))\
                                 .__len__() > 0:
                             medicion_cabecera_despues = componente_sensor_sector_asignado.medicionCabeceraList.filter(
-                                fechaYHora__gte=ejecucion.fecha_hora_inicio,
-                                fechaYHora__lte=ejecucion.fecha_hora_inicio + timedelta(minutes=30)).order_by(
+                                fechaYHora__gte=ejecucion.fecha_hora_finalizacion,
+                                fechaYHora__lte=ejecucion.fecha_hora_finalizacion + timedelta(minutes=30)).order_by(
                                 "-fechaYHora").first()
                         mecanismo_riego_finca = mecanismo.mecanismoRiegoFinca
                         finca = mecanismo_riego_finca.finca
