@@ -47,6 +47,34 @@ def crear_sensor(request):
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARSENSORES])
+def buscar_sensor_id(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if (KEY_ID_SENSOR) in datos:
+            if datos[KEY_ID_SENSOR] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if Sensor.objects.filter(idSensor=datos[KEY_ID_SENSOR]).__len__() != 1:
+                raise ValueError(ERROR_SENSOR_NO_EXISTENTE, "No existe ese sensor")
+            sensor = Sensor.objects.get(idSensor=datos[KEY_ID_SENSOR])
+            response.content = armar_response_content(sensor)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except ValueError as err:
+        print err.args
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError,ValueError) as err:
+        print err.args
+        response.status_code=401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])
