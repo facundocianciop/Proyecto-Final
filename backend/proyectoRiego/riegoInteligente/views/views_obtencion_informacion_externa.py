@@ -116,9 +116,6 @@ def buscar_ultima_medicion(request):
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
 
 
-
-
-
 @transaction.atomic()
 @login_requerido
 @metodos_requeridos([METHOD_POST])

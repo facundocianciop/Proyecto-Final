@@ -923,13 +923,16 @@ def modificar_rol_usuario(request):
             rol_usuario_finca_nuevo = RolUsuarioFinca(usuarioFinca=usuario_finca,
                                                       fechaAltaRolUsuarioFinca=datetime.now(pytz.utc),
                                                       rol=rol_ingresado)
-            usuario_finca.rolUsuarioFincaList.add(rol_usuario_finca_nuevo,bulk=False)
+            usuario_finca.rolUsuarioFincaList.add(rol_usuario_finca_nuevo, bulk=False)
             usuario_finca.save()
             response.content = armar_response_content(None)
             return response
         else:
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
-    except (ValueError,IntegrityError) as err:
+    except ValueError as err:
+         print err.args
+         return build_bad_request_error(response, err.args[0], err.args[1])
+    except IntegrityError as err:
         print err.args
         response.content = err.args
         response.status_code = 401
