@@ -7,13 +7,17 @@ from ...models import EjecucionRiego, EstadoEjecucionRiego, ConfiguracionRiego, 
     HistoricoEstadoConfiguracionRiego, TipoConfiguracionRiego, MecanismoRiegoFincaSector
 from views_constants import *
 
+import riegoInteligente.tasks
 
-def iniciar_ejecucion_riego(mecanismo_riego_finca_sector, detalle_riego, configuracion_riego=None):
+
+def iniciar_ejecucion_riego(mecanismo_riego_finca_sector, detalle_riego, configuracion_riego=None,
+                            fecha_fin_programada=None):
     """
     Iniciar una ejecucion de riego de un mecanismo_riego_finca_sector
     :param mecanismo_riego_finca_sector:
     :param detalle_riego:
     :param configuracion_riego:
+    :param fecha_fin_programada:
     :return:
     """
 
@@ -27,10 +31,16 @@ def iniciar_ejecucion_riego(mecanismo_riego_finca_sector, detalle_riego, configu
         fecha_hora_inicio=datetime.now(pytz.utc),
         detalle=detalle_riego,
         estado_ejecucion_riego=estado_ejecucion_riego_en_ejecucion,
-        configuracion_riego=configuracion_riego
+        configuracion_riego=configuracion_riego,
+        fecha_hora_final_programada=fecha_fin_programada
     )
     # TODO llamar a adaptador mecanismo riego y ejecutar riego
     ejecucion_riego_nuevo.save()
+
+    riegoInteligente.tasks.envio_notificacion_riego.delay(
+        ejecucion_riego_nuevo.oid_ejecucion_riego,
+        mensaje="Riego iniciado: " + ejecucion_riego_nuevo.detalle
+    )
 
     return ejecucion_riego_nuevo
 
@@ -107,12 +117,22 @@ def cancelar_riego(ejecucion_riego):
         # TODO llamar a adaptador mecanismo riego y detener riego
         ejecucion_riego.save()
 
+        riegoInteligente.tasks.envio_notificacion_riego.delay(
+            ejecucion_riego.oid_ejecucion_riego,
+            mensaje="Riego cancelado: " + ejecucion_riego.detalle
+        )
+
     elif ejecucion_riego.estado_ejecucion_riego == estado_ejecucion_riego_pausado:
         ejecucion_riego.fecha_hora_finalizacion = ejecucion_riego.fecha_hora_ultima_pausa
         ejecucion_riego.fecha_hora_ultimo_reinicio = ejecucion_riego.fecha_hora_ultima_pausa
         ejecucion_riego.estado_ejecucion_riego = estado_ejecucion_riego_cancelado
         # TODO llamar a adaptador mecanismo riego y detener riego
         ejecucion_riego.save()
+
+        riegoInteligente.tasks.envio_notificacion_riego.delay(
+            ejecucion_riego.oid_ejecucion_riego,
+            mensaje="Riego cancelado: " + ejecucion_riego.detalle
+        )
 
 
 def detener_riego(ejecucion_riego):
@@ -136,12 +156,22 @@ def detener_riego(ejecucion_riego):
         # TODO llamar a adaptador mecanismo riego y detener riego
         ejecucion_riego.save()
 
+        riegoInteligente.tasks.envio_notificacion_riego.delay(
+            ejecucion_riego.oid_ejecucion_riego,
+            mensaje="Riego detenido: " + ejecucion_riego.detalle
+        )
+
     elif ejecucion_riego.estado_ejecucion_riego == estado_ejecucion_riego_pausado:
         ejecucion_riego.fecha_hora_finalizacion = ejecucion_riego.fecha_hora_ultima_pausa
         ejecucion_riego.fecha_hora_ultimo_reinicio = ejecucion_riego.fecha_hora_ultima_pausa
         ejecucion_riego.estado_ejecucion_riego = estado_ejecucion_riego_finalizado
         # TODO llamar a adaptador mecanismo riego y detener riego
         ejecucion_riego.save()
+
+        riegoInteligente.tasks.envio_notificacion_riego.delay(
+            ejecucion_riego.oid_ejecucion_riego,
+            mensaje="Riego detenido: " + ejecucion_riego.detalle
+        )
 
 
 def cancelar_todos_las_ejecuciones_mecanismo_riego_finca_sector(mecanismo_riego_finca_sector):

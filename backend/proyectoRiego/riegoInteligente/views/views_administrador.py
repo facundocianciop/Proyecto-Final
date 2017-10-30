@@ -1,6 +1,9 @@
 # -*- coding: UTF-8 -*-
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
 from django.db import IntegrityError
+from django.shortcuts import render_to_response
+
 from supportClases.dto_modulo_finca import *
 from supportClases.security_util_functions import *  # Se importa para que se ejecuten los handlers de sesion
 from supportClases.security_decorators import *
@@ -8,14 +11,15 @@ from supportClases.views_util_functions import *
 from supportClases.views_constants import *
 from supportClases.error_handler import *
 from django.http import HttpResponse
-from django.template import loader
+from django.template import loader, RequestContext
 from .forms import NameForm
 from ..models import *
 
 
 @transaction.atomic()
-@login_requerido
-@metodos_requeridos([METHOD_GET])
+@staff_member_required()
+# @login_requerido
+# @metodos_requeridos([METHOD_GET])
 def fincas_por_aprobar(request):
     response = HttpResponse()
     if request.user.is_staff == False:
@@ -32,6 +36,7 @@ def fincas_por_aprobar(request):
             'fincas': fincas_pendientes,
             'user': request.user,
         }
+
         return HttpResponse(template.render(context, request))
 
     except (IntegrityError, TypeError, KeyError):

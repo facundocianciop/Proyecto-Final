@@ -570,7 +570,7 @@ def asignar_cultivo_a_sector(request):
             subtipo_seleccionado = SubtipoCultivo.objects.get(nombreSubtipo=datos[KEY_NOMBRE_SUBTIPO_CULTIVO])
             if not subtipo_seleccionado.tipo_cultivo.habilitado:
                 raise ValueError(ERROR_TIPO_CULTIVO_NO_HABILITADO, "Este tipo de cultivo no esta habilitado")
-            fecha_parseada = parsear_datos_fecha(datos[KEY_FECHA_PLANTACION])
+            fecha_parseada = parsear_datos_fecha_a_utc(datos[KEY_FECHA_PLANTACION])
             cultivo = Cultivo(nombre=datos[KEY_NOMBRE_CULTIVO], descripcion=datos[KEY_DESCRIPCION_CULTIVO],
                               habilitado=True,
                               sector=sector_seleccionado,

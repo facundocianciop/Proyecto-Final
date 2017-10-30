@@ -12,6 +12,10 @@ admin.site.register(Rol)
 admin.site.register(ConjuntoPermisos)
 admin.site.register(ProveedorInformacionClimatica)
 
+admin.site.register(ConfiguracionEventoPersonalizado)
+admin.site.register(MedicionEstadoExterno)
+admin.site.register(MedicionFuenteInterna)
+
 admin.site.register(TipoSesion)
 admin.site.register(TipoCultivo)
 admin.site.register(SubtipoCultivo)

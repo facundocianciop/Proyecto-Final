@@ -24,6 +24,7 @@ extern NSString *const kSFNavegarModificarUsuarioSegue;
 extern NSString *const kSFNavegarASeccionFincaSegue;
 
 extern NSString *const kSFNavegarASectoresFincaSegue;
+extern NSString *const kSFNavegarASensoresFincaSegue;
 extern NSString *const kSFNavegarAMecanismosRiegoFincaSegue;
 extern NSString *const kSFNavegarReportesFincaSegue;
 
@@ -31,6 +32,14 @@ extern NSString *const kSFNavegarReportesFincaSegue;
 
 extern NSString *const kSFNavegarAInfoSectorSegue;
 extern NSString *const kSFNavegarAInfoMecanismoRiegoSectorSegue;
+
+#pragma mark - Modulo Sensores
+
+
+
+#pragma mark - Modulo Riego
+
+
 
 #pragma mark - Modulo Reportes
 

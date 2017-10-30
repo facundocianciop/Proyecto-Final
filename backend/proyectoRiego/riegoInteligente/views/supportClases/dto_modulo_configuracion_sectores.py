@@ -3,7 +3,6 @@ class DtoTipoSubtipo() :
         self.nombreSubtipo = nombreSubtipo
         self.nombreTipo = nombreTipo
 
-
     def as_json(self):
         return dict(
             nombreSubtipo=self.nombreSubtipo,
