@@ -1,4 +1,4 @@
-    # -*- coding: UTF-8 -*-
+#-*- coding: UTF-8 -*-
 from django.db import transaction
 from .supportClases.security_decorators import *
 from ..models import *
@@ -632,6 +632,39 @@ def modificar_cultivo_sector(request):
         print err.args
         response.status_code = 401
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARSECTOR, PERMISO_PUEDEASIGNARCULTIVO])
+def buscar_cultivo_id(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if KEY_ID_CULTIVO in datos:
+            if datos[KEY_ID_CULTIVO]:
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO]).__len__() == 0:
+                raise ValueError(ERROR_CULTIVO_NO_EXISTENTE, "El id del cultivo no es correcto")
+            if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO], habilitado=True).__len__() == 0:
+                raise ValueError(ERROR_CULTIVO_NO_HABILITADO, "El cultivo no está habilitado")
+            cultivo_seleccionado = Cultivo.objects.get(idCultivo=datos[KEY_ID_CULTIVO])
+            response.content = armar_response_content(cultivo)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except ValueError as err:
+        print err.args
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
 
 
 @transaction.atomic()
