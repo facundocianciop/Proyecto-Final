@@ -1204,7 +1204,7 @@ class Sensor(models.Model):
             fechaAltaSensor=parsear_fecha_a_hora_arg(self.fechaAltaSensor),
             fechaBajaSensor=parsear_fecha_a_hora_arg(self.fechaBajaSensor),
             habilitado=str(self.habilitado),
-            modelo=str(self.modelo),
+            modelo=(self.modelo),
             tipoMedicion=self.tipoMedicion.nombreTipoMedicion
         )
 
