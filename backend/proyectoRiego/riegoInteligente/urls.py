@@ -199,7 +199,9 @@ urlpatterns = [
 
     url(r'^recibirMedicion/$', views_modulo_interfaz_sensores.recibir_medicion,
         name='recibirMedicion'),
-
+    url(r'^buscarConfiguracionesEventosFinca/$',
+        views_modulo_reportes.buscar_configuracion_eventos_finca,
+        name='buscarConfiguracionesEventosFinca'),
     url(r'^buscarConfiguracionesEventosPersonalizados/$',
         views_modulo_reportes.buscar_configuraciones_eventos_personalizados,
         name='buscarConfiguracionesEventosPersonalizados'),
