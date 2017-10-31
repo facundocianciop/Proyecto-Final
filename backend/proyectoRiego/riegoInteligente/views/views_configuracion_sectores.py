@@ -607,9 +607,10 @@ def modificar_cultivo_sector(request):
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
         if (KEY_ID_CULTIVO in datos) and (KEY_DESCRIPCION_CULTIVO in datos) and (KEY_FECHA_PLANTACION in datos)\
-                and (KEY_NOMBRE_CULTIVO in datos):
+                and (KEY_NOMBRE_CULTIVO in datos) and (KEY_CANTIDAD_PLANTAS in datos):
             if datos[KEY_ID_CULTIVO] == '' or datos[KEY_DESCRIPCION_CULTIVO] == '' or\
-                            datos[KEY_FECHA_PLANTACION] == '' or datos[KEY_NOMBRE_CULTIVO] == '':
+                            datos[KEY_FECHA_PLANTACION] == '' or datos[KEY_NOMBRE_CULTIVO] == ''\
+                    or datos[KEY_CANTIDAD_PLANTAS] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO]).__len__() == 0:
                 raise ValueError(ERROR_CULTIVO_NO_EXISTENTE, "El id del cultivo no es correcto")
@@ -619,6 +620,7 @@ def modificar_cultivo_sector(request):
             cultivo_seleccionado.descripcion = datos[KEY_DESCRIPCION_CULTIVO]
             cultivo_seleccionado.fechaPlantacion = datos[KEY_FECHA_PLANTACION]
             cultivo_seleccionado.nombre = datos[KEY_NOMBRE_CULTIVO]
+            cultivo_seleccionado.cantidad_plantas_hectarea = datos[KEY_CANTIDAD_PLANTAS]
             cultivo_seleccionado.save()
             response.content = armar_response_content(None)
             response.status_code = 200
