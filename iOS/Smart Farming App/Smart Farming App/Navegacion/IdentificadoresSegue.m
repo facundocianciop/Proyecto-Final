@@ -58,6 +58,8 @@ NSString *const kSFNavegarAReporteRiegoEnEjecucionSegue = @"SFNavegarAReporteRie
 NSString *const kSFNavegarAReporteEstadoSectorDetalleSegue = @"SFNavegarAReporteEstadoSectorDetalleSegue";
 NSString *const kSFNavegarAReporteEstadoActualEjecucionSegue = @"SFNavegarAReporteEstadoActualEjecucionSegue";
 NSString *const kSFNavegarAReporteEstadoActualMedicionSegue = @"SFNavegarAReporteEstadoActualMedicionSegue";
-NSString *const kSFNavegarAReporteTipo6Segue = @"SFNavegarAReporteTipo6Segue";
+
+NSString *const kSFNavegarAReporteEventosPersonalizadosConfiguracionSegue = @"SFNavegarAReporteEventosPersonalizadosConfiguracionSegue";
+NSString *const kSFNavegarAReporteEventosPersonalizadosRegistradosSegue = @"SFNavegarAReporteEventosPersonalizadosRegistradosSegue";
 
 @end

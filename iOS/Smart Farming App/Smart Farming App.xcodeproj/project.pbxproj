@@ -81,6 +81,9 @@
 		A12D55D21FA8C72700A89184 /* SFReporteEstadoActualSectorDetalleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A12D55D11FA8C72700A89184 /* SFReporteEstadoActualSectorDetalleViewController.m */; };
 		A12D55D51FA8F2CC00A89184 /* SFReporteEstadoActualEjecucionRiegoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A12D55D41FA8F2CC00A89184 /* SFReporteEstadoActualEjecucionRiegoViewController.m */; };
 		A12D55D81FA8F2EC00A89184 /* SFReporteEstadoActualUltimaMedicionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A12D55D71FA8F2EC00A89184 /* SFReporteEstadoActualUltimaMedicionViewController.m */; };
+		A12D55DB1FA908EA00A89184 /* SFReporteEventosPersonalizadosSectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A12D55DA1FA908EA00A89184 /* SFReporteEventosPersonalizadosSectorViewController.m */; };
+		A12D55DE1FA908FD00A89184 /* SFReporteEventosPersonalizadosConfiguracionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A12D55DD1FA908FD00A89184 /* SFReporteEventosPersonalizadosConfiguracionViewController.m */; };
+		A12D55E11FA9091D00A89184 /* SFReporteEventosPersonalizadosRegistradosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A12D55E01FA9091C00A89184 /* SFReporteEventosPersonalizadosRegistradosViewController.m */; };
 		A142C0901F9E3D0A009822A4 /* SolicitudMostrarSectores.m in Sources */ = {isa = PBXBuildFile; fileRef = A142C08F1F9E3D0A009822A4 /* SolicitudMostrarSectores.m */; };
 		A142C0931F9E3E19009822A4 /* SolicitudBuscarSectorId.m in Sources */ = {isa = PBXBuildFile; fileRef = A142C0921F9E3E19009822A4 /* SolicitudBuscarSectorId.m */; };
 		A142C0961F9E3E6C009822A4 /* RespuestaBuscarSectorId.m in Sources */ = {isa = PBXBuildFile; fileRef = A142C0951F9E3E6C009822A4 /* RespuestaBuscarSectorId.m */; };
@@ -355,6 +358,12 @@
 		A12D55D41FA8F2CC00A89184 /* SFReporteEstadoActualEjecucionRiegoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFReporteEstadoActualEjecucionRiegoViewController.m; sourceTree = "<group>"; };
 		A12D55D61FA8F2EC00A89184 /* SFReporteEstadoActualUltimaMedicionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFReporteEstadoActualUltimaMedicionViewController.h; sourceTree = "<group>"; };
 		A12D55D71FA8F2EC00A89184 /* SFReporteEstadoActualUltimaMedicionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFReporteEstadoActualUltimaMedicionViewController.m; sourceTree = "<group>"; };
+		A12D55D91FA908EA00A89184 /* SFReporteEventosPersonalizadosSectorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFReporteEventosPersonalizadosSectorViewController.h; sourceTree = "<group>"; };
+		A12D55DA1FA908EA00A89184 /* SFReporteEventosPersonalizadosSectorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFReporteEventosPersonalizadosSectorViewController.m; sourceTree = "<group>"; };
+		A12D55DC1FA908FD00A89184 /* SFReporteEventosPersonalizadosConfiguracionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFReporteEventosPersonalizadosConfiguracionViewController.h; sourceTree = "<group>"; };
+		A12D55DD1FA908FD00A89184 /* SFReporteEventosPersonalizadosConfiguracionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFReporteEventosPersonalizadosConfiguracionViewController.m; sourceTree = "<group>"; };
+		A12D55DF1FA9091C00A89184 /* SFReporteEventosPersonalizadosRegistradosViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFReporteEventosPersonalizadosRegistradosViewController.h; sourceTree = "<group>"; };
+		A12D55E01FA9091C00A89184 /* SFReporteEventosPersonalizadosRegistradosViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFReporteEventosPersonalizadosRegistradosViewController.m; sourceTree = "<group>"; };
 		A142C08E1F9E3D0A009822A4 /* SolicitudMostrarSectores.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SolicitudMostrarSectores.h; sourceTree = "<group>"; };
 		A142C08F1F9E3D0A009822A4 /* SolicitudMostrarSectores.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SolicitudMostrarSectores.m; sourceTree = "<group>"; };
 		A142C0911F9E3E19009822A4 /* SolicitudBuscarSectorId.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SolicitudBuscarSectorId.h; sourceTree = "<group>"; };
@@ -609,6 +618,12 @@
 				A12D55D41FA8F2CC00A89184 /* SFReporteEstadoActualEjecucionRiegoViewController.m */,
 				A12D55D61FA8F2EC00A89184 /* SFReporteEstadoActualUltimaMedicionViewController.h */,
 				A12D55D71FA8F2EC00A89184 /* SFReporteEstadoActualUltimaMedicionViewController.m */,
+				A12D55D91FA908EA00A89184 /* SFReporteEventosPersonalizadosSectorViewController.h */,
+				A12D55DA1FA908EA00A89184 /* SFReporteEventosPersonalizadosSectorViewController.m */,
+				A12D55DC1FA908FD00A89184 /* SFReporteEventosPersonalizadosConfiguracionViewController.h */,
+				A12D55DD1FA908FD00A89184 /* SFReporteEventosPersonalizadosConfiguracionViewController.m */,
+				A12D55DF1FA9091C00A89184 /* SFReporteEventosPersonalizadosRegistradosViewController.h */,
+				A12D55E01FA9091C00A89184 /* SFReporteEventosPersonalizadosRegistradosViewController.m */,
 			);
 			path = "Modulo Reportes";
 			sourceTree = "<group>";
@@ -1743,10 +1758,12 @@
 				A142C0E11F9E9224009822A4 /* RespuestaObtenerCriteriosFinalesConfiguracionRiegoMecanismoRiegoFincaSector.m in Sources */,
 				A1C56F491FA0DF140083D95D /* SFMedicionFuenteExterna.m in Sources */,
 				A142C14F1F9F8E09009822A4 /* RespuestaObtenerInformeCruzadoRiegoMediciones.m in Sources */,
+				A12D55DB1FA908EA00A89184 /* SFReporteEventosPersonalizadosSectorViewController.m in Sources */,
 				A1BD86951F97ABDF0077C91E /* SFMecanismoRiegoHabilitadoTableViewCell.m in Sources */,
 				A142C1131F9F7ADA009822A4 /* RespuestaObtenerProveedorFinca.m in Sources */,
 				A1C56F281F9FC99C0083D95D /* SFProveedorInformacionClimatica.m in Sources */,
 				A142C0D41F9E91CE009822A4 /* RespuestaPausarRiegoManualmente.m in Sources */,
+				A12D55DE1FA908FD00A89184 /* SFReporteEventosPersonalizadosConfiguracionViewController.m in Sources */,
 				1116BA931F8C7490005C9AFF /* SFUtils.m in Sources */,
 				A12D55CF1FA8C4FB00A89184 /* SFElegirSectorEstadoActualViewController.m in Sources */,
 				A10157171F9003BE00179ED7 /* SFFormularioBaseViewController.m in Sources */,
@@ -1784,6 +1801,7 @@
 				A142C1281F9F8CEB009822A4 /* SolicitudObtenerInformeRiegoEjecucionSector.m in Sources */,
 				A1AE0B8F1F8E8F0B009B4494 /* ErrorServicioBase.m in Sources */,
 				A142C0C21F9E9149009822A4 /* SolicitudCancelarRiegoManualmente.m in Sources */,
+				A12D55E11FA9091D00A89184 /* SFReporteEventosPersonalizadosRegistradosViewController.m in Sources */,
 				A142C0AE1F9E5754009822A4 /* SolcitudMostrarComponenteSensorSector.m in Sources */,
 				A1C56F221F9FC4DE0083D95D /* SFConjuntoPermisos.m in Sources */,
 				A142C1041F9F79AB009822A4 /* SolicitudBuscarFincaId.m in Sources */,
