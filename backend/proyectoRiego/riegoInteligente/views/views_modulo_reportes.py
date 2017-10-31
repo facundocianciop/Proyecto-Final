@@ -755,6 +755,9 @@ def obtener_estado_actual_sector(request):
                 fechaBajaProveedorInfoClimaticaFinca__isnull=True)
             ultima_medicion_climatica = proveedor_informacion_finca.medicionInformacionClimaticaCabeceraList.filter(). \
                 order_by("-fechaHora").last()
+            ultima_medicion_climatica_json = ""
+            if ultima_medicion_climatica:
+                ultima_medicion_climatica_json = ultima_medicion_climatica.as_json()
             if sector_seleccionado.componentesensorsector_set.filter(habilitado=True).__len__() == 1:
                 componente_sensor_sector = sector_seleccionado.componentesensorsector_set.get(habilitado=True)
                 componente_sensor = componente_sensor_sector.componente_sensor.as_json()
@@ -769,7 +772,7 @@ def obtener_estado_actual_sector(request):
                                                                  ultimaMedicion=ultima_medicion,
                                                                  ejecucionRiego=ejecucion_riego,
                                                                  configuracionRiego=configuracion_riego,
-                                                                 ultimaMedicionClimatica=ultima_medicion_climatica)
+                                                                 ultimaMedicionClimatica=ultima_medicion_climatica_json)
 
             elif sector_seleccionado.componentesensorsector_set.filter(habilitado=True).__len__() == 0:
 
@@ -782,7 +785,7 @@ def obtener_estado_actual_sector(request):
                                                                  ultimaMedicion=ultima_medicion,
                                                                  ejecucionRiego=ejecucion_riego,
                                                                  configuracionRiego=configuracion_riego,
-                                                                 ultimaMedicionClimatica=ultima_medicion_climatica
+                                                                 ultimaMedicionClimatica=ultima_medicion_climatica_json
                                                                  )
             else:
 
@@ -795,7 +798,7 @@ def obtener_estado_actual_sector(request):
                                                                  ultimaMedicion=ultima_medicion,
                                                                  ejecucionRiego=ejecucion_riego,
                                                                  configuracionRiego=configuracion_riego,
-                                                                 ultimaMedicionClimatica=ultima_medicion_climatica)
+                                                                 ultimaMedicionClimatica=ultima_medicion_climatica_json)
             response.content = armar_response_content(dto_estado_actual_sector)
             response.status_code = 200
             return response
