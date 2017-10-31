@@ -1,4 +1,4 @@
-    # -*- coding: UTF-8 -*-
+#-*- coding: UTF-8 -*-
 from django.db import transaction
 from .supportClases.security_decorators import *
 from ..models import *
@@ -551,13 +551,15 @@ def asignar_cultivo_a_sector(request):
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
         if (KEY_ID_SECTOR in datos) and (KEY_DESCRIPCION_CULTIVO in datos) and (KEY_FECHA_PLANTACION in datos) and\
-                (KEY_NOMBRE_SUBTIPO_CULTIVO in datos) and (KEY_NOMBRE_CULTIVO in datos):
+                (KEY_NOMBRE_SUBTIPO_CULTIVO in datos) and (KEY_NOMBRE_CULTIVO in datos) and (KEY_CANTIDAD_PLANTAS)\
+                in datos:
             if datos[KEY_ID_SECTOR] == '' or datos[KEY_DESCRIPCION_CULTIVO] == '' or datos[KEY_FECHA_PLANTACION] == ''\
-                    or datos[KEY_NOMBRE_CULTIVO] == '' or datos[KEY_NOMBRE_SUBTIPO_CULTIVO] == '':
+                    or datos[KEY_NOMBRE_CULTIVO] == '' or datos[KEY_NOMBRE_SUBTIPO_CULTIVO] == '' or datos[KEY_CANTIDAD_PLANTAS] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             sector_seleccionado = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
-            if sector_seleccionado.cultivo_set.filter(habilitado=True).__len__() != 0:
-                raise ValueError(ERROR_SECTOR_YA_TIENE_CULTIVO_ASIGNADO, "El sector ya tiene un cultivo asignado")
+            if sector_seleccionado.cultivo_set.all() is None:
+                if sector_seleccionado.cultivo_set.filter(habilitado=True).__len__() != 0:
+                    raise ValueError(ERROR_SECTOR_YA_TIENE_CULTIVO_ASIGNADO, "El sector ya tiene un cultivo asignado")
             estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
             if HistoricoEstadoSector.objects.filter(sector=sector_seleccionado, estado_sector=estado_habilitado,
                                                     fechaFinEstadoSector__isnull=True).__len__() != 1:
@@ -571,10 +573,12 @@ def asignar_cultivo_a_sector(request):
             if not subtipo_seleccionado.tipo_cultivo.habilitado:
                 raise ValueError(ERROR_TIPO_CULTIVO_NO_HABILITADO, "Este tipo de cultivo no esta habilitado")
             fecha_parseada = parsear_datos_fecha_a_utc(datos[KEY_FECHA_PLANTACION])
-            cultivo = Cultivo(nombre=datos[KEY_NOMBRE_CULTIVO], descripcion=datos[KEY_DESCRIPCION_CULTIVO],
+            cultivo = Cultivo(nombre=datos[KEY_NOMBRE_CULTIVO],
+                              descripcion=datos[KEY_DESCRIPCION_CULTIVO],
                               habilitado=True,
                               sector=sector_seleccionado,
                               fechaPlantacion=fecha_parseada,
+                              cantidad_plantas_hectarea=datos[KEY_CANTIDAD_PLANTAS],
                               subtipo_cultivo=subtipo_seleccionado)
             cultivo.save()
             response.content = armar_response_content(None)
@@ -603,9 +607,10 @@ def modificar_cultivo_sector(request):
         if datos == '':
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
         if (KEY_ID_CULTIVO in datos) and (KEY_DESCRIPCION_CULTIVO in datos) and (KEY_FECHA_PLANTACION in datos)\
-                and (KEY_NOMBRE_CULTIVO in datos):
+                and (KEY_NOMBRE_CULTIVO in datos) and (KEY_CANTIDAD_PLANTAS in datos):
             if datos[KEY_ID_CULTIVO] == '' or datos[KEY_DESCRIPCION_CULTIVO] == '' or\
-                            datos[KEY_FECHA_PLANTACION] == '' or datos[KEY_NOMBRE_CULTIVO] == '':
+                            datos[KEY_FECHA_PLANTACION] == '' or datos[KEY_NOMBRE_CULTIVO] == ''\
+                    or datos[KEY_CANTIDAD_PLANTAS] == '':
                 raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
             if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO]).__len__() == 0:
                 raise ValueError(ERROR_CULTIVO_NO_EXISTENTE, "El id del cultivo no es correcto")
@@ -615,6 +620,7 @@ def modificar_cultivo_sector(request):
             cultivo_seleccionado.descripcion = datos[KEY_DESCRIPCION_CULTIVO]
             cultivo_seleccionado.fechaPlantacion = datos[KEY_FECHA_PLANTACION]
             cultivo_seleccionado.nombre = datos[KEY_NOMBRE_CULTIVO]
+            cultivo_seleccionado.cantidad_plantas_hectarea = datos[KEY_CANTIDAD_PLANTAS]
             cultivo_seleccionado.save()
             response.content = armar_response_content(None)
             response.status_code = 200
@@ -628,6 +634,39 @@ def modificar_cultivo_sector(request):
         print err.args
         response.status_code = 401
         return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONARSECTOR, PERMISO_PUEDEASIGNARCULTIVO])
+def buscar_cultivo_id(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if KEY_ID_CULTIVO in datos:
+            if datos[KEY_ID_CULTIVO]:
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO]).__len__() == 0:
+                raise ValueError(ERROR_CULTIVO_NO_EXISTENTE, "El id del cultivo no es correcto")
+            if Cultivo.objects.filter(idCultivo=datos[KEY_ID_CULTIVO], habilitado=True).__len__() == 0:
+                raise ValueError(ERROR_CULTIVO_NO_HABILITADO, "El cultivo no está habilitado")
+            cultivo_seleccionado = Cultivo.objects.get(idCultivo=datos[KEY_ID_CULTIVO])
+            response.content = armar_response_content(cultivo)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except ValueError as err:
+        print err.args
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
 
 
 @transaction.atomic()

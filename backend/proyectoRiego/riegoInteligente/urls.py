@@ -74,6 +74,8 @@ urlpatterns = [
         name='modificarCultivoSector'),
     url(r'^mostrarCultivoSector/$', views_configuracion_sectores.mostrar_cultivo_sector,
         name='mostrarCultivoSector'),
+    url(r'^buscarCultivoId/$', views_configuracion_sectores.buscar_cultivo_id,
+        name='buscarCultivoId'),
     url(r'^mostrarCultivoSectorHistorico/$', views_configuracion_sectores.mostrar_cultivo_sector_historico,
         name='mostrarCultivoSectorHistorico'),
     url(r'^buscarSensoresComponente/$', views_modulo_sensores.buscar_sensores_componente,
@@ -99,6 +101,7 @@ urlpatterns = [
         name='habilitarMecanismoRiegoFinca'),
 
     url(r'^crearSensor/$', views_modulo_sensores.crear_sensor, name='crearSensor'),
+    url(r'^buscarSensorId/$', views_modulo_sensores.buscar_sensor_id, name='buscarSensorId'),
     url(r'^deshabilitarSensor/$', views_modulo_sensores.deshabilitar_sensor, name='deshabilitarSensor'),
     url(r'^modificarSensor/$', views_modulo_sensores.modificar_sensor, name='modificarSensor'),
     url(r'^buscarSensoresNoAsignados/$', views_modulo_sensores.buscar_sensores_no_asignados,

@@ -91,6 +91,7 @@ KEY_NOMBRE_SECTOR = 'nombreSector'
 KEY_DESCRIPCION_SECTOR = 'descripcionSector'
 KEY_SUPERFICIE_SECTOR = 'superficieSector'
 KEY_ID_SECTOR = 'idSector'
+KEY_CANTIDAD_PLANTAS = 'cantidadPlantas'
 
 # Subtipo Cultivos
 KEY_NOMBRE_SUBTIPO_CULTIVO = "nombreSubtipoCultivo"

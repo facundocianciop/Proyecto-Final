@@ -498,6 +498,7 @@ class Cultivo(models.Model):
             nombre=self.nombre,
             fechaPlantacion=parsear_fecha_a_hora_arg(self.fechaPlantacion),
             fechaEliminacion=parsear_fecha_a_hora_arg(self.fechaEliminacion),
+            cantidadPlantas=self.cantidad_plantas_hectarea,
             habilitado=self.habilitado,
             subtipo=self.subtipo_cultivo.nombreSubtipo,
             tipo=self.subtipo_cultivo.tipo_cultivo.nombreTipoCultivo
