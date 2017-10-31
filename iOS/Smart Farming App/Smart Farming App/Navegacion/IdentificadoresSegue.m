@@ -62,4 +62,7 @@ NSString *const kSFNavegarAReporteEstadoActualMedicionSegue = @"SFNavegarAReport
 NSString *const kSFNavegarAReporteEventosPersonalizadosConfiguracionSegue = @"SFNavegarAReporteEventosPersonalizadosConfiguracionSegue";
 NSString *const kSFNavegarAReporteEventosPersonalizadosRegistradosSegue = @"SFNavegarAReporteEventosPersonalizadosRegistradosSegue";
 
+NSString *const kSFNavegarAReporteHeladasSeleccionarFechaSegue = @"SFNavegarAReporteHeladasSeleccionarFechaSegue";
+NSString *const kSFNavegarAReporteHeladasEventosSegue = @"SFNavegarAReporteHeladasEventosSegue";
+
 @end

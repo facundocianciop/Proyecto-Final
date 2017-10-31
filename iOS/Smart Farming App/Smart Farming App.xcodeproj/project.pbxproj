@@ -84,6 +84,9 @@
 		A12D55DB1FA908EA00A89184 /* SFReporteEventosPersonalizadosSectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A12D55DA1FA908EA00A89184 /* SFReporteEventosPersonalizadosSectorViewController.m */; };
 		A12D55DE1FA908FD00A89184 /* SFReporteEventosPersonalizadosConfiguracionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A12D55DD1FA908FD00A89184 /* SFReporteEventosPersonalizadosConfiguracionViewController.m */; };
 		A12D55E11FA9091D00A89184 /* SFReporteEventosPersonalizadosRegistradosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A12D55E01FA9091C00A89184 /* SFReporteEventosPersonalizadosRegistradosViewController.m */; };
+		A12D55E41FA914F900A89184 /* SFReporteHeladasSectoresViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A12D55E31FA914F900A89184 /* SFReporteHeladasSectoresViewController.m */; };
+		A12D55E71FA9154100A89184 /* SFReporteHeladasFechasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A12D55E61FA9154100A89184 /* SFReporteHeladasFechasViewController.m */; };
+		A12D55EA1FA9156800A89184 /* SFReporteHeladasOcurrenciasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A12D55E91FA9156800A89184 /* SFReporteHeladasOcurrenciasViewController.m */; };
 		A142C0901F9E3D0A009822A4 /* SolicitudMostrarSectores.m in Sources */ = {isa = PBXBuildFile; fileRef = A142C08F1F9E3D0A009822A4 /* SolicitudMostrarSectores.m */; };
 		A142C0931F9E3E19009822A4 /* SolicitudBuscarSectorId.m in Sources */ = {isa = PBXBuildFile; fileRef = A142C0921F9E3E19009822A4 /* SolicitudBuscarSectorId.m */; };
 		A142C0961F9E3E6C009822A4 /* RespuestaBuscarSectorId.m in Sources */ = {isa = PBXBuildFile; fileRef = A142C0951F9E3E6C009822A4 /* RespuestaBuscarSectorId.m */; };
@@ -364,6 +367,12 @@
 		A12D55DD1FA908FD00A89184 /* SFReporteEventosPersonalizadosConfiguracionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFReporteEventosPersonalizadosConfiguracionViewController.m; sourceTree = "<group>"; };
 		A12D55DF1FA9091C00A89184 /* SFReporteEventosPersonalizadosRegistradosViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFReporteEventosPersonalizadosRegistradosViewController.h; sourceTree = "<group>"; };
 		A12D55E01FA9091C00A89184 /* SFReporteEventosPersonalizadosRegistradosViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFReporteEventosPersonalizadosRegistradosViewController.m; sourceTree = "<group>"; };
+		A12D55E21FA914F900A89184 /* SFReporteHeladasSectoresViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFReporteHeladasSectoresViewController.h; sourceTree = "<group>"; };
+		A12D55E31FA914F900A89184 /* SFReporteHeladasSectoresViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFReporteHeladasSectoresViewController.m; sourceTree = "<group>"; };
+		A12D55E51FA9154100A89184 /* SFReporteHeladasFechasViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFReporteHeladasFechasViewController.h; sourceTree = "<group>"; };
+		A12D55E61FA9154100A89184 /* SFReporteHeladasFechasViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFReporteHeladasFechasViewController.m; sourceTree = "<group>"; };
+		A12D55E81FA9156800A89184 /* SFReporteHeladasOcurrenciasViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFReporteHeladasOcurrenciasViewController.h; sourceTree = "<group>"; };
+		A12D55E91FA9156800A89184 /* SFReporteHeladasOcurrenciasViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFReporteHeladasOcurrenciasViewController.m; sourceTree = "<group>"; };
 		A142C08E1F9E3D0A009822A4 /* SolicitudMostrarSectores.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SolicitudMostrarSectores.h; sourceTree = "<group>"; };
 		A142C08F1F9E3D0A009822A4 /* SolicitudMostrarSectores.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SolicitudMostrarSectores.m; sourceTree = "<group>"; };
 		A142C0911F9E3E19009822A4 /* SolicitudBuscarSectorId.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SolicitudBuscarSectorId.h; sourceTree = "<group>"; };
@@ -624,6 +633,12 @@
 				A12D55DD1FA908FD00A89184 /* SFReporteEventosPersonalizadosConfiguracionViewController.m */,
 				A12D55DF1FA9091C00A89184 /* SFReporteEventosPersonalizadosRegistradosViewController.h */,
 				A12D55E01FA9091C00A89184 /* SFReporteEventosPersonalizadosRegistradosViewController.m */,
+				A12D55E21FA914F900A89184 /* SFReporteHeladasSectoresViewController.h */,
+				A12D55E31FA914F900A89184 /* SFReporteHeladasSectoresViewController.m */,
+				A12D55E51FA9154100A89184 /* SFReporteHeladasFechasViewController.h */,
+				A12D55E61FA9154100A89184 /* SFReporteHeladasFechasViewController.m */,
+				A12D55E81FA9156800A89184 /* SFReporteHeladasOcurrenciasViewController.h */,
+				A12D55E91FA9156800A89184 /* SFReporteHeladasOcurrenciasViewController.m */,
 			);
 			path = "Modulo Reportes";
 			sourceTree = "<group>";
@@ -1763,6 +1778,7 @@
 				A142C1131F9F7ADA009822A4 /* RespuestaObtenerProveedorFinca.m in Sources */,
 				A1C56F281F9FC99C0083D95D /* SFProveedorInformacionClimatica.m in Sources */,
 				A142C0D41F9E91CE009822A4 /* RespuestaPausarRiegoManualmente.m in Sources */,
+				A12D55E71FA9154100A89184 /* SFReporteHeladasFechasViewController.m in Sources */,
 				A12D55DE1FA908FD00A89184 /* SFReporteEventosPersonalizadosConfiguracionViewController.m in Sources */,
 				1116BA931F8C7490005C9AFF /* SFUtils.m in Sources */,
 				A12D55CF1FA8C4FB00A89184 /* SFElegirSectorEstadoActualViewController.m in Sources */,
@@ -1777,6 +1793,7 @@
 				A1893E091F98FE040060DC8A /* SolicitudModificarUsuario.m in Sources */,
 				A1893E121F9900B60060DC8A /* SolicitudRecuperarCuentaCambiarContrasenia.m in Sources */,
 				1116BA861F8C6B7D005C9AFF /* SFActivityIndicator.m in Sources */,
+				A12D55EA1FA9156800A89184 /* SFReporteHeladasOcurrenciasViewController.m in Sources */,
 				11CD00941F8F178D00C58C49 /* SolicitudInicioSesion.m in Sources */,
 				A1D884E71FA37A85003BA945 /* DTOMecanismoRiegoConfiguracion.m in Sources */,
 				A142C0C51F9E9160009822A4 /* SolicitudObtenerConfiguracionesRiegoMecanismoRiegoFincaSector.m in Sources */,
@@ -1807,6 +1824,7 @@
 				A142C1041F9F79AB009822A4 /* SolicitudBuscarFincaId.m in Sources */,
 				A142C1401F9F8DCC009822A4 /* RespuestaObtenerInformeHistoricoSector.m in Sources */,
 				1116D6E21F9444890088D61B /* FincaLeftMenuTableViewController.m in Sources */,
+				A12D55E41FA914F900A89184 /* SFReporteHeladasSectoresViewController.m in Sources */,
 				A12D55D81FA8F2EC00A89184 /* SFReporteEstadoActualUltimaMedicionViewController.m in Sources */,
 				A1C56F4F1FA0E76E0083D95D /* SFMedicionSensorDetalle.m in Sources */,
 				A1C56F2E1FA0C8A50083D95D /* SFSensor.m in Sources */,

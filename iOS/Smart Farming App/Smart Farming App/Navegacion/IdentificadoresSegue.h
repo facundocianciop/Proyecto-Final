@@ -67,4 +67,7 @@ extern NSString *const kSFNavegarAReporteEstadoActualMedicionSegue;
 extern NSString *const kSFNavegarAReporteEventosPersonalizadosConfiguracionSegue;
 extern NSString *const kSFNavegarAReporteEventosPersonalizadosRegistradosSegue;
 
+extern NSString *const kSFNavegarAReporteHeladasSeleccionarFechaSegue;
+extern NSString *const kSFNavegarAReporteHeladasEventosSegue;
+
 @end

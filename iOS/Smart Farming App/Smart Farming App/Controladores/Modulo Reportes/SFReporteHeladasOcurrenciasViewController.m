@@ -1,25 +1,25 @@
 //
-//  SFReporteEventosPersonalizadosRegistradosViewController.m
+//  SFReporteHeladasOcurrenciasViewController.m
 //  Smart Farming App
 //
 //  Created by Facundo José Palma on 10/31/17.
 //  Copyright © 2017 Smart Farming. All rights reserved.
 //
 
-#import "SFReporteEventosPersonalizadosRegistradosViewController.h"
+#import "SFReporteHeladasOcurrenciasViewController.h"
 
 #import "ServiciosModuloReportes.h"
 
 #import "SFOcurrenciaEventoPersonalizado.h"
 
-@interface SFReporteEventosPersonalizadosRegistradosViewController ()
+@interface SFReporteHeladasOcurrenciasViewController ()
 
-@property (strong, nonatomic) IBOutlet UITableView *eventosTableView;
+@property (strong, nonatomic) IBOutlet UITableView *heladasTableView;
 @property (strong, nonatomic) IBOutlet UILabel *emptyEventosLabel;
 
 @end
 
-@implementation SFReporteEventosPersonalizadosRegistradosViewController
+@implementation SFReporteHeladasOcurrenciasViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -40,12 +40,12 @@
 //- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 //    // Get the new view controller using [segue destinationViewController].
 //    // Pass the selected object to the new view controller.
-//    
+//
 //    if ([[segue identifier] isEqualToString:kSFNavegarAReporteEventosPersonalizadosRegistradosSegue])
 //    {
 //        // Get reference to the destination view controller
 //        SFReporteEventosPersonalizadosRegistradosViewController *vc = [segue destinationViewController];
-//        
+//
 //        // Pass any objects to the view controller here, like...
 //        vc.configuracionEvento = self.configuracionEvento;
 //        vc.sector = self.sector;
@@ -55,24 +55,27 @@
 #pragma mark - obtener datos
 
 -(void)cargaInicialDatos {
+    [self showActivityIndicator];
     [self obtenerDatosTabla];
 }
 
 -(void)obtenerDatosTabla {
     __weak typeof(self) weakSelf = self;
     
-    SolicitudObtenerInformeEventosPersonalizados *solicitud = [SolicitudObtenerInformeEventosPersonalizados new];
+    SolicitudObtenerInformeHistoricoHeladas *solicitud = [SolicitudObtenerInformeHistoricoHeladas new];
     solicitud.idFinca = [[ContextoUsuario instance] fincaSeleccionada];
-    solicitud.idConfiguracionEvento = self.configuracionEvento.idConfiguracionEvento;
+    solicitud.idSector = self.idSector;
+    solicitud.fechaInicioSector = self.fechaInicioSector;
+    solicitud.fechaFinSector = self.fechaFinSector;
     
-    [ServiciosModuloReportes obtenerInformeEventosPersonalizados:solicitud completionBlock:^(RespuestaServicioBase *respuesta) {
+    [ServiciosModuloReportes obtenerInformeHistoricoHeladas:solicitud completionBlock:^(RespuestaServicioBase *respuesta) {
         [weakSelf hideActivityIndicator];
         
-        if ([respuesta isKindOfClass:[RespuestaObtenerInformeEventosPersonalizados class]]) {
-            RespuestaObtenerInformeEventosPersonalizados *respuestaObtenerInformeEventosPersonalizados = (RespuestaObtenerInformeEventosPersonalizados *)respuesta;
+        if ([respuesta isKindOfClass:[RespuestaObtenerInformeHistoricoHeladas class]]) {
+            RespuestaObtenerInformeHistoricoHeladas *respuestaObtenerInformeHistoricoHeladas = (RespuestaObtenerInformeHistoricoHeladas *)respuesta;
             
-            if (respuestaObtenerInformeEventosPersonalizados.resultado) {
-                weakSelf.tableViewItemsArray = respuestaObtenerInformeEventosPersonalizados.listaOcurrenciasEventoPersonalizado;
+            if (respuestaObtenerInformeHistoricoHeladas.resultado) {
+                weakSelf.tableViewItemsArray = respuestaObtenerInformeHistoricoHeladas.listaOcurrenciasHelada;
                 [weakSelf loadingTableViewDataDidEnd];
             } else {
                 [weakSelf loadingTableViewDataFailed];
@@ -86,6 +89,7 @@
             [weakSelf loadingTableViewDataFailed];
         }];
     }];
+
 }
 
 #pragma mark - Acciones
@@ -98,7 +102,7 @@
 
 -(void)configurarTabla {
     
-    self.tableView = self.eventosTableView;
+    self.tableView = self.heladasTableView;
     self.emptyTableViewMessageLabel = self.emptyEventosLabel;
     
     self.tableView.delegate = self;
@@ -115,7 +119,7 @@
     
     SFOcurrenciaEventoPersonalizado *evento = (SFOcurrenciaEventoPersonalizado*)self.tableViewItemsArray[indexPath.row];
     
-    cell.textLabel.text = [NSString stringWithFormat:@"Número evento: %li", evento.nroEvento];
+    cell.textLabel.text = [NSString stringWithFormat:@"Número evento: %li - Sector: %li", evento.nroEvento, evento.numeroSector];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"Fecha y hora: %@", [SFUtils formatDateDDMMYYYYTime:evento.fechaYHora]];;
     
     return cell;
