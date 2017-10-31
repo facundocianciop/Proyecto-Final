@@ -13,7 +13,7 @@
 
 @interface SFConfiguracionEventoMedicionesTabBarViewController : UITabBarController
 
-@property (assign, nonatomic) NSArray<SFMedicionFuenteInterna*> *listaMedicionesInternas;
-@property (assign, nonatomic) NSArray<SFMedicionFuenteExterna*> *listaMedicionesExternas;
+@property (strong, nonatomic) NSArray<SFMedicionFuenteInterna*> *listaMedicionesInternas;
+@property (strong, nonatomic) NSArray<SFMedicionFuenteExterna*> *listaMedicionesExternas;
 
 @end

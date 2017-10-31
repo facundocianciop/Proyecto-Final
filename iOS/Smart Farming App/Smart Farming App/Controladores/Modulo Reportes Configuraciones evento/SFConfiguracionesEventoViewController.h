@@ -10,4 +10,6 @@
 
 @interface SFConfiguracionesEventoViewController : SFTableViewControllerBase
 
+@property (assign, nonatomic) long idSector;
+
 @end

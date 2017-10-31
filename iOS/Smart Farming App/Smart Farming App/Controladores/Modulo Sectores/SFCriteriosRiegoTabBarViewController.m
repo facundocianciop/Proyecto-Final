@@ -8,6 +8,9 @@
 
 #import "SFCriteriosRiegoTabBarViewController.h"
 
+#import "SFCriteriosInicialesViewController.h"
+#import "SFCriteriosFinalesViewController.h"
+
 @interface SFCriteriosRiegoTabBarViewController ()
 
 @end
@@ -17,6 +20,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {

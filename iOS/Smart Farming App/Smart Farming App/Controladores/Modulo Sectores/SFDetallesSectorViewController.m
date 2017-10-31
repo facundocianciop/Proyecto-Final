@@ -12,6 +12,7 @@
 #import "SFMecanismoRiegoSectorViewController.h"
 #import "SFCultivoSectorViewController.h"
 #import "SFComponenteSensorSectorViewController.h"
+#import "SFConfiguracionesEventoViewController.h"
 
 @interface SFDetallesSectorViewController ()
 
@@ -32,9 +33,9 @@
 -(void)viewWillAppear:(BOOL)animated {
     
     self.nombreLabel.text = self.sector.nombreSector;
-    self.numeroSectorLabel.text = [NSString stringWithFormat:@"%li@",self.sector.numeroSector];
+    self.numeroSectorLabel.text = [NSString stringWithFormat:@"%li",self.sector.numeroSector];
     self.descripcionLabel.text = self.sector.descripcionSector;
-    self.superficieLabel.text = [NSString stringWithFormat:@"%li@", self.sector.superficieSector];
+    self.superficieLabel.text = [NSString stringWithFormat:@"%li", self.sector.superficieSector];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -67,6 +68,14 @@
     {
         // Get reference to the destination view controller
         SFComponenteSensorSectorViewController *vc = [segue destinationViewController];
+        
+        // Pass any objects to the view controller here, like...
+        vc.idSector = self.sector.idSector;
+    }
+    else if ([[segue identifier] isEqualToString:kSFNavegarAConfiguracionEventoSegue])
+    {
+        // Get reference to the destination view controller
+        SFConfiguracionesEventoViewController *vc = [segue destinationViewController];
         
         // Pass any objects to the view controller here, like...
         vc.idSector = self.sector.idSector;

@@ -12,5 +12,6 @@
 
 @property (assign, nonatomic) long idFinca;
 @property (assign, nonatomic) long idUsuarioFinca;
+@property (assign, nonatomic) long idSector;
 
 @end

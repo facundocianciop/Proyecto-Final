@@ -26,7 +26,7 @@
 @property (assign, nonatomic) BOOL activado; // activado
 @property (assign, nonatomic) BOOL notificacionActivada; // notificacion_activada
 
-@property (assign, nonatomic) NSArray<SFMedicionFuenteInterna*> *listaMedicionesInternas; // lista_mediciones_internas
-@property (assign, nonatomic) NSArray<SFMedicionFuenteExterna*> *listaMedicionesExternas; // lista_mediciones_externas
+@property (strong, nonatomic) NSArray<SFMedicionFuenteInterna*> *listaMedicionesInternas; // lista_mediciones_internas
+@property (strong, nonatomic) NSArray<SFMedicionFuenteExterna*> *listaMedicionesExternas; // lista_mediciones_externas
 
 @end

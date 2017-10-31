@@ -82,8 +82,8 @@
     
     SFMedicionFuenteExterna *medicionFuenteExterna = (SFMedicionFuenteExterna*)self.tableViewItemsArray[indexPath.row];
     
-    cell.textLabel.text = [NSString stringWithFormat:@"Medición: %@. Unidad: %@", medicionFuenteExterna.nombreTipoMedicion, medicionFuenteExterna.unidadMedicion];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"Valor mínimo: %f, valor máximo: %f", medicionFuenteExterna.valorMinimo, medicionFuenteExterna.valorMaximo];
+    cell.textLabel.text = [NSString stringWithFormat:@"Medición: %@", medicionFuenteExterna.nombreTipoMedicion];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"Valor (%@) mínimo: %.0f, valor máximo: %.0f",medicionFuenteExterna.unidadMedicion, medicionFuenteExterna.valorMinimo, medicionFuenteExterna.valorMaximo];
     
     return cell;
 }

@@ -28,7 +28,9 @@
 
 +(NSString *)formatDateDDMMYYYY:(NSDate *) aDate;
 +(NSString *)formatDateYYYYMMDD:(NSDate *) aDate;
++(NSString *)formatDateDDMMYYYYTime:(NSDate *) aDate;
 
 +(NSDate *)dateFromStringYYYYMMDD:(NSString *) dateString;
++(NSDate *)dateFromStringYYYYMMDDWithTime:(NSString *) dateString;
 
 @end

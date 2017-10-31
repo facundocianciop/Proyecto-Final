@@ -40,7 +40,9 @@ NSString *const kSFNavegarAInfoComponenteSensorSector = @"SFNavegarAInfoComponen
 NSString *const kSFNavegarConfiguracionesRiegoSegue = @"SFNavegarConfiguracionesRiegoSegue";
 NSString *const kSFNavegarCriteriosRiegoSegue = @"SFNavegarCriteriosRiegoSegue";
 
-#pragma mark - Modulo Sensores
+#pragma mark - Modulo Riego
+
+NSString *const kSFNavegarInfoEjecucionRiego = @"SFNavegarInfoEjecucionRiego";
 
 #pragma mark - Modulo Reportes - Configuracion eventos
 

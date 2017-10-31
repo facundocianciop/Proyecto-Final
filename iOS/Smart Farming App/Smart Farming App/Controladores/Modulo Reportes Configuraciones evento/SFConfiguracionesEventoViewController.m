@@ -21,8 +21,8 @@
 @property (strong, nonatomic) IBOutlet UITableView *configuracionesTable;
 @property (strong, nonatomic) IBOutlet UILabel *emptyConfiguracionesLabel;
 
-@property (assign, nonatomic) NSArray<SFMedicionFuenteInterna*> *listaMedicionesInternas;
-@property (assign, nonatomic) NSArray<SFMedicionFuenteExterna*> *listaMedicionesExternas;
+@property (strong, nonatomic) NSArray<SFMedicionFuenteInterna*> *listaMedicionesInternas;
+@property (strong, nonatomic) NSArray<SFMedicionFuenteExterna*> *listaMedicionesExternas;
 
 @end
 
@@ -72,6 +72,7 @@
     SolicitudBuscarConfiguracionesEventosPersonalizados *solicitud = [SolicitudBuscarConfiguracionesEventosPersonalizados new];
     solicitud.idFinca = [[ContextoUsuario instance] fincaSeleccionada];
     solicitud.idUsuarioFinca = [[ContextoUsuario instance] usuarioFincaIdSeleccionado];
+    solicitud.idSector = self.idSector;
     
     [ServiciosModuloReportes buscarConfiguracionesEventosPersonalizados:solicitud completionBlock:^(RespuestaServicioBase *respuesta) {
         [weakSelf hideActivityIndicator];

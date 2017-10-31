@@ -82,8 +82,8 @@
  
     SFMedicionFuenteInterna *medicionFuenteInterna = (SFMedicionFuenteInterna*)self.tableViewItemsArray[indexPath.row];
         
-    cell.textLabel.text = [NSString stringWithFormat:@"Medición: %@. Unidad: %@", medicionFuenteInterna.nombreTipoMedicion, medicionFuenteInterna.unidadMedicion];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"Valor mínimo: %f, valor máximo: %f", medicionFuenteInterna.valorMinimo, medicionFuenteInterna.valorMaximo];
+    cell.textLabel.text = [NSString stringWithFormat:@"Medición: %@", medicionFuenteInterna.nombreTipoMedicion];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"Valor (%@) mínimo: %.0f, valor máximo: %.0f",medicionFuenteInterna.unidadMedicion, medicionFuenteInterna.valorMinimo, medicionFuenteInterna.valorMaximo];
     
     return cell;
 }

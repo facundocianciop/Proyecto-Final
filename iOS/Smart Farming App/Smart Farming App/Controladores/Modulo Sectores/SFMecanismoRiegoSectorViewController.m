@@ -71,8 +71,8 @@
             if (respuestaMostrarMecanismoRiegoSector.resultado) {
                 
                 self.nombreLabel.text = respuestaMostrarMecanismoRiegoSector.mecanismoRiegoFincaSector.nombreTipoMecanismo;
-                self.caudalLabel.text = [NSString stringWithFormat:@"%f", respuestaMostrarMecanismoRiegoSector.mecanismoRiegoFincaSector.caudal];
-                self.presionLabel.text = [NSString stringWithFormat:@"%f", respuestaMostrarMecanismoRiegoSector.mecanismoRiegoFincaSector.presion];
+                self.caudalLabel.text = [NSString stringWithFormat:@"%.2f", respuestaMostrarMecanismoRiegoSector.mecanismoRiegoFincaSector.caudal];
+                self.presionLabel.text = [NSString stringWithFormat:@"%.2f", respuestaMostrarMecanismoRiegoSector.mecanismoRiegoFincaSector.presion];
                 
                 self.idMecanismoRiegoSector = respuestaMostrarMecanismoRiegoSector.mecanismoRiegoFincaSector.idMecanismoRiegoFincaSector;
                 

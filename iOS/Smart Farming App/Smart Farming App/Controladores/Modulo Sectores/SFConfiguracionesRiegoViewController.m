@@ -43,7 +43,7 @@
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
     
-    if ([[segue identifier] isEqualToString:kSFNavegarAInfoSectorSegue])
+    if ([[segue identifier] isEqualToString:kSFNavegarCriteriosRiegoSegue])
     {
         // Get reference to the destination view controller
         SFCriteriosRiegoTabBarViewController *vc = [segue destinationViewController];

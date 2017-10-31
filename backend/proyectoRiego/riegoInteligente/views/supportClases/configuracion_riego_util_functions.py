@@ -1,7 +1,9 @@
 from datetime import datetime
 import pytz
+import redis
 
 from django.core.exceptions import ObjectDoesNotExist, EmptyResultSet, MultipleObjectsReturned
+from kombu.exceptions import OperationalError
 
 from ...models import EjecucionRiego, EstadoEjecucionRiego, ConfiguracionRiego, EstadoConfiguracionRiego, \
     HistoricoEstadoConfiguracionRiego, TipoConfiguracionRiego, MecanismoRiegoFincaSector
@@ -37,10 +39,13 @@ def iniciar_ejecucion_riego(mecanismo_riego_finca_sector, detalle_riego, configu
     # TODO llamar a adaptador mecanismo riego y ejecutar riego
     ejecucion_riego_nuevo.save()
 
-    riegoInteligente.tasks.envio_notificacion_riego.delay(
-        ejecucion_riego_nuevo.oid_ejecucion_riego,
-        mensaje="Riego iniciado: " + ejecucion_riego_nuevo.detalle
-    )
+    try:
+        riegoInteligente.tasks.envio_notificacion_riego.delay(
+            ejecucion_riego_nuevo.oid_ejecucion_riego,
+            mensaje="Riego iniciado: " + ejecucion_riego_nuevo.detalle
+        )
+    except (redis.exceptions.ConnectionError, redis.exceptions.BusyLoadingError, OperationalError):
+        pass
 
     return ejecucion_riego_nuevo
 
@@ -117,10 +122,13 @@ def cancelar_riego(ejecucion_riego):
         # TODO llamar a adaptador mecanismo riego y detener riego
         ejecucion_riego.save()
 
-        riegoInteligente.tasks.envio_notificacion_riego.delay(
-            ejecucion_riego.oid_ejecucion_riego,
-            mensaje="Riego cancelado: " + ejecucion_riego.detalle
-        )
+        try:
+            riegoInteligente.tasks.envio_notificacion_riego.delay(
+                ejecucion_riego.oid_ejecucion_riego,
+                mensaje="Riego cancelado: " + ejecucion_riego.detalle
+            )
+        except (redis.exceptions.ConnectionError, redis.exceptions.BusyLoadingError, OperationalError):
+            pass
 
     elif ejecucion_riego.estado_ejecucion_riego == estado_ejecucion_riego_pausado:
         ejecucion_riego.fecha_hora_finalizacion = ejecucion_riego.fecha_hora_ultima_pausa
@@ -129,10 +137,13 @@ def cancelar_riego(ejecucion_riego):
         # TODO llamar a adaptador mecanismo riego y detener riego
         ejecucion_riego.save()
 
-        riegoInteligente.tasks.envio_notificacion_riego.delay(
-            ejecucion_riego.oid_ejecucion_riego,
-            mensaje="Riego cancelado: " + ejecucion_riego.detalle
-        )
+        try:
+            riegoInteligente.tasks.envio_notificacion_riego.delay(
+                ejecucion_riego.oid_ejecucion_riego,
+                mensaje="Riego cancelado: " + ejecucion_riego.detalle
+            )
+        except (redis.exceptions.ConnectionError, redis.exceptions.BusyLoadingError, OperationalError):
+            pass
 
 
 def detener_riego(ejecucion_riego):
@@ -156,10 +167,13 @@ def detener_riego(ejecucion_riego):
         # TODO llamar a adaptador mecanismo riego y detener riego
         ejecucion_riego.save()
 
-        riegoInteligente.tasks.envio_notificacion_riego.delay(
-            ejecucion_riego.oid_ejecucion_riego,
-            mensaje="Riego detenido: " + ejecucion_riego.detalle
-        )
+        try:
+            riegoInteligente.tasks.envio_notificacion_riego.delay(
+                ejecucion_riego.oid_ejecucion_riego,
+                mensaje="Riego detenido: " + ejecucion_riego.detalle
+            )
+        except (redis.exceptions.ConnectionError, redis.exceptions.BusyLoadingError, OperationalError):
+            pass
 
     elif ejecucion_riego.estado_ejecucion_riego == estado_ejecucion_riego_pausado:
         ejecucion_riego.fecha_hora_finalizacion = ejecucion_riego.fecha_hora_ultima_pausa
@@ -168,10 +182,13 @@ def detener_riego(ejecucion_riego):
         # TODO llamar a adaptador mecanismo riego y detener riego
         ejecucion_riego.save()
 
-        riegoInteligente.tasks.envio_notificacion_riego.delay(
-            ejecucion_riego.oid_ejecucion_riego,
-            mensaje="Riego detenido: " + ejecucion_riego.detalle
-        )
+        try:
+            riegoInteligente.tasks.envio_notificacion_riego.delay(
+                ejecucion_riego.oid_ejecucion_riego,
+                mensaje="Riego detenido: " + ejecucion_riego.detalle
+            )
+        except (redis.exceptions.ConnectionError, redis.exceptions.BusyLoadingError, OperationalError):
+            pass
 
 
 def cancelar_todos_las_ejecuciones_mecanismo_riego_finca_sector(mecanismo_riego_finca_sector):

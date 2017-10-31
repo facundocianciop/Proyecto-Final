@@ -46,6 +46,8 @@ extern NSString *const kSFNavegarCriteriosRiegoSegue;
 
 #pragma mark - Modulo Riego
 
+extern NSString *const kSFNavegarInfoEjecucionRiego;
+
 #pragma mark - Modulo Reportes - Configuracion eventos
 
 extern NSString *const kSFNavegarAMedicionesConfiguracionEvento;

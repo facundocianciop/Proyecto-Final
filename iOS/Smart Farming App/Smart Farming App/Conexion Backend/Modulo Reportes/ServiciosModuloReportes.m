@@ -10,7 +10,7 @@
 
 #pragma mark - operaciones
 
-#define OPERATION_BUSCAR_CONFIGURACIONES_EVENTOS_PERSONALIZADOS @"buscarConfiguracionesEventosPersonalizados"
+#define OPERATION_BUSCAR_CONFIGURACIONES_EVENTOS_PERSONALIZADOS @"buscarConfiguracionesEventosPersonalizadosSector"
 #define OPERATION_MOSTRAR_CONFIGURACION_EVENTO_PERSONALIZADO    @"mostrarConfiguracionEventoPersonalizado"
 
 #define OPERATION_OBTENER_ESTADO_ACTUAL_SECTOR                  @"obtenerEstadoActualSector"
@@ -29,6 +29,7 @@
     if (solicitudBuscarConfiguracionesEventosPersonalizados) {
         [parametrosLlamada setObject:[NSNumber numberWithLong:solicitudBuscarConfiguracionesEventosPersonalizados.idFinca] forKey:KEY_ID_FINCA];
         [parametrosLlamada setObject:[NSNumber numberWithLong:solicitudBuscarConfiguracionesEventosPersonalizados.idUsuarioFinca] forKey:KEY_ID_USUARIO_FINCA];
+         [parametrosLlamada setObject:[NSNumber numberWithLong:solicitudBuscarConfiguracionesEventosPersonalizados.idSector] forKey:KEY_ID_SECTOR];
     }
     
     [[HTTPConector instance] httpOperation:OPERATION_BUSCAR_CONFIGURACIONES_EVENTOS_PERSONALIZADOS method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
@@ -43,7 +44,7 @@
                 
                 NSMutableArray *listaInstancias = [NSMutableArray new];
                 
-                for (NSDictionary *datos in datosOperacion) {
+                for (NSDictionary *datos in datosOperacion[@"dto_evento_lista"]) {
                     
                     SFConfiguracionEvento *nuevaInstancia = [SFConfiguracionEvento new];
                     
@@ -54,7 +55,7 @@
                         nuevaInstancia.idConfiguracionEvento = [[datos objectForKey:@"id_configuracion_evento"] longLongValue];
                     }
                     if ([datos objectForKey:@"id_sector"] != [NSNull null]) {
-                        nuevaInstancia.idSector = [[datos objectForKey:@"id_sector"] longLongValue];
+                        nuevaInstancia.idSector = (long)[datos objectForKey:@"id_sector"];
                     }
                     
                     if ([datos objectForKey:@"nombre"] != [NSNull null]) {
@@ -65,7 +66,7 @@
                     }
       
                     if ([datos objectForKey:@"fecha_hora_creacion"]!= [NSNull null]) {
-                        nuevaInstancia.fechaHoraCreacion = [SFUtils dateFromStringYYYYMMDD:datos[@"fecha_hora_creacion"]];
+                        nuevaInstancia.fechaHoraCreacion = [SFUtils dateFromStringYYYYMMDDWithTime:datos[@"fecha_hora_creacion"]];
                     }
                     
                     if ([datos objectForKey:@"activado"] != [NSNull null]) {
@@ -99,7 +100,7 @@
                                                         
                             [listaNuevasMedicionesInternas addObject:medicionInterna];
                         }
-                        nuevaInstancia.listaMedicionesInternas = listaNuevasMedicionesInternas;
+                        nuevaInstancia.listaMedicionesInternas = [NSArray arrayWithArray:listaNuevasMedicionesInternas];
                     }
                     
                     if ([datos objectForKey:@"lista_mediciones_externas"] != [NSNull null]) {
@@ -126,7 +127,7 @@
                             
                             [listaNuevasMedicionesExternas addObject:medicionExterna];
                         }
-                        nuevaInstancia.listaMedicionesExternas = listaNuevasMedicionesExternas;
+                        nuevaInstancia.listaMedicionesExternas = [NSArray arrayWithArray:listaNuevasMedicionesExternas];
                     }
             
                     [listaInstancias addObject:nuevaInstancia];
@@ -183,7 +184,7 @@
                 }
                 
                 if ([datosOperacion objectForKey:@"fecha_hora_creacion"]!= [NSNull null]) {
-                    nuevaInstancia.fechaHoraCreacion = [SFUtils dateFromStringYYYYMMDD:datosOperacion[@"fecha_hora_creacion"]];
+                    nuevaInstancia.fechaHoraCreacion = [SFUtils dateFromStringYYYYMMDDWithTime:datosOperacion[@"fecha_hora_creacion"]];
                 }
                 
                 if ([datosOperacion objectForKey:@"activado"] != [NSNull null]) {
@@ -217,7 +218,7 @@
                         
                         [listaNuevasMedicionesInternas addObject:medicionInterna];
                     }
-                    nuevaInstancia.listaMedicionesInternas = listaNuevasMedicionesInternas;
+                    nuevaInstancia.listaMedicionesInternas = [NSArray arrayWithArray:listaNuevasMedicionesInternas];
                 }
                 
                 if ([datosOperacion objectForKey:@"lista_mediciones_externas"] != [NSNull null]) {
@@ -244,7 +245,7 @@
                         
                         [listaNuevasMedicionesExternas addObject:medicionExterna];
                     }
-                    nuevaInstancia.listaMedicionesExternas = listaNuevasMedicionesExternas;
+                    nuevaInstancia.listaMedicionesExternas = [NSArray arrayWithArray: listaNuevasMedicionesExternas];
                 }
                 
                 respuesta.configuracionEvento = nuevaInstancia;
@@ -371,7 +372,7 @@
                     }
                     
                     if ([datos objectForKey:@"fecha_y_hora"]!= [NSNull null]) {
-                        ultimaMedicion.fechaYHora = [SFUtils dateFromStringYYYYMMDD: datos[@"fecha_y_hora"]];
+                        ultimaMedicion.fechaYHora = [SFUtils dateFromStringYYYYMMDDWithTime: datos[@"fecha_y_hora"]];
                     }
                     
                     if ([datos objectForKey:@"lista_mediciones_detalle"]!= [NSNull null]) {
@@ -397,7 +398,7 @@
                             [listaDetallesMediciones addObject:medicionSensorDetalle];
                         }
                         
-                        ultimaMedicion.listaDetallesMedicion = listaDetallesMediciones;
+                        ultimaMedicion.listaDetallesMedicion = [NSArray arrayWithArray:listaDetallesMediciones];
                     }
                     respuesta.ultimaMedicion = ultimaMedicion;
                 }
@@ -433,17 +434,17 @@
                     }
                     
                     if ([datos objectForKey:@"fechaHoraFinalizacion"]!= [NSNull null]) {
-                        ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDD:datos[@"fechaHoraFinalizacion"]];
+                        ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDDWithTime:datos[@"fechaHoraFinalizacion"]];
                     }
                     if ([datos objectForKey:@""]!= [NSNull null]) {
-                        ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDD:datos[@"fechaHoraFinalProgramada"]];
+                        ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:datos[@"fechaHoraFinalProgramada"]];
                     }
                     
                     if ([datos objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
-                        ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDD:datos[@"fechaHoraInicio"]];
+                        ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDDWithTime:datos[@"fechaHoraInicio"]];
                     }
                     if ([datos objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
-                        ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDD:datos[@"fechaHoraInicioProgramada"]];
+                        ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:datos[@"fechaHoraInicioProgramada"]];
                     }
                     
                     respuesta.ejecucionRiego = ejecucionRiego;
@@ -473,10 +474,10 @@
                     }
                     
                     if ([datos objectForKey:@"fechaCreacion"]!= [NSNull null]) {
-                        configuracionRiego.fechaCreacion = [SFUtils dateFromStringYYYYMMDD:datos[@"fechaCreacion"]];
+                        configuracionRiego.fechaCreacion = [SFUtils dateFromStringYYYYMMDDWithTime:datos[@"fechaCreacion"]];
                     }
                     if ([datos objectForKey:@"fechaFinalizacion"]!= [NSNull null]) {
-                        configuracionRiego.fechaFinalizacion = [SFUtils dateFromStringYYYYMMDD:datos[@"fechaFinalizacion"]];
+                        configuracionRiego.fechaFinalizacion = [SFUtils dateFromStringYYYYMMDDWithTime:datos[@"fechaFinalizacion"]];
                     }
                     
                     if ([datos objectForKey:@"tipoConfiguracionRiego"] != [NSNull null]) {
@@ -487,10 +488,10 @@
                     }
                     
                     if ([datos objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
-                        configuracionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDD:datos[@"fechaHoraInicio"]];
+                        configuracionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDDWithTime:datos[@"fechaHoraInicio"]];
                     }
                     if ([datos objectForKey:@"fechaHoraInicioProgramada"]!= [NSNull null]) {
-                        configuracionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDD:datos[@"fechaHoraInicioProgramada"]];
+                        configuracionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:datos[@"fechaHoraInicioProgramada"]];
                     }
 
                     respuesta.configuracionRiego = configuracionRiego;
@@ -582,7 +583,7 @@
                             }
                             
                             if ([infoMedicionCabecera objectForKey:@"fecha_y_hora"]!= [NSNull null]) {
-                                medicionCabecera.fechaYHora = [SFUtils dateFromStringYYYYMMDD: infoMedicionCabecera[@"fecha_y_hora"]];
+                                medicionCabecera.fechaYHora = [SFUtils dateFromStringYYYYMMDDWithTime: infoMedicionCabecera[@"fecha_y_hora"]];
                             }
                             
                             if ([infoMedicionCabecera objectForKey:@"lista_mediciones_detalle"]!= [NSNull null]) {
@@ -607,14 +608,14 @@
                                     
                                     [listaDetallesMediciones addObject:medicionSensorDetalle];
                                 }
-                                medicionCabecera.listaDetallesMedicion = listaDetallesMediciones;
+                                medicionCabecera.listaDetallesMedicion = [NSArray arrayWithArray:listaDetallesMediciones];
                             }
                             instanciaDTOComponenteMedicion.medicionCabecera = medicionCabecera;
                         }
                         
                         [listaInstanciasDTOComponenteMedicion addObject:instanciaDTOComponenteMedicion];
                     }
-                    respuesta.listaComponenteMediciones = listaInstanciasDTOComponenteMedicion;
+                    respuesta.listaComponenteMediciones = [NSArray arrayWithArray:listaInstanciasDTOComponenteMedicion];
                 }
                 
                 if ([datosOperacion objectForKey:@"medicionClimaticaList"]!= [NSNull null]) {
@@ -636,7 +637,7 @@
                                 medicionInformacionClimaticaCabecera.nroMedicion = [[infoMedicionClimaticaCabecera objectForKey:@"nroMedicion"] integerValue];
                             }
                             if ([infoMedicionClimaticaCabecera objectForKey:@"fechaHora"]!= [NSNull null]) {
-                                medicionInformacionClimaticaCabecera.fechaYHora = [SFUtils dateFromStringYYYYMMDD: infoMedicionClimaticaCabecera[@"fechaHora"]];
+                                medicionInformacionClimaticaCabecera.fechaYHora = [SFUtils dateFromStringYYYYMMDDWithTime: infoMedicionClimaticaCabecera[@"fechaHora"]];
                             }
                             if ([infoMedicionClimaticaCabecera objectForKey:@"proveedorInformacion"] != [NSNull null]) {
                                 medicionInformacionClimaticaCabecera.nombreProveedor = [infoMedicionClimaticaCabecera objectForKey:@"proveedorInformacion"];
@@ -664,14 +665,14 @@
                                     [listaInstanciasDetalleMedicionClimatica addObject:medicionInformacionClimaticaDetalle];
                                 }
                                 
-                                medicionInformacionClimaticaCabecera.listaDetallesMedicionInformacionClimatica = listaInstanciasDetalleMedicionClimatica;
+                                medicionInformacionClimaticaCabecera.listaDetallesMedicionInformacionClimatica = [NSArray arrayWithArray:listaInstanciasDetalleMedicionClimatica];
                             }
                             instanciaDTOMedicionClimatica.medicionInformacionClimaticaCabecera = medicionInformacionClimaticaCabecera;
                         }
                         
                         [listaInstanciasDTOMedicionClimatica addObject:instanciaDTOMedicionClimatica];
                     }
-                    respuesta.listaMedicionesClimaticas = listaInstanciasDTOMedicionClimatica;
+                    respuesta.listaMedicionesClimaticas = [NSArray arrayWithArray:listaInstanciasDTOMedicionClimatica];
                 }
                 
             } @catch (NSException *exception) {
@@ -776,17 +777,17 @@
                     }
                     
                     if ([infoEjecucionRiego objectForKey:@"fechaHoraFinalizacion"]!= [NSNull null]) {
-                        ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraFinalizacion"]];
+                        ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraFinalizacion"]];
                     }
                     if ([infoEjecucionRiego objectForKey:@""]!= [NSNull null]) {
-                        ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraFinalProgramada"]];
+                        ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraFinalProgramada"]];
                     }
                     
                     if ([infoEjecucionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
-                        ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraInicio"]];
+                        ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraInicio"]];
                     }
                     if ([infoEjecucionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
-                        ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraInicioProgramada"]];
+                        ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraInicioProgramada"]];
                     }
                     
                     respuesta.ejecucionRiego = ejecucionRiego;
@@ -816,10 +817,10 @@
                     }
                     
                     if ([infoConfiguracionRiego objectForKey:@"fechaCreacion"]!= [NSNull null]) {
-                        configuracionRiego.fechaCreacion = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaCreacion"]];
+                        configuracionRiego.fechaCreacion = [SFUtils dateFromStringYYYYMMDDWithTime:infoConfiguracionRiego[@"fechaCreacion"]];
                     }
                     if ([infoConfiguracionRiego objectForKey:@"fechaFinalizacion"]!= [NSNull null]) {
-                        configuracionRiego.fechaFinalizacion = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaFinalizacion"]];
+                        configuracionRiego.fechaFinalizacion = [SFUtils dateFromStringYYYYMMDDWithTime:infoConfiguracionRiego[@"fechaFinalizacion"]];
                     }
                     
                     if ([infoConfiguracionRiego objectForKey:@"tipoConfiguracionRiego"] != [NSNull null]) {
@@ -830,10 +831,10 @@
                     }
                     
                     if ([infoConfiguracionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
-                        configuracionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaHoraInicio"]];
+                        configuracionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDDWithTime:infoConfiguracionRiego[@"fechaHoraInicio"]];
                     }
                     if ([infoConfiguracionRiego objectForKey:@"fechaHoraInicioProgramada"]!= [NSNull null]) {
-                        configuracionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaHoraInicioProgramada"]];
+                        configuracionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:infoConfiguracionRiego[@"fechaHoraInicioProgramada"]];
                     }
                     
                     respuesta.configuracionRiego = configuracionRiego;
@@ -940,17 +941,17 @@
                         }
                         
                         if ([infoEjecucionRiego objectForKey:@"fechaHoraFinalizacion"]!= [NSNull null]) {
-                            ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraFinalizacion"]];
+                            ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraFinalizacion"]];
                         }
                         if ([infoEjecucionRiego objectForKey:@""]!= [NSNull null]) {
-                            ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraFinalProgramada"]];
+                            ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraFinalProgramada"]];
                         }
                         
                         if ([infoEjecucionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
-                            ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraInicio"]];
+                            ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraInicio"]];
                         }
                         if ([infoEjecucionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
-                            ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraInicioProgramada"]];
+                            ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraInicioProgramada"]];
                         }
                         
                         nuevaInstancia.ejecucionRiego = ejecucionRiego;
@@ -980,10 +981,10 @@
                         }
                         
                         if ([infoConfiguracionRiego objectForKey:@"fechaCreacion"]!= [NSNull null]) {
-                            configuracionRiego.fechaCreacion = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaCreacion"]];
+                            configuracionRiego.fechaCreacion = [SFUtils dateFromStringYYYYMMDDWithTime:infoConfiguracionRiego[@"fechaCreacion"]];
                         }
                         if ([infoConfiguracionRiego objectForKey:@"fechaFinalizacion"]!= [NSNull null]) {
-                            configuracionRiego.fechaFinalizacion = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaFinalizacion"]];
+                            configuracionRiego.fechaFinalizacion = [SFUtils dateFromStringYYYYMMDDWithTime:infoConfiguracionRiego[@"fechaFinalizacion"]];
                         }
                         
                         if ([infoConfiguracionRiego objectForKey:@"tipoConfiguracionRiego"] != [NSNull null]) {
@@ -994,10 +995,10 @@
                         }
                         
                         if ([infoConfiguracionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
-                            configuracionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaHoraInicio"]];
+                            configuracionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDDWithTime:infoConfiguracionRiego[@"fechaHoraInicio"]];
                         }
                         if ([infoConfiguracionRiego objectForKey:@"fechaHoraInicioProgramada"]!= [NSNull null]) {
-                            configuracionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaHoraInicioProgramada"]];
+                            configuracionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:infoConfiguracionRiego[@"fechaHoraInicioProgramada"]];
                         }
                         
                         nuevaInstancia.configuracionRiego = configuracionRiego;
@@ -1006,7 +1007,7 @@
                     [listaInstancias addObject:nuevaInstancia];
                 }
                 
-                respuesta.listaDTOMecanismoRiegoConfiguracion = listaInstancias;
+                respuesta.listaDTOMecanismoRiegoConfiguracion = [NSArray arrayWithArray:listaInstancias];
                 
             } @catch (NSException *exception) {
                 completionBlock(respuesta);
@@ -1053,13 +1054,13 @@
                     }
                     
                     if ([datos objectForKey:@"fechaHora"] != [NSNull null]) {
-                        nuevaInstancia.fechaYHora = [SFUtils dateFromStringYYYYMMDD: datos[@"fechaHora"]];
+                        nuevaInstancia.fechaYHora = [SFUtils dateFromStringYYYYMMDDWithTime: datos[@"fechaHora"]];
                     }
                     
                     [listaInstancias addObject:nuevaInstancia];
                 }
                 
-                respuesta.listaOcurrenciasEventoPersonalizado = listaInstancias;
+                respuesta.listaOcurrenciasEventoPersonalizado = [NSArray arrayWithArray:listaInstancias];
                 
             } @catch (NSException *exception) {
                 completionBlock(respuesta);
@@ -1109,13 +1110,13 @@
                     }
                     
                     if ([datos objectForKey:@"fechaHora"] != [NSNull null]) {
-                        nuevaInstancia.fechaYHora = [SFUtils dateFromStringYYYYMMDD: datos[@"fechaHora"]];
+                        nuevaInstancia.fechaYHora = [SFUtils dateFromStringYYYYMMDDWithTime: datos[@"fechaHora"]];
                     }
                     
                     [listaInstancias addObject:nuevaInstancia];
                 }
                 
-                respuesta.listaOcurrenciasHelada = listaInstancias;
+                respuesta.listaOcurrenciasHelada = [NSArray arrayWithArray:listaInstancias];
                 
             } @catch (NSException *exception) {
                 completionBlock(respuesta);
@@ -1220,17 +1221,17 @@
                         }
                         
                         if ([infoEjecucionRiego objectForKey:@"fechaHoraFinalizacion"]!= [NSNull null]) {
-                            ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraFinalizacion"]];
+                            ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraFinalizacion"]];
                         }
                         if ([infoEjecucionRiego objectForKey:@""]!= [NSNull null]) {
-                            ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraFinalProgramada"]];
+                            ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraFinalProgramada"]];
                         }
                         
                         if ([infoEjecucionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
-                            ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraInicio"]];
+                            ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraInicio"]];
                         }
                         if ([infoEjecucionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
-                            ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDD:infoEjecucionRiego[@"fechaHoraInicioProgramada"]];
+                            ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraInicioProgramada"]];
                         }
                         
                         nuevaInstancia.ejecucionRiego = ejecucionRiego;
@@ -1260,10 +1261,10 @@
                         }
                         
                         if ([infoConfiguracionRiego objectForKey:@"fechaCreacion"]!= [NSNull null]) {
-                            configuracionRiego.fechaCreacion = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaCreacion"]];
+                            configuracionRiego.fechaCreacion = [SFUtils dateFromStringYYYYMMDDWithTime:infoConfiguracionRiego[@"fechaCreacion"]];
                         }
                         if ([infoConfiguracionRiego objectForKey:@"fechaFinalizacion"]!= [NSNull null]) {
-                            configuracionRiego.fechaFinalizacion = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaFinalizacion"]];
+                            configuracionRiego.fechaFinalizacion = [SFUtils dateFromStringYYYYMMDDWithTime:infoConfiguracionRiego[@"fechaFinalizacion"]];
                         }
                         
                         if ([infoConfiguracionRiego objectForKey:@"tipoConfiguracionRiego"] != [NSNull null]) {
@@ -1274,10 +1275,10 @@
                         }
                         
                         if ([infoConfiguracionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
-                            configuracionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaHoraInicio"]];
+                            configuracionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDDWithTime:infoConfiguracionRiego[@"fechaHoraInicio"]];
                         }
                         if ([infoConfiguracionRiego objectForKey:@"fechaHoraInicioProgramada"]!= [NSNull null]) {
-                            configuracionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDD:infoConfiguracionRiego[@"fechaHoraInicioProgramada"]];
+                            configuracionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:infoConfiguracionRiego[@"fechaHoraInicioProgramada"]];
                         }
  
                         nuevaInstancia.configuracionRiego = configuracionRiego;
@@ -1297,7 +1298,7 @@
                             }
                             
                             if ([infoMedicionCabecera objectForKey:@"fecha_y_hora"]!= [NSNull null]) {
-                                medicionCabecera.fechaYHora = [SFUtils dateFromStringYYYYMMDD: infoMedicionCabecera[@"fecha_y_hora"]];
+                                medicionCabecera.fechaYHora = [SFUtils dateFromStringYYYYMMDDWithTime: infoMedicionCabecera[@"fecha_y_hora"]];
                             }
                             
                             if ([infoMedicionCabecera objectForKey:@"lista_mediciones_detalle"]!= [NSNull null]) {
@@ -1322,12 +1323,12 @@
                                     
                                     [listaDetallesMediciones addObject:medicionSensorDetalle];
                                 }
-                                medicionCabecera.listaDetallesMedicion = listaDetallesMediciones;
+                                medicionCabecera.listaDetallesMedicion = [NSArray arrayWithArray:listaDetallesMediciones];
                             }
 
                             [listaMedicionesComponenteAntes addObject:medicionCabecera];
                         }
-                        nuevaInstancia.medicionesComponenteAntes = listaMedicionesComponenteAntes;
+                        nuevaInstancia.medicionesComponenteAntes = [NSArray arrayWithArray:listaMedicionesComponenteAntes];
                     }
                     
                     if ([datos objectForKey:@"medicionesComponenteDespues"] != [NSNull null]) {
@@ -1344,7 +1345,7 @@
                             }
                             
                             if ([infoMedicionCabecera objectForKey:@"fecha_y_hora"]!= [NSNull null]) {
-                                medicionCabecera.fechaYHora = [SFUtils dateFromStringYYYYMMDD: infoMedicionCabecera[@"fecha_y_hora"]];
+                                medicionCabecera.fechaYHora = [SFUtils dateFromStringYYYYMMDDWithTime: infoMedicionCabecera[@"fecha_y_hora"]];
                             }
                             
                             if ([infoMedicionCabecera objectForKey:@"lista_mediciones_detalle"]!= [NSNull null]) {
@@ -1369,12 +1370,12 @@
                                     
                                     [listaDetallesMediciones addObject:medicionSensorDetalle];
                                 }
-                                medicionCabecera.listaDetallesMedicion = listaDetallesMediciones;
+                                medicionCabecera.listaDetallesMedicion = [NSArray arrayWithArray:listaDetallesMediciones];
                             }
                             
                             [listaMedicionesComponenteDespues addObject:medicionCabecera];
                         }
-                        nuevaInstancia.medicionesComponenteDespues = listaMedicionesComponenteDespues;
+                        nuevaInstancia.medicionesComponenteDespues = [NSArray arrayWithArray:listaMedicionesComponenteDespues];
                     }
                     
                     if ([datos objectForKey:@"medicionesClimaticasAntes"] != [NSNull null]) {
@@ -1390,7 +1391,7 @@
                                 medicionInformacionClimaticaCabecera.nroMedicion = [[infoMedicionClimaticaCabecera objectForKey:@"nroMedicion"] integerValue];
                             }
                             if ([infoMedicionClimaticaCabecera objectForKey:@"fechaHora"]!= [NSNull null]) {
-                                medicionInformacionClimaticaCabecera.fechaYHora = [SFUtils dateFromStringYYYYMMDD: infoMedicionClimaticaCabecera[@"fechaHora"]];
+                                medicionInformacionClimaticaCabecera.fechaYHora = [SFUtils dateFromStringYYYYMMDDWithTime: infoMedicionClimaticaCabecera[@"fechaHora"]];
                             }
                             if ([infoMedicionClimaticaCabecera objectForKey:@"proveedorInformacion"] != [NSNull null]) {
                                 medicionInformacionClimaticaCabecera.nombreProveedor = [infoMedicionClimaticaCabecera objectForKey:@"proveedorInformacion"];
@@ -1418,18 +1419,18 @@
                                     [listaInstanciasDetalleMedicionClimatica addObject:medicionInformacionClimaticaDetalle];
                                 }
                                 
-                                medicionInformacionClimaticaCabecera.listaDetallesMedicionInformacionClimatica = listaInstanciasDetalleMedicionClimatica;
+                                medicionInformacionClimaticaCabecera.listaDetallesMedicionInformacionClimatica = [NSArray arrayWithArray:listaInstanciasDetalleMedicionClimatica];
                             }
                             
                             [listaMedicionesClimaticas addObject:medicionInformacionClimaticaCabecera];
                         }
-                        nuevaInstancia.medicionesClimaticasAntes = listaMedicionesClimaticas;
+                        nuevaInstancia.medicionesClimaticasAntes = [NSArray arrayWithArray:listaMedicionesClimaticas];
                     }
                     
                     [listaInstancias addObject:nuevaInstancia];
                 }
                 
-                respuesta.listaDatosCruzados = listaInstancias;
+                respuesta.listaDatosCruzados = [NSArray arrayWithArray:listaInstancias];
                 
             } @catch (NSException *exception) {
                 completionBlock(respuesta);

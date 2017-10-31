@@ -60,7 +60,7 @@
     
     SolicitudObtenerCriteriosInicialesConfiguracionRiegoMecanismoRiegoFincaSector *solicitud = [SolicitudObtenerCriteriosInicialesConfiguracionRiegoMecanismoRiegoFincaSector new];
     solicitud.idFinca = [[ContextoUsuario instance] fincaSeleccionada];
-    solicitud.idMecanismoRiegoFincaSector = tabBar.idConfiguracionRiego;
+    solicitud.idMecanismoRiegoFincaSector = tabBar.idMecanismoRiegoSector;
     solicitud.idConfiguracionRiego = tabBar.idConfiguracionRiego;
     
     [ServiciosModuloRiego obtenerCriteriosInicialesConfiguracionRiegoMecanismoRiegoFincaSector:solicitud completionBlock:^(RespuestaServicioBase *respuesta) {
@@ -115,8 +115,8 @@
     if ([self.tableViewItemsArray[indexPath.row] isKindOfClass:[SFCriterioConfiguracionRiegoMedicion class]]) {
         SFCriterioConfiguracionRiegoMedicion *criterio = self.tableViewItemsArray[indexPath.row];
         
-        cell.textLabel.text = [NSString stringWithFormat:@"Criterio por medición: %@. Tipo medición: %@", criterio.nombreCriterioRiego, criterio.nombreTipoMedicion];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"Valor %@: %f", criterio.operador, criterio.valor];
+        cell.textLabel.text = [NSString stringWithFormat:@"Criterio por medición: %@", criterio.nombreCriterioRiego];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@: %@ a %.0f (%@)", criterio.nombreTipoMedicion, criterio.operador, criterio.valor, criterio.unidadMedicion];
     } else if ([self.tableViewItemsArray[indexPath.row] isKindOfClass:[SFCriterioConfiguracionRiegoHora class]]) {
         SFCriterioConfiguracionRiegoHora *criterio = self.tableViewItemsArray[indexPath.row];
         
@@ -126,7 +126,7 @@
         SFCriterioConfiguracionRiegoVolumenAgua *criterio = self.tableViewItemsArray[indexPath.row];
         
         cell.textLabel.text = [NSString stringWithFormat:@"Criterio por volumen: %@", criterio.nombreCriterioRiego];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"Volumen (lts): %@", criterio.volumen];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"Volumen (lts): %.2f", criterio.volumen];
     }
     return cell;
 }
