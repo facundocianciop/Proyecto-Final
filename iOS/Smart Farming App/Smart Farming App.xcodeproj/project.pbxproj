@@ -77,6 +77,10 @@
 		A1080A2D1FA7C2E100CD6397 /* SFConfiguracionEventoMedicionesTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1080A2C1FA7C2E100CD6397 /* SFConfiguracionEventoMedicionesTabBarViewController.m */; };
 		A120BB421F9A939700240383 /* SFDetallesSectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A120BB411F9A939700240383 /* SFDetallesSectorViewController.m */; };
 		A120BB451F9A93D100240383 /* SFDetallesMecanismoRiegoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A120BB441F9A93D100240383 /* SFDetallesMecanismoRiegoViewController.m */; };
+		A12D55CF1FA8C4FB00A89184 /* SFElegirSectorEstadoActualViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A12D55CE1FA8C4FB00A89184 /* SFElegirSectorEstadoActualViewController.m */; };
+		A12D55D21FA8C72700A89184 /* SFReporteEstadoActualSectorDetalleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A12D55D11FA8C72700A89184 /* SFReporteEstadoActualSectorDetalleViewController.m */; };
+		A12D55D51FA8F2CC00A89184 /* SFReporteEstadoActualEjecucionRiegoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A12D55D41FA8F2CC00A89184 /* SFReporteEstadoActualEjecucionRiegoViewController.m */; };
+		A12D55D81FA8F2EC00A89184 /* SFReporteEstadoActualUltimaMedicionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A12D55D71FA8F2EC00A89184 /* SFReporteEstadoActualUltimaMedicionViewController.m */; };
 		A142C0901F9E3D0A009822A4 /* SolicitudMostrarSectores.m in Sources */ = {isa = PBXBuildFile; fileRef = A142C08F1F9E3D0A009822A4 /* SolicitudMostrarSectores.m */; };
 		A142C0931F9E3E19009822A4 /* SolicitudBuscarSectorId.m in Sources */ = {isa = PBXBuildFile; fileRef = A142C0921F9E3E19009822A4 /* SolicitudBuscarSectorId.m */; };
 		A142C0961F9E3E6C009822A4 /* RespuestaBuscarSectorId.m in Sources */ = {isa = PBXBuildFile; fileRef = A142C0951F9E3E6C009822A4 /* RespuestaBuscarSectorId.m */; };
@@ -343,6 +347,14 @@
 		A120BB411F9A939700240383 /* SFDetallesSectorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFDetallesSectorViewController.m; sourceTree = "<group>"; };
 		A120BB431F9A93D100240383 /* SFDetallesMecanismoRiegoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFDetallesMecanismoRiegoViewController.h; sourceTree = "<group>"; };
 		A120BB441F9A93D100240383 /* SFDetallesMecanismoRiegoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFDetallesMecanismoRiegoViewController.m; sourceTree = "<group>"; };
+		A12D55CD1FA8C4FB00A89184 /* SFElegirSectorEstadoActualViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFElegirSectorEstadoActualViewController.h; sourceTree = "<group>"; };
+		A12D55CE1FA8C4FB00A89184 /* SFElegirSectorEstadoActualViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFElegirSectorEstadoActualViewController.m; sourceTree = "<group>"; };
+		A12D55D01FA8C72700A89184 /* SFReporteEstadoActualSectorDetalleViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFReporteEstadoActualSectorDetalleViewController.h; sourceTree = "<group>"; };
+		A12D55D11FA8C72700A89184 /* SFReporteEstadoActualSectorDetalleViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFReporteEstadoActualSectorDetalleViewController.m; sourceTree = "<group>"; };
+		A12D55D31FA8F2CC00A89184 /* SFReporteEstadoActualEjecucionRiegoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFReporteEstadoActualEjecucionRiegoViewController.h; sourceTree = "<group>"; };
+		A12D55D41FA8F2CC00A89184 /* SFReporteEstadoActualEjecucionRiegoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFReporteEstadoActualEjecucionRiegoViewController.m; sourceTree = "<group>"; };
+		A12D55D61FA8F2EC00A89184 /* SFReporteEstadoActualUltimaMedicionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFReporteEstadoActualUltimaMedicionViewController.h; sourceTree = "<group>"; };
+		A12D55D71FA8F2EC00A89184 /* SFReporteEstadoActualUltimaMedicionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFReporteEstadoActualUltimaMedicionViewController.m; sourceTree = "<group>"; };
 		A142C08E1F9E3D0A009822A4 /* SolicitudMostrarSectores.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SolicitudMostrarSectores.h; sourceTree = "<group>"; };
 		A142C08F1F9E3D0A009822A4 /* SolicitudMostrarSectores.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SolicitudMostrarSectores.m; sourceTree = "<group>"; };
 		A142C0911F9E3E19009822A4 /* SolicitudBuscarSectorId.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SolicitudBuscarSectorId.h; sourceTree = "<group>"; };
@@ -589,6 +601,14 @@
 				110CC75E1F9849030090C6C0 /* SFMenuReportesViewController.m */,
 				A1893E1C1F9A89400060DC8A /* SFReportesViewControllerBase.h */,
 				A1893E1D1F9A89400060DC8A /* SFReportesViewControllerBase.m */,
+				A12D55CD1FA8C4FB00A89184 /* SFElegirSectorEstadoActualViewController.h */,
+				A12D55CE1FA8C4FB00A89184 /* SFElegirSectorEstadoActualViewController.m */,
+				A12D55D01FA8C72700A89184 /* SFReporteEstadoActualSectorDetalleViewController.h */,
+				A12D55D11FA8C72700A89184 /* SFReporteEstadoActualSectorDetalleViewController.m */,
+				A12D55D31FA8F2CC00A89184 /* SFReporteEstadoActualEjecucionRiegoViewController.h */,
+				A12D55D41FA8F2CC00A89184 /* SFReporteEstadoActualEjecucionRiegoViewController.m */,
+				A12D55D61FA8F2EC00A89184 /* SFReporteEstadoActualUltimaMedicionViewController.h */,
+				A12D55D71FA8F2EC00A89184 /* SFReporteEstadoActualUltimaMedicionViewController.m */,
 			);
 			path = "Modulo Reportes";
 			sourceTree = "<group>";
@@ -1699,6 +1719,7 @@
 				111D1DC31F92E01100E3A168 /* SFTableViewControllerBase.m in Sources */,
 				A142C11F1F9F8C53009822A4 /* SolicitudMostrarConfiguracionEventoPersonalizado.m in Sources */,
 				11F020841F8F083F00DBC1DC /* SFTextField.m in Sources */,
+				A12D55D21FA8C72700A89184 /* SFReporteEstadoActualSectorDetalleViewController.m in Sources */,
 				111F8F151F95B2E600AB7E8F /* SFModificarUsuarioViewController.m in Sources */,
 				A1C56F621FA103E70083D95D /* DTOInformeCruzadoRiegoMediciones.m in Sources */,
 				A142C09F1F9E4609009822A4 /* RespuestaMostrarCultivoSector.m in Sources */,
@@ -1712,6 +1733,7 @@
 				A142C0DB1F9E91FE009822A4 /* RespuestaObtenerConfiguracionesRiegoMecanismoRiegoFincaSector.m in Sources */,
 				A142C0D71F9E91DF009822A4 /* RespuestaCancelarRiegoManualmente.m in Sources */,
 				A142C0F91F9F749D009822A4 /* RespuestaMostrarComponentesSensorFincaHabilitados.m in Sources */,
+				A12D55D51FA8F2CC00A89184 /* SFReporteEstadoActualEjecucionRiegoViewController.m in Sources */,
 				A142C0A81F9E4BE7009822A4 /* SolicitudMostrarMecanismoRiegoSector.m in Sources */,
 				A1AE0B8C1F8E8E1F009B4494 /* SolicitudServicioFincaBase.m in Sources */,
 				1116D6D91F94424F0088D61B /* UIViewController+LGSideMenuController.m in Sources */,
@@ -1726,6 +1748,7 @@
 				A1C56F281F9FC99C0083D95D /* SFProveedorInformacionClimatica.m in Sources */,
 				A142C0D41F9E91CE009822A4 /* RespuestaPausarRiegoManualmente.m in Sources */,
 				1116BA931F8C7490005C9AFF /* SFUtils.m in Sources */,
+				A12D55CF1FA8C4FB00A89184 /* SFElegirSectorEstadoActualViewController.m in Sources */,
 				A10157171F9003BE00179ED7 /* SFFormularioBaseViewController.m in Sources */,
 				A1080A0F1FA7701E00CD6397 /* SFCriteriosInicialesViewController.m in Sources */,
 				A1C56F401FA0D19F0083D95D /* SFCriterioConfiguracionRiegoVolumenAgua.m in Sources */,
@@ -1766,6 +1789,7 @@
 				A142C1041F9F79AB009822A4 /* SolicitudBuscarFincaId.m in Sources */,
 				A142C1401F9F8DCC009822A4 /* RespuestaObtenerInformeHistoricoSector.m in Sources */,
 				1116D6E21F9444890088D61B /* FincaLeftMenuTableViewController.m in Sources */,
+				A12D55D81FA8F2EC00A89184 /* SFReporteEstadoActualUltimaMedicionViewController.m in Sources */,
 				A1C56F4F1FA0E76E0083D95D /* SFMedicionSensorDetalle.m in Sources */,
 				A1C56F2E1FA0C8A50083D95D /* SFSensor.m in Sources */,
 				A1C56F371FA0CDE60083D95D /* SFCriterioConfiguracionRiego.m in Sources */,

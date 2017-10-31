@@ -50,11 +50,14 @@ NSString *const kSFNavegarAMedicionesConfiguracionEvento = @"SFNavegarAMedicione
 
 #pragma mark - Modulo Reportes
 
-NSString *const kSFNavegarAReporteTipo1Segue = @"SFNavegarAReporteTipo1Segue";
-NSString *const kSFNavegarAReporteTipo2Segue = @"SFNavegarAReporteTipo2Segue";
-NSString *const kSFNavegarAReporteTipo3Segue = @"SFNavegarAReporteTipo3Segue";
-NSString *const kSFNavegarAReporteTipo4Segue = @"SFNavegarAReporteTipo4Segue";
-NSString *const kSFNavegarAReporteTipo5Segue = @"SFNavegarAReporteTipo5Segue";
+NSString *const kSFNavegarAReporteEstadoSectorSegue = @"SFNavegarAReporteEstadoSectorSegue";
+NSString *const kSFNavegarAReporteEventosPersonalizadosSegue = @"SFNavegarAReporteEventosPersonalizadosSegue";
+NSString *const kSFNavegarAReporteHeladasSegue = @"SFNavegarAReporteHeladasSegue";
+NSString *const kSFNavegarAReporteRiegoEnEjecucionSegue = @"SFNavegarAReporteRiegoEnEjecucionSegue";
+
+NSString *const kSFNavegarAReporteEstadoSectorDetalleSegue = @"SFNavegarAReporteEstadoSectorDetalleSegue";
+NSString *const kSFNavegarAReporteEstadoActualEjecucionSegue = @"SFNavegarAReporteEstadoActualEjecucionSegue";
+NSString *const kSFNavegarAReporteEstadoActualMedicionSegue = @"SFNavegarAReporteEstadoActualMedicionSegue";
 NSString *const kSFNavegarAReporteTipo6Segue = @"SFNavegarAReporteTipo6Segue";
 
 @end

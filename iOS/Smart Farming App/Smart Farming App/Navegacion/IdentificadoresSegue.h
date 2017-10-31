@@ -54,11 +54,15 @@ extern NSString *const kSFNavegarAMedicionesConfiguracionEvento;
 
 #pragma mark - Modulo Reportes
 
-extern NSString *const kSFNavegarAReporteTipo1Segue;
-extern NSString *const kSFNavegarAReporteTipo2Segue;
-extern NSString *const kSFNavegarAReporteTipo3Segue;
-extern NSString *const kSFNavegarAReporteTipo4Segue;
-extern NSString *const kSFNavegarAReporteTipo5Segue;
+extern NSString *const kSFNavegarAReporteEstadoSectorSegue;
+extern NSString *const kSFNavegarAReporteEventosPersonalizadosSegue;
+extern NSString *const kSFNavegarAReporteHeladasSegue;
+extern NSString *const kSFNavegarAReporteRiegoEnEjecucionSegue;
+
+
+extern NSString *const kSFNavegarAReporteEstadoSectorDetalleSegue;
+extern NSString *const kSFNavegarAReporteEstadoActualEjecucionSegue;
+extern NSString *const kSFNavegarAReporteEstadoActualMedicionSegue;
 extern NSString *const kSFNavegarAReporteTipo6Segue;
 
 @end
