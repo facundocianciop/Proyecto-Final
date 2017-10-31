@@ -44,7 +44,7 @@ class DtoConfiguracionEventoPersonalizadoFinal:
 
 class DtoEstadoActualSector:
     def __init__(self, idSector, numeroSector, superficieSector, descripcionSector, componenteSector, mecanismoSector,
-                 ultimaMedicion, ejecucionRiego, configuracionRiego):
+                 ultimaMedicion, ejecucionRiego, configuracionRiego, ultimaMedicionClimatica):
         self.id_sector = idSector
         self.numero_sector = numeroSector
         self.superficie_sector = superficieSector
@@ -54,6 +54,7 @@ class DtoEstadoActualSector:
         self.ultima_medicion = ultimaMedicion
         self.ejecucion_riego = ejecucionRiego
         self.configuracion_riego = configuracionRiego
+        self.ultima_medicio_climatica = ultimaMedicionClimatica
 
     def as_json(self):
         return dict(id_sector=self.id_sector,
@@ -64,7 +65,8 @@ class DtoEstadoActualSector:
                     mecanismo_sector=self.mecanismo_sector,
                     ultima_medicion=self.ultima_medicion,
                     ejecucion_riego=self.ejecucion_riego,
-                    configuracion_riego=self.configuracion_riego)
+                    configuracion_riego=self.configuracion_riego,
+                    ultima_medicion_climatica=self.ultima_medicio_climatica)
 
 
 class DtoRiegoEjecucionSector:

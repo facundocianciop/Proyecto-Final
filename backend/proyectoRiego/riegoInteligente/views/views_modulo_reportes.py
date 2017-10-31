@@ -750,6 +750,14 @@ def obtener_estado_actual_sector(request):
                             configuracion_riego = ejecucion.configuracion_riego.as_json()
             componente_sensor = ""
             ultima_medicion = ""
+            finca = sector_seleccionado.finca
+            proveedor_informacion_finca = finca.proveedorinformacionclimaticafinca_set.get(
+                fechaBajaProveedorInfoClimaticaFinca__isnull=True)
+            ultima_medicion_climatica = proveedor_informacion_finca.medicionInformacionClimaticaCabeceraList.filter(). \
+                order_by("-fechaHora").last()
+            ultima_medicion_climatica_json = ""
+            if ultima_medicion_climatica:
+                ultima_medicion_climatica_json = ultima_medicion_climatica.as_json()
             if sector_seleccionado.componentesensorsector_set.filter(habilitado=True).__len__() == 1:
                 componente_sensor_sector = sector_seleccionado.componentesensorsector_set.get(habilitado=True)
                 componente_sensor = componente_sensor_sector.componente_sensor.as_json()
@@ -763,9 +771,11 @@ def obtener_estado_actual_sector(request):
                                                                  componenteSector=componente_sensor,
                                                                  ultimaMedicion=ultima_medicion,
                                                                  ejecucionRiego=ejecucion_riego,
-                                                                 configuracionRiego=configuracion_riego)
+                                                                 configuracionRiego=configuracion_riego,
+                                                                 ultimaMedicionClimatica=ultima_medicion_climatica_json)
 
             elif sector_seleccionado.componentesensorsector_set.filter(habilitado=True).__len__() == 0:
+
                 dto_estado_actual_sector = DtoEstadoActualSector(numeroSector=sector_seleccionado.numeroSector,
                                                                  idSector=sector_seleccionado.idSector,
                                                                  superficieSector=sector_seleccionado.superficie,
@@ -774,8 +784,11 @@ def obtener_estado_actual_sector(request):
                                                                  componenteSector=componente_sensor,
                                                                  ultimaMedicion=ultima_medicion,
                                                                  ejecucionRiego=ejecucion_riego,
-                                                                 configuracionRiego=configuracion_riego)
+                                                                 configuracionRiego=configuracion_riego,
+                                                                 ultimaMedicionClimatica=ultima_medicion_climatica_json
+                                                                 )
             else:
+
                 dto_estado_actual_sector = DtoEstadoActualSector(numeroSector=sector_seleccionado.numeroSector,
                                                                  idSector=sector_seleccionado.idSector,
                                                                  superficieSector=sector_seleccionado.superficie,
@@ -784,7 +797,8 @@ def obtener_estado_actual_sector(request):
                                                                  componenteSector=componente_sensor,
                                                                  ultimaMedicion=ultima_medicion,
                                                                  ejecucionRiego=ejecucion_riego,
-                                                                 configuracionRiego=configuracion_riego)
+                                                                 configuracionRiego=configuracion_riego,
+                                                                 ultimaMedicionClimatica=ultima_medicion_climatica_json)
             response.content = armar_response_content(dto_estado_actual_sector)
             response.status_code = 200
             return response
@@ -905,12 +919,12 @@ def obtener_informe_historico_sector(request):
                         dto_componente_medicion = DtoComponenteMedicion(medicion_cabecera=medicion.as_json(),
                                                                         componente=componente.componente_sensor.as_json())
                         lista_dto_componente_medicion.append(dto_componente_medicion)
-            if MedicionInformacionClimaticaCabecera.objects.filter(fechaHora__gte=datos[KEY_FECHA_INICIO_SECTOR],
-                                                                   fechaHora__lte=datos[KEY_FECHA_FIN_SECTOR])\
+            if MedicionInformacionClimaticaCabecera.objects.filter(fechaHora__gte=fecha_inicio_sector,
+                                                                   fechaHora__lte=fecha_fin_sector)\
                     .__len__() != 0:
                 for medicion_climatica in MedicionInformacionClimaticaCabecera.objects.filter(
-                        fechaHora__gte=datos[KEY_FECHA_INICIO_SECTOR],
-                        fechaHora__lte=datos[KEY_FECHA_FIN_SECTOR]):
+                        fechaHora__gte=fecha_inicio_sector,
+                        fechaHora__lte=fecha_fin_sector):
                     dto_medicion_climatica = DtoMedicionClimatica(medicion_climatica)
                     lista_dto_medicion_climatica.append(dto_medicion_climatica)
             dto_historico_sector = DtoHistoricoSector(dto_medicion_climatica_list=lista_dto_medicion_climatica,

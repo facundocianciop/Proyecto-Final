@@ -1395,6 +1395,21 @@ class ConfiguracionEventoPersonalizado(models.Model):
     def __str__(self):
         return "Evento: " + self.nombre
 
+    def as_json(self):
+        from views.supportClases.views_util_functions import parsear_fecha_a_hora_arg
+        return dict(
+            idConfiguracion=self.idConfiguracion,
+            nombre=self.nombre,
+            descripcion=self.descripcion,
+            notificacionActivada=self.notificacionActivada,
+            activado=self.activado,
+            fechaAlta=parsear_fecha_a_hora_arg(self.fechaAltaConfiguracionEventoPersonalizado),
+            fechaBaja=parsear_fecha_a_hora_arg(self.fechaBajaConfiguracionEventoPersonalizado),
+            fechaHoraCreacion=parsear_fecha_a_hora_arg(self.fechaHoraCreacion),
+            sectores=[sector.numeroSector for sector in self.sectorList.all()]
+        )
+
+
 
 class EventoPersonalizado(models.Model):
     OIDEventoPersonalizado = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
