@@ -90,7 +90,7 @@ class DtoMedicionClimatica:
         self.medicion_climatica = medicion_climatica
 
     def as_json(self):
-        return dict(medicionClimatica=self.medicion_climatica)
+        return dict(medicionClimatica=self.medicion_climatica.as_json())
 
 class DtoHistoricoSector:
     def __init__(self, dto_medicion_climatica_list, dto_componente_medicion_list):
