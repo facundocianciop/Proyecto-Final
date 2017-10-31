@@ -450,6 +450,45 @@ def crear_configuracion_evento_personalizado(request):
 @metodos_requeridos([METHOD_POST])
 @manejar_errores()
 @permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
+def buscar_configuracion_eventos_finca(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if (KEY_ID_FINCA in datos):
+            if  datos[KEY_ID_FINCA] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if Finca.objects.filter(idFinca=datos[KEY_ID_FINCA]).__len__() == 0:
+                raise ValueError(ERROR_FINCA_NO_ENCONTRADA, "No se encuentra una finca con ese id")
+            finca = Finca.objects.get(idFinca=datos[KEY_ID_FINCA])
+            estado_finca_deshabilitado = EstadoFinca.objects.get(nombreEstadoFinca=ESTADO_HABILITADO)
+            if finca.historicoEstadoFincaList.filter(fechaFinEstadoFinca__isnull=True,
+                                                            estadoFinca= estado_finca_deshabilitado).__len__() == 0:
+                raise ValueError(ERROR_FINCA_NO_HABILITADA, "La finca no esta habilitada")
+            lista_eventos = []
+            usuarios_finca = finca.usuariofinca_set.filter(fechaBajaUsuarioFinca__isnull=True)
+            for usuario_finca in usuarios_finca:
+                for conf_evento in usuario_finca.configuracionEventoPersonalizadoList.all():
+                    lista_eventos.append(conf_evento)
+            response.content = armar_response_list_content(lista_eventos)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except ValueError as err:
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def asignar_configuracion_evento_personalizado_a_sector(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
