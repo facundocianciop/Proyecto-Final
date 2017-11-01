@@ -12,7 +12,7 @@
 
 #import "SFConfiguracionEvento.h"
 
-#import "SFReporteEventosPersonalizadosRegistradosViewController.h"
+#import "SFReporteEventosPersonalizadosFechasViewController.h"
 
 @interface SFReporteEventosPersonalizadosConfiguracionViewController ()
 
@@ -45,10 +45,10 @@
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
     
-    if ([[segue identifier] isEqualToString:kSFNavegarAReporteEventosPersonalizadosRegistradosSegue])
+    if ([[segue identifier] isEqualToString:kSFNavegarAReporteEventosPersonalizadosFechasSegue])
     {
         // Get reference to the destination view controller
-        SFReporteEventosPersonalizadosRegistradosViewController *vc = [segue destinationViewController];
+        SFReporteEventosPersonalizadosFechasViewController *vc = [segue destinationViewController];
         
         // Pass any objects to the view controller here, like...
         vc.configuracionEvento = self.configuracionEvento;
@@ -133,7 +133,7 @@
     
     self.configuracionEvento = configuracion;
     
-    [self performSegueWithIdentifier:kSFNavegarAReporteEventosPersonalizadosRegistradosSegue sender:self];
+    [self performSegueWithIdentifier:kSFNavegarAReporteEventosPersonalizadosFechasSegue sender:self];
 }
 
 @end

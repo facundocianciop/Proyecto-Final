@@ -113,9 +113,10 @@
             RespuestaMostrarMecanismoRiegoSector *respuestaMostrarMecanismoRiegoSector = (RespuestaMostrarMecanismoRiegoSector *)respuesta;
             
             if (respuestaMostrarMecanismoRiegoSector.resultado) {
-                
-                respuestaMostrarMecanismoRiegoSector.mecanismoRiegoFincaSector.nombreSector = nombreSector_block;
-                [weakSelf.listaMecanismosRiego addObject:respuestaMostrarMecanismoRiegoSector.mecanismoRiegoFincaSector];
+                if (respuestaMostrarMecanismoRiegoSector.mecanismoRiegoFincaSector) {
+                    respuestaMostrarMecanismoRiegoSector.mecanismoRiegoFincaSector.nombreSector = nombreSector_block;
+                    [weakSelf.listaMecanismosRiego addObject:respuestaMostrarMecanismoRiegoSector.mecanismoRiegoFincaSector];
+                }
                 [weakSelf loadingTableViewDataDidEnd];
             } else {
                 [weakSelf hideActivityIndicator];

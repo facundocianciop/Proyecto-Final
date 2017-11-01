@@ -43,7 +43,6 @@
 #pragma mark - obtener datos
 
 -(void)cargaInicialDatos {
-    [self showActivityIndicator];
     [self obtenerDatosTabla];
 }
 

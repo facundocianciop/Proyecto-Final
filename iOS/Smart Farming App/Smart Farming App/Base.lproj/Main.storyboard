@@ -2777,7 +2777,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tLx-cy-6JO">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tLx-cy-6JO">
                                 <rect key="frame" x="0.0" y="234" width="320" height="290"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -2975,7 +2975,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Px0-6s-XVJ">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Px0-6s-XVJ">
                                 <rect key="frame" x="0.0" y="70" width="320" height="449"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -3549,7 +3549,7 @@
                     <connections>
                         <outlet property="configuracionesTableView" destination="vrq-hs-o2L" id="IWM-GY-jRa"/>
                         <outlet property="emptyConfiguracionesLabel" destination="cxx-Xl-8pc" id="zkd-nx-zZc"/>
-                        <segue destination="Tc5-NS-BvJ" kind="show" identifier="SFNavegarAReporteEventosPersonalizadosRegistradosSegue" id="Z73-CC-Jxt"/>
+                        <segue destination="amL-L0-FTV" kind="show" identifier="SFNavegarAReporteEventosPersonalizadosFechasSegue" id="wWe-Ey-kOt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zTQ-MI-bt8" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3660,7 +3660,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I7D-cp-LGm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7613" y="2544"/>
+            <point key="canvasLocation" x="7613" y="3370"/>
         </scene>
         <!--Sectores-->
         <scene sceneID="ji2-xc-n4z">
@@ -3899,13 +3899,38 @@
                     </navigationItem>
                     <connections>
                         <outlet property="emptyEventosLabel" destination="6xi-69-f62" id="aQw-aj-8qK"/>
-                        <outlet property="eventosTableView" destination="oMZ-bo-FI6" id="Obo-8X-zAs"/>
                         <outlet property="heladasTableView" destination="oMZ-bo-FI6" id="ua3-0p-nJo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hpw-Up-kxA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="8846" y="2564"/>
+        </scene>
+        <!--Seleccionar rango fechas-->
+        <scene sceneID="Bfe-5O-aAa">
+            <objects>
+                <viewController id="amL-L0-FTV" customClass="SFReporteEventosPersonalizadosFechasViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="wcM-QD-8KM">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="0Ob-ux-wfU"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Seleccionar rango fechas" id="ri0-Oj-kaX">
+                        <barButtonItem key="backBarButtonItem" title=" " id="nih-Rl-ICm"/>
+                        <barButtonItem key="rightBarButtonItem" image="Aceptar" id="zv3-8q-Goe">
+                            <connections>
+                                <action selector="enviarDatos:" destination="amL-L0-FTV" id="xnG-mB-Irt"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <segue destination="Tc5-NS-BvJ" kind="show" identifier="SFNavegarAReporteEventosPersonalizadosRegistradosSegue" id="Koy-1l-tWH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZUd-OY-ufr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7613" y="2544"/>
         </scene>
     </scenes>
     <resources>
@@ -3924,80 +3949,8 @@
         <namedColor name="Verde">
             <color red="0.2627450980392157" green="0.69019607843137254" blue="0.16470588235294117" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
-        <namedColor name="Verde">
-            <color red="0.26274509800000001" green="0.69019607839999997" blue="0.1647058824" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="Verde">
-            <color red="0.26274509800000001" green="0.69019607839999997" blue="0.1647058824" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="Verde">
-            <color red="0.26274509800000001" green="0.69019607839999997" blue="0.1647058824" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="Verde">
-            <color red="0.26274509800000001" green="0.69019607839999997" blue="0.1647058824" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
         <namedColor name="VerdeClaro">
             <color red="0.59215686270000001" green="0.84313725490000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="VerdeClaro">
-            <color red="0.59215686270000001" green="0.84313725490000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="VerdeClaro">
-            <color red="0.59215686270000001" green="0.84313725490000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="VerdeClaro">
-            <color red="0.59215686270000001" green="0.84313725490000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="VerdeClaro">
-            <color red="0.59215686270000001" green="0.84313725490000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="VerdeClaro">
-            <color red="0.59215686270000001" green="0.84313725490000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="VerdeClaro">
-            <color red="0.59215686270000001" green="0.84313725490000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="VerdeClaro">
-            <color red="0.59215686270000001" green="0.84313725490000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="VerdeClaro">
-            <color red="0.59215686270000001" green="0.84313725490000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="VerdeClaro">
-            <color red="0.59215686270000001" green="0.84313725490000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="VerdeClaro">
-            <color red="0.59215686270000001" green="0.84313725490000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="VerdeClaro">
-            <color red="0.59215686270000001" green="0.84313725490000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="VerdeClaro">
-            <color red="0.59215686270000001" green="0.84313725490000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="VerdeClaro">
-            <color red="0.59215686274509804" green="0.84313725490196079" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="VerdeMasClaro">
-            <color red="0.7725490196" green="0.90980392160000001" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="VerdeMasClaro">
-            <color red="0.7725490196" green="0.90980392160000001" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="VerdeMasClaro">
-            <color red="0.7725490196" green="0.90980392160000001" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="VerdeMasClaro">
-            <color red="0.7725490196" green="0.90980392160000001" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="VerdeMasClaro">
-            <color red="0.7725490196" green="0.90980392160000001" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="VerdeMasClaro">
-            <color red="0.77254901960784317" green="0.90980392156862744" blue="0.42352941176470588" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="VerdeMasClaro">
-            <color red="0.7725490196" green="0.90980392160000001" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="VerdeMasClaro">
             <color red="0.7725490196" green="0.90980392160000001" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>

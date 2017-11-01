@@ -53,6 +53,7 @@
     SFConfiguracionEventoMedicionesTabBarViewController *tabBar = (SFConfiguracionEventoMedicionesTabBarViewController*)self.tabBarController;
     
     self.tableViewItemsArray = tabBar.listaMedicionesInternas;
+    [self loadingTableViewDataDidEnd];
 }
 
 #pragma mark - Acciones

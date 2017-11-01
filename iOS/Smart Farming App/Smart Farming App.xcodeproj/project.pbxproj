@@ -54,6 +54,7 @@
 		111F8F0F1F95AF2400AB7E8F /* SFRecuperarCuentaNuevaContraseniaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 111F8F0E1F95AF2400AB7E8F /* SFRecuperarCuentaNuevaContraseniaViewController.m */; };
 		111F8F151F95B2E600AB7E8F /* SFModificarUsuarioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 111F8F141F95B2E600AB7E8F /* SFModificarUsuarioViewController.m */; };
 		111F8F181F95B32E00AB7E8F /* SFCambiarContraseniaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 111F8F171F95B32E00AB7E8F /* SFCambiarContraseniaViewController.m */; };
+		1124E8301FA93A7900716298 /* SFReporteEventosPersonalizadosFechasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1124E82F1FA93A7900716298 /* SFReporteEventosPersonalizadosFechasViewController.m */; };
 		11CD00901F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CD008F1F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.m */; };
 		11CD00941F8F178D00C58C49 /* SolicitudInicioSesion.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CD00931F8F178D00C58C49 /* SolicitudInicioSesion.m */; };
 		11CD00971F8F1B7700C58C49 /* IdentificadoresSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CD00961F8F1B7700C58C49 /* IdentificadoresSegue.m */; };
@@ -307,6 +308,8 @@
 		111F8F141F95B2E600AB7E8F /* SFModificarUsuarioViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFModificarUsuarioViewController.m; sourceTree = "<group>"; };
 		111F8F161F95B32E00AB7E8F /* SFCambiarContraseniaViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFCambiarContraseniaViewController.h; sourceTree = "<group>"; };
 		111F8F171F95B32E00AB7E8F /* SFCambiarContraseniaViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFCambiarContraseniaViewController.m; sourceTree = "<group>"; };
+		1124E82E1FA93A7900716298 /* SFReporteEventosPersonalizadosFechasViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFReporteEventosPersonalizadosFechasViewController.h; sourceTree = "<group>"; };
+		1124E82F1FA93A7900716298 /* SFReporteEventosPersonalizadosFechasViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFReporteEventosPersonalizadosFechasViewController.m; sourceTree = "<group>"; };
 		11CD008E1F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFNavegarEstadoAutenticadoSegue.h; sourceTree = "<group>"; };
 		11CD008F1F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFNavegarEstadoAutenticadoSegue.m; sourceTree = "<group>"; };
 		11CD00921F8F178D00C58C49 /* SolicitudInicioSesion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SolicitudInicioSesion.h; sourceTree = "<group>"; };
@@ -631,6 +634,8 @@
 				A12D55DA1FA908EA00A89184 /* SFReporteEventosPersonalizadosSectorViewController.m */,
 				A12D55DC1FA908FD00A89184 /* SFReporteEventosPersonalizadosConfiguracionViewController.h */,
 				A12D55DD1FA908FD00A89184 /* SFReporteEventosPersonalizadosConfiguracionViewController.m */,
+				1124E82E1FA93A7900716298 /* SFReporteEventosPersonalizadosFechasViewController.h */,
+				1124E82F1FA93A7900716298 /* SFReporteEventosPersonalizadosFechasViewController.m */,
 				A12D55DF1FA9091C00A89184 /* SFReporteEventosPersonalizadosRegistradosViewController.h */,
 				A12D55E01FA9091C00A89184 /* SFReporteEventosPersonalizadosRegistradosViewController.m */,
 				A12D55E21FA914F900A89184 /* SFReporteHeladasSectoresViewController.h */,
@@ -1839,6 +1844,7 @@
 				A142C0CE1F9E91AB009822A4 /* RespuestaObtenerRiegoEnEjecucionMecanismoRiegoFincaSector.m in Sources */,
 				111D1DC01F92DEBC00E3A168 /* SFFincasOtrosRolesViewController.m in Sources */,
 				A142C12E1F9F8D0E009822A4 /* SolicitudObtenerInformeEventosPersonalizados.m in Sources */,
+				1124E8301FA93A7900716298 /* SFReporteEventosPersonalizadosFechasViewController.m in Sources */,
 				A1BD868D1F9779970077C91E /* SFSectorTableViewCell.m in Sources */,
 				11CD00901F8F131B00C58C49 /* SFNavegarEstadoAutenticadoSegue.m in Sources */,
 				A142C1171F9F7BC3009822A4 /* ServiciosModuloReportes.m in Sources */,

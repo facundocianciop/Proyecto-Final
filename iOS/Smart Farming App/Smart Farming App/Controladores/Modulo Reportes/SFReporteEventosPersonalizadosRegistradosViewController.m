@@ -63,7 +63,10 @@
     
     SolicitudObtenerInformeEventosPersonalizados *solicitud = [SolicitudObtenerInformeEventosPersonalizados new];
     solicitud.idFinca = [[ContextoUsuario instance] fincaSeleccionada];
+    solicitud.idSector = self.sector.idSector;
     solicitud.idConfiguracionEvento = self.configuracionEvento.idConfiguracionEvento;
+    solicitud.fechaInicioSector = self.fechaInicioSector;
+    solicitud.fechaFinSector = self.fechaFinSector;
     
     [ServiciosModuloReportes obtenerInformeEventosPersonalizados:solicitud completionBlock:^(RespuestaServicioBase *respuesta) {
         [weakSelf hideActivityIndicator];

@@ -53,7 +53,7 @@
     XLFormSectionDescriptor * section;
     XLFormRowDescriptor * row;
     
-    form = [XLFormDescriptor formDescriptorWithTitle:@""];
+    form = [XLFormDescriptor formDescriptorWithTitle:@"Seleccionar rango fechas"];
     
     // Seccion informacion obligatoria
     section = [XLFormSectionDescriptor formSectionWithTitle:@""];

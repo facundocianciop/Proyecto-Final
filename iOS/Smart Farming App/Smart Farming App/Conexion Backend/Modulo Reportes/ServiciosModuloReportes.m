@@ -76,7 +76,7 @@
                         nuevaInstancia.notificacionActivada = [[datos objectForKey:@"notificacion_activada"] boolValue];
                     }
                     
-                    if ([datos objectForKey:@"lista_mediciones_internas"] != [NSNull null]) {
+                    if ([datos objectForKey:@"lista_mediciones_internas"] != [NSNull null] && ![[datos objectForKey:@"lista_mediciones_internas"] isKindOfClass: [NSString class]]) {
                         NSDictionary *datosMedicionesInternas = [datos objectForKey:@"lista_mediciones_internas"];
                         
                         NSMutableArray<SFMedicionFuenteInterna*> *listaNuevasMedicionesInternas = [NSMutableArray new];
@@ -103,7 +103,7 @@
                         nuevaInstancia.listaMedicionesInternas = [NSArray arrayWithArray:listaNuevasMedicionesInternas];
                     }
                     
-                    if ([datos objectForKey:@"lista_mediciones_externas"] != [NSNull null]) {
+                    if ([datos objectForKey:@"lista_mediciones_externas"] != [NSNull null] && ![[datos objectForKey:@"lista_mediciones_externas"] isKindOfClass: [NSString class]]) {
                         NSDictionary *datosMedicionesExternas = [datos objectForKey:@"lista_mediciones_externas"];
                         
                         NSMutableArray<SFMedicionFuenteExterna*> *listaNuevasMedicionesExternas = [NSMutableArray new];
@@ -295,7 +295,7 @@
                     respuesta.superficieSector = [[datosOperacion objectForKey:@"superficie_sector"] floatValue];
                 }
                 
-                if ([datosOperacion objectForKey:@"componente_sector"] != [NSNull null]) {
+                if ([datosOperacion objectForKey:@"componente_sector"] != [NSNull null] && [[datosOperacion objectForKey:@"componente_sector"] isKindOfClass: [NSDictionary class]]) {
                     NSDictionary *datos = [datosOperacion objectForKey:@"componente_sector"];
                     
                     SFComponenteSensor *componenteSensorSector = [SFComponenteSensor new];
@@ -329,7 +329,7 @@
                     respuesta.componenteSensorSector = componenteSensorSector;
                 }
 
-                if ([datosOperacion objectForKey:@"mecanismo_sector"] != [NSNull null]) {
+                if ([datosOperacion objectForKey:@"mecanismo_sector"] != [NSNull null] && [[datosOperacion objectForKey:@"mecanismo_sector"] isKindOfClass: [NSDictionary class]]) {
                     NSDictionary *datos = [datosOperacion objectForKey:@"mecanismo_sector"];
                     
                     SFMecanismoRiegoFincaSector *mecanismoRiegoFincaSector = [SFMecanismoRiegoFincaSector new];
@@ -362,7 +362,7 @@
                     respuesta.mecanismoRiegoFincaSector = mecanismoRiegoFincaSector;
                 }
                 
-                if ([datosOperacion objectForKey:@"ultima_medicion"] != [NSNull null]) {
+                if ([datosOperacion objectForKey:@"ultima_medicion"] != [NSNull null] && [[datosOperacion objectForKey:@"ultima_medicion"] isKindOfClass: [NSDictionary class]]) {
                     NSDictionary *datos = [datosOperacion objectForKey:@"ultima_medicion"];
                     
                     SFMedicionSensorCabecera *ultimaMedicion = [SFMedicionSensorCabecera new];
@@ -375,7 +375,7 @@
                         ultimaMedicion.fechaYHora = [SFUtils dateFromStringYYYYMMDDWithTime: datos[@"fecha_y_hora"]];
                     }
                     
-                    if ([datos objectForKey:@"lista_mediciones_detalle"]!= [NSNull null]) {
+                    if ([datos objectForKey:@"lista_mediciones_detalle"]!= [NSNull null]  && [[datos objectForKey:@"lista_mediciones_detalle"] isKindOfClass: [NSDictionary class]]) {
                         NSDictionary *listaInfoDetallesMediones = [datos objectForKey:@"lista_mediciones_detalle"];
                         
                         NSMutableArray *listaDetallesMediciones = [NSMutableArray new];
@@ -403,7 +403,7 @@
                     respuesta.ultimaMedicion = ultimaMedicion;
                 }
                 
-                if ([datosOperacion objectForKey:@"ejecucion_riego"] != [NSNull null]) {
+                if ([datosOperacion objectForKey:@"ejecucion_riego"] != [NSNull null] && [[datosOperacion objectForKey:@"ejecucion_riego"] isKindOfClass: [NSDictionary class]]) {
                     NSDictionary *datos = [datosOperacion objectForKey:@"ejecucion_riego"];
                     
                     SFEjecucionRiego *ejecucionRiego = [SFEjecucionRiego new];
@@ -436,21 +436,21 @@
                     if ([datos objectForKey:@"fechaHoraFinalizacion"]!= [NSNull null]) {
                         ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDDWithTime:datos[@"fechaHoraFinalizacion"]];
                     }
-                    if ([datos objectForKey:@""]!= [NSNull null]) {
+                    if ([datos objectForKey:@"fechaHoraFinalProgramada"]!= [NSNull null]) {
                         ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:datos[@"fechaHoraFinalProgramada"]];
                     }
                     
                     if ([datos objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
                         ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDDWithTime:datos[@"fechaHoraInicio"]];
                     }
-                    if ([datos objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
+                    if ([datos objectForKey:@"fechaHoraInicioProgramada"]!= [NSNull null]) {
                         ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:datos[@"fechaHoraInicioProgramada"]];
                     }
                     
                     respuesta.ejecucionRiego = ejecucionRiego;
                 }
                 
-                if ([datosOperacion objectForKey:@"configuracion_riego"] != [NSNull null]) {
+                if ([datosOperacion objectForKey:@"configuracion_riego"] != [NSNull null] && [[datosOperacion objectForKey:@"configuracion_riego"] isKindOfClass: [NSDictionary class]]) {
                     NSDictionary *datos = [datosOperacion objectForKey:@"configuracion_riego"];
                     
                     SFConfiguracionRiego *configuracionRiego = [SFConfiguracionRiego new];
@@ -779,14 +779,14 @@
                     if ([infoEjecucionRiego objectForKey:@"fechaHoraFinalizacion"]!= [NSNull null]) {
                         ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraFinalizacion"]];
                     }
-                    if ([infoEjecucionRiego objectForKey:@""]!= [NSNull null]) {
+                    if ([infoEjecucionRiego objectForKey:@"fechaHoraFinalProgramada"]!= [NSNull null]) {
                         ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraFinalProgramada"]];
                     }
                     
                     if ([infoEjecucionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
                         ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraInicio"]];
                     }
-                    if ([infoEjecucionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
+                    if ([infoEjecucionRiego objectForKey:@"fechaHoraInicioProgramada"]!= [NSNull null]) {
                         ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraInicioProgramada"]];
                     }
                     
@@ -877,7 +877,7 @@
                     
                     DTOMecanismoRiegoConfiguracion *nuevaInstancia = [DTOMecanismoRiegoConfiguracion new];
                     
-                    if ([datos objectForKey:@"mecanismo_riego_finca_sector"] != [NSNull null]) {
+                    if ([datos objectForKey:@"mecanismo_riego_finca_sector"] != [NSNull null] && [[datos objectForKey:@"mecanismo_riego_finca_sector"] isKindOfClass: [NSDictionary class]]) {
                         NSDictionary *infoMecanismoSector = [datos objectForKey:@"mecanismo_riego_finca_sector"];
                         
                         SFMecanismoRiegoFincaSector *mecanismoRiegoFincaSector = [SFMecanismoRiegoFincaSector new];
@@ -910,7 +910,7 @@
                         nuevaInstancia.mecanismoRiegoFincaSector = mecanismoRiegoFincaSector;
                     }
                     
-                    if ([datos objectForKey:@"ejecucion"] != [NSNull null]) {
+                    if ([datos objectForKey:@"ejecucion"] != [NSNull null] && [[datos objectForKey:@"ejecucion"] isKindOfClass: [NSDictionary class]]) {
                         NSDictionary *infoEjecucionRiego = [datos objectForKey:@"ejecucion"];
                         
                         SFEjecucionRiego *ejecucionRiego = [SFEjecucionRiego new];
@@ -943,21 +943,21 @@
                         if ([infoEjecucionRiego objectForKey:@"fechaHoraFinalizacion"]!= [NSNull null]) {
                             ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraFinalizacion"]];
                         }
-                        if ([infoEjecucionRiego objectForKey:@""]!= [NSNull null]) {
+                        if ([infoEjecucionRiego objectForKey:@"fechaHoraFinalProgramada"]!= [NSNull null]) {
                             ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraFinalProgramada"]];
                         }
                         
                         if ([infoEjecucionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
                             ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraInicio"]];
                         }
-                        if ([infoEjecucionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
+                        if ([infoEjecucionRiego objectForKey:@"fechaHoraInicioProgramada"]!= [NSNull null]) {
                             ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraInicioProgramada"]];
                         }
                         
                         nuevaInstancia.ejecucionRiego = ejecucionRiego;
                     }
                     
-                    if ([datos objectForKey:@"configuracion"] != [NSNull null]) {
+                    if ([datos objectForKey:@"configuracion"] != [NSNull null] && [[datos objectForKey:@"configuracion"] isKindOfClass: [NSDictionary class]]) {
                         NSDictionary *infoConfiguracionRiego = [datos objectForKey:@"configuracion"];
                         
                         SFConfiguracionRiego *configuracionRiego = [SFConfiguracionRiego new];
@@ -1027,6 +1027,10 @@
     if (solicitudObtenerInformeEventosPersonalizados) {
         [parametrosLlamada setObject:[NSNumber numberWithLong:solicitudObtenerInformeEventosPersonalizados.idFinca] forKey:KEY_ID_FINCA];
         [parametrosLlamada setObject:[NSNumber numberWithLong:solicitudObtenerInformeEventosPersonalizados.idConfiguracionEvento] forKey:KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO];
+        [parametrosLlamada setObject:[NSNumber numberWithLong:solicitudObtenerInformeEventosPersonalizados.idSector] forKey:KEY_ID_SECTOR];
+        
+        [parametrosLlamada setObject:[SFUtils formatDateYYYYMMDD: solicitudObtenerInformeEventosPersonalizados.fechaInicioSector] forKey:KEY_FECHA_INICIO_SECTOR];
+        [parametrosLlamada setObject:[SFUtils formatDateYYYYMMDD: solicitudObtenerInformeEventosPersonalizados.fechaFinSector] forKey:KEY_FECHA_FIN_SECTOR];
     }
     
     [[HTTPConector instance] httpOperation:OPERATION_OBTENER_INFORME_EVENTOS_PERSONALIZADOS method:METHOD_POST withParameters:parametrosLlamada completionBlock:^(NSDictionary *responseObject) {
@@ -1097,27 +1101,28 @@
                 
                 NSMutableArray *listaInstancias = [NSMutableArray new];
                 
-                for (NSDictionary *datos in datosOperacion) {
-                    
-                    SFOcurrenciaEventoPersonalizado *nuevaInstancia = [SFOcurrenciaEventoPersonalizado new];
-                    
-                    if ([datos objectForKey:@"nroEvento"] != [NSNull null]) {
-                        nuevaInstancia.nroEvento = [[datos objectForKey:@"nroEvento"] integerValue];
+                if ([datosOperacion isKindOfClass:[NSDictionary class]] && [datosOperacion objectForKey:@"dto_evento_lista"] != [NSNull null]) {
+                    for (NSDictionary *datos in datosOperacion[@"dto_evento_lista"]) {
+                        
+                        SFOcurrenciaEventoPersonalizado *nuevaInstancia = [SFOcurrenciaEventoPersonalizado new];
+                        
+                        if ([datos objectForKey:@"nroEvento"] != [NSNull null]) {
+                            nuevaInstancia.nroEvento = [[datos objectForKey:@"nroEvento"] integerValue];
+                        }
+                        
+                        if ([datos objectForKey:@"numeroSector"] != [NSNull null]) {
+                            nuevaInstancia.numeroSector = [[datos objectForKey:@"numeroSector"] integerValue];
+                        }
+                        
+                        if ([datos objectForKey:@"fechaHora"] != [NSNull null]) {
+                            nuevaInstancia.fechaYHora = [SFUtils dateFromStringYYYYMMDDWithTime: datos[@"fechaHora"]];
+                        }
+                        
+                        [listaInstancias addObject:nuevaInstancia];
                     }
                     
-                    if ([datos objectForKey:@"numeroSector"] != [NSNull null]) {
-                        nuevaInstancia.numeroSector = [[datos objectForKey:@"numeroSector"] integerValue];
-                    }
-                    
-                    if ([datos objectForKey:@"fechaHora"] != [NSNull null]) {
-                        nuevaInstancia.fechaYHora = [SFUtils dateFromStringYYYYMMDDWithTime: datos[@"fechaHora"]];
-                    }
-                    
-                    [listaInstancias addObject:nuevaInstancia];
+                    respuesta.listaOcurrenciasHelada = [NSArray arrayWithArray:listaInstancias];
                 }
-                
-                respuesta.listaOcurrenciasHelada = [NSArray arrayWithArray:listaInstancias];
-                
             } @catch (NSException *exception) {
                 completionBlock(respuesta);
             }
@@ -1223,14 +1228,14 @@
                         if ([infoEjecucionRiego objectForKey:@"fechaHoraFinalizacion"]!= [NSNull null]) {
                             ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraFinalizacion"]];
                         }
-                        if ([infoEjecucionRiego objectForKey:@""]!= [NSNull null]) {
+                        if ([infoEjecucionRiego objectForKey:@"fechaHoraFinalProgramada"]!= [NSNull null]) {
                             ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraFinalProgramada"]];
                         }
                         
                         if ([infoEjecucionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
                             ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraInicio"]];
                         }
-                        if ([infoEjecucionRiego objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
+                        if ([infoEjecucionRiego objectForKey:@"fechaHoraInicioProgramada"]!= [NSNull null]) {
                             ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:infoEjecucionRiego[@"fechaHoraInicioProgramada"]];
                         }
                         

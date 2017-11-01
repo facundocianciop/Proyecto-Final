@@ -15,5 +15,7 @@
 
 @property (strong, nonatomic) SFSectorFinca *sector;
 @property (strong, nonatomic) SFConfiguracionEvento *configuracionEvento;
+@property (strong, nonatomic) NSDate *fechaInicioSector;
+@property (strong, nonatomic) NSDate *fechaFinSector;
 
 @end
