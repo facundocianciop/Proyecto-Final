@@ -159,7 +159,12 @@ urlpatterns = [
         name='pausarRiegoManualmente'),
     url(r'^cancelarRiegoManualmente/$', views_modulo_configuracion_riego.cancelar_riego_manualente,
         name='cancelarRiegoManualmente'),
-
+    url(r'^buscarConfiguracionRiegoId/$',
+        views_modulo_configuracion_riego.buscar_configuracion_riego_id,
+        name='buscarConfiguracionRiegoId'),
+    url(r'^buscarCriterioId/$',
+        views_modulo_configuracion_riego.buscar_criterio_id,
+        name='buscarCriterioId'),
     url(r'^obtenerConfiguracionesRiegoMecanismoRiegoFincaSector/$',
         views_modulo_configuracion_riego.obtener_configuraciones_riego_mecanismo_riego_finca_sector,
         name='obtenerConfiguracionesRiegoMecanismoRiegoFincaSector'),
