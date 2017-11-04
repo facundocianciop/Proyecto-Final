@@ -1204,7 +1204,7 @@ class Sensor(models.Model):
             fechaAltaSensor=parsear_fecha_a_hora_arg(self.fechaAltaSensor),
             fechaBajaSensor=parsear_fecha_a_hora_arg(self.fechaBajaSensor),
             habilitado=str(self.habilitado),
-            modelo=(self.modelo),
+            modelo=self.modelo,
             tipoMedicion=self.tipoMedicion.nombreTipoMedicion
         )
 
@@ -1408,7 +1408,6 @@ class ConfiguracionEventoPersonalizado(models.Model):
             fechaHoraCreacion=parsear_fecha_a_hora_arg(self.fechaHoraCreacion),
             sectores=[sector.numeroSector for sector in self.sectorList.all()]
         )
-
 
 
 class EventoPersonalizado(models.Model):

@@ -502,6 +502,15 @@
                                     <segue destination="S1d-eU-08y" kind="show" identifier="SFNavegarAReporteHeladasSegue" id="knZ-fR-gOv"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Para acceder a informes históricos, por favor utilice el sistema web." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aYk-g1-9nB">
+                                <rect key="frame" x="16" y="445" width="288" height="73"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="73" id="lW4-jG-qk8"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -510,7 +519,10 @@
                             <constraint firstItem="D5L-Ke-etl" firstAttribute="top" secondItem="Mle-MZ-fH1" secondAttribute="top" constant="22" id="9ki-67-nCF"/>
                             <constraint firstItem="YZB-9g-6LV" firstAttribute="centerX" secondItem="d1O-60-2yw" secondAttribute="centerX" id="BQ6-tq-dxy"/>
                             <constraint firstItem="kP4-FH-rtW" firstAttribute="top" secondItem="YZB-9g-6LV" secondAttribute="bottom" constant="8" id="YZT-hb-bgM"/>
+                            <constraint firstItem="Mle-MZ-fH1" firstAttribute="bottom" secondItem="aYk-g1-9nB" secondAttribute="bottom" constant="50" id="mVf-RO-QUD"/>
                             <constraint firstItem="D5L-Ke-etl" firstAttribute="centerX" secondItem="d1O-60-2yw" secondAttribute="centerX" id="o2e-k4-olq"/>
+                            <constraint firstItem="aYk-g1-9nB" firstAttribute="leading" secondItem="Mle-MZ-fH1" secondAttribute="leading" constant="16" id="pJX-pz-yQm"/>
+                            <constraint firstItem="Mle-MZ-fH1" firstAttribute="trailing" secondItem="aYk-g1-9nB" secondAttribute="trailing" constant="16" id="uBm-HC-LMf"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Mle-MZ-fH1"/>
                     </view>
@@ -3603,7 +3615,7 @@
                                     <constraint firstAttribute="height" constant="6" id="W3f-ax-1oP"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UMC-qO-bcp">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UMC-qO-bcp">
                                 <rect key="frame" x="0.0" y="70" width="320" height="498"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>

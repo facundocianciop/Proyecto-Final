@@ -302,15 +302,19 @@ def enviar_notificacion_evento_personalizado(oid_configuracion_evento, mensaje=N
         OIDConfiguracionEventoPersonalizado=oid_configuracion_evento
     )
 
+    configuracion_evento_personalizado.sectorList.all()
     if configuracion_evento_personalizado.notificacionActivada:
-        for usuario_finca in configuracion_evento_personalizado.usuariofinca_set.all():
-            email = usuario_finca.usuario.user.email
-            if mensaje is not None:
-                enviar_email(titulo="Notificacion Evento Personalizado", mensaje=mensaje, destino=email)
-            else:
-                mensaje = "Notificacion de evento: " + configuracion_evento_personalizado.nombre
-                enviar_email(titulo="Notificacion Evento Personalizado", mensaje=mensaje, destino=email)
-            print "email enviado"
+        for usuario_finca_configuracion in configuracion_evento_personalizado.usuariofinca_set.all():
+
+            usuarios_finca = UsuarioFinca.objects.filter(finca=usuario_finca_configuracion.finca)
+            for usuario_finca in usuarios_finca:
+                email = usuario_finca.usuario.user.email
+                if mensaje is not None:
+                    enviar_email(titulo="Notificacion Evento Personalizado", mensaje=mensaje, destino=email)
+                else:
+                    mensaje = "Notificacion de evento: " + configuracion_evento_personalizado.nombre
+                    enviar_email(titulo="Notificacion Evento Personalizado", mensaje=mensaje, destino=email)
+                print "email enviado"
 
 
 def enviar_notificacion_riego(oid_ejecucion_riego, mensaje=None):
