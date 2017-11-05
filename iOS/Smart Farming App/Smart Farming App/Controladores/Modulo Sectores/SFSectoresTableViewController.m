@@ -9,9 +9,11 @@
 #import "SFSectoresTableViewController.h"
 
 #import "ServiciosModuloSectores.h"
+#import "SFDetallesSectorViewController.h"
 
 @interface SFSectoresTableViewController ()
 
+@property (strong, nonatomic) SFSectorFinca *sector;
 
 @property (strong, nonatomic) IBOutlet UITableView *sectoresTableView;
 @property (strong, nonatomic) IBOutlet UILabel *emptySectoresTVMessage;
@@ -24,7 +26,6 @@
     [super viewDidLoad];
     
     [self configurarTabla];
-    
     [self cargaInicialDatos];
 }
 
@@ -33,15 +34,23 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
- #pragma mark - Navigation
+#pragma mark - Navigation
  
  // In a storyboard-based application, you will often want to do a little preparation before navigation
  - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
  // Get the new view controller using [segue destinationViewController].
  // Pass the selected object to the new view controller.
+     
+     if ([[segue identifier] isEqualToString:kSFNavegarAInfoSectorSegue])
+     {
+         // Get reference to the destination view controller
+         SFDetallesSectorViewController *vc = [segue destinationViewController];
+         
+         // Pass any objects to the view controller here, like...
+         vc.sector = self.sector;
+     }
  }
- */
+
 
 #pragma mark - obtener datos
 
@@ -113,6 +122,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    self.sector = self.tableViewItemsArray[indexPath.row];
     [self performSegueWithIdentifier:kSFNavegarAInfoSectorSegue sender:self];
     
 }

@@ -19,8 +19,8 @@
 @implementation FincaLeftMenuTableViewController
 
 static NSString *kMenuItemSectores = @"CellSectores";
-static NSString *kMenuItemSensores = @"CellSensores";
 static NSString *kMenuItemRiego = @"CellRiego";
+static NSString *kMenuItemEventos = @"CellEventos";
 static NSString *kMenuItemReportes = @"CellReportes";
 static NSString *kMenuItemVolver = @"CellVolver";
 
@@ -62,11 +62,11 @@ static NSString *kMenuItemVolver = @"CellVolver";
         [mainViewController performSegueWithIdentifier:kSFNavegarASectoresFincaSegue sender:self];
         
     }
-    else if ([cell.reuseIdentifier isEqualToString:kMenuItemSensores]) {
-        [mainViewController performSegueWithIdentifier:kSFNavegarASensoresFincaSegue sender:self];
-    }
     else if ([cell.reuseIdentifier isEqualToString:kMenuItemRiego]) {
         [mainViewController performSegueWithIdentifier:kSFNavegarAMecanismosRiegoFincaSegue sender:self];
+    }
+    else if ([cell.reuseIdentifier isEqualToString:kMenuItemEventos]) {
+        [mainViewController performSegueWithIdentifier:kSFNavegarAConfiguracionEventoSegue sender:self];
     }
     else if ([cell.reuseIdentifier isEqualToString:kMenuItemReportes]) {
         [mainViewController performSegueWithIdentifier:kSFNavegarReportesFincaSegue sender:self];

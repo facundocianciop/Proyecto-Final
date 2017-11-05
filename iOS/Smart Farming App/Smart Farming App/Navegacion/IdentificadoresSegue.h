@@ -25,6 +25,7 @@ extern NSString *const kSFNavegarASeccionFincaSegue;
 
 extern NSString *const kSFNavegarASectoresFincaSegue;
 extern NSString *const kSFNavegarASensoresFincaSegue;
+extern NSString *const kSFNavegarAConfiguracionEventoSegue;
 extern NSString *const kSFNavegarAMecanismosRiegoFincaSegue;
 extern NSString *const kSFNavegarReportesFincaSegue;
 
@@ -33,21 +34,41 @@ extern NSString *const kSFNavegarReportesFincaSegue;
 extern NSString *const kSFNavegarAInfoSectorSegue;
 extern NSString *const kSFNavegarAInfoMecanismoRiegoSectorSegue;
 
-#pragma mark - Modulo Sensores
+extern NSString *const kSFNavegarAInfoCultivoSectorSegue;
+extern NSString *const kSFNavegarAInfoMecanismoRiegoSectorSegue;
+extern NSString *const kSFNavegarAInfoComponenteSensorSector;
 
+extern NSString *const kSFNavegarConfiguracionesRiegoSegue;
+extern NSString *const kSFNavegarCriteriosRiegoSegue;
+
+#pragma mark - Modulo Sensores
 
 
 #pragma mark - Modulo Riego
 
+extern NSString *const kSFNavegarInfoEjecucionRiego;
 
+#pragma mark - Modulo Reportes - Configuracion eventos
+
+extern NSString *const kSFNavegarAMedicionesConfiguracionEvento;
 
 #pragma mark - Modulo Reportes
 
-extern NSString *const kSFNavegarAReporteTipo1Segue;
-extern NSString *const kSFNavegarAReporteTipo2Segue;
-extern NSString *const kSFNavegarAReporteTipo3Segue;
-extern NSString *const kSFNavegarAReporteTipo4Segue;
-extern NSString *const kSFNavegarAReporteTipo5Segue;
-extern NSString *const kSFNavegarAReporteTipo6Segue;
+extern NSString *const kSFNavegarAReporteEstadoSectorSegue;
+extern NSString *const kSFNavegarAReporteEventosPersonalizadosSegue;
+extern NSString *const kSFNavegarAReporteHeladasSegue;
+extern NSString *const kSFNavegarAReporteRiegoEnEjecucionSegue;
+
+
+extern NSString *const kSFNavegarAReporteEstadoSectorDetalleSegue;
+extern NSString *const kSFNavegarAReporteEstadoActualEjecucionSegue;
+extern NSString *const kSFNavegarAReporteEstadoActualMedicionSegue;
+
+extern NSString *const kSFNavegarAReporteEventosPersonalizadosConfiguracionSegue;
+extern NSString *const kSFNavegarAReporteEventosPersonalizadosFechasSegue;
+extern NSString *const kSFNavegarAReporteEventosPersonalizadosRegistradosSegue;
+
+extern NSString *const kSFNavegarAReporteHeladasSeleccionarFechaSegue;
+extern NSString *const kSFNavegarAReporteHeladasEventosSegue;
 
 @end

@@ -65,17 +65,17 @@
                 }
                 
                 if ([datosOperacion objectForKey:@"fechaHoraFinalizacion"]!= [NSNull null]) {
-                    ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDD:datosOperacion[@"fechaHoraFinalizacion"]];
+                    ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDDWithTime:datosOperacion[@"fechaHoraFinalizacion"]];
                 }
-                if ([datosOperacion objectForKey:@""]!= [NSNull null]) {
-                    ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDD:datosOperacion[@"fechaHoraFinalProgramada"]];
+                if ([datosOperacion objectForKey:@"fechaHoraFinalProgramada"]!= [NSNull null]) {
+                    ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:datosOperacion[@"fechaHoraFinalProgramada"]];
                 }
                 
                 if ([datosOperacion objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
-                    ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDD:datosOperacion[@"fechaHoraInicio"]];
+                    ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDDWithTime:datosOperacion[@"fechaHoraInicio"]];
                 }
-                if ([datosOperacion objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
-                    ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDD:datosOperacion[@"fechaHoraInicioProgramada"]];
+                if ([datosOperacion objectForKey:@"fechaHoraInicioProgramada"]!= [NSNull null]) {
+                    ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:datosOperacion[@"fechaHoraInicioProgramada"]];
                 }
          
                 respuesta.ejecucionRiego = ejecucionRiego;
@@ -137,17 +137,17 @@
                 }
                 
                 if ([datosOperacion objectForKey:@"fechaHoraFinalizacion"]!= [NSNull null]) {
-                    ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDD:datosOperacion[@"fechaHoraFinalizacion"]];
+                    ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDDWithTime:datosOperacion[@"fechaHoraFinalizacion"]];
                 }
-                if ([datosOperacion objectForKey:@""]!= [NSNull null]) {
-                    ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDD:datosOperacion[@"fechaHoraFinalProgramada"]];
+                if ([datosOperacion objectForKey:@"fechaHoraFinalProgramada"]!= [NSNull null]) {
+                    ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:datosOperacion[@"fechaHoraFinalProgramada"]];
                 }
                 
                 if ([datosOperacion objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
-                    ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDD:datosOperacion[@"fechaHoraInicio"]];
+                    ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDDWithTime:datosOperacion[@"fechaHoraInicio"]];
                 }
-                if ([datosOperacion objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
-                    ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDD:datosOperacion[@"fechaHoraInicioProgramada"]];
+                if ([datosOperacion objectForKey:@"fechaHoraInicioProgramada"]!= [NSNull null]) {
+                    ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:datosOperacion[@"fechaHoraInicioProgramada"]];
                 }
                 
                 respuesta.ejecucionRiego = ejecucionRiego;
@@ -209,17 +209,17 @@
                 }
                 
                 if ([datosOperacion objectForKey:@"fechaHoraFinalizacion"]!= [NSNull null]) {
-                    ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDD:datosOperacion[@"fechaHoraFinalizacion"]];
+                    ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDDWithTime:datosOperacion[@"fechaHoraFinalizacion"]];
                 }
-                if ([datosOperacion objectForKey:@""]!= [NSNull null]) {
-                    ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDD:datosOperacion[@"fechaHoraFinalProgramada"]];
+                if ([datosOperacion objectForKey:@"fechaHoraFinalProgramada"]!= [NSNull null]) {
+                    ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:datosOperacion[@"fechaHoraFinalProgramada"]];
                 }
                 
                 if ([datosOperacion objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
-                    ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDD:datosOperacion[@"fechaHoraInicio"]];
+                    ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDDWithTime:datosOperacion[@"fechaHoraInicio"]];
                 }
-                if ([datosOperacion objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
-                    ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDD:datosOperacion[@"fechaHoraInicioProgramada"]];
+                if ([datosOperacion objectForKey:@"fechaHoraInicioProgramada"]!= [NSNull null]) {
+                    ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:datosOperacion[@"fechaHoraInicioProgramada"]];
                 }
                 
                 respuesta.ejecucionRiego = ejecucionRiego;
@@ -281,17 +281,17 @@
                 }
                 
                 if ([datosOperacion objectForKey:@"fechaHoraFinalizacion"]!= [NSNull null]) {
-                    ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDD:datosOperacion[@"fechaHoraFinalizacion"]];
+                    ejecucionRiego.fechaHoraFinalizacion = [SFUtils dateFromStringYYYYMMDDWithTime:datosOperacion[@"fechaHoraFinalizacion"]];
                 }
-                if ([datosOperacion objectForKey:@""]!= [NSNull null]) {
-                    ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDD:datosOperacion[@"fechaHoraFinalProgramada"]];
+                if ([datosOperacion objectForKey:@"fechaHoraFinalProgramada"]!= [NSNull null]) {
+                    ejecucionRiego.fechaHoraFinalProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:datosOperacion[@"fechaHoraFinalProgramada"]];
                 }
                 
                 if ([datosOperacion objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
-                    ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDD:datosOperacion[@"fechaHoraInicio"]];
+                    ejecucionRiego.fechaHoraInicio = [SFUtils dateFromStringYYYYMMDDWithTime:datosOperacion[@"fechaHoraInicio"]];
                 }
-                if ([datosOperacion objectForKey:@"fechaHoraInicio"]!= [NSNull null]) {
-                    ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDD:datosOperacion[@"fechaHoraInicioProgramada"]];
+                if ([datosOperacion objectForKey:@"fechaHoraInicioProgramada"]!= [NSNull null]) {
+                    ejecucionRiego.fechaHoraInicioProgramada = [SFUtils dateFromStringYYYYMMDDWithTime:datosOperacion[@"fechaHoraInicioProgramada"]];
                 }
                 
                 respuesta.ejecucionRiego = ejecucionRiego;
@@ -445,7 +445,7 @@
                         }
                         
                         if ([datos objectForKey:@"operador"] != [NSNull null]) {
-                            criterioConfiguracion.operador = [[datos objectForKey:@"operador"] integerValue];
+                            criterioConfiguracion.operador = [datos objectForKey:@"operador"];
                         }
                         if ([datos objectForKey:@"valor"] != [NSNull null]) {
                             criterioConfiguracion.valor = [[datos objectForKey:@"valor"] floatValue];
@@ -587,7 +587,7 @@
                         }
                         
                         if ([datos objectForKey:@"operador"] != [NSNull null]) {
-                            criterioConfiguracion.operador = [[datos objectForKey:@"operador"] integerValue];
+                            criterioConfiguracion.operador = [datos objectForKey:@"operador"];
                         }
                         if ([datos objectForKey:@"valor"] != [NSNull null]) {
                             criterioConfiguracion.valor = [[datos objectForKey:@"valor"] floatValue];

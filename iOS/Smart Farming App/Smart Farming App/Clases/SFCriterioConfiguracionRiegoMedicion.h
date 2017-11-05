@@ -13,7 +13,7 @@
 @property (strong, nonatomic) NSString *unidadMedicion; // unidadMedicion
 @property (strong, nonatomic) NSString *nombreTipoMedicion; // tipoMedicion
 
-@property (assign, nonatomic) NSInteger operador; //operador
+@property (assign, nonatomic) NSString *operador; //operador
 @property (assign, nonatomic) CGFloat valor; // valor
 
 @end

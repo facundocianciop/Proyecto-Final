@@ -159,11 +159,11 @@
                     cultivoSector.subTipoCultivo = [datosOperacion objectForKey:KEY_SUBTIPO_CULTIVO_SECTOR];
                 }
                 if ([datosOperacion objectForKey:KEY_TIPO_CULTIVO_SECTOR] != [NSNull null]) {
-                    cultivoSector.subTipoCultivo = [datosOperacion objectForKey:KEY_TIPO_CULTIVO_SECTOR];
+                    cultivoSector.tipoCultivo = [datosOperacion objectForKey:KEY_TIPO_CULTIVO_SECTOR];
                 }
                 
                 if ([datosOperacion objectForKey:KEY_FECHA_PLANTACION_CULTIVO_SECTOR] != [NSNull null]) {
-                    cultivoSector.fechaPlantacionCultivoSector = [SFUtils dateFromStringYYYYMMDD:datosOperacion[KEY_FECHA_PLANTACION_CULTIVO_SECTOR]];
+                    cultivoSector.fechaPlantacionCultivoSector = [SFUtils dateFromStringYYYYMMDDWithTime:datosOperacion[KEY_FECHA_PLANTACION_CULTIVO_SECTOR]];
                 }
                 if ([datosOperacion objectForKey:KEY_FECHA_ELIMINACION_CULTIVO_SECTOR] != [NSNull null]) {
                     cultivoSector.fechaEliminacionCultivoSector = [SFUtils dateFromStringYYYYMMDD:datosOperacion[KEY_FECHA_ELIMINACION_CULTIVO_SECTOR]];

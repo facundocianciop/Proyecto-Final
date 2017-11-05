@@ -8,6 +8,10 @@
 
 #import "SFViewControllerBase.h"
 
+#import "SFMecanismoRiegoFincaSector.h"
+
 @interface SFDetallesMecanismoRiegoViewController : SFViewControllerBase
+
+@property (strong, nonatomic) SFMecanismoRiegoFincaSector *mecanismoRiego;
 
 @end

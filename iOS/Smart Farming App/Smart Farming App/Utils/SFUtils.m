@@ -54,6 +54,12 @@
     return [dateFormat stringFromDate:aDate];
 }
 
++(NSString *)formatDateDDMMYYYYTime:(NSDate *) aDate {
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"dd/MM/YYYY - HH:mm:ss"];
+    return [dateFormat stringFromDate:aDate];
+}
+
 +(NSDate *)dateFromStringYYYYMMDD:(NSString *) dateString {
     // Convert string to date object
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
@@ -61,7 +67,18 @@
     return [dateFormat dateFromString:dateString];
 }
 
-
++(NSDate *)dateFromStringYYYYMMDDWithTime:(NSString *) dateString {
+    // Convert string to date object
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZ"];
+    [dateFormat setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"America/Argentina/Buenos_Aires"]];
+    NSDate *newDate = [dateFormat dateFromString:dateString];
+    if (!newDate) {
+        [dateFormat setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
+        newDate = [dateFormat dateFromString:dateString];
+    }
+    return newDate;
+}
 
 
 @end
