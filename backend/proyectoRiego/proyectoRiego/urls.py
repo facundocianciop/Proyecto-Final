@@ -14,17 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 
-from django.conf.urls import include,url
-from django.contrib import admin
-
+from django.conf.urls import include, url
 from django.utils.translation import ugettext_lazy as _
-from riegoInteligente.views import views_administrador
+
+from riegoInteligente.admin import admin_site
+
 
 urlpatterns = [
     url(r'^riegoInteligente/', include('riegoInteligente.urls')),
-    url(r'^admin/riegoInteligente/fincasPorAprobar/', views_administrador.fincas_por_aprobar, name='fincasPorAprobar'),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', include(admin_site.urls)),
 ]
-
-admin.site.site_header = _("Smart Farming")
-admin.site.site_title = _("Administracion Smart Farming")

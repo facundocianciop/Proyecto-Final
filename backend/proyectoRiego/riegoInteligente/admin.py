@@ -1,47 +1,72 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.contrib import admin
+from django.conf.urls import url
+from django.contrib.admin import AdminSite
+
 from models import *
+from riegoInteligente.views import views_administrador
 
 
-admin.site.register(DatosUsuario)
-admin.site.register(SesionUsuario)
-admin.site.register(Finca)
-admin.site.register(Rol)
-admin.site.register(ConjuntoPermisos)
-admin.site.register(ProveedorInformacionClimatica)
+class SmartFarmingAdminSite(AdminSite):
+    site_header = 'Smart Farming'
+    site_title = 'Administracion Smart Farming'
 
-admin.site.register(ConfiguracionEventoPersonalizado)
-admin.site.register(MedicionEstadoExterno)
-admin.site.register(MedicionFuenteInterna)
+    def get_urls(self):
+        urls = super(SmartFarmingAdminSite, self).get_urls()
+        my_urls = [
+            url(r'^riegoInteligente/fincasPorAprobar/', self.admin_view(views_administrador.fincas_por_aprobar),
+                name='fincasPorAprobar'),
+            url(r'^riegoInteligente/aprobarFinca/(?P<idFinca>[0-9]+)/$', self.admin_view(views_administrador.aprobar_finca),
+                name='aprobarFinca'),
+            url(r'^riegoInteligente/noAprobarFinca/(?P<idFinca>[0-9]+)/$', self.admin_view(views_administrador.no_aprobar_finca),
+                name='noAprobarFinca'),
+        ]
+        return my_urls + urls
 
-admin.site.register(TipoSesion)
-admin.site.register(TipoCultivo)
-admin.site.register(SubtipoCultivo)
-admin.site.register(TipoMecanismoRiego)
-admin.site.register(TipoMedicion)
-admin.site.register(TipoMedicionClimatica)
-admin.site.register(TipoConfiguracionRiego)
+
+admin_site = SmartFarmingAdminSite(name='admin')
+
+
+admin_site.register(User)
+
+admin_site.register(DatosUsuario)
+admin_site.register(SesionUsuario)
+admin_site.register(Finca)
+admin_site.register(Rol)
+admin_site.register(ConjuntoPermisos)
+admin_site.register(ProveedorInformacionClimatica)
+
+admin_site.register(ConfiguracionEventoPersonalizado)
+admin_site.register(MedicionEstadoExterno)
+admin_site.register(MedicionFuenteInterna)
+
+admin_site.register(TipoSesion)
+admin_site.register(TipoCultivo)
+admin_site.register(SubtipoCultivo)
+admin_site.register(TipoMecanismoRiego)
+admin_site.register(TipoMedicion)
+admin_site.register(TipoMedicionClimatica)
+admin_site.register(TipoConfiguracionRiego)
 
 # Historicos
-admin.site.register(HistoricoEstadoUsuario)
-admin.site.register(HistoricoEstadoFinca)
-admin.site.register(HistoricoMecanismoRiegoFinca)
-admin.site.register(HistoricoEstadoSector)
-admin.site.register(HistoricoMecanismoRiegoFincaSector)
-admin.site.register(HistoricoEstadoComponenteSensor)
-admin.site.register(HistoricoEstadoConfiguracionRiego)
-admin.site.register(HistoricoEstadoComponenteSensorSector)
+admin_site.register(HistoricoEstadoUsuario)
+admin_site.register(HistoricoEstadoFinca)
+admin_site.register(HistoricoMecanismoRiegoFinca)
+admin_site.register(HistoricoEstadoSector)
+admin_site.register(HistoricoMecanismoRiegoFincaSector)
+admin_site.register(HistoricoEstadoComponenteSensor)
+admin_site.register(HistoricoEstadoConfiguracionRiego)
+admin_site.register(HistoricoEstadoComponenteSensorSector)
 
 
 # ABM de Estados: no estan como CU. Decidir si dejarlos. Los estados deberian ser fijos
-admin.site.register(EstadoUsuario)
-admin.site.register(EstadoFinca)
-admin.site.register(EstadoMecanismoRiegoFinca)
-admin.site.register(EstadoSector)
-admin.site.register(EstadoMecanismoRiegoFincaSector)
-admin.site.register(EstadoConfiguracionRiego)
-admin.site.register(EstadoEjecucionRiego)
-admin.site.register(EstadoComponenteSensor)
-admin.site.register(EstadoComponenteSensorSector)
+admin_site.register(EstadoUsuario)
+admin_site.register(EstadoFinca)
+admin_site.register(EstadoMecanismoRiegoFinca)
+admin_site.register(EstadoSector)
+admin_site.register(EstadoMecanismoRiegoFincaSector)
+admin_site.register(EstadoConfiguracionRiego)
+admin_site.register(EstadoEjecucionRiego)
+admin_site.register(EstadoComponenteSensor)
+admin_site.register(EstadoComponenteSensorSector)

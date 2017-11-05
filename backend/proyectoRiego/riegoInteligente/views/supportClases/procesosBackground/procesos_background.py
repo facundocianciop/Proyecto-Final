@@ -40,8 +40,9 @@ def comprobar_incio_riego_criterio_hora():
             riego_en_ejecucion = obtener_riego_en_ejecucion_mecanismo_riego_finca_sector(
                 mecanismo_riego_finca_sector.idMecanismoRiegoFincaSector)
 
-            configuraciones_riego_habilitadas = obtener_configuraciones_riego_mecanismo_finca_sector_programados_habilitados(
-                mecanismo_riego_finca_sector.idMecanismoRiegoFincaSector)
+            configuraciones_riego_habilitadas = \
+                obtener_configuraciones_riego_mecanismo_finca_sector_programados_habilitados(
+                    mecanismo_riego_finca_sector.idMecanismoRiegoFincaSector)
 
             for configuracion_riego in configuraciones_riego_habilitadas:
                 print "Comprobando configuraciones de riego: " + str(configuracion_riego)

@@ -606,7 +606,7 @@
                                     <constraint firstAttribute="height" constant="6" id="ZSr-yJ-k18"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="La finca no tiene mecanismos de riego" textAlignment="center" lineBreakMode="wordWrap" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NMR-b4-GTv">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="La finca no tiene mecanismos de riego" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NMR-b4-GTv">
                                 <rect key="frame" x="0.0" y="70" width="320" height="498"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
