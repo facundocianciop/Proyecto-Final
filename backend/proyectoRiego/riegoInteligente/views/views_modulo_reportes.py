@@ -1132,7 +1132,8 @@ def obtener_informe_cruzado_riego_mediciones_(request):
             if mecanismos_riego_sector.__len__() != 0:
                 for mecanismo in mecanismos_riego_sector:
                     ejecuciones_riego = mecanismo.ejecucionRiegoList.filter(fecha_hora_inicio__gte=fecha_inicio_sector,
-                                                                            fecha_hora_inicio__lte=fecha_fin_sector)
+                                                                            fecha_hora_inicio__lte=fecha_fin_sector,
+                                                                            fecha_hora_finalizacion__isnull=False)
                     for ejecucion in ejecuciones_riego:
                         medicion_cabecera_antes = ""
                         medicion_cabecera_despues = ""
