@@ -375,8 +375,8 @@
                         ultimaMedicion.fechaYHora = [SFUtils dateFromStringYYYYMMDDWithTime: datos[@"fecha_y_hora"]];
                     }
                     
-                    if ([datos objectForKey:@"lista_mediciones_detalle"]!= [NSNull null]  && [[datos objectForKey:@"lista_mediciones_detalle"] isKindOfClass: [NSDictionary class]]) {
-                        NSDictionary *listaInfoDetallesMediones = [datos objectForKey:@"lista_mediciones_detalle"];
+                    if ([datos objectForKey:@"lista_mediciones_detalle"]!= [NSNull null]  && [[datos objectForKey:@"lista_mediciones_detalle"] isKindOfClass: [NSArray class]]) {
+                        NSArray *listaInfoDetallesMediones = [datos objectForKey:@"lista_mediciones_detalle"];
                         
                         NSMutableArray *listaDetallesMediciones = [NSMutableArray new];
                         
