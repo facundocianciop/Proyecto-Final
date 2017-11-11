@@ -121,8 +121,8 @@
                 if ([datos objectForKey:KEY_ID_FINCA] != [NSNull null]) {
                     finca.idFinca = [[datos objectForKey:KEY_ID_FINCA] longLongValue];
                 }
-                if ([datos objectForKey:KEY_NOMBRE_FINCA_RESPUESTA] != [NSNull null]) {
-                    finca.nombre = [datos objectForKey:KEY_NOMBRE_FINCA_RESPUESTA];
+                if ([datos objectForKey:KEY_NOMBRE_FINCA] != [NSNull null]) {
+                    finca.nombre = [datos objectForKey:KEY_NOMBRE_FINCA];
                 }
                 
                 if ([datos objectForKey:KEY_TAMANIO] != [NSNull null]) {

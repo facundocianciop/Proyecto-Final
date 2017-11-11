@@ -892,7 +892,7 @@ def obtener_informe_historico_sector(request):
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
         if (KEY_ID_SECTOR in datos) and (KEY_FECHA_INICIO_SECTOR in datos) and (KEY_FECHA_FIN_SECTOR in datos):
             if datos[KEY_ID_SECTOR] == '' or datos[KEY_FECHA_INICIO_SECTOR] == '' or datos[KEY_FECHA_FIN_SECTOR] == '':
-                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCORRECTOS)
             if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
                 raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encuentra un sector con ese id")
             estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
@@ -960,7 +960,7 @@ def obtener_informe_riego_historico_sector(request):
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
         if (KEY_ID_SECTOR in datos) and (KEY_FECHA_INICIO_SECTOR in datos) and (KEY_FECHA_FIN_SECTOR in datos):
             if datos[KEY_ID_SECTOR] == '' or datos[KEY_FECHA_INICIO_SECTOR] == '' or datos[KEY_FECHA_FIN_SECTOR] == '':
-                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCORRECTOS)
             if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
                 raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encuentra un sector con ese id")
             estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
@@ -1018,7 +1018,7 @@ def obtener_informe_eventos_personalizados(request):
                 (KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO in datos):
             if datos[KEY_ID_SECTOR] == '' or datos[KEY_FECHA_INICIO_SECTOR] == '' or datos[KEY_FECHA_FIN_SECTOR] == '' \
                     or datos[KEY_ID_CONFIGURACION_EVENTO_PERSONALIZADO] == '':
-                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCORRECTOS)
             if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
                 raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encuentra un sector con ese id")
             if ConfiguracionEventoPersonalizado.objects.filter(
@@ -1066,7 +1066,7 @@ def obtener_informe_historico_heladas(request):
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
         if (KEY_ID_SECTOR in datos) and (KEY_FECHA_INICIO_SECTOR in datos) and (KEY_FECHA_FIN_SECTOR in datos):
             if datos[KEY_ID_SECTOR] == '' or datos[KEY_FECHA_INICIO_SECTOR] == '' or datos[KEY_FECHA_FIN_SECTOR] == '':
-                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCORRECTOS)
             if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
                 raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encuentra un sector con ese id")
             sector = Sector.objects.get(idSector=datos[KEY_ID_SECTOR])
@@ -1115,7 +1115,7 @@ def obtener_informe_cruzado_riego_mediciones_(request):
             raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
         if (KEY_ID_SECTOR in datos) and (KEY_FECHA_INICIO_SECTOR in datos) and (KEY_FECHA_FIN_SECTOR in datos):
             if datos[KEY_ID_SECTOR] == '' or datos[KEY_FECHA_INICIO_SECTOR] == '' or datos[KEY_FECHA_FIN_SECTOR] == '':
-                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+                raise ValueError(ERROR_DATOS_FALTANTES, DETALLE_ERROR_DATOS_INCORRECTOS)
             if Sector.objects.filter(idSector=datos[KEY_ID_SECTOR]).__len__() == 0:
                 raise ValueError(ERROR_SECTOR_NO_ENCONTRADO, "No se encuentra un sector con ese id")
             estado_habilitado = EstadoSector.objects.get(nombreEstadoSector=ESTADO_HABILITADO)
