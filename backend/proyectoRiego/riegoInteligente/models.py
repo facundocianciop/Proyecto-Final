@@ -1000,7 +1000,7 @@ class EjecucionRiego(models.Model):
             mecanismoRiegoFincaSector=self.mecanismo_riego_finca_sector.idMecanismoRiegoFincaSector,
             configuracion_riego=id_configuracion_riego,
             estado_ejecucion_riego=self.estado_ejecucion_riego.nombreEstadoEjecucionRiego,
-            cantidadAguaUtilizadaLitros=cantidad_agua_utilizada,
+            cantidadAguaUtilizadaLitros=round(cantidad_agua_utilizada,2),
             detalle=self.detalle,
             duracionActualMinutos=duracion_total/60.0,
             duracionActualSegundos=duracion_total,
