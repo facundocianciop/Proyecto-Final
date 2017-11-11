@@ -367,7 +367,9 @@ class MecanismoRiegoFinca(models.Model):
             direccionIP=self.direccionIP,
             fechaInstalacion=parsear_fecha_a_hora_arg(self.fechaInstalacion),
             idMecanismoRiegoFinca=self.idMecanismoRiegoFinca,
-            tipoMecanismoRiego=self.tipoMecanismoRiego.nombreMecanismo
+            tipoMecanismoRiego=self.tipoMecanismoRiego.nombreMecanismo,
+            caudalMaximo=self.tipoMecanismoRiego.caudalEstandar,
+            presionMaxima=self.tipoMecanismoRiego.presionEstandar
             # imagenUsuario=self.imagenUsuario
         )
 
