@@ -367,7 +367,9 @@ class MecanismoRiegoFinca(models.Model):
             direccionIP=self.direccionIP,
             fechaInstalacion=parsear_fecha_a_hora_arg(self.fechaInstalacion),
             idMecanismoRiegoFinca=self.idMecanismoRiegoFinca,
-            tipoMecanismoRiego=self.tipoMecanismoRiego.nombreMecanismo
+            tipoMecanismoRiego=self.tipoMecanismoRiego.nombreMecanismo,
+            caudalMaximo=self.tipoMecanismoRiego.caudalEstandar,
+            presionMaxima=self.tipoMecanismoRiego.presionEstandar
             # imagenUsuario=self.imagenUsuario
         )
 
@@ -998,10 +1000,10 @@ class EjecucionRiego(models.Model):
             mecanismoRiegoFincaSector=self.mecanismo_riego_finca_sector.idMecanismoRiegoFincaSector,
             configuracion_riego=id_configuracion_riego,
             estado_ejecucion_riego=self.estado_ejecucion_riego.nombreEstadoEjecucionRiego,
-            cantidadAguaUtilizadaLitros=cantidad_agua_utilizada,
+            cantidadAguaUtilizadaLitros=round(cantidad_agua_utilizada,2),
             detalle=self.detalle,
-            duracionActualMinutos=duracion_total/60.0,
-            duracionActualSegundos=duracion_total,
+            duracionActualMinutos=round(duracion_total/60.0,2),
+            duracionActualSegundos=round(duracion_total,2),
             fechaHoraFinalizacion=parsear_fecha_a_hora_arg(self.fecha_hora_finalizacion),
             fechaHoraFinalProgramada=parsear_fecha_a_hora_arg(self.fecha_hora_final_programada),
             fechaHoraInicio=parsear_fecha_a_hora_arg(self.fecha_hora_inicio),

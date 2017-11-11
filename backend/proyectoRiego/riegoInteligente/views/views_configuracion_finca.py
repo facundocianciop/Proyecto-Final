@@ -33,7 +33,9 @@ def mostrarMecanismosRiegoFinca(request):
                                                                    idMecanismoRiegoFinca=mecanismo.idMecanismoRiegoFinca,
                                                                    tipoMecanismoRiego=mecanismo.tipoMecanismoRiego.nombreMecanismo,
                                                                    fechaInstalacion=mecanismo.fechaInstalacion,
-                                                                   habilitado=ultimo_historico.estado_mecanismo_riego_finca.nombreEstadoMecanismoRiegoFinca)
+                                                                   habilitado=ultimo_historico.estado_mecanismo_riego_finca.nombreEstadoMecanismoRiegoFinca,
+                                                                   caudalMaximo=mecanismo.tipoMecanismoRiego.caudalEstandar,
+                                                                   presionMaxima=mecanismo.tipoMecanismoRiego.presionEstandar)
                 dto_mecanismo_riego_finca_list.append(dto_mecanismo_riego_finca)
             response.content = armar_response_list_content(dto_mecanismo_riego_finca_list)
             response.status_code = 200
