@@ -31,6 +31,13 @@ NSString *const kColorVerdeMasClaroHex = @"#C5E86C";
 
 NSString *const kRolEncargado = @"encargado";
 
+#pragma mark - Estados ejecucion riego
+
+NSString *const kEstadoRiegoEjecucion = @"en_ejecucion";
+NSString *const kEstadoRiegoCancelado = @"cancelado";
+NSString *const kEstadoRiegoPausado = @"pausado";
+NSString *const kEstadoRiegoFinalizado = @"finalizado";
+
 #pragma mark - Regex
 
 NSString *const kRegexContrasenia = @"^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,32}$";

@@ -6,15 +6,3 @@ from django.apps import AppConfig
 
 class RiegointeligenteConfig(AppConfig):
     name = 'riegoInteligente'
-
-    """
-    
-    def ready(self):
-        from riegoInteligente.views.supportClases.procesosBackground.procesos_background import *
-        #comprobar_incio_riego_criterio_hora()
-        #comprobar_fin_riego_criterio_hora_volumen()
-    """
-
-
-
-

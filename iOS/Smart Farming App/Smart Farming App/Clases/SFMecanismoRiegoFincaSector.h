@@ -17,6 +17,7 @@
 @property (assign, nonatomic) long idMecanismoRiegoFinca;
 @property (assign, nonatomic) long idSector;
 
+@property (strong, nonatomic) NSString *nombreSector;
 @property (strong, nonatomic) NSString *nombreTipoMecanismo;
 
 @property (assign, nonatomic) CGFloat caudal;

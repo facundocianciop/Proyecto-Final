@@ -64,8 +64,8 @@ def obtener_mediciones_climaticas():
 @app.task
 def comprobar_riego_hora():
     from riegoInteligente.views.supportClases.procesosBackground.procesos_background import \
-        comprobar_fin_riego_criterio_hora_volumen
-    # comprobar_incio_riego_criterio_hora()
+        comprobar_fin_riego_criterio_hora_volumen, comprobar_incio_riego_criterio_hora
+    comprobar_incio_riego_criterio_hora()
     comprobar_fin_riego_criterio_hora_volumen()
 
 

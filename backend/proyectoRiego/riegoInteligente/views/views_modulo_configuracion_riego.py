@@ -78,6 +78,70 @@ def obtener_riego_en_ejecucion_mecanismo_riego_finca_sector(request):
         raise KeyError
 
 
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
+def buscar_configuracion_riego_id(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if KEY_ID_CONFIGURACION_RIEGO in datos:
+            if datos[KEY_ID_CONFIGURACION_RIEGO] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if ConfiguracionRiego.objects.filter(id_configuracion_riego=datos[KEY_ID_CONFIGURACION_RIEGO]).__len__() \
+                    == 0:
+                raise ValueError(ERROR_CONFIGURACION_RIEGO_NO_EXISTE, "No se encuentra una configuracion de riego "
+                                                                      "con ese id.")
+            configuracion_riego = ConfiguracionRiego.objects.get(
+                id_configuracion_riego=datos[KEY_ID_CONFIGURACION_RIEGO])
+            response.content = armar_response_content(configuracion_riego)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except ValueError as err:
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
+@transaction.atomic()
+@login_requerido
+@metodos_requeridos([METHOD_POST])
+@manejar_errores()
+@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
+def buscar_criterio_id(request):
+    response = HttpResponse()
+    datos = obtener_datos_json(request)
+    try:
+        if datos == '':
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+        if KEY_ID_CRITERIO_RIEGO in datos:
+            if datos[KEY_ID_CRITERIO_RIEGO] == '':
+                raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+            if CriterioRiego.objects.filter(id_criterio_riego=datos[KEY_ID_CRITERIO_RIEGO]).__len__() == 0:
+                raise ValueError(ERROR_CRITERIO_NO_EXISTE, "No se encuentra un criterio de riego"
+                                                           "con ese id.")
+            criterio_riego = CriterioRiego.objects.get(id_criterio_riego=datos[KEY_ID_CRITERIO_RIEGO])
+            response.content = armar_response_content(criterio_riego)
+            response.status_code = 200
+            return response
+        else:
+            raise ValueError(ERROR_DATOS_FALTANTES, "Datos incompletos")
+    except ValueError as err:
+        return build_bad_request_error(response, err.args[0], err.args[1])
+    except (IntegrityError, TypeError, KeyError) as err:
+        print err.args
+        response.status_code = 401
+        return build_bad_request_error(response, ERROR_DE_SISTEMA, "Error procesando llamada")
+
+
 # noinspection PyUnboundLocalVariable
 @transaction.atomic()
 @login_requerido

@@ -31,6 +31,13 @@ extern NSString *const kColorVerdeMasClaroHex;
 
 extern NSString *const kRolEncargado;
 
+#pragma mark - Estados ejecucion riego
+
+extern NSString *const kEstadoRiegoEjecucion;
+extern NSString *const kEstadoRiegoCancelado;
+extern NSString *const kEstadoRiegoPausado;
+extern NSString *const kEstadoRiegoFinalizado;
+
 #pragma mark - Regex
 
 extern NSString *const kRegexContrasenia;

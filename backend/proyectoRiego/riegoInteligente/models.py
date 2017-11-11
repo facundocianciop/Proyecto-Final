@@ -289,7 +289,7 @@ class Finca(models.Model):
     logoFinca = models.ImageField(null=True)
     nombre = models.CharField(max_length=50)
     tamanio = models.FloatField()
-    ubicacion = models.CharField(max_length=50)
+    ubicacion = models.CharField(max_length=100)
 
     def __str__(self):
         return str(self.idFinca) + "-" + self.nombre
@@ -367,7 +367,9 @@ class MecanismoRiegoFinca(models.Model):
             direccionIP=self.direccionIP,
             fechaInstalacion=parsear_fecha_a_hora_arg(self.fechaInstalacion),
             idMecanismoRiegoFinca=self.idMecanismoRiegoFinca,
-            tipoMecanismoRiego=self.tipoMecanismoRiego.nombreMecanismo
+            tipoMecanismoRiego=self.tipoMecanismoRiego.nombreMecanismo,
+            caudalMaximo=self.tipoMecanismoRiego.caudalEstandar,
+            presionMaxima=self.tipoMecanismoRiego.presionEstandar
             # imagenUsuario=self.imagenUsuario
         )
 
@@ -386,7 +388,7 @@ class MecanismoRiegoFinca(models.Model):
 
 class EstadoMecanismoRiegoFinca(models.Model):
     OIDEstadoMecanismoRiegoFinca = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    nombreEstadoMecanismoRiegoFinca = models.CharField(max_length=20)
+    nombreEstadoMecanismoRiegoFinca = models.CharField(max_length=50)
     descripcionEstadoMecanismoRiegoFinca = models.CharField(max_length=100)
 
     class Meta:
@@ -465,7 +467,7 @@ class Cultivo(models.Model):
     OIDCultivo = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     idCultivo = models.IntegerField(default=1, unique=True, editable=False)
     descripcion = models.CharField(max_length=100)
-    nombre = models.CharField(max_length=20)
+    nombre = models.CharField(max_length=30)
     fechaPlantacion = models.DateTimeField()
     fechaEliminacion = models.DateTimeField(null=True)
     habilitado = models.BooleanField()
@@ -508,7 +510,7 @@ class Cultivo(models.Model):
 class EstadoSector(models.Model):
     OIDEstadoSector = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     descripcionEstadoSector = models.CharField(max_length=100)
-    nombreEstadoSector = models.CharField(max_length=20)
+    nombreEstadoSector = models.CharField(max_length=30)
 
     class Meta:
         verbose_name_plural = "_Estados sector"
@@ -544,7 +546,7 @@ class HistoricoEstadoSector(models.Model):
 class EstadoMecanismoRiegoFincaSector(models.Model):
     OIDEstadoMecanismoRiegoFincaSector = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     descripcionEstadoMecanismoRiegoFincaSector = models.CharField(max_length=100)
-    nombreEstadoMecanismoRiegoFincaSector = models.CharField(max_length=20)
+    nombreEstadoMecanismoRiegoFincaSector = models.CharField(max_length=30)
 
     class Meta:
         verbose_name_plural = "_Estados mecanismo riego finca sector"
@@ -623,7 +625,7 @@ class HistoricoEstadoComponenteSensor(models.Model):
 
 class EstadoComponenteSensor(models.Model):
         OIDEstadoComponenteSensor = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-        nombreEstado = models.CharField(max_length=20)
+        nombreEstado = models.CharField(max_length=30)
         descripcionEstado = models.CharField(max_length=100)
 
         class Meta:
@@ -675,7 +677,7 @@ class ComponenteSensor(models.Model):
 
 class TipoCultivo(models.Model):
     OIDTipoCultivo = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    nombreTipoCultivo = models.CharField(max_length=20)
+    nombreTipoCultivo = models.CharField(max_length=30)
     descripcion = models.CharField(max_length=100)
     habilitado = models.BooleanField()
     fechaAltaTipoCultivo = models.DateTimeField()
@@ -695,7 +697,7 @@ class TipoCultivo(models.Model):
 
 class SubtipoCultivo(models.Model):
     OIDSubtipoCultivo = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    nombreSubtipo = models.CharField(max_length=20)
+    nombreSubtipo = models.CharField(max_length=30)
     habilitado = models.BooleanField()
     descripcion = models.CharField(max_length=100)
     tipo_cultivo = models.ForeignKey(TipoCultivo, db_column="OIDTipoCultivo")
@@ -720,9 +722,9 @@ class SubtipoCultivo(models.Model):
 
 class CaracteristicaSubtipo(models.Model):
     OIDCaracteristicaSubtipo = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    atributo = models.CharField(max_length=20)
+    atributo = models.CharField(max_length=30)
     comentario = models.CharField(max_length=100)
-    valor = models.CharField(max_length=20)
+    valor = models.CharField(max_length=30)
 
     subtipo_cultivo = models.ForeignKey(SubtipoCultivo, db_column="OIDSubtipoCultivo",
                                         related_name="caracteristicaSubtipoList")
@@ -733,7 +735,7 @@ class CaracteristicaSubtipo(models.Model):
 class TipoMecanismoRiego(models.Model):
     OIDTipoMecanismoRiego = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nombreMecanismo = models.CharField(max_length=30, unique=True)
-    descripcion = models.CharField(max_length=200, null=True)
+    descripcion = models.CharField(max_length=100, null=True)
     caudalEstandar = models.FloatField(null=True)
     presionEstandar = models.FloatField(null=True)
     eficiencia = models.FloatField(null=True)
@@ -768,7 +770,7 @@ class TipoConfiguracionRiego(models.Model):
 
     OIDTipoConfiguracionRiego = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     idTipoConfiguracion = models.IntegerField(unique=True, default=1)
-    nombre = models.CharField(max_length=20, unique=True)
+    nombre = models.CharField(max_length=30, unique=True)
 
     class Meta:
         verbose_name_plural = "_Tipos de configuracion de riego"
@@ -861,7 +863,7 @@ class ConfiguracionRiego(models.Model):
 
 class EstadoConfiguracionRiego(models.Model):
     OIDEstadoConfiguracionRiego = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    nombreEstadoConfiguracionRiego = models.CharField(max_length=20, unique=True)
+    nombreEstadoConfiguracionRiego = models.CharField(max_length=30, unique=True)
     descripcionEstadoConfiguracionRiego = models.CharField(max_length=100)
 
     class Meta:
@@ -906,7 +908,7 @@ class HistoricoEstadoConfiguracionRiego(models.Model):
 
 class EstadoEjecucionRiego(models.Model):
     OIDEstadoEjecucionRiego = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    nombreEstadoEjecucionRiego = models.CharField(max_length=20, unique=True)
+    nombreEstadoEjecucionRiego = models.CharField(max_length=30, unique=True)
     descripcionEstadoEjecucionRiego = models.CharField(max_length=100)
 
     class Meta:
@@ -1152,7 +1154,7 @@ class CriterioRiegoPorHora(CriterioRiego):
 class TipoMedicion(models.Model):
     OIDTipoMedicion = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     idTipoMedicion = models.IntegerField(default=1, unique=True, editable=False)
-    nombreTipoMedicion = models.CharField(max_length=20)
+    nombreTipoMedicion = models.CharField(max_length=30)
     unidadMedicion = models.CharField(max_length=20)
     habilitado = models.BooleanField()
     fechaAltaTipoMedicion = models.DateTimeField()
@@ -1195,7 +1197,7 @@ class Sensor(models.Model):
     fechaAltaSensor = models.DateTimeField()
     fechaBajaSensor = models.DateTimeField(null=True)
     habilitado = models.BooleanField()
-    modelo = models.CharField(max_length=20)
+    modelo = models.CharField(max_length=30)
     tipoMedicion = models.ForeignKey('TipoMedicion', db_column="OIDTipoMedicion", null=True)
     finca = models.ForeignKey('Finca', db_column="OIDFinca", null=True)
 
@@ -1219,7 +1221,7 @@ class Sensor(models.Model):
             fechaAltaSensor=parsear_fecha_a_hora_arg(self.fechaAltaSensor),
             fechaBajaSensor=parsear_fecha_a_hora_arg(self.fechaBajaSensor),
             habilitado=str(self.habilitado),
-            modelo=(self.modelo),
+            modelo=self.modelo,
             tipoMedicion=self.tipoMedicion.nombreTipoMedicion
         )
 
@@ -1280,7 +1282,7 @@ class HistoricoEstadoComponenteSensorSector(models.Model):
 
 class EstadoComponenteSensorSector(models.Model):
     OIDEstadoComponenteSensorSector = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    nombreEstadoComponenteSensorSector = models.CharField(max_length=20)
+    nombreEstadoComponenteSensorSector = models.CharField(max_length=30)
     descripcionEstadoComponenteSensorSector = models.CharField(max_length=100)
 
     class Meta:
@@ -1383,7 +1385,7 @@ class MedicionFuenteInterna(MedicionEvento):
 class ConfiguracionEventoPersonalizado(models.Model):
     OIDConfiguracionEventoPersonalizado = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     idConfiguracion = models.IntegerField(unique=True, default=1, editable=False)
-    nombre = models.CharField(max_length=20)
+    nombre = models.CharField(max_length=30)
     descripcion = models.CharField(max_length=100)
     notificacionActivada = models.BooleanField()
     fechaAltaConfiguracionEventoPersonalizado = models.DateTimeField()
@@ -1423,7 +1425,6 @@ class ConfiguracionEventoPersonalizado(models.Model):
             fechaHoraCreacion=parsear_fecha_a_hora_arg(self.fechaHoraCreacion),
             sectores=[sector.numeroSector for sector in self.sectorList.all()]
         )
-
 
 
 class EventoPersonalizado(models.Model):
