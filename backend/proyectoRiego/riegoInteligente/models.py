@@ -1002,7 +1002,7 @@ class EjecucionRiego(models.Model):
             estado_ejecucion_riego=self.estado_ejecucion_riego.nombreEstadoEjecucionRiego,
             cantidadAguaUtilizadaLitros=round(cantidad_agua_utilizada,2),
             detalle=self.detalle,
-            duracionActualMinutos=round(duracion_total/60.0,2),
+            duracionActualMinutos=round((duracion_total/60.0),2),
             duracionActualSegundos=round(duracion_total,2),
             fechaHoraFinalizacion=parsear_fecha_a_hora_arg(self.fecha_hora_finalizacion),
             fechaHoraFinalProgramada=parsear_fecha_a_hora_arg(self.fecha_hora_final_programada),
