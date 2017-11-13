@@ -184,9 +184,15 @@ class UsuarioFinca(models.Model):
             self.idUsuarioFinca = 1
             super(UsuarioFinca, self).save(*args, **kwargs)
         else:
-            if UsuarioFinca.objects.get(idUsuarioFinca=self.idUsuarioFinca) == self:
-                super(UsuarioFinca, self).save(*args, **kwargs)
-            else:
+            from django.core.exceptions import ObjectDoesNotExist
+            try:
+                if UsuarioFinca.objects.get(idUsuarioFinca=self.idUsuarioFinca) == self:
+                    super(UsuarioFinca, self).save(*args, **kwargs)
+                else:
+                    ultimo_usuario_finca = UsuarioFinca.objects.order_by('-idUsuarioFinca')[0]
+                    self.idUsuarioFinca = ultimo_usuario_finca.idUsuarioFinca + 1
+                    super(UsuarioFinca, self).save(*args, **kwargs)
+            except ObjectDoesNotExist:
                 ultimo_usuario_finca = UsuarioFinca.objects.order_by('-idUsuarioFinca')[0]
                 self.idUsuarioFinca = ultimo_usuario_finca.idUsuarioFinca + 1
                 super(UsuarioFinca, self).save(*args, **kwargs)
@@ -300,9 +306,15 @@ class Finca(models.Model):
             self.idFinca = 1
             super(Finca, self).save(*args, **kwargs)
         else:
-            if Finca.objects.get(idFinca=self.idFinca) == self:
-                super(Finca, self).save(*args, **kwargs)
-            else:
+            from django.core.exceptions import ObjectDoesNotExist
+            try:
+                if Finca.objects.get(idFinca=self.idFinca) == self:
+                    super(Finca, self).save(*args, **kwargs)
+                else:
+                    ultima_finca = Finca.objects.order_by('-idFinca')[0]
+                    self.idFinca = ultima_finca.idFinca + 1
+                    super(Finca, self).save(*args, **kwargs)
+            except ObjectDoesNotExist:
                 ultima_finca = Finca.objects.order_by('-idFinca')[0]
                 self.idFinca = ultima_finca.idFinca + 1
                 super(Finca, self).save(*args, **kwargs)
@@ -378,9 +390,15 @@ class MecanismoRiegoFinca(models.Model):
                 self.idMecanismoRiegoFinca = 1
                 super(MecanismoRiegoFinca, self).save(*args, **kwargs)
         else:
-            if MecanismoRiegoFinca.objects.get(idMecanismoRiegoFinca=self.idMecanismoRiegoFinca) == self:
-                super(MecanismoRiegoFinca, self).save(*args, **kwargs)
-            else:
+            from django.core.exceptions import ObjectDoesNotExist
+            try:
+                if MecanismoRiegoFinca.objects.get(idMecanismoRiegoFinca=self.idMecanismoRiegoFinca) == self:
+                    super(MecanismoRiegoFinca, self).save(*args, **kwargs)
+                else:
+                    ultimo_mecanismo = MecanismoRiegoFinca.objects.order_by('-idMecanismoRiegoFinca')[0]
+                    self.idMecanismoRiegoFinca = ultimo_mecanismo.idMecanismoRiegoFinca + 1
+                    super(MecanismoRiegoFinca, self).save(*args, **kwargs)
+            except ObjectDoesNotExist:
                 ultimo_mecanismo = MecanismoRiegoFinca.objects.order_by('-idMecanismoRiegoFinca')[0]
                 self.idMecanismoRiegoFinca = ultimo_mecanismo.idMecanismoRiegoFinca + 1
                 super(MecanismoRiegoFinca, self).save(*args, **kwargs)
@@ -443,12 +461,19 @@ class Sector(models.Model):
             self.idSector = 1
             super(Sector, self).save(*args, **kwargs)
         else:
-            if Sector.objects.get(idSector=self.idSector) == self:
-                super(Sector, self).save(*args, **kwargs)
-            else:
+            from django.core.exceptions import ObjectDoesNotExist
+            try:
+                if Sector.objects.get(idSector=self.idSector) == self:
+                    super(Sector, self).save(*args, **kwargs)
+                else:
+                    ultimo_sector = Sector.objects.order_by('-idSector')[0]
+                    self.idSector = ultimo_sector.idSector + 1
+                    super(Sector, self).save(*args, **kwargs)
+            except ObjectDoesNotExist:
                 ultimo_sector = Sector.objects.order_by('-idSector')[0]
                 self.idSector = ultimo_sector.idSector + 1
                 super(Sector, self).save(*args, **kwargs)
+
 
     def __str__(self):
         return "Sector numero: %d" % self.numeroSector
@@ -482,9 +507,15 @@ class Cultivo(models.Model):
             self.idCultivo = 1
             super(Cultivo, self).save(*args, **kwargs)
         else:
-            if Cultivo.objects.get(idCultivo=self.idCultivo) == self:
-                super(Cultivo, self).save(*args, **kwargs)
-            else:
+            from django.core.exceptions import ObjectDoesNotExist
+            try:
+                if Cultivo.objects.get(idCultivo=self.idCultivo) == self:
+                    super(Cultivo, self).save(*args, **kwargs)
+                else:
+                    ultimo_cultivo = Cultivo.objects.order_by('-idCultivo')[0]
+                    self.idCultivo = ultimo_cultivo.idCultivo + 1
+                    super(Cultivo, self).save(*args, **kwargs)
+            except ObjectDoesNotExist:
                 ultimo_cultivo = Cultivo.objects.order_by('-idCultivo')[0]
                 self.idCultivo = ultimo_cultivo.idCultivo + 1
                 super(Cultivo, self).save(*args, **kwargs)
@@ -650,9 +681,15 @@ class ComponenteSensor(models.Model):
             self.idComponenteSensor = 1
             super(ComponenteSensor, self).save(*args, **kwargs)
         else:
-            if ComponenteSensor.objects.get(idComponenteSensor=self.idComponenteSensor) == self:
-                super(ComponenteSensor, self).save(*args, **kwargs)
-            else:
+            from django.core.exceptions import ObjectDoesNotExist
+            try:
+                if ComponenteSensor.objects.get(idComponenteSensor=self.idComponenteSensor) == self:
+                    super(ComponenteSensor, self).save(*args, **kwargs)
+                else:
+                    ultimo_componente_sensor = ComponenteSensor.objects.order_by('-idComponenteSensor')[0]
+                    self.idComponenteSensor = ultimo_componente_sensor.idComponenteSensor + 1
+                    super(ComponenteSensor, self).save(*args, **kwargs)
+            except ObjectDoesNotExist:
                 ultimo_componente_sensor = ComponenteSensor.objects.order_by('-idComponenteSensor')[0]
                 self.idComponenteSensor = ultimo_componente_sensor.idComponenteSensor + 1
                 super(ComponenteSensor, self).save(*args, **kwargs)
@@ -783,9 +820,15 @@ class TipoConfiguracionRiego(models.Model):
             self.idTipoConfiguracion = 1
             super(TipoConfiguracionRiego, self).save(*args, **kwargs)
         else:
-            if TipoConfiguracionRiego.objects.get(idTipoConfiguracion=self.idTipoConfiguracion) == self:
-                super(TipoConfiguracionRiego, self).save(*args, **kwargs)
-            else:
+            from django.core.exceptions import ObjectDoesNotExist
+            try:
+                if TipoConfiguracionRiego.objects.get(idTipoConfiguracion=self.idTipoConfiguracion) == self:
+                    super(TipoConfiguracionRiego, self).save(*args, **kwargs)
+                else:
+                    ultimo_tipo_configuracion = TipoConfiguracionRiego.objects.order_by('-idTipoConfiguracion')[0]
+                    self.idTipoConfiguracion = ultimo_tipo_configuracion.idTipoConfiguracion + 1
+                    super(TipoConfiguracionRiego, self).save(*args, **kwargs)
+            except ObjectDoesNotExist:
                 ultimo_tipo_configuracion = TipoConfiguracionRiego.objects.order_by('-idTipoConfiguracion')[0]
                 self.idTipoConfiguracion = ultimo_tipo_configuracion.idTipoConfiguracion + 1
                 super(TipoConfiguracionRiego, self).save(*args, **kwargs)
@@ -814,9 +857,15 @@ class ConfiguracionRiego(models.Model):
             self.id_configuracion_riego = 1
             super(ConfiguracionRiego, self).save(*args, **kwargs)
         else:
-            if ConfiguracionRiego.objects.get(id_configuracion_riego=self.id_configuracion_riego) == self:
-                super(ConfiguracionRiego, self).save(*args, **kwargs)
-            else:
+            from django.core.exceptions import ObjectDoesNotExist
+            try:
+                if ConfiguracionRiego.objects.get(id_configuracion_riego=self.id_configuracion_riego) == self:
+                    super(ConfiguracionRiego, self).save(*args, **kwargs)
+                else:
+                    ultima_configuracion_riego = ConfiguracionRiego.objects.order_by('-id_configuracion_riego')[0]
+                    self.id_configuracion_riego = ultima_configuracion_riego.id_configuracion_riego + 1
+                    super(ConfiguracionRiego, self).save(*args, **kwargs)
+            except ObjectDoesNotExist:
                 ultima_configuracion_riego = ConfiguracionRiego.objects.order_by('-id_configuracion_riego')[0]
                 self.id_configuracion_riego = ultima_configuracion_riego.id_configuracion_riego + 1
                 super(ConfiguracionRiego, self).save(*args, **kwargs)
@@ -923,10 +972,18 @@ class MecanismoRiegoFincaSector(models.Model):
             self.idMecanismoRiegoFincaSector = 1
             super(MecanismoRiegoFincaSector, self).save(*args, **kwargs)
         else:
-            if MecanismoRiegoFincaSector.objects.get(idMecanismoRiegoFincaSector=self.idMecanismoRiegoFincaSector) == \
-                    self:
-                super(MecanismoRiegoFincaSector, self).save(*args, **kwargs)
-            else:
+            from django.core.exceptions import ObjectDoesNotExist
+            try:
+                if MecanismoRiegoFincaSector.objects.get(
+                        idMecanismoRiegoFincaSector=self.idMecanismoRiegoFincaSector) == \
+                        self:
+                    super(MecanismoRiegoFincaSector, self).save(*args, **kwargs)
+                else:
+                    ultimo_mecanismo_finca_riego_sector = \
+                        MecanismoRiegoFincaSector.objects.order_by('-idMecanismoRiegoFincaSector')[0]
+                    self.idMecanismoRiegoFincaSector = ultimo_mecanismo_finca_riego_sector.idMecanismoRiegoFincaSector + 1
+                    super(MecanismoRiegoFincaSector, self).save(*args, **kwargs)
+            except ObjectDoesNotExist:
                 ultimo_mecanismo_finca_riego_sector = \
                     MecanismoRiegoFincaSector.objects.order_by('-idMecanismoRiegoFincaSector')[0]
                 self.idMecanismoRiegoFincaSector = ultimo_mecanismo_finca_riego_sector.idMecanismoRiegoFincaSector + 1
@@ -1000,10 +1057,10 @@ class EjecucionRiego(models.Model):
             mecanismoRiegoFincaSector=self.mecanismo_riego_finca_sector.idMecanismoRiegoFincaSector,
             configuracion_riego=id_configuracion_riego,
             estado_ejecucion_riego=self.estado_ejecucion_riego.nombreEstadoEjecucionRiego,
-            cantidadAguaUtilizadaLitros=round(cantidad_agua_utilizada,2),
+            cantidadAguaUtilizadaLitros=round(cantidad_agua_utilizada, 2),
             detalle=self.detalle,
-            duracionActualMinutos=round((duracion_total/60.0),2),
-            duracionActualSegundos=round(duracion_total,2),
+            duracionActualMinutos=round((duracion_total/60.0), 2),
+            duracionActualSegundos=round(duracion_total, 2),
             fechaHoraFinalizacion=parsear_fecha_a_hora_arg(self.fecha_hora_finalizacion),
             fechaHoraFinalProgramada=parsear_fecha_a_hora_arg(self.fecha_hora_final_programada),
             fechaHoraInicio=parsear_fecha_a_hora_arg(self.fecha_hora_inicio),
@@ -1052,9 +1109,15 @@ class CriterioRiego(models.Model):
             self.id_criterio_riego = 1
             super(CriterioRiego, self).save(*args, **kwargs)
         else:
-            if CriterioRiego.objects.get_subclass(id_criterio_riego=self.id_criterio_riego) == self:
-                super(CriterioRiego, self).save(*args, **kwargs)
-            else:
+            from django.core.exceptions import ObjectDoesNotExist
+            try:
+                if CriterioRiego.objects.get_subclass(id_criterio_riego=self.id_criterio_riego) == self:
+                    super(CriterioRiego, self).save(*args, **kwargs)
+                else:
+                    ultimo_criterio_riego = CriterioRiego.objects.order_by('-id_criterio_riego')[0]
+                    self.id_criterio_riego = ultimo_criterio_riego.id_criterio_riego + 1
+                    super(CriterioRiego, self).save(*args, **kwargs)
+            except ObjectDoesNotExist:
                 ultimo_criterio_riego = CriterioRiego.objects.order_by('-id_criterio_riego')[0]
                 self.id_criterio_riego = ultimo_criterio_riego.id_criterio_riego + 1
                 super(CriterioRiego, self).save(*args, **kwargs)
@@ -1154,9 +1217,15 @@ class TipoMedicion(models.Model):
             self.idTipoMedicion = 1
             super(TipoMedicion, self).save(*args, **kwargs)
         else:
-            if TipoMedicion.objects.get(idTipoMedicion=self.idTipoMedicion) == self:
-                super(TipoMedicion, self).save(*args, **kwargs)
-            else:
+            from django.core.exceptions import ObjectDoesNotExist
+            try:
+                if TipoMedicion.objects.get(idTipoMedicion=self.idTipoMedicion) == self:
+                    super(TipoMedicion, self).save(*args, **kwargs)
+                else:
+                    ultimo_tipo_medicion = TipoMedicion.objects.order_by('-idTipoMedicion')[0]
+                    self.idTipoMedicion = ultimo_tipo_medicion.idTipoMedicion + 1
+                    super(TipoMedicion, self).save(*args, **kwargs)
+            except ObjectDoesNotExist:
                 ultimo_tipo_medicion = TipoMedicion.objects.order_by('-idTipoMedicion')[0]
                 self.idTipoMedicion = ultimo_tipo_medicion.idTipoMedicion + 1
                 super(TipoMedicion, self).save(*args, **kwargs)
@@ -1192,9 +1261,15 @@ class Sensor(models.Model):
             self.idSensor = 1
             super(Sensor, self).save(*args, **kwargs)
         else:
-            if Sensor.objects.get(idSensor=self.idSensor) == self:
-                super(Sensor, self).save(*args, **kwargs)
-            else:
+            from django.core.exceptions import ObjectDoesNotExist
+            try:
+                if Sensor.objects.get(idSensor=self.idSensor) == self:
+                    super(Sensor, self).save(*args, **kwargs)
+                else:
+                    ultimo_sensor = Sensor.objects.order_by('-idSensor')[0]
+                    self.idSensor = ultimo_sensor.idSensor + 1
+                    super(Sensor, self).save(*args, **kwargs)
+            except ObjectDoesNotExist:
                 ultimo_sensor = Sensor.objects.order_by('-idSensor')[0]
                 self.idSensor = ultimo_sensor.idSensor + 1
                 super(Sensor, self).save(*args, **kwargs)
@@ -1226,9 +1301,16 @@ class ComponenteSensorSector(models.Model):
             self.idComponenteSensorSector = 1
             super(ComponenteSensorSector, self).save(*args, **kwargs)
         else:
-            if ComponenteSensorSector.objects.get(idComponenteSensorSector=self.idComponenteSensorSector) == self:
-                super(ComponenteSensorSector, self).save(*args, **kwargs)
-            else:
+            from django.core.exceptions import ObjectDoesNotExist
+            try:
+                if ComponenteSensorSector.objects.get(idComponenteSensorSector=self.idComponenteSensorSector) == self:
+                    super(ComponenteSensorSector, self).save(*args, **kwargs)
+                else:
+                    ultimo_componente_sensor_sector = \
+                        ComponenteSensorSector.objects.order_by('-idComponenteSensorSector')[0]
+                    self.idComponenteSensorSector = ultimo_componente_sensor_sector.idComponenteSensorSector + 1
+                    super(ComponenteSensorSector, self).save(*args, **kwargs)
+            except ObjectDoesNotExist:
                 ultimo_componente_sensor_sector = \
                     ComponenteSensorSector.objects.order_by('-idComponenteSensorSector')[0]
                 self.idComponenteSensorSector = ultimo_componente_sensor_sector.idComponenteSensorSector + 1
@@ -1290,9 +1372,15 @@ class MedicionCabecera(models.Model):
             self.nroMedicion = 1
             super(MedicionCabecera, self).save(*args, **kwargs)
         else:
-            if MedicionCabecera.objects.get(nroMedicion=self.nroMedicion) == self:
-                super(MedicionCabecera, self).save(*args, **kwargs)
-            else:
+            from django.core.exceptions import ObjectDoesNotExist
+            try:
+                if MedicionCabecera.objects.get(nroMedicion=self.nroMedicion) == self:
+                    super(MedicionCabecera, self).save(*args, **kwargs)
+                else:
+                    ultima_medicion_cabecera = MedicionCabecera.objects.order_by('-nroMedicion')[0]
+                    self.nroMedicion = ultima_medicion_cabecera.nroMedicion + 1
+                    super(MedicionCabecera, self).save(*args, **kwargs)
+            except ObjectDoesNotExist:
                 ultima_medicion_cabecera = MedicionCabecera.objects.order_by('-nroMedicion')[0]
                 self.nroMedicion = ultima_medicion_cabecera.nroMedicion + 1
                 super(MedicionCabecera, self).save(*args, **kwargs)
@@ -1386,9 +1474,16 @@ class ConfiguracionEventoPersonalizado(models.Model):
             self.idConfiguracion = 1
             super(ConfiguracionEventoPersonalizado, self).save(*args, **kwargs)
         else:
-            if ConfiguracionEventoPersonalizado.objects.get(idConfiguracion=self.idConfiguracion) == self:
-                super(ConfiguracionEventoPersonalizado, self).save(*args, **kwargs)
-            else:
+            from django.core.exceptions import ObjectDoesNotExist
+            try:
+                if ConfiguracionEventoPersonalizado.objects.get(idConfiguracion=self.idConfiguracion) == self:
+                    super(ConfiguracionEventoPersonalizado, self).save(*args, **kwargs)
+                else:
+                    ultima_configuracion_evento_personalizado = \
+                        ConfiguracionEventoPersonalizado.objects.order_by('-idConfiguracion')[0]
+                    self.idConfiguracion = ultima_configuracion_evento_personalizado.idConfiguracion + 1
+                    super(ConfiguracionEventoPersonalizado, self).save(*args, **kwargs)
+            except ObjectDoesNotExist:
                 ultima_configuracion_evento_personalizado = \
                     ConfiguracionEventoPersonalizado.objects.order_by('-idConfiguracion')[0]
                 self.idConfiguracion = ultima_configuracion_evento_personalizado.idConfiguracion + 1
@@ -1426,9 +1521,15 @@ class EventoPersonalizado(models.Model):
             self.nroEvento = 1
             super(EventoPersonalizado, self).save(*args, **kwargs)
         else:
-            if EventoPersonalizado.objects.get(nroEvento=self.nroEvento) == self:
-                super(EventoPersonalizado, self).save(*args, **kwargs)
-            else:
+            from django.core.exceptions import ObjectDoesNotExist
+            try:
+                if EventoPersonalizado.objects.get(nroEvento=self.nroEvento) == self:
+                    super(EventoPersonalizado, self).save(*args, **kwargs)
+                else:
+                    ultimo_evento_personalizado = EventoPersonalizado.objects.order_by('-nroEvento')[0]
+                    self.nroEvento = ultimo_evento_personalizado.nroEvento + 1
+                    super(EventoPersonalizado, self).save(*args, **kwargs)
+            except ObjectDoesNotExist:
                 ultimo_evento_personalizado = EventoPersonalizado.objects.order_by('-nroEvento')[0]
                 self.nroEvento = ultimo_evento_personalizado.nroEvento + 1
                 super(EventoPersonalizado, self).save(*args, **kwargs)
@@ -1462,10 +1563,18 @@ class TipoMedicionClimatica(models.Model):
             self.idTipoMedicionClimatica = 1
             super(TipoMedicionClimatica, self).save(*args, **kwargs)
         else:
-            if TipoMedicionClimatica.objects.get(idTipoMedicionClimatica=self.idTipoMedicionClimatica) == self:
-                super(TipoMedicionClimatica, self).save(*args, **kwargs)
-            else:
-                ultimo_tipo_medicion_climatica = TipoMedicionClimatica.objects.order_by('-idTipoMedicionClimatica')[0]
+            from django.core.exceptions import ObjectDoesNotExist
+            try:
+                if TipoMedicionClimatica.objects.get(idTipoMedicionClimatica=self.idTipoMedicionClimatica) == self:
+                    super(TipoMedicionClimatica, self).save(*args, **kwargs)
+                else:
+                    ultimo_tipo_medicion_climatica = TipoMedicionClimatica.objects.order_by('-idTipoMedicionClimatica')[
+                        0]
+                    self.idTipoMedicionClimatica = ultimo_tipo_medicion_climatica.idTipoMedicionClimatica + 1
+                    super(TipoMedicionClimatica, self).save(*args, **kwargs)
+            except ObjectDoesNotExist:
+                ultimo_tipo_medicion_climatica = TipoMedicionClimatica.objects.order_by('-idTipoMedicionClimatica')[
+                    0]
                 self.idTipoMedicionClimatica = ultimo_tipo_medicion_climatica.idTipoMedicionClimatica + 1
                 super(TipoMedicionClimatica, self).save(*args, **kwargs)
 
@@ -1550,9 +1659,16 @@ class MedicionInformacionClimaticaCabecera(models.Model):
             self.nroMedicion = 1
             super(MedicionInformacionClimaticaCabecera, self).save(*args, **kwargs)
         else:
-            if MedicionInformacionClimaticaCabecera.objects.get(nroMedicion=self.nroMedicion) == self:
-                super(MedicionInformacionClimaticaCabecera, self).save(*args, **kwargs)
-            else:
+            from django.core.exceptions import ObjectDoesNotExist
+            try:
+                if MedicionInformacionClimaticaCabecera.objects.get(nroMedicion=self.nroMedicion) == self:
+                    super(MedicionInformacionClimaticaCabecera, self).save(*args, **kwargs)
+                else:
+                    ultima_medicion_cabecera = \
+                        MedicionInformacionClimaticaCabecera.objects.order_by('-nroMedicion')[0]
+                    self.nroMedicion = ultima_medicion_cabecera.nroMedicion + 1
+                    super(MedicionInformacionClimaticaCabecera, self).save(*args, **kwargs)
+            except ObjectDoesNotExist:
                 ultima_medicion_cabecera = \
                     MedicionInformacionClimaticaCabecera.objects.order_by('-nroMedicion')[0]
                 self.nroMedicion = ultima_medicion_cabecera.nroMedicion + 1

@@ -168,7 +168,7 @@ def buscar_configuraciones_eventos_personalizados_sector(request):
 @login_requerido
 @metodos_requeridos([METHOD_POST])
 @manejar_errores()
-@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
+#@permisos_rol_requeridos([PERMISO_PUEDEGESTIONAREVENTOPERSONALIZADO])
 def mostrar_configuracion_evento_personalizado(request):
     response = HttpResponse()
     datos = obtener_datos_json(request)
@@ -909,9 +909,7 @@ def obtener_informe_historico_sector(request):
                 nombreEstadoComponenteSensorSector=ESTADO_HABILITADO)
             for componente in componentes:
                 historicos = componente.historicoEstadoComponenteSensorSector.all()
-                if historicos.filter(fechaAltaComponenteSensorSector__gte=fecha_inicio_sector,
-                                     fechaAltaComponenteSensorSector__lte=fecha_fin_sector,
-                                     estadoComponenteSensorSector=estado_componente_sensor_sector_habilitado)\
+                if historicos.filter(estadoComponenteSensorSector=estado_componente_sensor_sector_habilitado)\
                         .__len__() >= 1:
                     mediciones = componente.medicionCabeceraList.filter(fechaYHora__gte=fecha_inicio_sector,
                                                                         fechaYHora__lte=fecha_fin_sector)
